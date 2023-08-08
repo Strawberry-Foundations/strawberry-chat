@@ -147,7 +147,7 @@ def debugLogger(errorMessage, errorCode):
         None
         
 def sqlError(errorMessage):
-    print(f"{Fore.RED + Colors.BOLD}e096: An SQL Error occured: ")
+    print(f"{Fore.RED + Colors.BOLD}e096: An SQL Error occured: {errorMessage}")
     
 
 Logger.System(f"Server started ({ver})")
