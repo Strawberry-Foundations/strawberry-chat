@@ -204,6 +204,7 @@ news = f"""{Fore.GREEN +  Colors.UNDERLINE + Colors.BOLD}{chat_name} News - v1.7
         - NEW: User Nicknames and command to change nickname
         - NEW: Member Command
         - NEW: User info command
+        - NEW: New welcome message with chat color support
         - ADMIN: Broadcast Command, Mute Command, Role set/get/color Command, Bwords set/get/add/reload Command and Ban Command
         - FIX: Fixed many many bugs{Fore.RESET + Colors.RESET}"""
 
