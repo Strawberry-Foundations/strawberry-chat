@@ -154,9 +154,6 @@ news = f"""{Fore.GREEN +  Colors.UNDERLINE + Colors.BOLD}{chat_name} News - v1.7
         - ADMIN: Broadcast Command, Mute Command, Role set/get/color Command, Bwords set/get/add/reload Command and Ban Command
         - FIX: Fixed many many bugs{Fore.RESET + Colors.RESET}"""
 
-# news = f"""{Fore.GREEN +  Colors.UNDERLINE + Colors.BOLD}{chat_name} News - v1.6.1{Fore.RESET + Colors.RESET}{Fore.CYAN + Colors.BOLD}
-#         Open News with /news{Fore.RESET + Colors.RESET}"""
-
 def connectionThread(sock):
     while True:
         try:
