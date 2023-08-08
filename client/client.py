@@ -129,7 +129,7 @@ def send(sock):
         else:
             print(f"{Fore.GREEN + Colors.BOLD}{Str[lang]['AutologinNotActive']}{Fore.RESET + Colors.RESET}\n")
     elif server_selection == custom_server_sel:
-        print(f"{Fore.YELLOW + Colors.BOLD}{Str[lang]['Warning']}: {Str[lang]['AutologinNotAvailabe']}{Fore.RESET + Colors.RESET}\n")
+        print(f"{Fore.YELLOW + Colors.BOLD}{Str[lang]['Warning']}: {Str[lang]['AutologinNotAvailable']}{Fore.RESET + Colors.RESET}\n")
         
     else:
         if enableAutologin == True:
