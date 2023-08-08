@@ -854,7 +854,7 @@ def clientThread(client):
                         c.execute('SELECT role FROM users WHERE username = ?', (user,))
                         
                     except Exception as e:
-                        print(e)
+                        sqlError(e)
                         
                     res = c.fetchone()
                     
@@ -875,12 +875,14 @@ def clientThread(client):
                         c.execute('SELECT role FROM users WHERE username = ?', (user,))
                         
                     except Exception as e:
-                        print(e)
+                        sqlError(e)
                         
                     res = c.fetchone()
                     
                     if res[0] == "admin":
-                        cleanup()
+                        # cleanup()
+                        del addresses
+                        del users
                         
                     else:
                         client.send(f"{Fore.RED}Sorry, you do not have permissons for that.{Fore.RESET}".encode("utf8"))
@@ -1005,11 +1007,15 @@ def clientThread(client):
         except Exception as e:
             print("[" + Fore.RED + "<" + Fore.RESET +
                   "] {} ({}) has left.".format(address, user))
-            print(f"{Fore.RED + Colors.BOLD}An client-side error occurred. Maybe this can help you: {Fore.RESET + Colors.RESET}{e}")
+            print(f"{Fore.RED + Colors.BOLD}An client-side error occurred.")
+            
+            debugLogger(e, "004")
             Logger.System(f"[<] {address} has left")
+            
             del addresses[client]
             del users[client]
             client.close()
+            
             broadcast("{} has left the chat.".format(user))
             break
 
