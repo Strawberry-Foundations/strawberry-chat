@@ -16,64 +16,25 @@ with open("config.yml") as config:
         
 lang = data['language']
 
+with open("lang.yml", encoding="utf-8") as langStrings:
+        Str = yaml.load(langStrings, Loader=SafeLoader)
+
 # Color Variables
 class Colors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
     RESET = '\033[0m'
+    GRAY = "\033[90m"
     
-ver = "2.0.20_beta"
+ver = "2.1.0_beta"
 useSysArgv = False
 
 def isVerified(index):
     verified = data["server"][index]["verified"]
     if verified == True:
-        return f"[{Str.Verified}] "
+        return f"[{Str[lang]['Verified']}] "
     else:
         return ""
-
-class Str:
-    if lang == "de":
-        Welcome = "Willkommen zurück!"
-        Verified = "Verifiziert"
-        AvailableServers = "Verfügbare Chat-Server"
-        Custom = "Benutzerdefiniert"
-        SelChatServer = "Auswahl des Chat-Servers: "
-        TryConnection = "Es wird versucht, eine Verbindung mit dem Server herzustellen..."
-        AutologinActive = "Autologin ist aktiv."
-        AutologinNotActive = "Autologin ist nicht aktiv."
-        AutologinNotAvailable = "Autologin ist nicht verfügbar."
-        Ipaddr = "IP-Adresse: "
-        Port = "Port: "
-        Warning = "Warnung"
-        InvalidServerSelection = "Dieser Server existiert nicht!"
-        InvalidArgument = "Dieser Befehl existiert nicht!"
-        ErrCouldNotSendMessage = "Fehler beim Senden der Nachricht!"
-        ErrNotReachable = "Der Server ist nicht erreichbar! Versuche es später erneuert oder kontaktiere den Server-Besitzer."
-        CloseApplication = "Der Strawberry Client wurde beendet."
-        Aborted = "Der Strawberry Client wurde abgebrochen!"
-        ConnectedToServer = "Verbindung mit dem Server %s war erfolgreich. Viel Spaß!"
-        
-    if lang == "en":
-        Welcome = "Welcome back!"
-        Verified = "Verified"
-        AvailableServers = "Available Thread-Servers"
-        Custom = "Custom"
-        SelChatServer = "Chat server selection: "
-        TryConnection = "An attempt is made to establish a connection with the server..."
-        AutologinActive = "Autologin is active."
-        AutologinNotActive = "Autologin is not active."
-        AutologinNotAvailable = "Autologin is not available."
-        Ipaddr = "IP-Address: "
-        Port = "Port: "
-        Warning = "Warning"
-        InvalidServerSelection = "This server does not exist!"
-        InvalidArgument = "This command does not exist!"
-        ErrCouldNotSendMessage = "Could not send the message!"
-        ErrNotReachable = "The server is not available! Try again later or contact the server owner."
-        CloseApplication = "The Strawberry client has been closed."
-        Aborted = "The Strawberry client has been cancelled!"
-        ConnectedToServer = "Connection with the server %s was successful. Have fun!"
 
 if len(sys.argv) >= 2:
     if sys.argv[1] == "--server":
@@ -90,25 +51,25 @@ if len(sys.argv) >= 2:
         except KeyError:
             enableAutologin = False
     else:
-        print(f"{Fore.RED + Colors.BOLD}{Str.InvalidArgument}{Fore.RESET + Colors.RESET}")
+        print(f"{Fore.RED + Colors.BOLD}{Str[lang]['InvalidArgument']}{Fore.RESET + Colors.RESET}")
         sys.exit(1)
 
 else:
     print(f"{Fore.CYAN + Colors.BOLD + Colors.UNDERLINE}Strawberry Chat Client (stbchat) (v{ver}){Colors.RESET}")
-    print(f"{Fore.LIGHTGREEN_EX}{Str.Welcome}{Fore.RESET}\n")
-    print(f"{Fore.GREEN + Colors.BOLD + Colors.UNDERLINE}{Str.AvailableServers}:{Fore.RESET + Colors.RESET}")
+    print(f"{Fore.LIGHTGREEN_EX}{Str[lang]['Welcome']}{Fore.RESET}\n")
+    print(f"{Fore.GREEN + Colors.BOLD + Colors.UNDERLINE}{Str[lang]['AvailableServers']}:{Fore.RESET + Colors.RESET}")
 
     for i in range(len(data["server"])):
         print(f"{Fore.LIGHTBLUE_EX}[{i + 1}]{Fore.RESET} {Colors.BOLD}{data['server'][i]['name']}{Colors.RESET} {Fore.LIGHTCYAN_EX}{isVerified(i)}{Fore.RESET}{Fore.LIGHTYELLOW_EX}({data['server'][i]['type']})")
 
-    print(f"{Fore.LIGHTBLUE_EX}[{len(data['server']) + 1}]{Fore.RESET} {Colors.BOLD}{Str.Custom}{Colors.RESET}\n")
+    print(f"{Fore.LIGHTBLUE_EX}[{len(data['server']) + 1}]{Fore.RESET} {Colors.BOLD}{Str[lang]['Custom']}{Colors.RESET}\n")
 
 
     try:
-        server_selection = input(f"{Fore.LIGHTCYAN_EX}{Str.SelChatServer}{Fore.RESET}")
+        server_selection = input(f"{Fore.LIGHTCYAN_EX}{Str[lang]['SelChatServer']}{Fore.RESET}")
         
     except KeyboardInterrupt:
-        print(f"\n{Fore.YELLOW}{Str.Aborted}{Fore.RESET}")
+        print(f"\n{Fore.YELLOW}{Str[lang]['Aborted']}{Fore.RESET}")
         sys.exit(1)
 
     server_count = len(data['server'])
@@ -116,16 +77,16 @@ else:
     custom_server_sel = str(custom_server_sel)
     
     if server_selection == custom_server_sel:
-        host = input(f"{Fore.LIGHTBLUE_EX + Colors.BOLD}{Str.Ipaddr}{Fore.RESET + Colors.RESET}")
-        port = input(f"{Fore.LIGHTBLUE_EX + Colors.BOLD}{Str.Port}{Fore.RESET + Colors.RESET}")
+        host = input(f"{Fore.LIGHTBLUE_EX + Colors.BOLD}{Str[lang]['Ipaddr']}{Fore.RESET + Colors.RESET}")
+        port = input(f"{Fore.LIGHTBLUE_EX + Colors.BOLD}{Str[lang]['Port']}{Fore.RESET + Colors.RESET}")
         port = int(port)
 
     elif server_selection > custom_server_sel:
-        print(f"{Fore.RED + Colors.BOLD}{Str.InvalidServerSelection}{Fore.RESET + Colors.RESET}")
+        print(f"{Fore.RED + Colors.BOLD}{Str[lang]['InvalidServerSelection']}{Fore.RESET + Colors.RESET}")
         sys.exit(1)
         
     elif server_selection == "":
-        print(f"{Fore.RED + Colors.BOLD}{Str.InvalidServerSelection}{Fore.RESET + Colors.RESET}")
+        print(f"{Fore.RED + Colors.BOLD}{Str[lang]['InvalidServerSelection']}{Fore.RESET + Colors.RESET}")
         sys.exit(1)
         
     else:
@@ -160,25 +121,25 @@ def deleteLastLine():
 def send(sock):
     if useSysArgv == True:
         if enableAutologin == True:
-            print(f"{Fore.GREEN + Colors.BOLD}{Str.AutologinActive}{Fore.RESET + Colors.RESET}\n")
+            print(f"{Fore.GREEN + Colors.BOLD}{Str[lang]['AutologinActive']}{Fore.RESET + Colors.RESET}\n")
             sock.send(f"{data['server'][(int(server_selection) - 1)]['credentials']['username']}".encode("utf8"))
             time.sleep(0.1)
             sock.send(f"{data['server'][(int(server_selection) - 1)]['credentials']['password']}".encode("utf8"))
         
         else:
-            print(f"{Fore.GREEN + Colors.BOLD}{Str.AutologinNotActive}{Fore.RESET + Colors.RESET}\n")
+            print(f"{Fore.GREEN + Colors.BOLD}{Str[lang]['AutologinNotActive']}{Fore.RESET + Colors.RESET}\n")
     elif server_selection == custom_server_sel:
-        print(f"{Fore.YELLOW + Colors.BOLD}{Str.Warning}: {Str.AutologinNotAvailable}{Fore.RESET + Colors.RESET}\n")
+        print(f"{Fore.YELLOW + Colors.BOLD}{Str[lang]['Warning']}: {Str[lang]['AutologinNotAvailabe']}{Fore.RESET + Colors.RESET}\n")
         
     else:
         if enableAutologin == True:
-            print(f"{Fore.GREEN + Colors.BOLD}{Str.AutologinActive}{Fore.RESET + Colors.RESET}\n")
+            print(f"{Fore.GREEN + Colors.BOLD}{Str[lang]['AutologinActive']}{Fore.RESET + Colors.RESET}\n")
             sock.send(f"{data['server'][(int(server_selection) - 1)]['credentials']['username']}".encode("utf8"))
             time.sleep(0.1)
             sock.send(f"{data['server'][(int(server_selection) - 1)]['credentials']['password']}".encode("utf8"))
         
         else:
-            print(f"{Fore.GREEN + Colors.BOLD}{Str.AutologinNotActive}{Fore.RESET + Colors.RESET}\n")
+            print(f"{Fore.GREEN + Colors.BOLD}{Str[lang]['AutologinNotActive']}{Fore.RESET + Colors.RESET}\n")
     
     while threadFlag:
         try:
@@ -187,7 +148,7 @@ def send(sock):
             sock.send(message.encode("utf8"))
 
         except:
-            print(f"{Fore.RED + Colors.BOLD}{Str.ErrCouldNotSendMessage}{Fore.RESET + Colors.RESET}")
+            print(f"{Fore.RED + Colors.BOLD}{Str[lang]['ErrCouldNotSendMessage']}{Fore.RESET + Colors.RESET}")
             break
 
 def receive(sock):
@@ -200,7 +161,7 @@ def receive(sock):
                 break
             
         except:
-            print(f"{Fore.RED + Colors.BOLD}{Str.ErrNotReachable}{Fore.RESET + Colors.RESET}")
+            print(f"{Fore.RED + Colors.BOLD}{Str[lang]['ErrNotReachable']}{Fore.RESET + Colors.RESET}")
             break
 
 def main():
@@ -213,18 +174,18 @@ def main():
     
     # Connects to the server
     try: 
-        print(f"{Fore.YELLOW + Colors.BOLD}{Str.TryConnection}{Fore.RESET + Colors.RESET}")
+        print(f"{Fore.YELLOW + Colors.BOLD}{Str[lang]['TryConnection']}{Fore.RESET + Colors.RESET}")
         clientSocket.connect((host, port))
     except: 
-        print(f"{Fore.RED + Colors.BOLD}{Str.ErrNotReachable}{Fore.RESET + Colors.RESET}")
+        print(f"{Fore.RED + Colors.BOLD}{Str[lang]['ErrNotReachable']}{Fore.RESET + Colors.RESET}")
         sys.exit(1)
     
     if useSysArgv == True:
         pass
     elif server_selection == custom_server_sel:
-        print(f"{Fore.GREEN + Colors.BOLD}{Str.ConnectedToServer % host}{Fore.RESET + Colors.RESET}")
+        print(f"{Fore.GREEN + Colors.BOLD}{Str[lang]['ConnectedToServer'] % host}{Fore.RESET + Colors.RESET}")
     else:
-        print(f"{Fore.GREEN + Colors.BOLD}{Str.ConnectedToServer % data['server'][(int(server_selection) - 1)]['name']}{Fore.RESET + Colors.RESET}")
+        print(f"{Fore.GREEN + Colors.BOLD}{Str[lang]['ConnectedToServer'] % data['server'][(int(server_selection) - 1)]['name']}{Fore.RESET + Colors.RESET}")
         
     sendingThread = threading.Thread(target=send, args=(clientSocket,))
     receivingThread = threading.Thread(target=receive, args=(clientSocket,))
@@ -236,14 +197,14 @@ def main():
         while receivingThread.is_alive() and sendingThread.is_alive():
             continue
     except KeyboardInterrupt:
-        print(f"\n{Str.Aborted}")
+        print(f"\n{Str[lang]['Aborted']}")
         threadFlag = False
         sys.exit(1)
         
     threadFlag = False
 
     clientSocket.close()
-    print(f"\n{Str.CloseApplication}")
+    print(f"\n{Str[lang]['CloseApplication']}")
     
 
 
