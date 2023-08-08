@@ -145,6 +145,9 @@ def debugLogger(errorMessage, errorCode):
         print(f"{Fore.YELLOW + Colors.BOLD}ErrCode {errorCode}: {Fore.RESET + Colors.RESET}{errorMessage}")
     else:
         None
+        
+def sqlError(errorMessage):
+    print(f"{Fore.RED + Colors.BOLD}e096: An SQL Error occured: ")
     
 
 Logger.System(f"Server started ({ver})")
@@ -177,6 +180,7 @@ def connectionThread(sock):
         except Exception as e:
             print(f"[{Fore.RED}!{Fore.RESET}] An connection error occured!")
             debugLogger(e, "001")
+            
             break
         
         print(f"[{Fore.GREEN}>{Fore.RESET}] {address[0]} has connected")
@@ -195,6 +199,7 @@ def clientThread(client):
     except Exception as e:
         print(f"[{Fore.YELLOW}?{Fore.RESET}] An login error with {address} occured!")
         debugLogger(e, "002")
+        
         del addresses[client]
         return
     
@@ -219,6 +224,7 @@ def clientThread(client):
     except Exception as e:
         print(f"{Fore.YELLOW + Colors.BOLD}An Communication error with {address} ({user}) occurred.")
         debugLogger(e, "003")
+        
         del addresses[client]
         del users[client]
         client.close()
@@ -270,6 +276,7 @@ def clientThread(client):
                     else:
                         pass
             
+            # Define db variable global
             global db
                     
             # /broadcast Command            
