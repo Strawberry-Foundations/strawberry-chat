@@ -26,7 +26,7 @@ class Colors:
     RESET = '\033[0m'
     GRAY = "\033[90m"
     
-ver = "2.1.1_beta"
+ver = "2.1.2_beta"
 useSysArgv = False
 
 def isVerified(index):
