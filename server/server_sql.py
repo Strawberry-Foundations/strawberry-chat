@@ -115,6 +115,27 @@ def userRoleColor(uname):
             case "magenta": 
                 return Fore.MAGENTA
             
+            case "lightred":
+                return Fore.LIGHTRED_EX
+            
+            case "lightgreen":
+                return Fore.LIGHTGREEN_EX
+            
+            case "lightcyan":
+                return Fore.LIGHTCYAN_EX
+            
+            case "lightblue":
+                return Fore.LIGHTBLUE_EX
+
+            case "lightyellow":
+                return Fore.LIGHTYELLOW_EX
+
+            case "lightmagenta":
+                return Fore.LIGHTMAGENTA_EX
+            
+            case "boldred":
+                return Colors.BOLD + Fore.RED
+            
             case _:
                 return Fore.RESET
     else: 
@@ -1204,6 +1225,9 @@ def broadcast(message, sentBy=""):
 
                 case "lightmagenta":
                     return Fore.LIGHTMAGENTA_EX
+                
+                case "boldred":
+                    return Colors.BOLD + Fore.RED
                 
                 case _:
                     return Fore.RESET
