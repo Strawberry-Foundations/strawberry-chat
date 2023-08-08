@@ -15,6 +15,7 @@ The introduction starts with v1.8.0, so the next version after v1.7.0.
 - Command to change nickname from other users
 - Better logging of errors to console and log file
 - UTF-8 Only Protection
+- Check if a account already exists while registering as new account
 
 # Text things
 - Terms of Service
