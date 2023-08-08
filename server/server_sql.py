@@ -157,14 +157,6 @@ news = f"""{Fore.GREEN +  Colors.UNDERLINE + Colors.BOLD}{chat_name} News - v1.7
 # news = f"""{Fore.GREEN +  Colors.UNDERLINE + Colors.BOLD}{chat_name} News - v1.6.1{Fore.RESET + Colors.RESET}{Fore.CYAN + Colors.BOLD}
 #         Open News with /news{Fore.RESET + Colors.RESET}"""
 
-"""Old News
-- NEW: AFK user list command
-- NEW: Sending messages in Afk status is now not possible
-- NEW: AFK status stays even when you leave the chat
-- NEW: Kickall command kicking all online users
-- NEW: Changed Chat Name from Salware Chat to Strawberry Chat
-- FIX: Fixed general formatting errors"""
-
 def connectionThread(sock):
     while True:
         try:
