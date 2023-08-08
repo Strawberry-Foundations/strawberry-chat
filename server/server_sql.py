@@ -1042,7 +1042,7 @@ def clientThread(client):
         except Exception as e:
             print("[" + Fore.RED + "<" + Fore.RESET +
                   "] {} ({}) has left.".format(address, user))
-            print(f"{Fore.RED + Colors.BOLD}An client-side error occurred.")
+            print(f"{Fore.RED + Colors.BOLD}An client-side error occurred.{Fore.RESET + Colors.RESET}")
             
             debugLogger(e, "004")
             Logger.System(f"[<] {address} has left")
