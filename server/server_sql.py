@@ -1064,13 +1064,17 @@ def clientLogin(client):
         client.send(f"{Fore.GREEN + Colors.BOLD}Username: {Fore.RESET + Colors.RESET}".encode("utf8"))
         registeredUsername = client.recv(2048).decode("utf8")
         
+        c.execute("SELECT username FROM users")
+        usedUsernames = c.fetchall()
+        print(usedUsernames)
+        
         for uname in registeredUsername.split():
             uname = uname.lower()
             
             if uname in blacklist:
                 client.send(f"{Fore.YELLOW + Colors.BOLD}This username is not allowed{Fore.RESET + Colors.RESET}".encode("utf8"))    
                 client.close()
-                sys.exit()
+                sys.exit()        
         
         client.send(f"{Fore.GREEN + Colors.BOLD}Password: {Fore.RESET + Colors.RESET}".encode("utf8"))
         registeredPassword = client.recv(2048).decode("utf8")
@@ -1083,7 +1087,7 @@ def clientLogin(client):
             register()
         
         client.send(f"{Fore.GREEN + Colors.BOLD}Role Color (Red, Green, Cyan, Blue, Yellow, Magenta): {Fore.RESET + Colors.RESET}".encode("utf8"))
-        registeredRoleColor.lower() = client.recv(2048).decode("utf8")
+        registeredRoleColor = client.recv(2048).decode("utf8")
 
         client.send(f"{Fore.YELLOW + Colors.BOLD}Are you sure? Changing the username is currently not possible and requires a lot of time.{Fore.RESET + Colors.RESET}".encode("utf8"))
         confirmUsername = client.recv(2048).decode("utf8")
@@ -1097,7 +1101,7 @@ def clientLogin(client):
                 
                 client.send(f"{Fore.GREEN + Colors.BOLD}Creating your User account... {Fore.RESET + Colors.RESET}".encode("utf8"))
                 
-                c.execute('INSERT INTO users (username, password, badge, role, role_color, enableBlacklistedWords, accountEnabled, muted) VALUES (?, ?, "None", "member", ?, "true", "true", "false")', (registeredUsername, registeredPassword, registeredRoleColor))
+                c.execute('INSERT INTO users (username, password, badge, role, role_color, enableBlacklistedWords, accountEnabled, muted) VALUES (?, ?, "None", "member", ?, "true", "true", "false")', (registeredUsername, registeredPassword, registeredRoleColor.lower()))
                 db.commit()
                 db.close()
                 
