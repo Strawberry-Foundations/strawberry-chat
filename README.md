@@ -28,7 +28,8 @@ I don't want to see issues that talk about that encryption doesn't exist and how
 | Name       | Author                                                              | State                   | Version                                                                  |
 | --         | --                                                                  | --                      | --                                                                       |
 | stbchat ![official](https://img.shields.io/badge/Official-success)   | [Strawberry-Foundations](https://github.com/Strawberry-Foundations) | Open Source, available  | ![version](https://img.shields.io/badge/v2.0.20b-success)                |
-| sprchrgd ![official](https://img.shields.io/badge/Good_Friend-magenta)  | [matteodev8](https://github.com/matteodev8)                         | Currently not available | ![verssion](https://img.shields.io/badge/v2.0.20b@1.0a__sprchrgd-success) |
+| sprchrgd ![official](https://img.shields.io/badge/Good_Friend-magenta)  | [matteodev8](https://github.com/matteodev8)                         | Discontinued, soon available | ![version](https://img.shields.io/badge/v2.0.20b@1.0a__sprchrgd-success) |
+| berryjuice ![official](https://img.shields.io/badge/Good_Friend-magenta)  | [matteodev8](https://github.com/matteodev8)                         | Currently not available | ![version](https://img.shields.io/badge/Unknown-success) |
 
 ### Server
 | Name       | Author                                                              | State                   | Version                                                                  |
