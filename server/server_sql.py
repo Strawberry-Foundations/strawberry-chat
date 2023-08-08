@@ -33,8 +33,10 @@ chat_name = "Strawberry Chat"
 codename = "Vanilla Cake"
 server_edition = "SQL Server"
 
+# Afk list
 afks = list([])
 
+# Blacklised words set
 blacklist = set()
 with open("blacklist.txt", "r") as f:
     for word in f:
@@ -165,6 +167,8 @@ news = f"""{Fore.GREEN +  Colors.UNDERLINE + Colors.BOLD}{chat_name} News - v1.7
         - ADMIN: Broadcast Command, Mute Command, Role set/get/color Command, Bwords set/get/add/reload Command and Ban Command
         - FIX: Fixed many many bugs{Fore.RESET + Colors.RESET}"""
 
+
+
 def connectionThread(sock):
     while True:
         try:
@@ -184,15 +188,14 @@ def connectionThread(sock):
 
 def clientThread(client):
     address = addresses[client][0]
+    
     try:
         user = clientLogin(client)
             
     except Exception as e:
         print(f"[{Fore.YELLOW}?{Fore.RESET}] An login error with {address} occured!")
-        print(e)
-        
-        del addresses[client]
         debugLogger(e, "002")
+        del addresses[client]
         return
     
     print(f"[{Fore.GREEN}+{Fore.RESET}] {user} ({address}) logged in")
@@ -209,10 +212,8 @@ def clientThread(client):
         else:
             onlineUsersStr = f"are {onlineUsersLen} users"
             
-         
         time.sleep(0.05)
-        client.send(f"""{Fore.CYAN + Colors.BOLD}Currently there {onlineUsersStr} online. For help use /help{Fore.RESET + Colors.RESET}
-        {news}""".encode("utf8"))
+        client.send(f"""{Fore.CYAN + Colors.BOLD}Currently there {onlineUsersStr} online. For help use /help{Fore.RESET + Colors.RESET}\n{news}""".encode("utf8"))
         
 
     except Exception as e:
