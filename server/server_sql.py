@@ -139,8 +139,10 @@ def isAccountEnabled(uname):
         return False
     
 def debugLogger(errorMessage, errorCode):
-    if debug_mode: print(f"{Fore.YELLOW + Colors.BOLD}ErrCode {errorCode}: {Fore.RESET + Colors.RESET}{errorMessage}")
-    else: None
+    if debug_mode:
+        print(f"{Fore.YELLOW + Colors.BOLD}ErrCode {errorCode}: {Fore.RESET + Colors.RESET}{errorMessage}")
+    else:
+        None
     
 
 Logger.System(f"Server started ({ver})")
@@ -169,8 +171,8 @@ def connectionThread(sock):
             client, address = sock.accept()
 
         except Exception as e:
-            print(f"[{Fore.RED}!{Fore.RESET}] An connection error occuredSomething went wrong while accepting incoming connections!")
-            print(f"")
+            print(f"[{Fore.RED}!{Fore.RESET}] An connection error occured!")
+            debugLogger(e, "001")
             break
         
         print(f"[{Fore.GREEN}>{Fore.RESET}] {address[0]} has connected")
@@ -186,11 +188,11 @@ def clientThread(client):
         user = clientLogin(client)
             
     except Exception as e:
-        print(f"[{Fore.YELLOW}?{Fore.RESET}] An login error with {address} occured!{address}!")
+        print(f"[{Fore.YELLOW}?{Fore.RESET}] An login error with {address} occured!")
         print(e)
         
         del addresses[client]
-        client.close()
+        debugLogger(e, "002")
         return
     
     print(f"[{Fore.GREEN}+{Fore.RESET}] {user} ({address}) logged in")
@@ -214,7 +216,8 @@ def clientThread(client):
         
 
     except Exception as e:
-        print(f"{Fore.YELLOW + Colors.BOLD}An Communication error with {address} ({user}) occurred. Maybe this can help you: {Fore.RESET + Colors.RESET}{e}")
+        print(f"{Fore.YELLOW + Colors.BOLD}An Communication error with {address} ({user}) occurred.")
+        debugLogger(e, "003")
         del addresses[client]
         del users[client]
         client.close()
