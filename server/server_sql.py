@@ -267,7 +267,7 @@ def clientThread(client):
         return
     
     time.sleep(0.1)
-    broadcast(f"{Fore.GREEN + Colors.BOLD}-> {user} has joined the chat room!{Fore.RESET + Colors.RESET}")
+    broadcast(f"{Fore.GREEN + Colors.BOLD}-> {userRoleColor(user)}{user}{Fore.GREEN + Colors.BOLD} has joined the chat room!{Fore.RESET + Colors.RESET}")
 
     while True:
         try:
@@ -797,7 +797,7 @@ def clientThread(client):
                     
                     print(f"[{Fore.RED}<{Fore.RESET}] {address} ({user}) has left.")
                     Logger.System(f"[<] {address} has left")
-                    broadcast(f"{Fore.YELLOW + Colors.BOLD}<- {user} has left the chat.{Fore.RESET + Colors.RESET}")
+                    broadcast(f"{Fore.YELLOW + Colors.BOLD}<- {userRoleColor(user)}{user}{Fore.YELLOW + Colors.BOLD} has left the chat.{Fore.RESET + Colors.RESET}")
                     break
 
 
@@ -1050,7 +1050,7 @@ def clientThread(client):
             del users[client]
             client.close()
             
-            broadcast("{} has left the chat.".format(user))
+            broadcast(f"{Fore.YELLOW + Colors.BOLD}<- {userRoleColor(user)}{user}{Fore.YELLOW + Colors.BOLD} has left the chat.{Fore.RESET + Colors.RESET}")
             break
 
 
