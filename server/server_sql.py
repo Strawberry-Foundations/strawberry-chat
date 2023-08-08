@@ -1082,8 +1082,8 @@ def clientLogin(client):
             client.send(f"{Fore.RED + Colors.BOLD}Passwords do not match{Fore.RESET + Colors.RESET}".encode("utf8"))
             register()
         
-        client.send(f"{Fore.GREEN + Colors.BOLD}Role Color (red, green, cyan, blue, yellow, magenta): {Fore.RESET + Colors.RESET}".encode("utf8"))
-        registeredRoleColor = client.recv(2048).decode("utf8")
+        client.send(f"{Fore.GREEN + Colors.BOLD}Role Color (Red, Green, Cyan, Blue, Yellow, Magenta): {Fore.RESET + Colors.RESET}".encode("utf8"))
+        registeredRoleColor.lower() = client.recv(2048).decode("utf8")
 
         client.send(f"{Fore.YELLOW + Colors.BOLD}Are you sure? Changing the username is currently not possible and requires a lot of time.{Fore.RESET + Colors.RESET}".encode("utf8"))
         confirmUsername = client.recv(2048).decode("utf8")
