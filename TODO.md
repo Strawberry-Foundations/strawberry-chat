@@ -12,11 +12,9 @@ The introduction starts with v1.8.0, so the next version after v1.7.0.
 # Todo & Ideas
 - ^C Protection to prevent users crashing the server
 - Badge add command & set main badge command [Admin]
-- Command to change nickname from other users
+- Command to change nickname from other users [Admin]
 - Better logging of errors to console and log file
 - UTF-8 Only Protection
-- Check if a account already exists while registering as new account
 
 # Text things
-- Terms of Service
 - Documentation
