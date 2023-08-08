@@ -181,7 +181,7 @@ def clientThread(client):
         user = clientLogin(client)
             
     except Exception as e:
-        print(f"[{Fore.YELLOW}?{Fore.RESET}] Something went wrong while setting the nickname for {address}!")
+        print(f"[{Fore.YELLOW}?{Fore.RESET}] An login error with {address} occured!{address}!")
         print(e)
         
         del addresses[client]
@@ -209,7 +209,7 @@ def clientThread(client):
         
 
     except Exception as e:
-        print(f"{Fore.RED + Colors.BOLD}An Communication error with {address} ({user}) occurred. Maybe this can help you: {Fore.RESET + Colors.RESET}{e}")
+        print(f"{Fore.YELLOW + Colors.BOLD}An Communication error with {address} ({user}) occurred. Maybe this can help you: {Fore.RESET + Colors.RESET}{e}")
         del addresses[client]
         del users[client]
         client.close()
