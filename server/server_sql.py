@@ -1212,6 +1212,9 @@ def main():
         
         if enable_messages == True:
             print(f"{Fore.YELLOW + Colors.BOLD}[!] Enabled Flag {Fore.CYAN}'enable-messages'{Fore.RESET + Colors.RESET}")
+        
+        if debug_mode:
+            print(f"{Fore.YELLOW + Colors.BOLD}[!] Enabled debug mode for debugging{Fore.RESET + Colors.RESET}")
             
         print(f"{Fore.YELLOW + Colors.BOLD}>>> {Fore.RESET}Server is running on {ipaddr}:{port}")
 
