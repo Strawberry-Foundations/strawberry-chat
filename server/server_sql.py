@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 import atexit
 from colorama import Fore
 import socket
@@ -13,17 +12,20 @@ import time
 import errno
 import random
 
+# Connect to the database
 db = sql.connect('./users.db', check_same_thread=False)
 c = db.cursor()
 
 with open("./config.json", "r") as f:
     config = json.load(f)
 
+# Configuration
 ipaddr = config["adress"]
 port = config["port"]
 enable_messages = config["enable_messages"]
 max_message_length = config["max_message_length"]
 
+# Version-specified Variables 
 short_ver = "1.7.0_b2"
 ver = short_ver + "-vc_sql"
 chat_name = "Strawberry Chat"
@@ -64,6 +66,7 @@ class Colors:
 if "--enable-messages" in sys.argv:
     enable_messages = True
 
+# General Functions
 def userNickname(uname):
     c = db.cursor()
     c.execute('SELECT nickname FROM users WHERE username = ?', (uname,))
@@ -137,6 +140,7 @@ def isAccountEnabled(uname):
 
 Logger.System(f"Server started ({ver})")
 
+# News
 news = f"""{Fore.GREEN +  Colors.UNDERLINE + Colors.BOLD}{chat_name} News - v1.7.0 Beta{Fore.RESET + Colors.RESET}{Fore.CYAN + Colors.BOLD}
         - COMMUNITY: New custom client by matteodev8: superchrgd ⚡ (Currently in development)
         - NEW: Bots are here!
