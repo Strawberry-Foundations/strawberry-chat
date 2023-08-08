@@ -24,6 +24,7 @@ ipaddr = config["adress"]
 port = config["port"]
 enable_messages = config["enable_messages"]
 max_message_length = config["max_message_length"]
+debug_mode = config["debug_mode"]
 
 # Version-specified Variables 
 short_ver = "1.7.0_b2"
@@ -137,6 +138,10 @@ def isAccountEnabled(uname):
     else: 
         return False
     
+def debugLogger(errorMessage, errorCode):
+    if debug_mode: print(f"{Fore.YELLOW + Colors.BOLD}ErrCode {errorCode}: {Fore.RESET + Colors.RESET}{errorMessage}")
+    else: None
+    
 
 Logger.System(f"Server started ({ver})")
 
@@ -164,8 +169,8 @@ def connectionThread(sock):
             client, address = sock.accept()
 
         except Exception as e:
-            print(f"[{Fore.RED}!{Fore.RESET}]Something went wrong while accepting incoming connections!")
-            print(f"{Fore.YELLOW + Colors.BOLD}Maybe this can help you: {Fore.RESET + Colors.RESET}{e}")
+            print(f"[{Fore.RED}!{Fore.RESET}] An connection error occuredSomething went wrong while accepting incoming connections!")
+            print(f"")
             break
         
         print(f"[{Fore.GREEN}>{Fore.RESET}] {address[0]} has connected")
