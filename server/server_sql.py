@@ -147,7 +147,7 @@ def debugLogger(errorMessage, errorCode):
         None
         
 def sqlError(errorMessage):
-    print(f"{Fore.RED + Colors.BOLD}e096: An SQL Error occured: {errorMessage}")
+    print(f"{Fore.RED + Colors.BOLD}e096: An SQL Error occured: {errorMessage}{Fore.RESET + Colors.RESET}")
     
 
 Logger.System(f"Server started ({ver})")
@@ -285,7 +285,7 @@ def clientThread(client):
                     c.execute('SELECT role FROM users WHERE username = ?', (user,))
                     
                 except Exception as e:
-                    print(e)
+                    sqlError(e)
                     
                 res = c.fetchone()
                 
