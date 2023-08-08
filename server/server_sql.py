@@ -65,22 +65,18 @@ if "--enable-messages" in sys.argv:
     enable_messages = True
 
 def userNickname(uname):
-    # db = sql.connect('./users.db', check_same_thread=False)
     c = db.cursor()
     c.execute('SELECT nickname FROM users WHERE username = ?', (uname,))
     unick = c.fetchone()
-    # db.close()
     
     if unick[0] is not None: 
         unick = unick[0]
         return unick
 
 def hasNickname(uname):
-    # db = sql.connect('./users.db', check_same_thread=False)
     c = db.cursor()
     c.execute('SELECT nickname FROM users WHERE username = ?', (uname,))
     unick = c.fetchone()
-    # db.close()
     
     if unick[0] is not None: 
         return True
@@ -89,11 +85,9 @@ def hasNickname(uname):
         return False
 
 def userRoleColor(uname):
-    # db = sql.connect('./users.db', check_same_thread=False)
     c = db.cursor()
     c.execute('SELECT role_color FROM users WHERE username = ?', (uname,))
     color = c.fetchone()
-    # db.close()
     
     if color[0] is not None: 
         match color[0]:
@@ -121,7 +115,6 @@ def userRoleColor(uname):
         return Fore.RESET
 
 def isMuted(uname):
-    # db = sql.connect('./users.db', check_same_thread=False)
     c = db.cursor()
     c.execute('SELECT muted FROM users WHERE username = ?', (uname,))
     mutedStatus = c.fetchone()
@@ -132,7 +125,6 @@ def isMuted(uname):
         return False
 
 def isAccountEnabled(uname):
-    # db = sql.connect('./users.db', check_same_thread=False)
     c = db.cursor()
     c.execute('SELECT accountEnabled FROM users WHERE username = ?', (uname,))
     accountEnabledStatus = c.fetchone()
