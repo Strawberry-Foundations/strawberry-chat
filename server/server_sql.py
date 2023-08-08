@@ -303,10 +303,8 @@ def clientThread(client):
                     nick = message.replace("/nickname ", "")
                     
                 if nick.lower() == "remove":
-                    # db = sql.connect('./users.db', check_same_thread=False)
                     c.execute("UPDATE users SET nickname = NULL WHERE username = ?", (user,))
                     db.commit()
-                    # db.close()
                     client.send(f"{Fore.LIGHTGREEN_EX + Colors.BOLD}Removed nickname{Fore.RESET + Colors.RESET}".encode("utf8"))
                     continue
                     
