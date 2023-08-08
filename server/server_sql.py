@@ -739,7 +739,6 @@ def clientThread(client):
 
                 # Help Command
                 case "/help":
-                    # client.send(f"--> {Colors.BOLD}{userRoleColor(user)}{user}{Fore.RESET} uses /help{Fore.RESET + Colors.RESET}".encode("utf8"))
                     broadcast(f"\033[90m--> {Colors.RESET + Colors.BOLD}{userRoleColor(user)}{user}{Fore.RESET} uses /help{Fore.RESET + Colors.RESET}")
                     client.send(
                         f"""{Fore.GREEN +  Colors.UNDERLINE + Colors.BOLD}Default commands{Fore.RESET + Colors.RESET}
