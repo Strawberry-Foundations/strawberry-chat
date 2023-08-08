@@ -1064,6 +1064,14 @@ def clientLogin(client):
         client.send(f"{Fore.GREEN + Colors.BOLD}Username: {Fore.RESET + Colors.RESET}".encode("utf8"))
         registeredUsername = client.recv(2048).decode("utf8")
         
+        for uname in registeredUsername.split():
+            uname = uname.lower()
+            
+            if uname in blacklist:
+                client.send(f"{Fore.YELLOW + Colors.BOLD}This username is not allowed{Fore.RESET + Colors.RESET}".encode("utf8"))    
+                client.close()
+                sys.exit()
+        
         client.send(f"{Fore.GREEN + Colors.BOLD}Password: {Fore.RESET + Colors.RESET}".encode("utf8"))
         registeredPassword = client.recv(2048).decode("utf8")
         
