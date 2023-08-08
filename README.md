@@ -27,13 +27,13 @@ I don't want to see issues that talk about that encryption doesn't exist and how
 ### Clients
 | Name       | Author                                                              | State                   | Version                                                                  |
 | --         | --                                                                  | --                      | --                                                                       |
-| stbchat ![official](https://img.shields.io/badge/Official-success)   | [Strawberry-Foundations](https://github.com/Strawberry-Foundations) | Open Source, available  | ![version](https://img.shields.io/badge/v2.0.20b-success)                |
-| sprchrgd ![official](https://img.shields.io/badge/Good_Friend-magenta)  | [matteodev8](https://github.com/matteodev8)                         | Discontinued, soon available | ![version](https://img.shields.io/badge/v2.0.20b@1.0a__sprchrgd-success) |
-| berryjuice ![official](https://img.shields.io/badge/Good_Friend-magenta)  | [matteodev8](https://github.com/matteodev8)                         | Currently not available | ![version](https://img.shields.io/badge/Unknown-success) |
+| stbchat ![official](https://img.shields.io/badge/Official-success)   | [Strawberry-Foundations](https://github.com/Strawberry-Foundations) | ![state](https://img.shields.io/badge/Open--Source-success) ![state](https://img.shields.io/badge/Available-success)  | ![version](https://img.shields.io/badge/v2.0.20b-success)                |
+| sprchrgd ![official](https://img.shields.io/badge/Good_Friend-magenta)  | [matteodev8](https://github.com/matteodev8)                         | ![state](https://img.shields.io/badge/Discontinued-red) ![state](https://img.shields.io/badge/Not_Available-red) | ![version](https://img.shields.io/badge/v2.0.20b@1.0a__sprchrgd-orange) |
+| berryjuice ![official](https://img.shields.io/badge/Good_Friend-magenta)  | [matteodev8](https://github.com/matteodev8)                         | ![state](https://img.shields.io/badge/Currently_Not_Available-orange) | ![version](https://img.shields.io/badge/Unknown-red) |
 
 ### Server
 | Name       | Author                                                              | State                   | Version                                                                  |
 | --         | --                                                                  | --                      | --                                                                       |
-| stbserver  | [Strawberry-Foundations](https://github.com/Strawberry-Foundations) | Open Source, available  | ![version](https://img.shields.io/badge/v1.7.0__b3-success)              |
-| slfcserver | [Strawberry-Foundations](https://github.com/Strawberry-Foundations) | Discontinued, available | ![version](https://img.shields.io/badge/v1.2.0-orange)                   |
+| stbserver  | [Strawberry-Foundations](https://github.com/Strawberry-Foundations) | ![state](https://img.shields.io/badge/Open--Source-success) ![state](https://img.shields.io/badge/Available-success)  | ![version](https://img.shields.io/badge/v1.7.0__b3-success)              |
+| slfcserver | [Strawberry-Foundations](https://github.com/Strawberry-Foundations) | ![version](https://img.shields.io/badge/Discontinued-orange) ![state](https://img.shields.io/badge/Available-success) | ![version](https://img.shields.io/badge/v1.2.0-orange)                   |
 
