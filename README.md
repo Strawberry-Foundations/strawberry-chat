@@ -1,5 +1,5 @@
 # Strawberry Chat
-![stbchat- v1.7.0_b2](https://img.shields.io/badge/stbchat-1.7.0__b2-success) ![Code Size](https://img.shields.io/github/languages/code-size/Strawberry-Foundations/strawberry-chat) ![Commit activity](https://img.shields.io/github/commit-activity/w/Strawberry-Foundations/strawberry-chat) ![License](https://img.shields.io/github/license/Strawberry-Foundations/strawberry-chat)<br>
+![stbchat- v1.7.0_b3](https://img.shields.io/badge/stbchat-1.7.0__b3-success) ![Code Size](https://img.shields.io/github/languages/code-size/Strawberry-Foundations/strawberry-chat) ![Commit activity](https://img.shields.io/github/commit-activity/w/Strawberry-Foundations/strawberry-chat) ![License](https://img.shields.io/github/license/Strawberry-Foundations/strawberry-chat)<br>
 The universal chatting platform for your terminal!
 
 ## What is Strawberry Chat?
@@ -33,6 +33,6 @@ I don't want to see issues that talk about that encryption doesn't exist and how
 ### Server
 | Name       | Author                                                              | State                   | Version                                                                  |
 | --         | --                                                                  | --                      | --                                                                       |
-| stbserver  | [Strawberry-Foundations](https://github.com/Strawberry-Foundations) | Open Source, available  | ![version](https://img.shields.io/badge/v1.7.0__b2-success)              |
+| stbserver  | [Strawberry-Foundations](https://github.com/Strawberry-Foundations) | Open Source, available  | ![version](https://img.shields.io/badge/v1.7.0__b3-success)              |
 | slfcserver | [Strawberry-Foundations](https://github.com/Strawberry-Foundations) | Discontinued, available | ![version](https://img.shields.io/badge/v1.2.0-orange)                   |
 
