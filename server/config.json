@@ -3,5 +3,5 @@
     "port": 8080,
     "enable_messages": false,
     "max_message_length": 256,
-    "debug_mode": false
+    "debug_mode": true
 }
