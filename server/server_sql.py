@@ -65,6 +65,7 @@ class Colors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
     RESET = '\033[0m'
+    GRAY = "\033[90m"
     
 if "--enable-messages" in sys.argv:
     enable_messages = True
@@ -267,7 +268,7 @@ def clientThread(client):
         return
     
     time.sleep(0.1)
-    broadcast(f"{Fore.GREEN + Colors.BOLD}-> {userRoleColor(user)}{user}{Fore.GREEN + Colors.BOLD} has joined the chat room!{Fore.RESET + Colors.RESET}")
+    broadcast(f"{Colors.GRAY + Colors.BOLD}-->{Colors.RESET} {userRoleColor(user)}{user}{Fore.GREEN + Colors.BOLD} has joined the chat room!{Fore.RESET + Colors.RESET}")
 
     while True:
         try:
