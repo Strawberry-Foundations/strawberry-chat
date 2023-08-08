@@ -135,6 +135,21 @@ def userRoleColor(uname):
             
             case "boldred":
                 return Colors.BOLD + Fore.RED
+
+            case "boldgreen":
+                return Colors.BOLD + Fore.GREEN
+            
+            case "boldcyan":
+                return Colors.BOLD + Fore.CYAN
+            
+            case "boldblue":
+                return Colors.BOLD + Fore.BLUE
+            
+            case "boldyellow":
+                return Colors.BOLD + Fore.YELLOW
+            
+            case "boldmagenta":
+                return Colors.BOLD + Fore.MAGENTA
             
             case _:
                 return Fore.RESET
@@ -1191,13 +1206,13 @@ def broadcast(message, sentBy=""):
         if color[0] is not None: 
             match color[0]:
                 case "red": 
-                    return Fore.RED + Colors.BOLD
+                    return Fore.RED
                 
                 case "green": 
-                    return Fore.GREEN + Colors.BOLD
+                    return Fore.GREEN
                     
                 case "cyan": 
-                    return Fore.CYAN + Colors.BOLD
+                    return Fore.CYAN
                 
                 case "blue": 
                     return Fore.BLUE
@@ -1228,6 +1243,21 @@ def broadcast(message, sentBy=""):
                 
                 case "boldred":
                     return Colors.BOLD + Fore.RED
+
+                case "boldgreen":
+                    return Colors.BOLD + Fore.GREEN
+                
+                case "boldcyan":
+                    return Colors.BOLD + Fore.CYAN
+                
+                case "boldblue":
+                    return Colors.BOLD + Fore.BLUE
+                
+                case "boldyellow":
+                    return Colors.BOLD + Fore.YELLOW
+                
+                case "boldmagenta":
+                    return Colors.BOLD + Fore.MAGENTA
                 
                 case _:
                     return Fore.RESET
