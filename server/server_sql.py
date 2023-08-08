@@ -880,9 +880,7 @@ def clientThread(client):
                     res = c.fetchone()
                     
                     if res[0] == "admin":
-                        # cleanup()
-                        del addresses
-                        del users
+                        cleanup()
                         
                     else:
                         client.send(f"{Fore.RED}Sorry, you do not have permissons for that.{Fore.RESET}".encode("utf8"))
@@ -1050,16 +1048,19 @@ def clientLogin(client):
             try:
                 db = sql.connect('./users.db', check_same_thread=False)
                 c = db.cursor()
+                
                 client.send(f"{Fore.GREEN + Colors.BOLD}Creating your User account... {Fore.RESET + Colors.RESET}".encode("utf8"))
+                
                 c.execute('INSERT INTO users (username, password, badge, role, role_color, enableBlacklistedWords, accountEnabled, muted) VALUES (?, ?, "None", "member", ?, "true", "true", "false")', (registeredUsername, registeredPassword, registeredRoleColor))
                 db.commit()
                 db.close()
+                
                 client.send(f"{Fore.GREEN + Colors.BOLD}Created!{Fore.RESET + Colors.RESET}".encode("utf8"))
                 client.close()
                 sys.exit(1)
                 
             except Exception as e:
-                print(e)
+                sqlError(e)
             
         else:
             client.send(f"{Fore.RED + Colors.BOLD}Registration has been canceled. Start from the beginning...{Fore.RESET + Colors.RESET}".encode("utf8"))
@@ -1077,9 +1078,11 @@ def clientLogin(client):
     
     if username.lower() == "register":
         register()
+        
     elif username.lower() == "exit":
         client.close()
         sys.exit()
+        
     time.sleep(0.01)
     
     client.send(f"{Fore.GREEN + Colors.BOLD}Password: {Fore.RESET + Colors.RESET}".encode("utf8"))
@@ -1089,7 +1092,8 @@ def clientLogin(client):
         c.execute('SELECT * FROM users WHERE username = ? AND password = ? AND accountEnabled = ?', (username, password, "true"))
         
     except Exception as e:
-        print(f"{Fore.RED + Colors.BOLD}An login-error occurred. Maybe this can help you: {Fore.RESET + Colors.RESET}{e}")
+        print(f"{Fore.RED + Colors.BOLD}An login-error occurred.{Fore.RESET + Colors.RESET}")
+        debugLogger(e, "002")
         
     res = c.fetchall()
     
@@ -1124,6 +1128,7 @@ def clientLogin(client):
             
             if username.lower() == "register":
                 register()
+                
             elif username.lower() == "exit":
                 client.close()
                 sys.exit()
@@ -1136,7 +1141,8 @@ def clientLogin(client):
                 c.execute('SELECT * FROM users WHERE username = ? AND password = ? AND accountEnabled = ?', (username, password, "true"))
                 
             except Exception as e:
-                print(f"{Fore.RED + Colors.BOLD}An error occurred. Maybe this can help you: {Fore.RESET + Colors.RESET}{e}")
+                print(f"{Fore.RED + Colors.BOLD}An error occurred.{Fore.RESET + Colors.RESET}")
+                debugLogger(e, "100")
                 
             res = c.fetchall()
             
@@ -1180,6 +1186,24 @@ def broadcast(message, sentBy=""):
                  
                 case "magenta": 
                     return Fore.MAGENTA
+                
+                case "lightred":
+                    return Fore.LIGHTRED_EX
+                
+                case "lightgreen":
+                    return Fore.LIGHTGREEN_EX
+                
+                case "lightcyan":
+                    return Fore.LIGHTCYAN_EX
+                
+                case "lightblue":
+                    return Fore.LIGHTBLUE_EX
+
+                case "lightyellow":
+                    return Fore.LIGHTYELLOW_EX
+
+                case "lightmagenta":
+                    return Fore.LIGHTMAGENTA_EX
                 
                 case _:
                     return Fore.RESET
