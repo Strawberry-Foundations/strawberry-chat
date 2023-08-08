@@ -932,12 +932,10 @@ def clientThread(client):
                                 client.send(f"{Fore.YELLOW + Colors.BOLD}Deleting your user account...{Fore.RESET + Colors.RESET}".encode("utf8"))
                                 
                                 try:
-                                    # db = sql.connect('./users.db', check_same_thread=False)
                                     cursor = db.cursor()
                                     cursor.execute("DELETE FROM users WHERE username = ?", (user,))
                                     db.commit()
                                     client.send(f"{Fore.YELLOW + Colors.BOLD}Deleted{Fore.RESET + Colors.RESET}".encode("utf8"))
-                                    # db.close()
                                     client.close()
                                     sys.exit(1)
                                     
