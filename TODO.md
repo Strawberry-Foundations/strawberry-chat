@@ -18,5 +18,4 @@ The introduction starts with v1.8.0, so the next version after v1.7.0.
 
 # Text things
 - Terms of Service
-- README
 - Documentation
