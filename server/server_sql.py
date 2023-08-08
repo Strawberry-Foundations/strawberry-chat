@@ -1058,15 +1058,18 @@ def clientThread(client):
 
 def clientLogin(client):
     def register():
+        global db
+        global c
+        
         client.send(f"{Fore.MAGENTA + Colors.BOLD + Colors.UNDERLINE}Welcome!{Fore.RESET + Colors.RESET}\n        {Colors.BOLD}Register, to chat with us!{Colors.RESET}".encode("utf8"))
     
         time.sleep(0.05)
         client.send(f"{Fore.GREEN + Colors.BOLD}Username: {Fore.RESET + Colors.RESET}".encode("utf8"))
         registeredUsername = client.recv(2048).decode("utf8")
         
-        c.execute("SELECT username FROM users")
-        usedUsernames = c.fetchall()
-        print(usedUsernames)
+        if registeredUsername.lower() == "exit":
+            client.close()
+            sys.exit()
         
         for uname in registeredUsername.split():
             uname = uname.lower()
@@ -1074,8 +1077,23 @@ def clientLogin(client):
             if uname in blacklist:
                 client.send(f"{Fore.YELLOW + Colors.BOLD}This username is not allowed{Fore.RESET + Colors.RESET}".encode("utf8"))    
                 client.close()
-                sys.exit()        
-        
+                sys.exit()
+        try:
+            c.execute("SELECT username FROM users WHERE username = ? ", (registeredUsername,))
+            
+            usedUsernames = c.fetchall()[0]
+            usedUsernames = "".join(usedUsernames)
+            
+            
+            if usedUsernames == usedUsernames:
+                client.send(f"{Fore.YELLOW + Colors.BOLD}This username is already in use!{Fore.RESET + Colors.RESET}".encode("utf8"))    
+                register()
+            
+        except:
+            pass
+            
+
+            
         client.send(f"{Fore.GREEN + Colors.BOLD}Password: {Fore.RESET + Colors.RESET}".encode("utf8"))
         registeredPassword = client.recv(2048).decode("utf8")
         
