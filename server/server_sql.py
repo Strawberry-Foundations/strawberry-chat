@@ -291,6 +291,7 @@ def clientThread(client):
                 
                 if res[0] == "admin":
                     text = message.replace("/broadcast ", "")
+                    
                     if text == "/broadcast ":
                         client.send("Wrong usage".encode("utf8"))
                         continue
@@ -307,17 +308,20 @@ def clientThread(client):
             elif message.startswith("/nick ") or message.startswith("/nickname "):  
                 if message.startswith("/nick "):
                     nick = message.replace("/nick ", "")
+                    
                 elif message.startswith("/nickname ") :
                     nick = message.replace("/nickname ", "")
                     
                 if nick.lower() == "remove":
                     c.execute("UPDATE users SET nickname = NULL WHERE username = ?", (user,))
                     db.commit()
+                    
                     client.send(f"{Fore.LIGHTGREEN_EX + Colors.BOLD}Removed nickname{Fore.RESET + Colors.RESET}".encode("utf8"))
                     continue
                     
                 c.execute("UPDATE users SET nickname = ? WHERE username = ?", (nick, user))
                 db.commit()
+                
                 client.send(f"{Fore.LIGHTGREEN_EX + Colors.BOLD}Changed nickname to {Fore.RESET + userRoleColor(user)}{nick}{Fore.RESET + Colors.RESET}".encode("utf8"))
                 continue
             
@@ -433,20 +437,21 @@ def clientThread(client):
                     c.execute('SELECT role FROM users WHERE username = ?', (user,))
                     
                 except Exception as e:
-                    print(e)
+                    sqlError(e)
                     
                 res = c.fetchone()
                 
                 if res[0] == "admin":
                     uname = message.replace("/mute ", "")
+                    
                     c.execute("UPDATE users SET muted = 'true' WHERE username = ?", (uname,))
                     db.commit()
+                    
                     client.send(f"{Fore.LIGHTGREEN_EX + Colors.BOLD}Muted {uname}{Fore.RESET + Colors.RESET}".encode("utf8"))
                     continue
                     
                 else:
                     client.send(f"{Fore.RED}Sorry, you do not have permissons for that.{Fore.RESET}".encode("utf8"))
-                    print(f"{user} tried to access a admin-only command! ({res[0]})")
                     
                     
             # /unmute Command
@@ -455,14 +460,16 @@ def clientThread(client):
                     c.execute('SELECT role FROM users WHERE username = ?', (user,))
                     
                 except Exception as e:
-                    print(e)
+                    sqlError(e)
                     
                 res = c.fetchone()
                 
                 if res[0] == "admin":
                     uname = message.replace("/unmute ", "")
+                    
                     c.execute("UPDATE users SET muted = 'false' WHERE username = ?", (uname,))
                     db.commit()
+                    
                     client.send(f"{Fore.LIGHTGREEN_EX + Colors.BOLD}Unmuted {uname}{Fore.RESET + Colors.RESET}".encode("utf8"))
                     continue
                     
@@ -477,11 +484,13 @@ def clientThread(client):
                 if discord_name.lower() == "remove":
                     c.execute("UPDATE users SET discord_name = NULL WHERE username = ?", (user,))
                     db.commit()
+                    
                     client.send(f"{Fore.LIGHTGREEN_EX + Colors.BOLD}Removed Discord Link{Fore.RESET + Colors.RESET}".encode("utf8"))
                     continue
                 
                 c.execute("UPDATE users SET discord_name = ? WHERE username = ?", (discord_name, user))
                 db.commit()
+                
                 client.send(f"{Fore.LIGHTGREEN_EX + Colors.BOLD}Changed Discord Link to {Fore.MAGENTA}{discord_name}{Fore.RESET + Colors.RESET}".encode("utf8"))
                 continue
 
@@ -493,17 +502,20 @@ def clientThread(client):
                 if desc.lower() == "remove" or desc.lower() == "reset":
                     c.execute("UPDATE users SET description = NULL WHERE username = ?", (user,))
                     db.commit()
+                    
                     client.send(f"{Fore.LIGHTGREEN_EX + Colors.BOLD}Removed Description{Fore.RESET + Colors.RESET}".encode("utf8"))
                     continue
                 
                 elif desc.lower() == "" or desc.lower() == " ":
                     c.execute("SELECT description FROM users WHERE username = ?", (user,))
                     desc = c.fetchone()[0]
+                    
                     client.send(f"{Fore.LIGHTGREEN_EX + Colors.BOLD}Your current description: {Fore.RESET}{desc}{Colors.RESET}".encode("utf8"))
                     continue
                 
                 c.execute("UPDATE users SET description = ? WHERE username = ?", (desc, user))
                 db.commit()
+                
                 client.send(f"{Fore.LIGHTGREEN_EX + Colors.BOLD}Changed Description to {Fore.CYAN}{desc}{Fore.RESET + Colors.RESET}".encode("utf8"))
                 continue
 
@@ -514,20 +526,21 @@ def clientThread(client):
                     c.execute('SELECT role FROM users WHERE username = ?', (user,))
                     
                 except Exception as e:
-                    print(e)
+                    sqlError(e)
                     
                 res = c.fetchone()
                 
                 if res[0] == "admin":
                     uname = message.replace("/ban ", "")
+                    
                     c.execute("UPDATE users SET accountEnabled = 'false' WHERE username = ?", (uname,))
                     db.commit()
+                    
                     client.send(f"{Fore.LIGHTGREEN_EX + Colors.BOLD}Banned {uname}{Fore.RESET + Colors.RESET}".encode("utf8"))
                     continue
                     
                 else:
                     client.send(f"{Fore.RED}Sorry, you do not have permissons for that.{Fore.RESET}".encode("utf8"))
-                    print(f"{user} tried to access a admin-only command! ({res[0]})")
             
             
             # /unban Command
@@ -536,26 +549,30 @@ def clientThread(client):
                     c.execute('SELECT role FROM users WHERE username = ?', (user,))
                     
                 except Exception as e:
-                    print(e)
+                    sqlError(e)
                     
                 res = c.fetchone()
                 
                 if res[0] == "admin":
                     uname = message.replace("/unban ", "")
+                    
                     c.execute("UPDATE users SET accountEnabled = 'true' WHERE username = ?", (uname,))
                     db.commit()
+                    
                     client.send(f"{Fore.LIGHTGREEN_EX + Colors.BOLD}Unbanned {uname}{Fore.RESET + Colors.RESET}".encode("utf8"))
                     continue
                     
                 else:
                     client.send(f"{Fore.RED}Sorry, you do not have permissons for that.{Fore.RESET}".encode("utf8"))
-                    print(f"{user} tried to access a admin-only command! ({res[0]})")
             
             
             # /role Command
             elif message.startswith("/role "):
-                try: c.execute('SELECT role FROM users WHERE username = ?', (user,))
-                except Exception as e: print(e)
+                try: 
+                    c.execute('SELECT role FROM users WHERE username = ?', (user,))
+                    
+                except Exception as e: 
+                    sqlError(e)
                     
                 res = c.fetchone()
                 
@@ -573,6 +590,7 @@ def clientThread(client):
                         
                             c.execute("UPDATE users SET role = ? WHERE username = ?", (role, uname))
                             db.commit()
+                            
                             client.send(f"{Fore.LIGHTGREEN_EX + Colors.BOLD}Role of {uname} was set to {role}{Fore.RESET + Colors.RESET}".encode("utf8"))
                             continue
                         
@@ -587,6 +605,7 @@ def clientThread(client):
                       
                             c.execute("SELECT role FROM users WHERE username = ?", (uname,))
                             role = c.fetchone()[0]
+                            
                             client.send(f"{Fore.LIGHTGREEN_EX + Colors.BOLD}Role of {uname}: {Fore.MAGENTA}{role}{Fore.RESET + Colors.RESET}".encode("utf8"))
                             continue
                         
@@ -602,6 +621,7 @@ def clientThread(client):
                         
                             c.execute("UPDATE users SET role_color = ? WHERE username = ?", (color, uname))
                             db.commit()
+                            
                             client.send(f"{Fore.LIGHTGREEN_EX + Colors.BOLD}Role Color of {uname} was set to {color}{Fore.RESET + Colors.RESET}".encode("utf8"))
                             continue
                     
@@ -615,7 +635,6 @@ def clientThread(client):
                     
                 else:
                     client.send(f"{Fore.RED}Sorry, you do not have permissons for that.{Fore.RESET}".encode("utf8"))
-                    print(f"{user} tried to access a admin-only command! ({res[0]})")
             
             
             # /bwords Command
@@ -624,7 +643,7 @@ def clientThread(client):
                     c.execute('SELECT role FROM users WHERE username = ?', (user,))
                     
                 except Exception as e:
-                    print(e)
+                    sqlError(e)
                     
                 res = c.fetchone()
                 
@@ -646,9 +665,11 @@ def clientThread(client):
                             if value == "true":
                                 client.send(f"{Fore.LIGHTGREEN_EX + Colors.BOLD}Enabled Blacklisted Words for {uname}{Fore.RESET + Colors.RESET}".encode("utf8"))
                                 continue
+                            
                             elif value == "false":
                                 client.send(f"{Fore.LIGHTGREEN_EX + Colors.BOLD}Disabled Blacklisted Words for {uname}{Fore.RESET + Colors.RESET}".encode("utf8"))
                                 continue
+                            
                             else:
                                 client.send(f"{Fore.RED + Colors.BOLD}Invalid value!{Fore.RESET + Colors.RESET}".encode("utf8"))
                                 continue
@@ -705,7 +726,7 @@ def clientThread(client):
                             c.execute('SELECT role FROM users WHERE username = ?', (user,))
                             
                         except Exception as e:
-                            print(e)
+                            sqlError(e)
                             
                         res = c.fetchone()
                         
@@ -727,8 +748,7 @@ def clientThread(client):
                     
                 else:
                     client.send(f"{Fore.RED}Sorry, you do not have permissons for that.{Fore.RESET}".encode("utf8"))
-                    print(f"{user} tried to access a admin-only command! ({res[0]})")
-            
+                                
             
             # Match-Case-Pattern Commands
             match message:
