@@ -15,6 +15,7 @@ The introduction starts with v1.8.0, so the next version after v1.7.0.
 - Command to change nickname from other users [Admin]
 - Better logging of errors to console and log file
 - UTF-8 Only Protection
+- Read old news
 
 # Text things
 - Documentation
