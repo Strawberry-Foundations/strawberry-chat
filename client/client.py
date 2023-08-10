@@ -15,9 +15,11 @@ with open("config.yml") as config:
         data = yaml.load(config, Loader=SafeLoader)
         
 lang = data['language']
+langs = ["de_DE", "en_US"]
 
 with open("lang.yml", encoding="utf-8") as langStrings:
         Str = yaml.load(langStrings, Loader=SafeLoader)
+
 
 # Color Variables
 class Colors:
@@ -25,6 +27,12 @@ class Colors:
     UNDERLINE = '\033[4m'
     RESET = '\033[0m'
     GRAY = "\033[90m"
+
+if lang not in langs:
+    print(f"{Fore.RED + Colors.BOLD}Error loading selected language is not available.")
+    print(f"{Fore.YELLOW + Colors.BOLD}Falling back to en_US\n")
+    time.sleep(1)
+    lang = "en_US"
     
 ver = "2.1.2_beta"
 useSysArgv = False
