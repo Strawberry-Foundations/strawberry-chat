@@ -35,6 +35,7 @@ if lang not in langs:
     lang = "en_US"
     
 ver = "2.1.3_beta"
+author = "Juliandev02"
 useSysArgv = False
 
 def isVerified(index):
