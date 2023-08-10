@@ -34,7 +34,7 @@ if lang not in langs:
     time.sleep(1)
     lang = "en_US"
     
-ver = "2.1.2_beta"
+ver = "2.1.3_beta"
 useSysArgv = False
 
 def isVerified(index):
