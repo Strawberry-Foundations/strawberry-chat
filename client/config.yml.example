@@ -1,4 +1,4 @@
-language: de
+language: en_US
 server:
   0: 
     name: chat.strawberrysoftware.xyz
