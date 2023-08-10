@@ -136,6 +136,7 @@ def send(sock):
         
         else:
             print(f"{Fore.GREEN + Colors.BOLD}{Str[lang]['AutologinNotActive']}{Fore.RESET + Colors.RESET}\n")
+            
     elif server_selection == custom_server_sel:
         print(f"{Fore.YELLOW + Colors.BOLD}{Str[lang]['Warning']}: {Str[lang]['AutologinNotAvailable']}{Fore.RESET + Colors.RESET}\n")
         
@@ -163,6 +164,7 @@ def receive(sock):
     while threadFlag:
         try:
             message = sock.recv(2048).decode()
+            
             if message:
                 print("[{}] {}".format(currentTime(), message))
             else:
@@ -180,18 +182,20 @@ def main():
     socketType = socket.SOCK_STREAM
     clientSocket = socket.socket(socketFamily, socketType)
     
-    # Connects to the server
     try: 
         print(f"{Fore.YELLOW + Colors.BOLD}{Str[lang]['TryConnection']}{Fore.RESET + Colors.RESET}")
         clientSocket.connect((host, port))
+        
     except: 
         print(f"{Fore.RED + Colors.BOLD}{Str[lang]['ErrNotReachable']}{Fore.RESET + Colors.RESET}")
         sys.exit(1)
     
     if useSysArgv == True:
         pass
+    
     elif server_selection == custom_server_sel:
         print(f"{Fore.GREEN + Colors.BOLD}{Str[lang]['ConnectedToServer'] % host}{Fore.RESET + Colors.RESET}")
+        
     else:
         print(f"{Fore.GREEN + Colors.BOLD}{Str[lang]['ConnectedToServer'] % data['server'][(int(server_selection) - 1)]['name']}{Fore.RESET + Colors.RESET}")
         
@@ -204,6 +208,7 @@ def main():
     try:
         while receivingThread.is_alive() and sendingThread.is_alive():
             continue
+        
     except KeyboardInterrupt:
         print(f"\n{Str[lang]['Aborted']}")
         threadFlag = False
@@ -214,7 +219,6 @@ def main():
     clientSocket.close()
     print(f"\n{Str[lang]['CloseApplication']}")
     
-
 
 threadFlag = True
 
