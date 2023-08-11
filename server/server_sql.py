@@ -12,11 +12,14 @@ import time
 import errno
 import random
 
+# Path of server.py
+server_dir = os.path.dirname(os.path.realpath(__file__))
+
 # Connect to the database
-db = sql.connect('./users.db', check_same_thread=False)
+db = sql.connect(server_dir + "/users.db", check_same_thread=False)
 c = db.cursor()
 
-with open("./config.json", "r") as f:
+with open(server_dir + "/config.json", "r") as f:
     config = json.load(f)
 
 # Configuration
@@ -38,7 +41,7 @@ afks = list([])
 
 # Blacklised words set
 blacklist = set()
-with open("blacklist.txt", "r") as f:
+with open(server_dir + "/blacklist.txt", "r") as f:
     for word in f:
         word = word.strip().lower()
         blacklist.add(word)

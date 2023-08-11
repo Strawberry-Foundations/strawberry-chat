@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import os
 import socket
 import sys
 import colorama
@@ -10,14 +11,17 @@ import yaml
 from yaml import SafeLoader
 import time
 
+# Path of client.py
+client_dir = os.path.dirname(os.path.realpath(__file__))
+
 # Open Configuration
-with open("config.yml") as config:
+with open(client_dir + "/config.yml") as config:
         data = yaml.load(config, Loader=SafeLoader)
-        
+
 lang = data['language']
 langs = ["de_DE", "en_US"]
 
-with open("lang.yml", encoding="utf-8") as langStrings:
+with open(client_dir + "/lang.yml", encoding="utf-8") as langStrings:
         Str = yaml.load(langStrings, Loader=SafeLoader)
 
 
