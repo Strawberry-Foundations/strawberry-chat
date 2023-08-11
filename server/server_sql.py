@@ -16,7 +16,7 @@ import random
 server_dir = os.path.dirname(os.path.realpath(__file__))
 
 # Connect to the database
-db = sql.connect(server_dir + '/users.db', check_same_thread=False)
+db = sql.connect(server_dir + "/users.db", check_same_thread=False)
 c = db.cursor()
 
 with open(server_dir + "/config.json", "r") as f:
