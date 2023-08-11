@@ -38,7 +38,7 @@ if lang not in langs:
     time.sleep(1)
     lang = "en_US"
     
-ver = "2.1.3_beta"
+ver = "2.1.4_beta"
 author = "Juliandev02"
 useSysArgv = False
 
