@@ -56,7 +56,7 @@ def create_empty_file(filename):
 if exists(server_dir + "/blacklist.txt"):
     open_blacklist()
 else:
-    create_empty_file("blacklist")
+    create_empty_file("blacklist.txt")
     open_blacklist()
 
 
