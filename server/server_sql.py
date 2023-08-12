@@ -43,7 +43,7 @@ afks = list([])
 # Blacklisted word functions
 def open_blacklist():
     blacklist = set()
-        with open(server_dir + "/blacklist.txt", "r") as f:
+    with open(server_dir + "/blacklist.txt", "r") as f:
         for word in f:
             word = word.strip().lower()
             blacklist.add(word)    
