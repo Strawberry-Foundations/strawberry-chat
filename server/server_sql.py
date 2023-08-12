@@ -2,8 +2,7 @@
 
 import logging
 import atexit
-from colorama import Style
-from colorama import Fore as C
+from colorama import Fore, Style
 import socket
 import threading
 import json
@@ -16,16 +15,37 @@ import time
 import errno
 import random
 
+
+# Alias for colorama colors
+BLACK           = Fore.BLACK
+RED             = Fore.RED
+GREEN           = Fore.GREEN
+YELLOW          = Fore.YELLOW
+BLUE            = Fore.BLUE
+MAGENTA         = Fore.MAGENTA
+CYAN            = Fore.CYAN
+WHITE           = Fore.WHITE
+RESET           = Fore.RESET
+
+LIGHTBLACK_EX   = Fore.LIGHTBLACK_EX
+LIGHTRED_EX     = Fore.LIGHTRED_EX
+LIGHTGREEN_EX   = Fore.LIGHTGREEN_EX
+LIGHTYELLOW_EX  = Fore.LIGHTYELLOW_EX
+LIGHTBLUE_EX    = Fore.LIGHTBLUE_EX
+LIGHTMAGENTA_EX = Fore.LIGHTMAGENTA_EX
+LIGHTCYAN_EX    = Fore.LIGHTCYAN_EX
+LIGHTWHITE_EX   = Fore.LIGHTWHITE_EX
+
 # Init logger
 class LogFormatter(logging.Formatter):
     format = "[%(asctime)s] [%(levelname)s] %(message)s"
 
     FORMATS = {
-        logging.DEBUG: C.LIGHTWHITE_EX + format + Style.RESET_ALL,
-        logging.INFO: C.BLUE + format + Style.RESET_ALL,
-        logging.WARNING: C.YELLOW + format + Style.RESET_ALL,
-        logging.ERROR: C.LIGHTRED_EX + format + Style.RESET_ALL,
-        logging.CRITICAL: C.RED + format + Style.RESET_ALL
+        logging.DEBUG: LIGHTWHITE_EX + format + Style.RESET_ALL,
+        logging.INFO: BLUE + format + Style.RESET_ALL,
+        logging.WARNING: YELLOW + format + Style.RESET_ALL,
+        logging.ERROR: LIGHTRED_EX + format + Style.RESET_ALL,
+        logging.CRITICAL: RED + format + Style.RESET_ALL
     }
 
     def format(self, record):
@@ -141,63 +161,63 @@ def userRoleColor(uname):
     if color[0] is not None: 
         match color[0]:
             case "red": 
-                return C.RED + Colors.BOLD
+                return RED + Colors.BOLD
             
             case "green": 
-                return C.GREEN + Colors.BOLD
+                return GREEN + Colors.BOLD
                 
             case "cyan": 
-                return C.CYAN + Colors.BOLD
+                return CYAN + Colors.BOLD
             
             case "blue": 
-                return C.BLUE
+                return BLUE
 
             case "yellow": 
-                return C.YELLOW
+                return YELLOW
                 
             case "magenta": 
-                return C.MAGENTA
+                return MAGENTA
             
             case "lightred":
-                return C.LIGHTRED_EX
+                return LIGHTRED_EX
             
             case "lightgreen":
-                return C.LIGHTGREEN_EX
+                return LIGHTGREEN_EX
             
             case "lightcyan":
-                return C.LIGHTCYAN_EX
+                return LIGHTCYAN_EX
             
             case "lightblue":
-                return C.LIGHTBLUE_EX
+                return LIGHTBLUE_EX
 
             case "lightyellow":
-                return C.LIGHTYELLOW_EX
+                return LIGHTYELLOW_EX
 
             case "lightmagenta":
-                return C.LIGHTMAGENTA_EX
+                return LIGHTMAGENTA_EX
             
             case "boldred":
-                return Colors.BOLD + C.RED
+                return Colors.BOLD + RED
 
             case "boldgreen":
-                return Colors.BOLD + C.GREEN
+                return Colors.BOLD + GREEN
             
             case "boldcyan":
-                return Colors.BOLD + C.CYAN
+                return Colors.BOLD + CYAN
             
             case "boldblue":
-                return Colors.BOLD + C.BLUE
+                return Colors.BOLD + BLUE
             
             case "boldyellow":
-                return Colors.BOLD + C.YELLOW
+                return Colors.BOLD + YELLOW
             
             case "boldmagenta":
-                return Colors.BOLD + C.MAGENTA
+                return Colors.BOLD + MAGENTA
             
             case _:
-                return C.RESET
+                return RESET
     else: 
-        return C.RESET
+        return RESET
 
 def isMuted(uname):
     c = db.cursor()
@@ -229,7 +249,7 @@ def sqlError(errorMessage):
     log.error(f"e096: An SQL Error occured: {errorMessage}")
     
 # News
-news = f"""{C.GREEN +  Colors.UNDERLINE + Colors.BOLD}{chat_name} News - v1.7.0 Beta{C.RESET + Colors.RESET}{C.CYAN + Colors.BOLD}
+news = f"""{GREEN +  Colors.UNDERLINE + Colors.BOLD}{chat_name} News - v1.7.0 Beta{RESET + Colors.RESET}{CYAN + Colors.BOLD}
         - COMMUNITY: New custom client by matteodev8: superchrgd ⚡ (Currently in development)
         - NEW: Bots are here!
                You can now create and program your own bots - so
@@ -245,7 +265,7 @@ news = f"""{C.GREEN +  Colors.UNDERLINE + Colors.BOLD}{chat_name} News - v1.7.0 
         - NEW: User info command
         - NEW: New welcome message with chat color support
         - ADMIN: Broadcast Command, Mute Command, Role set/get/color Command, Bwords set/get/add/reload Command and Ban Command
-        - FIX: Fixed many many bugs{C.RESET + Colors.RESET}"""
+        - FIX: Fixed many many bugs{RESET + Colors.RESET}"""
 
 
 
@@ -284,7 +304,7 @@ def clientThread(client):
     users[client] = user
 
     try:
-        client.send(f"{C.CYAN + Colors.BOLD}Welcome back {user}! Nice to see you!{C.RESET + Colors.RESET}".encode("utf8"))
+        client.send(f"{CYAN + Colors.BOLD}Welcome back {user}! Nice to see you!{RESET + Colors.RESET}".encode("utf8"))
         onlineUsersLen = len([user for user in sorted(users.values())])
         
         if onlineUsersLen == 1:
@@ -293,7 +313,7 @@ def clientThread(client):
             onlineUsersStr = f"are {onlineUsersLen} users"
             
         time.sleep(0.05)
-        client.send(f"""{C.CYAN + Colors.BOLD}Currently there {onlineUsersStr} online. For help use /help{C.RESET + Colors.RESET}\n{news}""".encode("utf8"))
+        client.send(f"""{CYAN + Colors.BOLD}Currently there {onlineUsersStr} online. For help use /help{RESET + Colors.RESET}\n{news}""".encode("utf8"))
         
 
     except Exception as e:
@@ -306,7 +326,7 @@ def clientThread(client):
         return
     
     time.sleep(0.1)
-    broadcast(f"{Colors.GRAY + Colors.BOLD}-->{Colors.RESET} {userRoleColor(user)}{user}{C.GREEN + Colors.BOLD} has joined the chat room!{C.RESET + Colors.RESET}")
+    broadcast(f"{Colors.GRAY + Colors.BOLD}-->{Colors.RESET} {userRoleColor(user)}{user}{GREEN + Colors.BOLD} has joined the chat room!{RESET + Colors.RESET}")
 
     while True:
         try:
@@ -317,16 +337,16 @@ def clientThread(client):
             rnd = random.randint(0, 3)    
             if message_length > max_message_length:
                 if rnd == 0:
-                    client.send(f"{C.YELLOW + Colors.BOLD}Your message is too long.{C.RESET + Colors.RESET}".encode("utf8"))
+                    client.send(f"{YELLOW + Colors.BOLD}Your message is too long.{RESET + Colors.RESET}".encode("utf8"))
                     
                 elif rnd == 1:
-                    client.send(f"{C.YELLOW + Colors.BOLD}boah digga halbe bibel wer liest sich das durch{C.RESET + Colors.RESET}".encode("utf8"))
+                    client.send(f"{YELLOW + Colors.BOLD}boah digga halbe bibel wer liest sich das durch{RESET + Colors.RESET}".encode("utf8"))
                     
                 elif rnd == 2:
-                    client.send(f"{C.YELLOW + Colors.BOLD}junge niemand will sich hier die herr der ringe trilogie durchlesen{C.RESET + Colors.RESET}".encode("utf8"))
+                    client.send(f"{YELLOW + Colors.BOLD}junge niemand will sich hier die herr der ringe trilogie durchlesen{RESET + Colors.RESET}".encode("utf8"))
                     
                 elif rnd == 3:
-                    client.send(f"{C.YELLOW + Colors.BOLD}ne digga das liest sich doch keiner durch grundgesetz einfach. mach dich ab{C.RESET + Colors.RESET}".encode("utf8"))
+                    client.send(f"{YELLOW + Colors.BOLD}ne digga das liest sich doch keiner durch grundgesetz einfach. mach dich ab{RESET + Colors.RESET}".encode("utf8"))
                     client.close()
                 continue
 
@@ -345,7 +365,7 @@ def clientThread(client):
                     word = word.lower()
                     
                     if word in blacklist:
-                        client.send(f"{C.YELLOW + Colors.BOLD}Please be friendlier in the chat. Rejoin when you feel ready!{C.RESET + Colors.RESET}".encode("utf8"))
+                        client.send(f"{YELLOW + Colors.BOLD}Please be friendlier in the chat. Rejoin when you feel ready!{RESET + Colors.RESET}".encode("utf8"))
                         client.close()
                         
                     else:
@@ -374,14 +394,14 @@ def clientThread(client):
                         text = message.replace("/rawsay ", "")
                     
                     if message == "/broadcast " or message == "/rawsay ":
-                        client.send(f"{C.RED + Colors.BOLD}Wrong usage{C.RESET + Colors.RESET}".encode("utf8"))
+                        client.send(f"{RED + Colors.BOLD}Wrong usage{RESET + Colors.RESET}".encode("utf8"))
                         continue
                     
                     broadcast(f"{text}")
                     continue
                     
                 else:
-                    client.send(f"{C.RED}Sorry, you do not have permissons for that.{C.RESET}".encode("utf8"))
+                    client.send(f"{RED}Sorry, you do not have permissons for that.{RESET}".encode("utf8"))
                     continue
             
     
@@ -397,13 +417,13 @@ def clientThread(client):
                     c.execute("UPDATE users SET nickname = NULL WHERE username = ?", (user,))
                     db.commit()
                     
-                    client.send(f"{C.LIGHTGREEN_EX + Colors.BOLD}Removed nickname{C.RESET + Colors.RESET}".encode("utf8"))
+                    client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Removed nickname{RESET + Colors.RESET}".encode("utf8"))
                     continue
                     
                 c.execute("UPDATE users SET nickname = ? WHERE username = ?", (nick, user))
                 db.commit()
                 
-                client.send(f"{C.LIGHTGREEN_EX + Colors.BOLD}Changed nickname to {C.RESET + userRoleColor(user)}{nick}{C.RESET + Colors.RESET}".encode("utf8"))
+                client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Changed nickname to {RESET + userRoleColor(user)}{nick}{RESET + Colors.RESET}".encode("utf8"))
                 continue
             
             
@@ -425,7 +445,7 @@ def clientThread(client):
                     c.execute("SELECT username, nickname, badge, role, role_color, description, badges, discord_name FROM users WHERE username = ?", (uname,))
                     
                 except:
-                    client.send(f"{C.RED + Colors.BOLD}User not found.{C.RESET + Colors.RESET}".encode("utf8"))
+                    client.send(f"{RED + Colors.BOLD}User not found.{RESET + Colors.RESET}".encode("utf8"))
                     continue
                 
                 for row in c:
@@ -450,7 +470,7 @@ def clientThread(client):
                         description = "Not set"
                         
                     if row[7] is not None:
-                        discord = C.MAGENTA + "@" + row[7]
+                        discord = MAGENTA + "@" + row[7]
                     else:
                         discord = "Not set"
                         
@@ -499,15 +519,15 @@ def clientThread(client):
                         
                         
                     client.send(
-                        f"""{C.CYAN + Colors.BOLD + Colors.UNDERLINE}User information about {row[0]}{C.RESET + Colors.RESET}
-        {C.GREEN + Colors.BOLD}Username:{C.RESET + userRoleColor(row[0])} {row[0]}{C.RESET + Colors.RESET}
-        {C.GREEN + Colors.BOLD}Nickname:{C.RESET + Colors.BOLD} {nickname}{C.RESET + Colors.RESET}
-        {C.GREEN + Colors.BOLD}Description:{C.RESET + Colors.BOLD} {description}{C.RESET + Colors.RESET}
-        {C.GREEN + Colors.BOLD}Main Badge:{C.RESET + Colors.BOLD} {badge}{C.RESET + Colors.RESET}
-        {C.GREEN + Colors.BOLD}Badges: {row[6]}{C.RESET + Colors.BOLD}{C.RESET + Colors.RESET}{Colors.BOLD}{all_badges}{Colors.RESET}
-        {C.GREEN + Colors.BOLD}Role:{C.RESET + Colors.BOLD} {role}{C.RESET + Colors.RESET}
-        {C.GREEN + Colors.BOLD}Role Color:{C.RESET + Colors.BOLD} {userRoleColor(row[0])}{row[4]}{C.RESET + Colors.RESET}
-        {C.GREEN + Colors.BOLD}Discord:{C.RESET + Colors.BOLD} {discord}{C.RESET + Colors.RESET}"""
+                        f"""{CYAN + Colors.BOLD + Colors.UNDERLINE}User information about {row[0]}{RESET + Colors.RESET}
+        {GREEN + Colors.BOLD}Username:{RESET + userRoleColor(row[0])} {row[0]}{RESET + Colors.RESET}
+        {GREEN + Colors.BOLD}Nickname:{RESET + Colors.BOLD} {nickname}{RESET + Colors.RESET}
+        {GREEN + Colors.BOLD}Description:{RESET + Colors.BOLD} {description}{RESET + Colors.RESET}
+        {GREEN + Colors.BOLD}Main Badge:{RESET + Colors.BOLD} {badge}{RESET + Colors.RESET}
+        {GREEN + Colors.BOLD}Badges: {row[6]}{RESET + Colors.BOLD}{RESET + Colors.RESET}{Colors.BOLD}{all_badges}{Colors.RESET}
+        {GREEN + Colors.BOLD}Role:{RESET + Colors.BOLD} {role}{RESET + Colors.RESET}
+        {GREEN + Colors.BOLD}Role Color:{RESET + Colors.BOLD} {userRoleColor(row[0])}{row[4]}{RESET + Colors.RESET}
+        {GREEN + Colors.BOLD}Discord:{RESET + Colors.BOLD} {discord}{RESET + Colors.RESET}"""
                         .encode("utf8"))
                 continue
                 
@@ -528,11 +548,11 @@ def clientThread(client):
                     c.execute("UPDATE users SET muted = 'true' WHERE username = ?", (uname,))
                     db.commit()
                     
-                    client.send(f"{C.LIGHTGREEN_EX + Colors.BOLD}Muted {uname}{C.RESET + Colors.RESET}".encode("utf8"))
+                    client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Muted {uname}{RESET + Colors.RESET}".encode("utf8"))
                     continue
                     
                 else:
-                    client.send(f"{C.RED}Sorry, you do not have permissons for that.{C.RESET}".encode("utf8"))
+                    client.send(f"{RED}Sorry, you do not have permissons for that.{RESET}".encode("utf8"))
                     
                     
             # /unmute Command
@@ -551,11 +571,11 @@ def clientThread(client):
                     c.execute("UPDATE users SET muted = 'false' WHERE username = ?", (uname,))
                     db.commit()
                     
-                    client.send(f"{C.LIGHTGREEN_EX + Colors.BOLD}Unmuted {uname}{C.RESET + Colors.RESET}".encode("utf8"))
+                    client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Unmuted {uname}{RESET + Colors.RESET}".encode("utf8"))
                     continue
                     
                 else:
-                    client.send(f"{C.RED}Sorry, you do not have permissons for that.{C.RESET}".encode("utf8"))
+                    client.send(f"{RED}Sorry, you do not have permissons for that.{RESET}".encode("utf8"))
             
             
             # /discord Command
@@ -566,13 +586,13 @@ def clientThread(client):
                     c.execute("UPDATE users SET discord_name = NULL WHERE username = ?", (user,))
                     db.commit()
                     
-                    client.send(f"{C.LIGHTGREEN_EX + Colors.BOLD}Removed Discord Link{C.RESET + Colors.RESET}".encode("utf8"))
+                    client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Removed Discord Link{RESET + Colors.RESET}".encode("utf8"))
                     continue
                 
                 c.execute("UPDATE users SET discord_name = ? WHERE username = ?", (discord_name, user))
                 db.commit()
                 
-                client.send(f"{C.LIGHTGREEN_EX + Colors.BOLD}Changed Discord Link to {C.MAGENTA}{discord_name}{C.RESET + Colors.RESET}".encode("utf8"))
+                client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Changed Discord Link to {MAGENTA}{discord_name}{RESET + Colors.RESET}".encode("utf8"))
                 continue
 
             
@@ -584,20 +604,20 @@ def clientThread(client):
                     c.execute("UPDATE users SET description = NULL WHERE username = ?", (user,))
                     db.commit()
                     
-                    client.send(f"{C.LIGHTGREEN_EX + Colors.BOLD}Removed Description{C.RESET + Colors.RESET}".encode("utf8"))
+                    client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Removed Description{RESET + Colors.RESET}".encode("utf8"))
                     continue
                 
                 elif desc.lower() == "" or desc.lower() == " ":
                     c.execute("SELECT description FROM users WHERE username = ?", (user,))
                     desc = c.fetchone()[0]
                     
-                    client.send(f"{C.LIGHTGREEN_EX + Colors.BOLD}Your current description: {C.RESET}{desc}{Colors.RESET}".encode("utf8"))
+                    client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Your current description: {RESET}{desc}{Colors.RESET}".encode("utf8"))
                     continue
                 
                 c.execute("UPDATE users SET description = ? WHERE username = ?", (desc, user))
                 db.commit()
                 
-                client.send(f"{C.LIGHTGREEN_EX + Colors.BOLD}Changed Description to {C.CYAN}{desc}{C.RESET + Colors.RESET}".encode("utf8"))
+                client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Changed Description to {CYAN}{desc}{RESET + Colors.RESET}".encode("utf8"))
                 continue
 
         
@@ -617,11 +637,11 @@ def clientThread(client):
                     c.execute("UPDATE users SET accountEnabled = 'false' WHERE username = ?", (uname,))
                     db.commit()
                     
-                    client.send(f"{C.LIGHTGREEN_EX + Colors.BOLD}Banned {uname}{C.RESET + Colors.RESET}".encode("utf8"))
+                    client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Banned {uname}{RESET + Colors.RESET}".encode("utf8"))
                     continue
                     
                 else:
-                    client.send(f"{C.RED}Sorry, you do not have permissons for that.{C.RESET}".encode("utf8"))
+                    client.send(f"{RED}Sorry, you do not have permissons for that.{RESET}".encode("utf8"))
             
             
             # /unban Command
@@ -640,11 +660,11 @@ def clientThread(client):
                     c.execute("UPDATE users SET accountEnabled = 'true' WHERE username = ?", (uname,))
                     db.commit()
                     
-                    client.send(f"{C.LIGHTGREEN_EX + Colors.BOLD}Unbanned {uname}{C.RESET + Colors.RESET}".encode("utf8"))
+                    client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Unbanned {uname}{RESET + Colors.RESET}".encode("utf8"))
                     continue
                     
                 else:
-                    client.send(f"{C.RED}Sorry, you do not have permissons for that.{C.RESET}".encode("utf8"))
+                    client.send(f"{RED}Sorry, you do not have permissons for that.{RESET}".encode("utf8"))
             
             
             # /role Command
@@ -672,11 +692,11 @@ def clientThread(client):
                             c.execute("UPDATE users SET role = ? WHERE username = ?", (role, uname))
                             db.commit()
                             
-                            client.send(f"{C.LIGHTGREEN_EX + Colors.BOLD}Role of {uname} was set to {role}{C.RESET + Colors.RESET}".encode("utf8"))
+                            client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Role of {uname} was set to {role}{RESET + Colors.RESET}".encode("utf8"))
                             continue
                         
                         except:
-                            client.send(f"{C.RED + Colors.BOLD}Invalid username and/or role!{C.RESET + Colors.RESET}".encode("utf8"))
+                            client.send(f"{RED + Colors.BOLD}Invalid username and/or role!{RESET + Colors.RESET}".encode("utf8"))
                             continue
                     
                     # /role get Command
@@ -687,11 +707,11 @@ def clientThread(client):
                             c.execute("SELECT role FROM users WHERE username = ?", (uname,))
                             role = c.fetchone()[0]
                             
-                            client.send(f"{C.LIGHTGREEN_EX + Colors.BOLD}Role of {uname}: {C.MAGENTA}{role}{C.RESET + Colors.RESET}".encode("utf8"))
+                            client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Role of {uname}: {MAGENTA}{role}{RESET + Colors.RESET}".encode("utf8"))
                             continue
                         
                         except:
-                            client.send(f"{C.RED + Colors.BOLD}Invalid username!{C.RESET + Colors.RESET}".encode("utf8"))
+                            client.send(f"{RED + Colors.BOLD}Invalid username!{RESET + Colors.RESET}".encode("utf8"))
                             continue
                     
                     # /role color Command
@@ -703,19 +723,19 @@ def clientThread(client):
                             c.execute("UPDATE users SET role_color = ? WHERE username = ?", (color, uname))
                             db.commit()
                             
-                            client.send(f"{C.LIGHTGREEN_EX + Colors.BOLD}Role Color of {uname} was set to {color}{C.RESET + Colors.RESET}".encode("utf8"))
+                            client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Role Color of {uname} was set to {color}{RESET + Colors.RESET}".encode("utf8"))
                             continue
                     
                         except:
-                            client.send(f"{C.RED + Colors.BOLD}Invalid username and/or color!{C.RESET + Colors.RESET}".encode("utf8"))
+                            client.send(f"{RED + Colors.BOLD}Invalid username and/or color!{RESET + Colors.RESET}".encode("utf8"))
                             continue
                         
                     else:
-                        client.send(f"{C.RED + Colors.BOLD}Invalid command usage.{C.RESET + Colors.RESET}".encode("utf8"))
+                        client.send(f"{RED + Colors.BOLD}Invalid command usage.{RESET + Colors.RESET}".encode("utf8"))
                         continue
                     
                 else:
-                    client.send(f"{C.RED}Sorry, you do not have permissons for that.{C.RESET}".encode("utf8"))
+                    client.send(f"{RED}Sorry, you do not have permissons for that.{RESET}".encode("utf8"))
             
             
             # /bwords Command
@@ -744,19 +764,19 @@ def clientThread(client):
                             db.commit()
                         
                             if value == "true":
-                                client.send(f"{C.LIGHTGREEN_EX + Colors.BOLD}Enabled Blacklisted Words for {uname}{C.RESET + Colors.RESET}".encode("utf8"))
+                                client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Enabled Blacklisted Words for {uname}{RESET + Colors.RESET}".encode("utf8"))
                                 continue
                             
                             elif value == "false":
-                                client.send(f"{C.LIGHTGREEN_EX + Colors.BOLD}Disabled Blacklisted Words for {uname}{C.RESET + Colors.RESET}".encode("utf8"))
+                                client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Disabled Blacklisted Words for {uname}{RESET + Colors.RESET}".encode("utf8"))
                                 continue
                             
                             else:
-                                client.send(f"{C.RED + Colors.BOLD}Invalid value!{C.RESET + Colors.RESET}".encode("utf8"))
+                                client.send(f"{RED + Colors.BOLD}Invalid value!{RESET + Colors.RESET}".encode("utf8"))
                                 continue
                     
                         except:
-                            client.send(f"{C.RED + Colors.BOLD}Invalid username and/or value!{C.RESET + Colors.RESET}".encode("utf8"))
+                            client.send(f"{RED + Colors.BOLD}Invalid username and/or value!{RESET + Colors.RESET}".encode("utf8"))
                             continue
                         
                     # /bwords get
@@ -768,18 +788,18 @@ def clientThread(client):
                             value = c.fetchone()[0]
                             
                             if value == "true":
-                                client.send(f"{C.LIGHTGREEN_EX + Colors.BOLD}Blacklisted Words for {uname} are enabled{C.RESET + Colors.RESET}".encode("utf8"))
+                                client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Blacklisted Words for {uname} are enabled{RESET + Colors.RESET}".encode("utf8"))
                                 continue
                             
                             elif value == "false":
-                                client.send(f"{C.LIGHTGREEN_EX + Colors.BOLD}Blacklisted Words for {uname} are disabled{C.RESET + Colors.RESET}".encode("utf8"))
+                                client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Blacklisted Words for {uname} are disabled{RESET + Colors.RESET}".encode("utf8"))
                                 continue
                             
                             else:
-                                client.send(f"{C.RED + Colors.BOLD}Whoa! This should not happen...{C.RESET + Colors.RESET}".encode("utf8"))
+                                client.send(f"{RED + Colors.BOLD}Whoa! This should not happen...{RESET + Colors.RESET}".encode("utf8"))
                                 continue
                         except:
-                            client.send(f"{C.RED + Colors.BOLD}Invalid username{C.RESET + Colors.RESET}".encode("utf8"))
+                            client.send(f"{RED + Colors.BOLD}Invalid username{RESET + Colors.RESET}".encode("utf8"))
                             continue
                            
                     # /bwords add 
@@ -787,18 +807,18 @@ def clientThread(client):
                         try:
                             word = args[1]
                         except:
-                            client.send(f"{C.RED + Colors.BOLD}Cant add an empty word!{C.RESET + Colors.RESET}".encode("utf8"))
+                            client.send(f"{RED + Colors.BOLD}Cant add an empty word!{RESET + Colors.RESET}".encode("utf8"))
                             continue
                         
                         if word == "":
-                            client.send(f"{C.RED + Colors.BOLD}Cant add an empty word!{C.RESET + Colors.RESET}".encode("utf8"))
+                            client.send(f"{RED + Colors.BOLD}Cant add an empty word!{RESET + Colors.RESET}".encode("utf8"))
                             continue
                         
                         with open("blacklist.txt", "a") as f:
                             f.write("\n" + word)
                             f.close()
                         
-                        client.send(f"{C.LIGHTGREEN_EX + Colors.BOLD}Added '{word}' to the blacklist{C.RESET + Colors.RESET}".encode("utf8"))
+                        client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Added '{word}' to the blacklist{RESET + Colors.RESET}".encode("utf8"))
                         continue
                     
                     # /bwords reload
@@ -818,77 +838,77 @@ def clientThread(client):
                                     blacklist.add(word)
                             
                         else:
-                            client.send(f"{C.RED}Sorry, you do not have permissons for that.{C.RESET}".encode("utf8"))
+                            client.send(f"{RED}Sorry, you do not have permissons for that.{RESET}".encode("utf8"))
                             
                             
                     
                     else:
-                        client.send(f"{C.RED + Colors.BOLD}Invalid command usage.{C.RESET + Colors.RESET}".encode("utf8"))
+                        client.send(f"{RED + Colors.BOLD}Invalid command usage.{RESET + Colors.RESET}".encode("utf8"))
                         continue
                         
                     
                 else:
-                    client.send(f"{C.RED}Sorry, you do not have permissons for that.{C.RESET}".encode("utf8"))
+                    client.send(f"{RED}Sorry, you do not have permissons for that.{RESET}".encode("utf8"))
                                 
             
             # Match-Case-Pattern Commands
             match message:
                 # Quit / Exit Command
                 case "/quit" | "/exit":
-                    client.send(f"{C.YELLOW + Colors.BOLD}You left the chat!{C.RESET + Colors.RESET}".encode("utf8"))
+                    client.send(f"{YELLOW + Colors.BOLD}You left the chat!{RESET + Colors.RESET}".encode("utf8"))
                     del addresses[client]
                     del users[client]
                     client.close()
                     
                     log.info(f"[<] {address} ({user}) has left.")
-                    broadcast(f"{C.YELLOW + Colors.BOLD}<- {userRoleColor(user)}{user}{C.YELLOW + Colors.BOLD} has left the chat.{C.RESET + Colors.RESET}")
+                    broadcast(f"{YELLOW + Colors.BOLD}<- {userRoleColor(user)}{user}{YELLOW + Colors.BOLD} has left the chat.{RESET + Colors.RESET}")
                     break
 
 
                 # Help Command
                 case "/help":
-                    broadcast(f"\033[90m--> {Colors.RESET + Colors.BOLD}{userRoleColor(user)}{user}{C.RESET} uses /help{C.RESET + Colors.RESET}")
+                    broadcast(f"\033[90m--> {Colors.RESET + Colors.BOLD}{userRoleColor(user)}{user}{RESET} uses /help{RESET + Colors.RESET}")
                     client.send(
-                        f"""{C.GREEN +  Colors.UNDERLINE + Colors.BOLD}Default commands{C.RESET + Colors.RESET}
-        {C.BLUE + Colors.BOLD}/help: {C.RESET}Help Command
-        {C.BLUE + Colors.BOLD}/about: {C.RESET}About {chat_name}
-        {C.BLUE + Colors.BOLD}/news: {C.RESET}Newsletter{C.RESET + Colors.RESET}
-        {C.BLUE + Colors.BOLD}/exit, /quit: {C.RESET}Leave chat
-        {C.BLUE + Colors.BOLD}/clientinfo: {C.RESET}Get some information about you{C.RESET + Colors.RESET}
-        {C.BLUE + Colors.BOLD}/shrug: {C.RESET}¯\_(ツ)_/¯
-        {C.BLUE + Colors.BOLD}/tableflip: {C.RESET}(╯°□°)╯︵ ┻━┻
-        {C.BLUE + Colors.BOLD}/unflip: {C.RESET}┬─┬ノ( º _ ºノ){C.RESET + Colors.RESET}
+                        f"""{GREEN +  Colors.UNDERLINE + Colors.BOLD}Default commands{RESET + Colors.RESET}
+        {BLUE + Colors.BOLD}/help: {RESET}Help Command
+        {BLUE + Colors.BOLD}/about: {RESET}About {chat_name}
+        {BLUE + Colors.BOLD}/news: {RESET}Newsletter{RESET + Colors.RESET}
+        {BLUE + Colors.BOLD}/exit, /quit: {RESET}Leave chat
+        {BLUE + Colors.BOLD}/clientinfo: {RESET}Get some information about you{RESET + Colors.RESET}
+        {BLUE + Colors.BOLD}/shrug: {RESET}¯\_(ツ)_/¯
+        {BLUE + Colors.BOLD}/tableflip: {RESET}(╯°□°)╯︵ ┻━┻
+        {BLUE + Colors.BOLD}/unflip: {RESET}┬─┬ノ( º _ ºノ){RESET + Colors.RESET}
         """.encode("utf-8"))
                     
                     time.sleep(0.1)
                     client.send(
-                        f"""{C.CYAN + Colors.UNDERLINE + Colors.BOLD}Profile & User Commands{C.RESET + Colors.RESET}
-        {C.BLUE + Colors.BOLD}/online: {C.RESET}Shows online users
-        {C.BLUE + Colors.BOLD}/members, /users: {C.RESET}Shows registered users
-        {C.BLUE + Colors.BOLD}/userinfo, /user, /member <user>/me: {C.RESET}Shows information about the specified user
-        {C.BLUE + Colors.BOLD}/nick <nickname/remove>: {C.RESET}Changes nickname to <nickname> or removes it
-        {C.BLUE + Colors.BOLD}/description <desc>: {C.RESET}Set your user description{C.RESET + Colors.RESET}
-        {C.BLUE + Colors.BOLD}/discord <discord_uname>: {C.RESET}Set your discord username{C.RESET + Colors.RESET}
-        {C.BLUE + Colors.BOLD}/afk: {C.RESET}Toggle afk status
-        {C.BLUE + Colors.BOLD}/unafk: {C.RESET}Untoggle afk status
-        {C.BLUE + Colors.BOLD}/afks, /afklist: {C.RESET}Shows afk users
+                        f"""{CYAN + Colors.UNDERLINE + Colors.BOLD}Profile & User Commands{RESET + Colors.RESET}
+        {BLUE + Colors.BOLD}/online: {RESET}Shows online users
+        {BLUE + Colors.BOLD}/members, /users: {RESET}Shows registered users
+        {BLUE + Colors.BOLD}/userinfo, /user, /member <user>/me: {RESET}Shows information about the specified user
+        {BLUE + Colors.BOLD}/nick <nickname/remove>: {RESET}Changes nickname to <nickname> or removes it
+        {BLUE + Colors.BOLD}/description <desc>: {RESET}Set your user description{RESET + Colors.RESET}
+        {BLUE + Colors.BOLD}/discord <discord_uname>: {RESET}Set your discord username{RESET + Colors.RESET}
+        {BLUE + Colors.BOLD}/afk: {RESET}Toggle afk status
+        {BLUE + Colors.BOLD}/unafk: {RESET}Untoggle afk status
+        {BLUE + Colors.BOLD}/afks, /afklist: {RESET}Shows afk users
         """.encode("utf-8"))
                     
                     time.sleep(0.1)
                     client.send(
-                        f"""{C.MAGENTA +  Colors.UNDERLINE + Colors.BOLD}Admin commands{C.RESET + Colors.RESET}
-        {C.BLUE + Colors.BOLD}/ban <user>: {C.RESET}Bans the specificed user{C.RESET + Colors.RESET}
-        {C.BLUE + Colors.BOLD}/unban <user>: {C.RESET}Unbans the specificed user{C.RESET + Colors.RESET}        
-        {C.BLUE + Colors.BOLD}/mute <user>: {C.RESET}Mutes the specificed user{C.RESET + Colors.RESET}
-        {C.BLUE + Colors.BOLD}/unmute <user>: {C.RESET}Unmutes the specificed user{C.RESET + Colors.RESET}
-        {C.BLUE + Colors.BOLD}/broadcast <message>: {C.RESET}Broadcast a message{C.RESET + Colors.RESET}
-        {C.BLUE + Colors.BOLD}/role get/set <user> (<role>) [<color>]: {C.RESET}Gets or sets the role of a user{C.RESET + Colors.RESET}
-        {C.BLUE + Colors.BOLD}/role color <user> <color>: {C.RESET}Gets or sets the role of a user{C.RESET + Colors.RESET}
-        {C.BLUE + Colors.BOLD}/bwords set/get <user> (<true/false>): {C.RESET}Enable or disable whether a user should be affected by the bad words{C.RESET + Colors.RESET}
-        {C.BLUE + Colors.BOLD}/bwords reload: {C.RESET}Reloads all blacklisted words{C.RESET + Colors.RESET}
-        {C.BLUE + Colors.BOLD}/bwords add <word>: {C.RESET}Adds a blacklisted word{C.RESET + Colors.RESET}
-        {C.BLUE + Colors.BOLD}/debug: {C.RESET}View debug informations{C.RESET + Colors.RESET}
-        {C.BLUE + Colors.BOLD}/kickall: {C.RESET}Kick all users (Currently not working){C.RESET + Colors.RESET}
+                        f"""{MAGENTA +  Colors.UNDERLINE + Colors.BOLD}Admin commands{RESET + Colors.RESET}
+        {BLUE + Colors.BOLD}/ban <user>: {RESET}Bans the specificed user{RESET + Colors.RESET}
+        {BLUE + Colors.BOLD}/unban <user>: {RESET}Unbans the specificed user{RESET + Colors.RESET}        
+        {BLUE + Colors.BOLD}/mute <user>: {RESET}Mutes the specificed user{RESET + Colors.RESET}
+        {BLUE + Colors.BOLD}/unmute <user>: {RESET}Unmutes the specificed user{RESET + Colors.RESET}
+        {BLUE + Colors.BOLD}/broadcast <message>: {RESET}Broadcast a message{RESET + Colors.RESET}
+        {BLUE + Colors.BOLD}/role get/set <user> (<role>) [<color>]: {RESET}Gets or sets the role of a user{RESET + Colors.RESET}
+        {BLUE + Colors.BOLD}/role color <user> <color>: {RESET}Gets or sets the role of a user{RESET + Colors.RESET}
+        {BLUE + Colors.BOLD}/bwords set/get <user> (<true/false>): {RESET}Enable or disable whether a user should be affected by the bad words{RESET + Colors.RESET}
+        {BLUE + Colors.BOLD}/bwords reload: {RESET}Reloads all blacklisted words{RESET + Colors.RESET}
+        {BLUE + Colors.BOLD}/bwords add <word>: {RESET}Adds a blacklisted word{RESET + Colors.RESET}
+        {BLUE + Colors.BOLD}/debug: {RESET}View debug informations{RESET + Colors.RESET}
+        {BLUE + Colors.BOLD}/kickall: {RESET}Kick all users (Currently not working){RESET + Colors.RESET}
         """.encode("utf8"))
                     
                     
@@ -896,14 +916,14 @@ def clientThread(client):
                 case "/online":
                     onlineUsers = ', '.join([user for user in sorted(users.values())])
                     onlineUsersLen2 = len([user for user in sorted(users.values())])
-                    client.send(f"""{C.GREEN +  Colors.UNDERLINE + Colors.BOLD}Users who are currently online ({onlineUsersLen2}){C.RESET + Colors.RESET}
-        {Colors.BOLD}->{Colors.RESET} {C.CYAN}{onlineUsers}{C.RESET + Colors.RESET}""".encode("utf8"))
+                    client.send(f"""{GREEN +  Colors.UNDERLINE + Colors.BOLD}Users who are currently online ({onlineUsersLen2}){RESET + Colors.RESET}
+        {Colors.BOLD}->{Colors.RESET} {CYAN}{onlineUsers}{RESET + Colors.RESET}""".encode("utf8"))
                 
                 
                 # Afk Command
                 case "/afk":
                     if user in afks:
-                        client.send(f"{C.YELLOW + Colors.BOLD}You are already AFK!{C.RESET + Colors.RESET}".encode("utf8"))
+                        client.send(f"{YELLOW + Colors.BOLD}You are already AFK!{RESET + Colors.RESET}".encode("utf8"))
                         
                     else:
                         broadcast(f"{user} is now AFK 🌙..")
@@ -913,7 +933,7 @@ def clientThread(client):
                 # Unafk Comamnd
                 case "/unafk":
                     if user not in afks:
-                        client.send(f"{C.YELLOW + Colors.BOLD}You are not AFK!{C.RESET + Colors.RESET}".encode("utf8"))
+                        client.send(f"{YELLOW + Colors.BOLD}You are not AFK!{RESET + Colors.RESET}".encode("utf8"))
                     
                     else:
                         broadcast(f"{user} is no longer AFK 🌻!")
@@ -924,8 +944,8 @@ def clientThread(client):
                 case "/afks" | "/afklist":
                     afkUsers = ', '.join([afks for afks in sorted(afks)])
                     afkUsersLen = len([afks for afks in sorted(afks)])
-                    client.send(f"""{C.GREEN +  Colors.UNDERLINE + Colors.BOLD}Users who are currently Afk ({afkUsersLen}){C.RESET + Colors.RESET}
-        {Colors.BOLD}->{Colors.RESET} {C.CYAN}{afkUsers}{C.RESET}""".encode("utf8"))
+                    client.send(f"""{GREEN +  Colors.UNDERLINE + Colors.BOLD}Users who are currently Afk ({afkUsersLen}){RESET + Colors.RESET}
+        {Colors.BOLD}->{Colors.RESET} {CYAN}{afkUsers}{RESET}""".encode("utf8"))
                 
                 
                 # Debug Command
@@ -946,7 +966,7 @@ def clientThread(client):
         Users: {users}""".encode("utf8"))
                         
                     else:
-                        client.send(f"{C.RED}Sorry, you do not have permissons for that.{C.RESET}".encode("utf8"))
+                        client.send(f"{RED}Sorry, you do not have permissons for that.{RESET}".encode("utf8"))
                                 
                                                 
                 # Kickall Command
@@ -963,7 +983,7 @@ def clientThread(client):
                         cleanup()
                         
                     else:
-                        client.send(f"{C.RED}Sorry, you do not have permissons for that.{C.RESET}".encode("utf8"))
+                        client.send(f"{RED}Sorry, you do not have permissons for that.{RESET}".encode("utf8"))
                 
                 
                 # Shrug Command
@@ -984,10 +1004,10 @@ def clientThread(client):
                 # About Command
                 case "/about":
                     client.send(
-                        f"""{C.GREEN +  Colors.UNDERLINE + Colors.BOLD}About {chat_name}{C.RESET + Colors.RESET}
-        {C.BLUE + Colors.BOLD}Thank you for using {chat_name}!{C.RESET}
-        {C.BLUE + Colors.BOLD}Version: {C.RESET}{short_ver} {codename} ({server_edition})
-        {C.BLUE + Colors.BOLD}Author: {C.RESET}Juliandev02{C.RESET + Colors.RESET}"""
+                        f"""{GREEN +  Colors.UNDERLINE + Colors.BOLD}About {chat_name}{RESET + Colors.RESET}
+        {BLUE + Colors.BOLD}Thank you for using {chat_name}!{RESET}
+        {BLUE + Colors.BOLD}Version: {RESET}{short_ver} {codename} ({server_edition})
+        {BLUE + Colors.BOLD}Author: {RESET}Juliandev02{RESET + Colors.RESET}"""
         .encode("utf8"))
                     
                     
@@ -1012,38 +1032,38 @@ def clientThread(client):
                     membersLen = len([raw_members for raw_members in sorted(raw_members)])
                     members = ", ".join([result[0] for result in raw_members])
 
-                    client.send(f"""{C.CYAN +  Colors.UNDERLINE + Colors.BOLD}Members on this server ({membersLen}){C.RESET + Colors.RESET}
-        {Colors.BOLD}->{Colors.RESET} {C.CYAN}{members}{C.RESET}""".encode("utf8"))
+                    client.send(f"""{CYAN +  Colors.UNDERLINE + Colors.BOLD}Members on this server ({membersLen}){RESET + Colors.RESET}
+        {Colors.BOLD}->{Colors.RESET} {CYAN}{members}{RESET}""".encode("utf8"))
                 
                 
                 # Show Description Command
                 case "/description" | "/desc":
                     c.execute("SELECT description FROM users WHERE username = ?", (user,))
                     desc = c.fetchone()[0]
-                    client.send(f"{C.LIGHTGREEN_EX + Colors.BOLD}Your current description: {C.RESET}{desc}{Colors.RESET}".encode("utf8"))
+                    client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Your current description: {RESET}{desc}{Colors.RESET}".encode("utf8"))
                 
                 
                 # Delete Account Command
                 case "/deleteaccount":
-                    client.send(f"{C.YELLOW + Colors.BOLD}Are you sure you want to delete your user account? This action is irreversible!!{C.RESET + Colors.RESET}".encode("utf8"))
+                    client.send(f"{YELLOW + Colors.BOLD}Are you sure you want to delete your user account? This action is irreversible!!{RESET + Colors.RESET}".encode("utf8"))
                     confirmDelete1 = client.recv(2048).decode("utf8")
                     
                     if confirmDelete1.lower() == "yes":
-                        client.send(f"{C.YELLOW + Colors.BOLD}THIS IS YOUR VERY LAST WARNING! This action is irreversible!! ARE YOU SURE?{C.RESET + Colors.RESET}".encode("utf8"))
+                        client.send(f"{YELLOW + Colors.BOLD}THIS IS YOUR VERY LAST WARNING! This action is irreversible!! ARE YOU SURE?{RESET + Colors.RESET}".encode("utf8"))
                         confirmDelete2 = client.recv(2048).decode("utf8")
                         
                         if confirmDelete2.lower() == "yes":
-                            client.send(f"{C.YELLOW + Colors.BOLD}Enter your username to confirm the deletion of your account:{C.RESET + Colors.RESET}".encode("utf8"))
+                            client.send(f"{YELLOW + Colors.BOLD}Enter your username to confirm the deletion of your account:{RESET + Colors.RESET}".encode("utf8"))
                             confirmUsernameDelete = client.recv(2048).decode("utf8")
                             
                             if confirmUsernameDelete.lower() == user:
-                                client.send(f"{C.YELLOW + Colors.BOLD}Deleting your user account...{C.RESET + Colors.RESET}".encode("utf8"))
+                                client.send(f"{YELLOW + Colors.BOLD}Deleting your user account...{RESET + Colors.RESET}".encode("utf8"))
                                 
                                 try:
                                     cursor = db.cursor()
                                     cursor.execute("DELETE FROM users WHERE username = ?", (user,))
                                     db.commit()
-                                    client.send(f"{C.YELLOW + Colors.BOLD}Deleted{C.RESET + Colors.RESET}".encode("utf8"))
+                                    client.send(f"{YELLOW + Colors.BOLD}Deleted{RESET + Colors.RESET}".encode("utf8"))
                                     client.close()
                                     sys.exit(1)
                                     
@@ -1051,27 +1071,27 @@ def clientThread(client):
                                     log.error(e)
                                     
                             else: 
-                                client.send(f"{C.YELLOW + Colors.BOLD}Deletion of your account has been canceled...{C.RESET + Colors.RESET}".encode("utf8"))
+                                client.send(f"{YELLOW + Colors.BOLD}Deletion of your account has been canceled...{RESET + Colors.RESET}".encode("utf8"))
                         else:
-                            client.send(f"{C.YELLOW + Colors.BOLD}Deletion of your account has been canceled...{C.RESET + Colors.RESET}".encode("utf8"))
+                            client.send(f"{YELLOW + Colors.BOLD}Deletion of your account has been canceled...{RESET + Colors.RESET}".encode("utf8"))
                     else:
-                        client.send(f"{C.YELLOW + Colors.BOLD}Deletion of your account has been canceled...{C.RESET + Colors.RESET}".encode("utf8"))
+                        client.send(f"{YELLOW + Colors.BOLD}Deletion of your account has been canceled...{RESET + Colors.RESET}".encode("utf8"))
 
             
                 case "/":
-                    client.send(f"{C.GREEN + Colors.BOLD}Need help? Take a look at our help command! /help{C.RESET + Colors.RESET}".encode("utf8"))
+                    client.send(f"{GREEN + Colors.BOLD}Need help? Take a look at our help command! /help{RESET + Colors.RESET}".encode("utf8"))
                 
                 
                 case _:
                     
                     if user in afks:
-                        client.send(f"{C.RED}Sorry, you are AFK.{C.RESET}".encode("utf8"))
+                        client.send(f"{RED}Sorry, you are AFK.{RESET}".encode("utf8"))
                         
                     elif isMuted(user) == True:
-                        client.send(f"{C.RED + Colors.BOLD}Sorry, but you were muted by an administrator. Please contact him/her if you have done nothing wrong, or wait until you are unmuted.{C.RESET + Colors.RESET}".encode("utf8"))
+                        client.send(f"{RED + Colors.BOLD}Sorry, but you were muted by an administrator. Please contact him/her if you have done nothing wrong, or wait until you are unmuted.{RESET + Colors.RESET}".encode("utf8"))
                     
                     elif isAccountEnabled(user) == False:
-                        client.send(f"{C.RED + Colors.BOLD}Your account was disabled by an administrator.{C.RESET + Colors.RESET}".encode("utf8"))
+                        client.send(f"{RED + Colors.BOLD}Your account was disabled by an administrator.{RESET + Colors.RESET}".encode("utf8"))
                         
                     else:
                         if enable_messages == True:
@@ -1091,7 +1111,7 @@ def clientThread(client):
             del users[client]
             client.close()
             
-            broadcast(f"{C.YELLOW + Colors.BOLD}<- {userRoleColor(user)}{user}{C.YELLOW + Colors.BOLD} has left the chat.{C.RESET + Colors.RESET}")
+            broadcast(f"{YELLOW + Colors.BOLD}<- {userRoleColor(user)}{user}{YELLOW + Colors.BOLD} has left the chat.{RESET + Colors.RESET}")
             break
 
 
@@ -1100,10 +1120,10 @@ def clientLogin(client):
         global db
         global c
         
-        client.send(f"{C.MAGENTA + Colors.BOLD + Colors.UNDERLINE}Welcome!{C.RESET + Colors.RESET}\n        {Colors.BOLD}Register, to chat with us!{Colors.RESET}".encode("utf8"))
+        client.send(f"{MAGENTA + Colors.BOLD + Colors.UNDERLINE}Welcome!{RESET + Colors.RESET}\n        {Colors.BOLD}Register, to chat with us!{Colors.RESET}".encode("utf8"))
     
         time.sleep(0.05)
-        client.send(f"{C.GREEN + Colors.BOLD}Username: {C.RESET + Colors.RESET}".encode("utf8"))
+        client.send(f"{GREEN + Colors.BOLD}Username: {RESET + Colors.RESET}".encode("utf8"))
         registeredUsername = client.recv(2048).decode("utf8")
         
         if registeredUsername.lower() == "exit":
@@ -1114,7 +1134,7 @@ def clientLogin(client):
             uname = uname.lower()
             
             if uname in blacklist:
-                client.send(f"{C.YELLOW + Colors.BOLD}This username is not allowed{C.RESET + Colors.RESET}".encode("utf8"))    
+                client.send(f"{YELLOW + Colors.BOLD}This username is not allowed{RESET + Colors.RESET}".encode("utf8"))    
                 client.close()
                 sys.exit()
         try:
@@ -1125,7 +1145,7 @@ def clientLogin(client):
             
             
             if usedUsernames == usedUsernames:
-                client.send(f"{C.YELLOW + Colors.BOLD}This username is already in use!{C.RESET + Colors.RESET}".encode("utf8"))    
+                client.send(f"{YELLOW + Colors.BOLD}This username is already in use!{RESET + Colors.RESET}".encode("utf8"))    
                 register()
             
         except:
@@ -1133,36 +1153,36 @@ def clientLogin(client):
             
 
             
-        client.send(f"{C.GREEN + Colors.BOLD}Password: {C.RESET + Colors.RESET}".encode("utf8"))
+        client.send(f"{GREEN + Colors.BOLD}Password: {RESET + Colors.RESET}".encode("utf8"))
         registeredPassword = client.recv(2048).decode("utf8")
         
-        client.send(f"{C.GREEN + Colors.BOLD}Confirm Password: {C.RESET + Colors.RESET}".encode("utf8"))
+        client.send(f"{GREEN + Colors.BOLD}Confirm Password: {RESET + Colors.RESET}".encode("utf8"))
         confirmPassword = client.recv(2048).decode("utf8")
         
         if registeredPassword != confirmPassword:
-            client.send(f"{C.RED + Colors.BOLD}Passwords do not match{C.RESET + Colors.RESET}".encode("utf8"))
+            client.send(f"{RED + Colors.BOLD}Passwords do not match{RESET + Colors.RESET}".encode("utf8"))
             register()
         
-        client.send(f"{C.GREEN + Colors.BOLD}Role Color (Red, Green, Cyan, Blue, Yellow, Magenta): {C.RESET + Colors.RESET}".encode("utf8"))
+        client.send(f"{GREEN + Colors.BOLD}Role Color (Red, Green, Cyan, Blue, Yellow, Magenta): {RESET + Colors.RESET}".encode("utf8"))
         registeredRoleColor = client.recv(2048).decode("utf8")
 
-        client.send(f"{C.YELLOW + Colors.BOLD}Are you sure? Changing the username is currently not possible and requires a lot of time.{C.RESET + Colors.RESET}".encode("utf8"))
+        client.send(f"{YELLOW + Colors.BOLD}Are you sure? Changing the username is currently not possible and requires a lot of time.{RESET + Colors.RESET}".encode("utf8"))
         confirmUsername = client.recv(2048).decode("utf8")
         
         if confirmUsername == "yes":
-            client.send(f"{C.YELLOW + Colors.BOLD}Processing... {C.RESET + Colors.RESET}".encode("utf8"))
+            client.send(f"{YELLOW + Colors.BOLD}Processing... {RESET + Colors.RESET}".encode("utf8"))
             
             try:
                 db = sql.connect(server_dir + "/users.db", check_same_thread=False)
                 c = db.cursor()
                 
-                client.send(f"{C.GREEN + Colors.BOLD}Creating your User account... {C.RESET + Colors.RESET}".encode("utf8"))
+                client.send(f"{GREEN + Colors.BOLD}Creating your User account... {RESET + Colors.RESET}".encode("utf8"))
                 
                 c.execute('INSERT INTO users (username, password, badge, role, role_color, enableBlacklistedWords, accountEnabled, muted) VALUES (?, ?, "None", "member", ?, "true", "true", "false")', (registeredUsername, registeredPassword, registeredRoleColor.lower()))
                 db.commit()
                 db.close()
                 
-                client.send(f"{C.GREEN + Colors.BOLD}Created!{C.RESET + Colors.RESET}".encode("utf8"))
+                client.send(f"{GREEN + Colors.BOLD}Created!{RESET + Colors.RESET}".encode("utf8"))
                 client.close()
                 sys.exit(1)
                 
@@ -1170,17 +1190,17 @@ def clientLogin(client):
                 sqlError(e)
             
         else:
-            client.send(f"{C.RED + Colors.BOLD}Registration has been canceled. Start from the beginning...{C.RESET + Colors.RESET}".encode("utf8"))
+            client.send(f"{RED + Colors.BOLD}Registration has been canceled. Start from the beginning...{RESET + Colors.RESET}".encode("utf8"))
             time.sleep(0.5)
             register()
             
         
     client.send(f"{Colors.BOLD}Welcome to Strawberry Chat!{Colors.RESET}".encode("utf8"))
-    client.send(f"{Colors.BOLD}New here? Type '{C.MAGENTA}Register{C.RESET}' to register! You want to leave? Type '{C.MAGENTA}Exit{C.RESET}' {Colors.RESET}".encode("utf8"))
+    client.send(f"{Colors.BOLD}New here? Type '{MAGENTA}Register{RESET}' to register! You want to leave? Type '{MAGENTA}Exit{RESET}' {Colors.RESET}".encode("utf8"))
     client.send(f"".encode("utf8"))
     
     time.sleep(0.1)
-    client.send(f"{C.GREEN + Colors.BOLD}Username: {C.RESET + Colors.RESET}".encode("utf8"))
+    client.send(f"{GREEN + Colors.BOLD}Username: {RESET + Colors.RESET}".encode("utf8"))
     username = client.recv(2048).decode("utf8")
     
     if username.lower() == "register":
@@ -1192,7 +1212,7 @@ def clientLogin(client):
         
     time.sleep(0.01)
     
-    client.send(f"{C.GREEN + Colors.BOLD}Password: {C.RESET + Colors.RESET}".encode("utf8"))
+    client.send(f"{GREEN + Colors.BOLD}Password: {RESET + Colors.RESET}".encode("utf8"))
     password = client.recv(2048).decode("utf8")
 
     try: 
@@ -1224,12 +1244,12 @@ def clientLogin(client):
                 pass
 
             if enabled == "false":
-                client.send(f"{C.RED + Colors.BOLD}Your account was disabled by an administrator.{C.RESET + Colors.RESET}".encode("utf8"))
+                client.send(f"{RED + Colors.BOLD}Your account was disabled by an administrator.{RESET + Colors.RESET}".encode("utf8"))
                 client.recv(2048).decode("utf8")
                 client.close()
             
-            client.send(f"{C.RED + Colors.BOLD}Wrong username or password.{C.RESET + Colors.RESET}".encode("utf8"))
-            client.send(f"{C.GREEN + Colors.BOLD}Username: {C.RESET + Colors.RESET}".encode("utf8"))
+            client.send(f"{RED + Colors.BOLD}Wrong username or password.{RESET + Colors.RESET}".encode("utf8"))
+            client.send(f"{GREEN + Colors.BOLD}Username: {RESET + Colors.RESET}".encode("utf8"))
             username = client.recv(2048).decode("utf8")
             time.sleep(0.01)
             
@@ -1240,7 +1260,7 @@ def clientLogin(client):
                 client.close()
                 sys.exit()
             
-            client.send(f"{C.GREEN + Colors.BOLD}Password: {C.RESET + Colors.RESET}".encode("utf8"))
+            client.send(f"{GREEN + Colors.BOLD}Password: {RESET + Colors.RESET}".encode("utf8"))
             password = client.recv(2048).decode("utf8")
             time.sleep(0.01)
             
@@ -1277,63 +1297,63 @@ def broadcast(message, sentBy=""):
         if color[0] is not None: 
             match color[0]:
                 case "red": 
-                    return C.RED
+                    return RED
                 
                 case "green": 
-                    return C.GREEN
+                    return GREEN
                     
                 case "cyan": 
-                    return C.CYAN
+                    return CYAN
                 
                 case "blue": 
-                    return C.BLUE
+                    return BLUE
 
                 case "yellow": 
-                    return C.YELLOW
+                    return YELLOW
                  
                 case "magenta": 
-                    return C.MAGENTA
+                    return MAGENTA
                 
                 case "lightred":
-                    return C.LIGHTRED_EX
+                    return LIGHTRED_EX
                 
                 case "lightgreen":
-                    return C.LIGHTGREEN_EX
+                    return LIGHTGREEN_EX
                 
                 case "lightcyan":
-                    return C.LIGHTCYAN_EX
+                    return LIGHTCYAN_EX
                 
                 case "lightblue":
-                    return C.LIGHTBLUE_EX
+                    return LIGHTBLUE_EX
 
                 case "lightyellow":
-                    return C.LIGHTYELLOW_EX
+                    return LIGHTYELLOW_EX
 
                 case "lightmagenta":
-                    return C.LIGHTMAGENTA_EX
+                    return LIGHTMAGENTA_EX
                 
                 case "boldred":
-                    return Colors.BOLD + C.RED
+                    return Colors.BOLD + RED
 
                 case "boldgreen":
-                    return Colors.BOLD + C.GREEN
+                    return Colors.BOLD + GREEN
                 
                 case "boldcyan":
-                    return Colors.BOLD + C.CYAN
+                    return Colors.BOLD + CYAN
                 
                 case "boldblue":
-                    return Colors.BOLD + C.BLUE
+                    return Colors.BOLD + BLUE
                 
                 case "boldyellow":
-                    return Colors.BOLD + C.YELLOW
+                    return Colors.BOLD + YELLOW
                 
                 case "boldmagenta":
-                    return Colors.BOLD + C.MAGENTA
+                    return Colors.BOLD + MAGENTA
                 
                 case _:
-                    return C.RESET
+                    return RESET
         else: 
-            return C.RESET
+            return RESET
         
                 
         
@@ -1357,10 +1377,10 @@ def broadcast(message, sentBy=""):
                     log.error("Something went wrong while... doing something with the badges?: " + e)
                 
                 if hasNickname(sentBy) == True:
-                    user.send(f"{userRoleColor(sentBy)}{userNickname(sentBy)} (@{sentBy.lower()}){badge}{C.RESET + Colors.RESET}: {message}".encode("utf8"))
+                    user.send(f"{userRoleColor(sentBy)}{userNickname(sentBy)} (@{sentBy.lower()}){badge}{RESET + Colors.RESET}: {message}".encode("utf8"))
                     
                 else: 
-                    user.send(f"{userRoleColor(sentBy)}{sentBy}{badge}{C.RESET + Colors.RESET}: {message}".encode("utf8"))
+                    user.send(f"{userRoleColor(sentBy)}{sentBy}{badge}{RESET + Colors.RESET}: {message}".encode("utf8"))
                 
     except IOError as e:
         if e.errno == errno.EPIPE:
@@ -1379,7 +1399,7 @@ def cleanup():
     if len(addresses) != 0:
         for sock in addresses.keys():
             sock.close()
-    print(f"{C.YELLOW + Colors.BOLD}Runtime has stopped.{C.RESET + Colors.RESET}")
+    print(f"{YELLOW + Colors.BOLD}Runtime has stopped.{RESET + Colors.RESET}")
 
 
 def main():
@@ -1392,16 +1412,16 @@ def main():
         serverSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         serverSocket.bind((ipaddr, port))
         serverSocket.listen()
-        print(f"{C.GREEN + Colors.BOLD}* -- Server started -- *{C.RESET + Colors.RESET}")
-        print(f"{C.CYAN + Colors.BOLD}{chat_name} v{short_ver} {codename} ({server_edition}){C.RESET + Colors.RESET}")
+        print(f"{GREEN + Colors.BOLD}* -- Server started -- *{RESET + Colors.RESET}")
+        print(f"{CYAN + Colors.BOLD}{chat_name} v{short_ver} {codename} ({server_edition}){RESET + Colors.RESET}")
         
         if enable_messages == True:
-            print(f"{C.YELLOW + Colors.BOLD}[!] Enabled Flag {C.CYAN}'enable-messages'{C.RESET + Colors.RESET}")
+            print(f"{YELLOW + Colors.BOLD}[!] Enabled Flag {CYAN}'enable-messages'{RESET + Colors.RESET}")
         
         if debug_mode:
-            print(f"{C.YELLOW + Colors.BOLD}[!] Enabled debug mode for debugging{C.RESET + Colors.RESET}")
+            print(f"{YELLOW + Colors.BOLD}[!] Enabled debug mode for debugging{RESET + Colors.RESET}")
             
-        print(f"{C.YELLOW + Colors.BOLD}>>> {C.RESET}Server is running on {ipaddr}:{port}")
+        print(f"{YELLOW + Colors.BOLD}>>> {RESET}Server is running on {ipaddr}:{port}")
 
         connThread = threading.Thread(target=connectionThread, args=(serverSocket,))
         connThread.start()
