@@ -1370,7 +1370,7 @@ def cleanup():
     if len(addresses) != 0:
         for sock in addresses.keys():
             sock.close()
-    log.info(f"Runtime has stopped.")
+    print(f"{Fore.YELLOW + Colors.BOLD}Runtime has stopped.{Fore.RESET + Colors.RESET}")
 
 
 def main():
