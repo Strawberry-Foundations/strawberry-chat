@@ -15,7 +15,6 @@ import time
 import errno
 import random
 
-
 # Alias for colorama colors
 BLACK           = Fore.BLACK
 RED             = Fore.RED
