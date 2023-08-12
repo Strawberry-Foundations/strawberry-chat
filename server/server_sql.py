@@ -49,7 +49,6 @@ dbdir = server_dir + "/users.db"
 
 # Connect to the database
 db = sql.connect('users.db', check_same_thread=False)
-db.set_trace_callback(None)
 c = db.cursor()
 
 with open(server_dir + "/config.json", "r") as f:
