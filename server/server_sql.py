@@ -1371,7 +1371,8 @@ def main():
         serverSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         serverSocket.bind((ipaddr, port))
         serverSocket.listen()
-        log.info(f"Running {chat_name} on v{short_ver} \"{codename}\" ({server_edition})")
+        print(f"{Fore.GREEN + Colors.BOLD}* -- Server started -- *{Fore.RESET + Colors.RESET}")
+        print(f"{Fore.CYAN + Colors.BOLD}{chat_name} v{short_ver} {codename} ({server_edition}){Fore.RESET + Colors.RESET}")
         
         if enable_messages == True:
             log.info(f"Enabled Flag {Fore.CYAN}'enable-messages'{Fore.RESET}")
@@ -1379,7 +1380,7 @@ def main():
         if debug_mode:
             log.info("Enabled debug mode for debugging")
             
-        log.info(f"Server is running on {ipaddr}:{port}")
+        print(f"{Fore.YELLOW + Colors.BOLD}>>> {Fore.RESET}Server is running on {ipaddr}:{port}")
 
         connThread = threading.Thread(target=connectionThread, args=(serverSocket,))
         connThread.start()
