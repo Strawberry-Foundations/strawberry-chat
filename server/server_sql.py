@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
+
+import logging
 import atexit
-from colorama import Fore
+from colorama import Fore, Style
 import socket
 import threading
 import json
@@ -12,6 +14,34 @@ import sqlite3 as sql
 import time
 import errno
 import random
+
+# Init logger
+class LogFormatter(logging.Formatter):
+    format = "[%(asctime)s]  [%(levelname)s] %(message)s"
+
+    FORMATS = {
+        logging.DEBUG: Fore.LIGHTWHITE_EX + format + Style.RESET_ALL,
+        logging.INFO: Fore.BLUE + format + Style.RESET_ALL,
+        logging.WARNING: Fore.YELLOW + format + Style.RESET_ALL,
+        logging.ERROR: Fore.LIGHTRED_EX + format + Style.RESET_ALL,
+        logging.CRITICAL: Fore.RED + format + Style.RESET_ALL
+    }
+
+    def format(self, record):
+        log_fmt = self.FORMATS.get(record.levelno)
+        formatter = logging.Formatter(log_fmt)
+        return formatter.format(record)
+
+
+log = logging.getLogger("LOG")
+log.setLevel(logging.INFO)
+log_fh = logging.FileHandler('log.txt')
+log_fmt = logging.Formatter("%(asctime)s [%(levelname)s]  %(message)s")
+log_fh.setFormatter(log_fmt)
+log_ch = logging.StreamHandler()
+log_ch.setFormatter(LogFormatter())
+log.addHandler(log_ch)
+log.addHandler(log_fh)
 
 # Path of server.py
 server_dir = os.path.dirname(os.path.realpath(__file__))
@@ -71,13 +101,6 @@ class Time:
         date = datetime.date.today()
         formattedDate = date.strftime("%Y-%m-%d")
         return formattedDate
-
-class Logger:
-    def System(log_message):
-        os.system(f"echo '[{Time.currentDate()} {Time.currentTime()}] {log_message}' >> log.txt")
-        
-    def Message(log_message):
-        os.system(f"echo '[{Time.currentDate()} {Time.currentTime()}] {log_message}' >> messages.txt")
 
 class Colors:
     BOLD = '\033[1m'
@@ -197,16 +220,13 @@ def isAccountEnabled(uname):
     
 def debugLogger(errorMessage, errorCode):
     if debug_mode:
-        print(f"{Fore.YELLOW + Colors.BOLD}ErrCode {errorCode}: {Fore.RESET + Colors.RESET}{errorMessage}")
+        log.error(f"ErrCode {errorCode}: {errorMessage}")
     else:
         None
         
 def sqlError(errorMessage):
-    print(f"{Fore.RED + Colors.BOLD}e096: An SQL Error occured: {errorMessage}{Fore.RESET + Colors.RESET}")
+    log.error(f"e096: An SQL Error occured: {errorMessage}")
     
-
-Logger.System(f"Server started ({ver})")
-
 # News
 news = f"""{Fore.GREEN +  Colors.UNDERLINE + Colors.BOLD}{chat_name} News - v1.7.0 Beta{Fore.RESET + Colors.RESET}{Fore.CYAN + Colors.BOLD}
         - COMMUNITY: New custom client by matteodev8: superchrgd ⚡ (Currently in development)
@@ -234,13 +254,12 @@ def connectionThread(sock):
             client, address = sock.accept()
 
         except Exception as e:
-            print(f"[{Fore.RED}!{Fore.RESET}] An connection error occured!")
+            log.error("A connection error occured!")
             debugLogger(e, "001")
             
             break
         
-        print(f"[{Fore.GREEN}>{Fore.RESET}] {address[0]} has connected")
-        Logger.System(f"[>] {address[0]} has connected")
+        log.info(f"{address[0]} has connected")
         
         addresses[client] = address
         threading.Thread(target=clientThread, args=(client,)).start()
@@ -253,14 +272,13 @@ def clientThread(client):
         user = clientLogin(client)
             
     except Exception as e:
-        print(f"[{Fore.YELLOW}?{Fore.RESET}] An login error with {address} occured!")
+        log.error(f"A login error with {address} occured!")
         debugLogger(e, "002")
         
         del addresses[client]
         return
     
-    print(f"[{Fore.GREEN}+{Fore.RESET}] {user} ({address}) logged in")
-    Logger.System(f"[+] {user} ({address}) logged in")
+    log.info(f"{user} ({address}) logged in")
 
     users[client] = user
 
@@ -278,7 +296,7 @@ def clientThread(client):
         
 
     except Exception as e:
-        print(f"{Fore.YELLOW + Colors.BOLD}An Communication error with {address} ({user}) occurred.")
+        log.error(f"A Communication error with {address} ({user}) occurred.")
         debugLogger(e, "003")
         
         del addresses[client]
@@ -815,8 +833,7 @@ def clientThread(client):
                     del users[client]
                     client.close()
                     
-                    print(f"[{Fore.RED}<{Fore.RESET}] {address} ({user}) has left.")
-                    Logger.System(f"[<] {address} has left")
+                    log.info(f"[<] {address} ({user}) has left.")
                     broadcast(f"{Fore.YELLOW + Colors.BOLD}<- {userRoleColor(user)}{user}{Fore.YELLOW + Colors.BOLD} has left the chat.{Fore.RESET + Colors.RESET}")
                     break
 
@@ -1024,7 +1041,7 @@ def clientThread(client):
                                     sys.exit(1)
                                     
                                 except Exception as e:
-                                    print(e)
+                                    log.error(e)
                                     
                             else: 
                                 client.send(f"{Fore.YELLOW + Colors.BOLD}Deletion of your account has been canceled...{Fore.RESET + Colors.RESET}".encode("utf8"))
@@ -1051,20 +1068,17 @@ def clientThread(client):
                         
                     else:
                         if enable_messages == True:
-                            print(f"[{Time.currentDate()} {Time.currentTime()}] {address} ({user}): {message}")
+                            log.info(f"{user} ({address}): {message}")
                                 
-                        Logger.Message(f"{address} ({user}): {message}")
                         broadcast(message, user)
                 
             
                 
         except Exception as e:
-            print("[" + Fore.RED + "<" + Fore.RESET +
-                  "] {} ({}) has left.".format(address, user))
-            print(f"{Fore.RED + Colors.BOLD}An client-side error occurred.{Fore.RESET + Colors.RESET}")
+            log.error("A client-side error occurred.")
             
             debugLogger(e, "004")
-            Logger.System(f"[<] {address} has left")
+            log.info(f"[<] {user} ({address}) has left")
             
             del addresses[client]
             del users[client]
@@ -1132,7 +1146,7 @@ def clientLogin(client):
             client.send(f"{Fore.YELLOW + Colors.BOLD}Processing... {Fore.RESET + Colors.RESET}".encode("utf8"))
             
             try:
-                db = sql.connect('./users.db', check_same_thread=False)
+                db = sql.connect(server_dir + "/users.db", check_same_thread=False)
                 c = db.cursor()
                 
                 client.send(f"{Fore.GREEN + Colors.BOLD}Creating your User account... {Fore.RESET + Colors.RESET}".encode("utf8"))
@@ -1178,7 +1192,7 @@ def clientLogin(client):
         c.execute('SELECT * FROM users WHERE username = ? AND password = ? AND accountEnabled = ?', (username, password, "true"))
         
     except Exception as e:
-        print(f"{Fore.RED + Colors.BOLD}An login-error occurred.{Fore.RESET + Colors.RESET}")
+        log.error(f"A login-error occurred")
         debugLogger(e, "002")
         
     res = c.fetchall()
@@ -1227,7 +1241,7 @@ def clientLogin(client):
                 c.execute('SELECT * FROM users WHERE username = ? AND password = ? AND accountEnabled = ?', (username, password, "true"))
                 
             except Exception as e:
-                print(f"{Fore.RED + Colors.BOLD}An error occurred.{Fore.RESET + Colors.RESET}")
+                log.error(f"An error occurred.")
                 debugLogger(e, "100")
                 
             res = c.fetchall()
@@ -1333,7 +1347,7 @@ def broadcast(message, sentBy=""):
                         badge = ""
                         
                 except Exception as e:
-                    print("Something went wrong while ... doing something with the badges?: " + e)
+                    log.error("Something went wrong while... doing something with the badges?: " + e)
                 
                 if hasNickname(sentBy) == True:
                     user.send(f"{userRoleColor(sentBy)}{userNickname(sentBy)} (@{sentBy.lower()}){badge}{Fore.RESET + Colors.RESET}: {message}".encode("utf8"))
@@ -1343,11 +1357,11 @@ def broadcast(message, sentBy=""):
                 
     except IOError as e:
         if e.errno == errno.EPIPE:
-            print(f"{Fore.RED + Colors.BOLD}CRITICAL!!! Broken Pipe Error. You may need to restart your server!!!{Fore.RESET + Colors.RESET}\n{Fore.YELLOW + Colors.BOLD}DO NOT EXIT THE CHAT CLIENT WITH ^C!!!{Fore.RESET + Colors.RESET}")
+            log.critical(f"Broken Pipe Error. You may need to restart your server!! DO NOT EXIT THE CHAT CLIENT WITH ^C!!!")
             exit(1)
   
     except Exception as e:
-        print(f"{Fore.RED + Colors.BOLD}An broadcasting error occurred. Maybe this can help you: {Fore.RESET + Colors.RESET}{e}")
+        log.error(f"A broadcasting error occurred. Maybe this can help you: {e}")
         exit(1)
 
 
@@ -1356,7 +1370,7 @@ def cleanup():
     if len(addresses) != 0:
         for sock in addresses.keys():
             sock.close()
-    print(f"{Fore.YELLOW + Colors.BOLD}Runtime has stopped.{Fore.RESET + Colors.RESET}")
+    log.info(f"Runtime has stopped.")
 
 
 def main():
@@ -1373,10 +1387,10 @@ def main():
         print(f"{Fore.CYAN + Colors.BOLD}{chat_name} v{short_ver} {codename} ({server_edition}){Fore.RESET + Colors.RESET}")
         
         if enable_messages == True:
-            print(f"{Fore.YELLOW + Colors.BOLD}[!] Enabled Flag {Fore.CYAN}'enable-messages'{Fore.RESET + Colors.RESET}")
+            log.info(f"Enabled Flag {Fore.CYAN}'enable-messages'{Fore.RESET}")
         
         if debug_mode:
-            print(f"{Fore.YELLOW + Colors.BOLD}[!] Enabled debug mode for debugging{Fore.RESET + Colors.RESET}")
+            log.info("Enabled debug mode for debugging")
             
         print(f"{Fore.YELLOW + Colors.BOLD}>>> {Fore.RESET}Server is running on {ipaddr}:{port}")
 
@@ -1386,7 +1400,7 @@ def main():
 
         cleanup()
         serverSocket.close()
-        Logger.System("Server stopped")
+        log.info("Server stopped")
         print("Server has shut down.")
         
     except KeyboardInterrupt: 
