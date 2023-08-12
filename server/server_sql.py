@@ -17,7 +17,7 @@ import random
 
 # Init logger
 class LogFormatter(logging.Formatter):
-    format = "[%(asctime)s]  [%(levelname)s] %(message)s"
+    format = "[%(asctime)s] [%(levelname)s] %(message)s"
 
     FORMATS = {
         logging.DEBUG: Fore.LIGHTWHITE_EX + format + Style.RESET_ALL,
@@ -1387,10 +1387,10 @@ def main():
         print(f"{Fore.CYAN + Colors.BOLD}{chat_name} v{short_ver} {codename} ({server_edition}){Fore.RESET + Colors.RESET}")
         
         if enable_messages == True:
-            log.info(f"Enabled Flag {Fore.CYAN}'enable-messages'{Fore.RESET}")
+            print(f"{Fore.YELLOW + Colors.BOLD}[!] Enabled Flag {Fore.CYAN}'enable-messages'{Fore.RESET + Colors.RESET}")
         
         if debug_mode:
-            log.info("Enabled debug mode for debugging")
+            print(f"{Fore.YELLOW + Colors.BOLD}[!] Enabled debug mode for debugging{Fore.RESET + Colors.RESET}")
             
         print(f"{Fore.YELLOW + Colors.BOLD}>>> {Fore.RESET}Server is running on {ipaddr}:{port}")
 
