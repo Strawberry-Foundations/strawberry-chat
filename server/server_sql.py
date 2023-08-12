@@ -39,10 +39,10 @@ server_edition = "SQL Server"
 
 # Afk list
 afks = list([])
+blacklist = set()
 
 # Blacklisted word functions
 def open_blacklist():
-    blacklist = set()
     with open(server_dir + "/blacklist.txt", "r") as f:
         for word in f:
             word = word.strip().lower()
@@ -55,6 +55,7 @@ def create_empty_file(filename):
 # Blacklisted words set
 if exists(server_dir + "/blacklist.txt"):
     open_blacklist()
+    
 else:
     create_empty_file("blacklist.txt")
     open_blacklist()
