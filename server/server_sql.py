@@ -61,7 +61,7 @@ max_message_length = config["max_message_length"]
 debug_mode = config["debug_mode"]
 
 # Version-specified Variables 
-short_ver = "1.7.0_b3"
+short_ver = "1.7.0_b4"
 ver = short_ver + "-vc_sql"
 chat_name = "Strawberry Chat"
 codename = "Vanilla Cake"
@@ -373,7 +373,7 @@ def clientThread(client):
                         text = message.replace("/rawsay ", "")
                     
                     if message == "/broadcast " or message == "/rawsay ":
-                        client.send("Wrong usage".encode("utf8"))
+                        client.send(f"{Fore.RED + Colors.BOLD}Wrong usage{Fore.RESET + Colors.RESET}".encode("utf8"))
                         continue
                     
                     broadcast(f"{text}")
