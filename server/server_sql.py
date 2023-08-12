@@ -52,7 +52,7 @@ class LogFormatter(logging.Formatter):
         formatter = logging.Formatter(log_fmt)
         return formatter.format(record)
 
-    
+
 log = logging.getLogger("LOG")
 log.setLevel(logging.INFO)
 log_fh = logging.FileHandler('log.txt')
