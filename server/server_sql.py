@@ -354,7 +354,7 @@ def clientThread(client):
             global db
                     
             # /broadcast Command            
-            if message.startswith("/broadcast "):
+            if message.startswith("/broadcast ") or message.startswith("/rawsay "):
                 try: 
                     c.execute('SELECT role FROM users WHERE username = ?', (user,))
                     
@@ -364,13 +364,19 @@ def clientThread(client):
                 res = c.fetchone()
                 
                 if res[0] == "admin":
-                    text = message.replace("/broadcast ", "")
+                    cmd = message.replace("/broadcast ", "")
                     
-                    if text == "/broadcast ":
+                    if cmd.startswith("/broadcast "):
+                        cmd = message.replace("/broadcast ", "")
+                        
+                    elif cmd.startswith("/rawsay "):
+                        cmd = message.replace("/rawsay ", "")
+                    
+                    if message == "/broadcast " or message == "/rawsay ":
                         client.send("Wrong usage".encode("utf8"))
                         continue
                     
-                    broadcast(f"{text}")
+                    broadcast(f"{cmd}")
                     continue
                     
                 else:
