@@ -5,6 +5,7 @@ import socket
 import threading
 import json
 import os
+from os.path import exists
 import sys
 import datetime
 import sqlite3 as sql
@@ -39,12 +40,25 @@ server_edition = "SQL Server"
 # Afk list
 afks = list([])
 
-# Blacklised words set
-blacklist = set()
-with open(server_dir + "/blacklist.txt", "r") as f:
-    for word in f:
-        word = word.strip().lower()
-        blacklist.add(word)
+# Blacklisted word functions
+def open_blacklist():
+    blacklist = set()
+        with open(server_dir + "/blacklist.txt", "r") as f:
+        for word in f:
+            word = word.strip().lower()
+            blacklist.add(word)    
+
+def create_empty_file(filename):
+    with open(server_dir + "/" + filename, "w") as ef:
+        pass
+
+# Blacklisted words set
+if exists(server_dir + "/blacklist.txt"):
+    open_blacklist()
+else:
+    create_empty_file("blacklist")
+    open_blacklist()
+
 
 class Time:
     def currentTime():
