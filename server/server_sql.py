@@ -364,19 +364,19 @@ def clientThread(client):
                 res = c.fetchone()
                 
                 if res[0] == "admin":
-                    cmd = message.replace("/broadcast ", "")
+                    text = message.replace("/broadcast ", "")
                     
-                    if cmd.startswith("/broadcast "):
-                        cmd = message.replace("/broadcast ", "")
+                    if message.startswith("/broadcast "):
+                        text = message.replace("/broadcast ", "")
                         
-                    elif cmd.startswith("/rawsay "):
-                        cmd = message.replace("/rawsay ", "")
+                    elif message.startswith("/rawsay "):
+                        text = message.replace("/rawsay ", "")
                     
                     if message == "/broadcast " or message == "/rawsay ":
                         client.send("Wrong usage".encode("utf8"))
                         continue
                     
-                    broadcast(f"{cmd}")
+                    broadcast(f"{text}")
                     continue
                     
                 else:
