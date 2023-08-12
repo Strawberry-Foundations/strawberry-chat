@@ -212,9 +212,6 @@ def debugLogger(errorMessage, errorCode):
 def sqlError(errorMessage):
     log.error(f"e096: An SQL Error occured: {errorMessage}")
     
-
-log.info(f"Server started ({ver})")
-
 # News
 news = f"""{Fore.GREEN +  Colors.UNDERLINE + Colors.BOLD}{chat_name} News - v1.7.0 Beta{Fore.RESET + Colors.RESET}{Fore.CYAN + Colors.BOLD}
         - COMMUNITY: New custom client by matteodev8: superchrgd ⚡ (Currently in development)
