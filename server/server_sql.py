@@ -1358,10 +1358,12 @@ def broadcast(message, sentBy=""):
     except IOError as e:
         if e.errno == errno.EPIPE:
             log.critical(f"Broken Pipe Error. You may need to restart your server!! DO NOT EXIT THE CHAT CLIENT WITH ^C!!!")
+            debugLogger(e, "122")
             exit(1)
   
     except Exception as e:
-        log.error(f"A broadcasting error occurred. Maybe this can help you: {e}")
+        log.error(f"A broadcasting error occurred.")
+        debugLogger(e, "003")
         exit(1)
 
 
