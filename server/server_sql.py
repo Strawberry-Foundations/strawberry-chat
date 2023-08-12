@@ -46,7 +46,7 @@ log.addHandler(log_fh)
 server_dir = os.path.dirname(os.path.realpath(__file__))
 
 # Connect to the database
-db = sql.connect(server_dir + "users.db", check_same_thread=False)
+db = sql.connect(server_dir + "/users.db", check_same_thread=False)
 c = db.cursor()
 
 with open(server_dir + "/config.json", "r") as f:
@@ -1134,7 +1134,7 @@ def clientLogin(client):
             client.send(f"{Fore.YELLOW + Colors.BOLD}Processing... {Fore.RESET + Colors.RESET}".encode("utf8"))
             
             try:
-                db = sql.connect('./users.db', check_same_thread=False)
+                db = sql.connect(server_dir + "/users.db", check_same_thread=False)
                 c = db.cursor()
                 
                 client.send(f"{Fore.GREEN + Colors.BOLD}Creating your User account... {Fore.RESET + Colors.RESET}".encode("utf8"))
