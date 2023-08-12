@@ -1056,7 +1056,7 @@ def clientThread(client):
                         
                     else:
                         if enable_messages == True:
-                            log.info(f"[{Time.currentDate()} {Time.currentTime()}] {address} ({user}): {message}")
+                            log.info(f"{user} ({address}): {message}")
                                 
                         broadcast(message, user)
                 
