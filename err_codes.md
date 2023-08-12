@@ -1,5 +1,5 @@
 # Errorcodes
-(C) = Client only error
+(C) = Client only error \
 (S) = Server only error
 
 * 001 = Connection error, client cannot connect correctly to the server (C)
