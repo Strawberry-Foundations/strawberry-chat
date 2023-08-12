@@ -23,7 +23,7 @@ with open(server_dir + "/config.json", "r") as f:
     config = json.load(f)
 
 # Configuration
-ipaddr = config["adress"]
+ipaddr = config["address"]
 port = config["port"]
 enable_messages = config["enable_messages"]
 max_message_length = config["max_message_length"]
