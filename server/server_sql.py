@@ -961,9 +961,74 @@ def clientThread(client):
                         elif len(args) < 2 or len(args) > 3:
                             client.send(f"{RED + Colors.BOLD}Invalid command usage.{RESET + Colors.RESET}".encode("utf8"))
                             continue
+                                            
                 else:
                     client.send(f"{RED}Sorry, you do not have permissons for that.{RESET}".encode("utf8"))
                     continue
+
+                # /badge set
+                if cmd == "set":
+                    # If no username is provided
+                    if len(args) == 2:
+                        try:
+                            badge_to_set = args[1]
+                            
+                        except:
+                            client.send(f"{RED + Colors.BOLD}Please pass a valid argument!{RESET + Colors.RESET}".encode("utf8"))
+                            continue
+                            
+                        c.execute("SELECT badges FROM users WHERE username = ?", (user,))
+                        
+                        user_badges = c.fetchone()[0]
+                        
+                        # Does the user have this badge?
+                        if badge_to_set in user_badges:
+                        
+                            c.execute("UPDATE users SET badge = ? WHERE username = ?", (badge_to_set, user))
+                            db.commit()
+                            
+                            client.send(f"{GREEN + Colors.BOLD}The main badge of you has been updated to '{badge_to_set}'{RESET + Colors.RESET}".encode("utf8"))
+                            continue
+                        
+                        else:
+                            client.send(f"{RED + Colors.BOLD}You do not own this badge!{RESET + Colors.RESET}".encode("utf8"))
+                            continue
+                        
+                    # If username is provided
+                    elif len(args) == 3:
+                        try:
+                            badge_to_set = args[1]
+                            uname = args[2]
+                            
+                        except:
+                            client.send(f"{RED + Colors.BOLD}Please pass a valid argument!{RESET + Colors.RESET}".encode("utf8"))
+                            continue
+                            
+                        if doesUserExist(uname) == False:
+                            client.send(f"{RED + Colors.BOLD}Sorry, this user does not exist!{RESET + Colors.RESET}".encode("utf8"))
+                            continue
+                        
+                        else: 
+                            c.execute("SELECT badges FROM users WHERE username = ?", (uname,))
+                        
+                            user_badges = c.fetchone()[0]
+                            
+                            # Does the user have this badge?
+                            if badge_to_set in user_badges:
+                                    
+                                c.execute("UPDATE users SET badge = ? WHERE username = ?", (badge_to_set, uname))
+                                db.commit()
+                                
+                                client.send(f"{GREEN + Colors.BOLD}The main badge of {uname} has been updated to '{badge_to_set}'{RESET + Colors.RESET}".encode("utf8"))
+                                continue
+                            
+                            else:
+                                client.send(f"{RED + Colors.BOLD}This user does not own this badge!{RESET + Colors.RESET}".encode("utf8"))
+                                continue
+                        
+                    elif len(args) < 2 or len(args) > 3:
+                        client.send(f"{RED + Colors.BOLD}Invalid command usage.{RESET + Colors.RESET}".encode("utf8"))
+                        continue
                 
 
             # Match-Case-Pattern Commands
