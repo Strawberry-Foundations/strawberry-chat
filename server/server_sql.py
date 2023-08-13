@@ -256,6 +256,25 @@ def debugLogger(errorMessage, errorCode):
         
 def sqlError(errorMessage):
     log.error(f"e096: An SQL Error occured: {errorMessage}")
+
+
+def doesUserExist(uname):
+    uname = uname.lower()
+    print(uname)
+    
+    c = db.cursor()
+    c.execute('SELECT username FROM users WHERE LOWER(username) = ?', (uname,))
+    
+    try:
+        userExists = c.fetchone()[0]
+        
+    except:
+        return False
+    
+    if userExists.lower() == uname:
+        return True
+    
+    
     
 # News
 news = f"""{GREEN +  Colors.UNDERLINE + Colors.BOLD}{chat_name} News - v1.7.0 Beta{RESET + Colors.RESET}{CYAN + Colors.BOLD}
