@@ -1,5 +1,5 @@
 # Strawberry Chat
-![stbchat- v1.7.0_b5](https://img.shields.io/badge/stbchat-1.7.0__b5-success) ![codename](https://img.shields.io/badge/Codename-Vanilla_Cake-cyan) ![Code Size](https://img.shields.io/github/languages/code-size/Strawberry-Foundations/strawberry-chat) ![Commit activity](https://img.shields.io/github/commit-activity/w/Strawberry-Foundations/strawberry-chat) ![License](https://img.shields.io/github/license/Strawberry-Foundations/strawberry-chat) ![100commits](https://img.shields.io/badge/100_Commits_in_5_days-success) ![100commits](https://img.shields.io/badge/150_Commits_in_6_days-cyan)<br>
+![stbchat- v1.7.0_b5](https://img.shields.io/badge/stbchat-1.7.0__b5-success) ![codename](https://img.shields.io/badge/Codename-Vanilla_Cake-cyan) ![Code Size](https://img.shields.io/github/languages/code-size/Strawberry-Foundations/strawberry-chat) ![Commit activity](https://img.shields.io/github/commit-activity/w/Strawberry-Foundations/strawberry-chat) ![License](https://img.shields.io/github/license/Strawberry-Foundations/strawberry-chat)<br>![100commits](https://img.shields.io/badge/100_Commits_in_5_days-success) ![100commits](https://img.shields.io/badge/150_Commits_in_6_days-cyan)<br>
 The universal chatting platform for your terminal!
 
 ## What is Strawberry Chat?
