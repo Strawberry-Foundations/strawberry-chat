@@ -19,21 +19,24 @@ class LogFormatter(logging.Formatter):
     format = "[%(asctime)s]  [%(levelname)s] %(message)s"
 
     FORMATS = {
-        logging.DEBUG: Fore.LIGHTWHITE_EX + format + Style.RESET_ALL,
-        logging.INFO: Fore.BLUE + format + Style.RESET_ALL,
-        logging.WARNING: Fore.YELLOW + format + Style.RESET_ALL,
-        logging.ERROR: Fore.LIGHTRED_EX + format + Style.RESET_ALL,
-        logging.CRITICAL: Fore.RED + format + Style.RESET_ALL
+        logging.DEBUG:    Fore.WHITE + Style.DIM + format,
+        logging.INFO:     Fore.BLUE + format,
+        logging.WARNING:  Fore.YELLOW + format,
+        logging.ERROR:    Fore.RED + Style.BRIGHT + format,
+        logging.CRITICAL: Fore.RED + format
     }
 
     def format(self, record):
-        log_fmt = self.FORMATS.get(record.levelno)
+        log_fmt = Style.RESET_ALL + self.FORMATS.get(record.levelno) + Style.RESET_ALL
         formatter = logging.Formatter(log_fmt)
         return formatter.format(record)
 
 
 log = logging.getLogger("LOG")
-log.setLevel(logging.INFO)
+if os.environ.get("LOG_LEVEL") is not None:
+    log.setLevel(os.environ.get("LOG_LEVEL").upper())
+else:
+    log.setLevel("INFO")
 log_fh = logging.FileHandler('log.txt')
 log_fmt = logging.Formatter("%(asctime)s [%(levelname)s]  %(message)s")
 log_fh.setFormatter(log_fmt)
@@ -41,6 +44,12 @@ log_ch = logging.StreamHandler()
 log_ch.setFormatter(LogFormatter())
 log.addHandler(log_ch)
 log.addHandler(log_fh)
+
+log.debug("DEBUG MESSAGE")
+log.info("INFO MESSAGE")
+log.warning("WARNING MESSAGE")
+log.error("ERROR MESSAGE")
+log.critical("CRITICAL MEESAGE")
 
 # Path of server.py
 server_dir = os.path.dirname(os.path.realpath(__file__))
@@ -1249,7 +1258,7 @@ def clientLogin(client):
  
 def broadcast(message, sentBy=""):
     def userRoleColor(uname):
-        db = sql.connect('./users.db', check_same_thread=False)
+        db = sql.connect(server_dir + "/users.db", check_same_thread=False)
         c = db.cursor()
         c.execute('SELECT role_color FROM users WHERE username = ?', (uname,))
         color = c.fetchone()
@@ -1371,7 +1380,7 @@ def main():
         serverSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         serverSocket.bind((ipaddr, port))
         serverSocket.listen()
-        print(f"{Fore.GREEN + Colors.BOLD}* -- Server started -- *{Fore.RESET + Colors.RESET}")
+        print(f"{Fore.GREEN + Colors.BOLD}* -- Server started -- *")
         print(f"{Fore.CYAN + Colors.BOLD}{chat_name} v{short_ver} {codename} ({server_edition}){Fore.RESET + Colors.RESET}")
         
         if enable_messages == True:
