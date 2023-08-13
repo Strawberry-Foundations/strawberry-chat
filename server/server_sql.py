@@ -277,7 +277,7 @@ def doesUserExist(uname):
     
     
 # News
-news = f"""{GREEN +  Colors.UNDERLINE + Colors.BOLD}{chat_name} News - v1.7.0 Beta{RESET + Colors.RESET}{CYAN + Colors.BOLD}
+news = f"""{GREEN +  Colors.UNDERLINE + Colors.BOLD}{chat_name} News - v1.7.0 (Beta){RESET + Colors.RESET}{CYAN + Colors.BOLD}
         - NEW: Bots are here!
                You can now create and program your own bots - so
                you can create your own commands, independent of the server! 
@@ -285,14 +285,15 @@ news = f"""{GREEN +  Colors.UNDERLINE + Colors.BOLD}{chat_name} News - v1.7.0 Be
                about yourself in your description or take a look at your fantastic badges!
         - NEW: You can now create an account from the login page!
         - NEW: Fancy User Chat Badges and exclusive badges for your user profile!
-        - NEW: Blacklisted Words
-        - NEW: Character Limit with some special easter eggs :)
-        - NEW: User Nicknames and command to change nickname
-        - NEW: Member Command
-        - NEW: User info command
-        - NEW: New welcome message with chat color support
-        - ADMIN: Broadcast Command, Mute Command, Role set/get/color Command, Bwords set/get/add/reload Command and Ban Command
-        - FIX: Fixed many many bugs{RESET + Colors.RESET}"""
+        - NEW: Blacklisted Words + Set/Get/Add/Reload Command for Admins
+        - NEW: Character Limit with some special "easter eggs" :)
+        - NEW: User Nicknames and command to change your nickname
+        - NEW: Member Command to show registered users
+        - NEW: User info command to show information about a user
+        - NEW: New general messages with chat color support & more
+        - ADMIN: Broadcast Command, Mute Command, Role set/get/color Command, Command and Ban Command
+        - FIX: Fixed many many bugs
+        -> For more information visit https://github.com/orgs/Strawberry-Foundations/projects/1/views/1{RESET + Colors.RESET}"""
 
 
 
@@ -873,6 +874,9 @@ def clientThread(client):
                                 for word in f:
                                     word = word.strip().lower()
                                     blacklist.add(word)
+                                    
+                        client.send(f"{GREEN}Reloaded blacklisted words.{RESET}".encode("utf8"))
+                        continue
                             
                         else:
                             client.send(f"{RED}Sorry, you do not have permissons for that.{RESET}".encode("utf8"))
