@@ -260,8 +260,7 @@ def sqlError(errorMessage):
 
 def doesUserExist(uname):
     uname = uname.lower()
-    print(uname)
-    
+
     c = db.cursor()
     c.execute('SELECT username FROM users WHERE LOWER(username) = ?', (uname,))
     
@@ -908,21 +907,47 @@ def clientThread(client):
                             except:
                                 client.send(f"{RED + Colors.BOLD}Please pass a valid argument!{RESET + Colors.RESET}".encode("utf8"))
                                 continue
-                                    
-                            client.send(f"{GREEN + Colors.BOLD}Added badge '{badge_to_add}' to your user profile".encode("utf8"))
+                                
+                            c.execute("SELECT badges FROM users WHERE username = ?", (user,))
+                            
+                            user_badges = c.fetchone()[0]
+                            
+                            if badge_to_add in user_badges:
+                                client.send(f"{RED + Colors.BOLD}This badge is already assigned to your profile!{RESET + Colors.RESET}".encode("utf8"))
+                                continue
+                            
+                            new_user_badges = user_badges + badge_to_add
+                            
+                            c.execute("UPDATE users SET badges = ? WHERE username = ?", (new_user_badges, user))
+                            db.commit()
+                            
+                            client.send(f"{GREEN + Colors.BOLD}Added badge '{badge_to_add}' to your user profile{RESET + Colors.RESET}".encode("utf8"))
                             continue
                         
                         elif len(args) == 3:
                             try:
                                 badge_to_add = args[1]
-                                uname = args[1]
+                                uname = args[2]
                                 
                             except:
                                 client.send(f"{RED + Colors.BOLD}Please pass a valid argument!{RESET + Colors.RESET}".encode("utf8"))
                                 continue
-                                    
-                            client.send(f"{GREEN + Colors.BOLD}Added badge '{badge_to_add}' to {user}'s profile".encode("utf8"))
-                            continue
+                                
+                            if doesUserExist(uname) == False:
+                                client.send(f"{RED + Colors.BOLD}Sorry, this user does not exist!{RESET + Colors.RESET}".encode("utf8"))
+                                continue
+                            
+                            else: 
+                                c.execute("SELECT badges FROM users WHERE username = ?", (uname,))
+                            
+                                user_badges = c.fetchone()[0]
+                                new_user_badges = user_badges + badge_to_add
+                                
+                                c.execute("UPDATE users SET badges = ? WHERE username = ?", (new_user_badges, uname))
+                                db.commit()
+                                
+                                client.send(f"{GREEN + Colors.BOLD}Added badge '{badge_to_add}' to {uname}'s profile{RESET + Colors.RESET}".encode("utf8"))
+                                continue
                             
                         elif len(args) < 2 or len(args) > 3:
                             client.send(f"{RED + Colors.BOLD}Invalid command usage.{RESET + Colors.RESET}".encode("utf8"))
