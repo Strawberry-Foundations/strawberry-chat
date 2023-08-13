@@ -1060,12 +1060,18 @@ def clientThread(client):
                     news_data = yaml.load(news_file, Loader=SafeLoader)
                         
                 if cmd == "list":
-                    for i in range(len(news_data["news"])):
-                        client.send(f"{news_data[0]}".encode("utf8"))
+                    version_list = ", ".join(news_data['versions'])
+                    client.send(f"{CYAN + Colors.BOLD}{chat_name} Versions:{RESET + Colors.RESET} {GREEN}{version_list}{RESET}".encode("utf8"))
+                    continue
                     
                 elif cmd == "show":
-                    i_ver = args[1]
-                    client.send(f"{GREEN + Colors.BOLD + Colors.UNDERLINE}Strawberry Chat News - v{i_ver}{Fore.RESET + Colors.RESET + CYAN + Colors.BOLD}\n{news_data["news"][i_ver]['text']}{RESET + Colors.RESET}".encode("utf8"))
+                    try:
+                        i_ver = args[1] 
+                        client.send(f"{GREEN + Colors.BOLD + Colors.UNDERLINE}{chat_name} News - v{i_ver}{Fore.RESET + Colors.RESET + CYAN + Colors.BOLD}\n{news_data['news'][i_ver]['text']}{RESET + Colors.RESET}".encode("utf8"))
+                        
+                    except:
+                        client.send(f"{RED + Colors.BOLD}This version of {chat_name} does not exist.{RESET + Colors.RESET}".encode("utf8"))
+                        
                     continue
                                 
 
