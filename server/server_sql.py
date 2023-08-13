@@ -278,7 +278,6 @@ def doesUserExist(uname):
     
 # News
 news = f"""{GREEN +  Colors.UNDERLINE + Colors.BOLD}{chat_name} News - v1.7.0 Beta{RESET + Colors.RESET}{CYAN + Colors.BOLD}
-        - COMMUNITY: New custom client by matteodev8: superchrgd ⚡ (Currently in development)
         - NEW: Bots are here!
                You can now create and program your own bots - so
                you can create your own commands, independent of the server! 
