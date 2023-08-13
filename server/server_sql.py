@@ -1001,6 +1001,10 @@ def clientThread(client):
                                 badge_to_set = args[1]
                                 uname = args[2]
                                 
+                                if uname == "":
+                                    client.send(f"{RED + Colors.BOLD}Please provide a valid username! If you try to change your own main badge, please do not add a space after the badge!{RESET + Colors.RESET}".encode("utf8"))
+                                    continue
+                                
                             except:
                                 client.send(f"{RED + Colors.BOLD}Please pass a valid argument!{RESET + Colors.RESET}".encode("utf8"))
                                 continue
