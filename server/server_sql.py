@@ -1044,7 +1044,20 @@ def clientThread(client):
                     elif len(args) < 2 or len(args) > 3:
                         client.send(f"{RED + Colors.BOLD}Invalid command usage.{RESET + Colors.RESET}".encode("utf8"))
                         continue
+            
+            
+            elif message.startswith("/news "):
+                arg = message.replace("/news ", "")
+                args = arg.split(" ")
+
+                cmd = args[0]
                 
+                if cmd == "list":
+                    client.send("Somelist".encode("utf8"))
+                    continue
+                                
+
+
 
             # Match-Case-Pattern Commands
             match message:
