@@ -1194,7 +1194,7 @@ def clientLogin(client):
                 
                 client.send(f"{GREEN + Colors.BOLD}Creating your User account... {RESET + Colors.RESET}".encode("utf8"))
                 
-                c.execute('INSERT INTO users (username, password, badge, role, role_color, enableBlacklistedWords, accountEnabled, muted) VALUES (?, ?, "None", "member", ?, "true", "true", "false")', (registeredUsername, registeredPassword, registeredRoleColor.lower()))
+                c.execute('INSERT INTO users (username, password, role, role_color, enableBlacklistedWords, accountEnabled, muted) VALUES (?, ?, "member", ?, "true", "true", "false")', (registeredUsername, registeredPassword, registeredRoleColor.lower()))
                 db.commit()
                 db.close()
                 
@@ -1384,8 +1384,9 @@ def broadcast(message, sentBy=""):
                     c.execute('SELECT badge FROM users WHERE username = ?', (sentBy,))
                     res = c.fetchone()
                
-                    if res[0] != "None":
+                    if res[0] is not None:
                         badge = " [" + res[0] + "]"
+                        
                     else:
                         badge = ""
                         
