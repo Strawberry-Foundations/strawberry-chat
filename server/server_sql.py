@@ -40,11 +40,11 @@ class LogFormatter(logging.Formatter):
     format = "[%(asctime)s] [%(levelname)s] %(message)s"
 
     FORMATS = {
-        logging.DEBUG:    WHITE + Style.DIM + format,
-        logging.INFO:     BLUE + format,
+        logging.DEBUG:    WHITE  + Style.DIM    + format,
+        logging.INFO:     BLUE   + format,
         logging.WARNING:  YELLOW + format,
-        logging.ERROR:    RED + Style.BRIGHT + format,
-        logging.CRITICAL: RED + format
+        logging.ERROR:    RED    + Style.BRIGHT + format,
+        logging.CRITICAL: RED    + format
     }
 
     def format(self, record):
@@ -65,6 +65,7 @@ log_ch = logging.StreamHandler()
 log_ch.setFormatter(LogFormatter())
 log.addHandler(log_ch)
 log.addHandler(log_fh)
+
 
 #log.debug("DEBUG MESSAGE")
 #log.info("INFO MESSAGE")
