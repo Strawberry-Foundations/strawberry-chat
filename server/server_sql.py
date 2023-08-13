@@ -468,6 +468,9 @@ def clientThread(client):
                 if uname.startswith("me"):
                     uname = user
                 
+                if uname == "":
+                    uname = user
+                
                 try:
                     c.execute("SELECT username, nickname, badge, role, role_color, description, badges, discord_name FROM users WHERE username = ?", (uname,))
                     
