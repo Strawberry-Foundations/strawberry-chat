@@ -900,6 +900,7 @@ def clientThread(client):
                     
                     # /badge add
                     if cmd == "add":
+                        # If no username is provided
                         if len(args) == 2:
                             try:
                                 badge_to_add = args[1]
@@ -912,6 +913,7 @@ def clientThread(client):
                             
                             user_badges = c.fetchone()[0]
                             
+                            # Does the user already have this badge?
                             if badge_to_add in user_badges:
                                 client.send(f"{RED + Colors.BOLD}This badge is already assigned to your profile!{RESET + Colors.RESET}".encode("utf8"))
                                 continue
@@ -924,6 +926,7 @@ def clientThread(client):
                             client.send(f"{GREEN + Colors.BOLD}Added badge '{badge_to_add}' to your user profile{RESET + Colors.RESET}".encode("utf8"))
                             continue
                         
+                        # If username is provided
                         elif len(args) == 3:
                             try:
                                 badge_to_add = args[1]
@@ -942,6 +945,7 @@ def clientThread(client):
                             
                                 user_badges = c.fetchone()[0]
                                 
+                                # Does the user already have this badge?
                                 if badge_to_add in user_badges:
                                     client.send(f"{RED + Colors.BOLD}This badge is already assigned to {uname}'s profile!{RESET + Colors.RESET}".encode("utf8"))
                                     continue
