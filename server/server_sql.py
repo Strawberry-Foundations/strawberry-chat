@@ -943,7 +943,7 @@ def clientThread(client):
                                 user_badges = c.fetchone()[0]
                                 
                                 if badge_to_add in user_badges:
-                                    client.send(f"{RED + Colors.BOLD}This badge is already assigned to your profile!{RESET + Colors.RESET}".encode("utf8"))
+                                    client.send(f"{RED + Colors.BOLD}This badge is already assigned to {uname}'s profile!{RESET + Colors.RESET}".encode("utf8"))
                                     continue
                                 
                                 new_user_badges = user_badges + badge_to_add
