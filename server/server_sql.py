@@ -1054,14 +1054,18 @@ def clientThread(client):
                 args = arg.split(" ")
 
                 cmd = args[0]
-                i_ver = args[1]
                 
                 # Open News YML file
                 with open(server_dir + "/news.yml") as news_file:
                     news_data = yaml.load(news_file, Loader=SafeLoader)
                         
                 if cmd == "list":
-                    client.send(f"{GREEN + Colors.BOLD + Colors.UNDERLINE}Strawberry Chat News - v{i_ver}{Fore.RESET + Colors.RESET + CYAN + Colors.BOLD}\n{news_data[i_ver]['text']}{RESET + Colors.RESET}".encode("utf8"))
+                    for i in range(len(news_data["news"])):
+                        client.send(f"{news_data[0]}".encode("utf8"))
+                    
+                elif cmd == "show":
+                    i_ver = args[1]
+                    client.send(f"{GREEN + Colors.BOLD + Colors.UNDERLINE}Strawberry Chat News - v{i_ver}{Fore.RESET + Colors.RESET + CYAN + Colors.BOLD}\n{news_data["news"][i_ver]['text']}{RESET + Colors.RESET}".encode("utf8"))
                     continue
                                 
 
