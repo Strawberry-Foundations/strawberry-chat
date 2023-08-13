@@ -1065,21 +1065,21 @@ def clientThread(client):
                     confirmDelete1 = client.recv(2048).decode("utf8")
                     
                     if confirmDelete1.lower() == "yes":
-                        client.send(f"{YELLOW + Colors.BOLD}THIS IS YOUR VERY LAST WARNING! This action is irreversible!! ARE YOU SURE?{RESET + Colors.RESET}".encode("utf8"))
+                        client.send(f"{RED + Colors.BOLD}THIS IS YOUR VERY LAST WARNING! This action is irreversible!! ARE YOU SURE?{RESET + Colors.RESET}".encode("utf8"))
                         confirmDelete2 = client.recv(2048).decode("utf8")
                         
                         if confirmDelete2.lower() == "yes":
                             client.send(f"{YELLOW + Colors.BOLD}Enter your username to confirm the deletion of your account:{RESET + Colors.RESET}".encode("utf8"))
                             confirmUsernameDelete = client.recv(2048).decode("utf8")
                             
-                            if confirmUsernameDelete.lower() == user:
+                            if confirmUsernameDelete == user:
                                 client.send(f"{YELLOW + Colors.BOLD}Deleting your user account...{RESET + Colors.RESET}".encode("utf8"))
                                 
                                 try:
                                     cursor = db.cursor()
                                     cursor.execute("DELETE FROM users WHERE username = ?", (user,))
                                     db.commit()
-                                    client.send(f"{YELLOW + Colors.BOLD}Deleted{RESET + Colors.RESET}".encode("utf8"))
+                                    client.send(f"{GREEN + Colors.BOLD}Deleted{RESET + Colors.RESET}".encode("utf8"))
                                     client.close()
                                     sys.exit(1)
                                     
