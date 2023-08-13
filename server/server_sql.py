@@ -875,8 +875,8 @@ def clientThread(client):
                                     word = word.strip().lower()
                                     blacklist.add(word)
                                     
-                        client.send(f"{GREEN}Reloaded blacklisted words.{RESET}".encode("utf8"))
-                        continue
+                            client.send(f"{GREEN}Reloaded blacklisted words.{RESET}".encode("utf8"))
+                            continue
                             
                         else:
                             client.send(f"{RED}Sorry, you do not have permissons for that.{RESET}".encode("utf8"))
