@@ -996,35 +996,39 @@ def clientThread(client):
                         
                     # If username is provided
                     elif len(args) == 3:
-                        try:
-                            badge_to_set = args[1]
-                            uname = args[2]
-                            
-                        except:
-                            client.send(f"{RED + Colors.BOLD}Please pass a valid argument!{RESET + Colors.RESET}".encode("utf8"))
-                            continue
-                            
-                        if doesUserExist(uname) == False:
-                            client.send(f"{RED + Colors.BOLD}Sorry, this user does not exist!{RESET + Colors.RESET}".encode("utf8"))
-                            continue
-                        
-                        else: 
-                            c.execute("SELECT badges FROM users WHERE username = ?", (uname,))
-                        
-                            user_badges = c.fetchone()[0]
-                            
-                            # Does the user have this badge?
-                            if badge_to_set in user_badges:
-                                    
-                                c.execute("UPDATE users SET badge = ? WHERE username = ?", (badge_to_set, uname))
-                                db.commit()
+                        if res[0] == "admin":
+                            try:
+                                badge_to_set = args[1]
+                                uname = args[2]
                                 
-                                client.send(f"{GREEN + Colors.BOLD}The main badge of {uname} has been updated to '{badge_to_set}'{RESET + Colors.RESET}".encode("utf8"))
+                            except:
+                                client.send(f"{RED + Colors.BOLD}Please pass a valid argument!{RESET + Colors.RESET}".encode("utf8"))
+                                continue
+                                
+                            if doesUserExist(uname) == False:
+                                client.send(f"{RED + Colors.BOLD}Sorry, this user does not exist!{RESET + Colors.RESET}".encode("utf8"))
                                 continue
                             
-                            else:
-                                client.send(f"{RED + Colors.BOLD}This user does not own this badge!{RESET + Colors.RESET}".encode("utf8"))
-                                continue
+                            else: 
+                                c.execute("SELECT badges FROM users WHERE username = ?", (uname,))
+                            
+                                user_badges = c.fetchone()[0]
+                                
+                                # Does the user have this badge?
+                                if badge_to_set in user_badges:
+                                        
+                                    c.execute("UPDATE users SET badge = ? WHERE username = ?", (badge_to_set, uname))
+                                    db.commit()
+                                    
+                                    client.send(f"{GREEN + Colors.BOLD}The main badge of {uname} has been updated to '{badge_to_set}'{RESET + Colors.RESET}".encode("utf8"))
+                                    continue
+                                
+                                else:
+                                    client.send(f"{RED + Colors.BOLD}This user does not own this badge!{RESET + Colors.RESET}".encode("utf8"))
+                                    continue
+                        else:
+                            client.send(f"{RED}Sorry, you do not have permissons for that.{RESET}".encode("utf8"))
+                            continue
                         
                     elif len(args) < 2 or len(args) > 3:
                         client.send(f"{RED + Colors.BOLD}Invalid command usage.{RESET + Colors.RESET}".encode("utf8"))
@@ -1072,6 +1076,7 @@ def clientThread(client):
         {BLUE + Colors.BOLD}/afk: {RESET}Toggle afk status
         {BLUE + Colors.BOLD}/unafk: {RESET}Untoggle afk status
         {BLUE + Colors.BOLD}/afks, /afklist: {RESET}Shows afk users
+        {BLUE + Colors.BOLD}/badge set: {RESET}Shows afk users
         """.encode("utf-8"))
                     
                     time.sleep(0.1)
