@@ -163,4 +163,3 @@ server/users.db
 server/blacklist.txt
 server/messages.txt
 server/log.txt
-misc/tokengen.py
