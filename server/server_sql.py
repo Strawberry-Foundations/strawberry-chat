@@ -40,11 +40,11 @@ class LogFormatter(logging.Formatter):
     format = "[%(asctime)s] [%(levelname)s] %(message)s"
 
     FORMATS = {
-        logging.DEBUG:    Fore.WHITE + Style.DIM + format,
-        logging.INFO:     Fore.BLUE + format,
-        logging.WARNING:  Fore.YELLOW + format,
-        logging.ERROR:    Fore.RED + Style.BRIGHT + format,
-        logging.CRITICAL: Fore.RED + format
+        logging.DEBUG:    WHITE + Style.DIM + format,
+        logging.INFO:     BLUE + format,
+        logging.WARNING:  YELLOW + format,
+        logging.ERROR:    RED + Style.BRIGHT + format,
+        logging.CRITICAL: RED + format
     }
 
     def format(self, record):
