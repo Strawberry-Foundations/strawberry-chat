@@ -1073,6 +1073,12 @@ def clientThread(client):
                         client.send(f"{RED + Colors.BOLD}This version of {chat_name} does not exist.{RESET + Colors.RESET}".encode("utf8"))
                         
                     continue
+                
+                else:
+                    client.send(f"{RED + Colors.BOLD}Invalid command usage.{RESET + Colors.RESET}".encode("utf8"))
+                    
+                    continue
+                    
                                 
 
 
