@@ -856,15 +856,13 @@ def clientThread(client):
                         else:
                             client.send(f"{RED}Sorry, you do not have permissons for that.{RESET}".encode("utf8"))
                             
-                            
-                    
                     else:
                         client.send(f"{RED + Colors.BOLD}Invalid command usage.{RESET + Colors.RESET}".encode("utf8"))
                         continue
-                        
                     
                 else:
                     client.send(f"{RED}Sorry, you do not have permissons for that.{RESET}".encode("utf8"))
+            
             
             # /bwords Command
             elif message.startswith("/badge "):
@@ -884,6 +882,7 @@ def clientThread(client):
                 
                 else:
                     client.send(f"{RED}Sorry, you do not have permissons for that.{RESET}".encode("utf8"))
+                    continue
 
             # Match-Case-Pattern Commands
             match message:
