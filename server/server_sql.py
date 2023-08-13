@@ -458,30 +458,32 @@ def clientThread(client):
                     continue
                 
                 for row in c:
+                    # Nickname
                     if row[1] is not None:
                         nickname = row[1]
                     else:
                         nickname = "Not set"
-                    
-                    if row[3] == "admin":
-                        role = "Administrator"
-                    else:
-                        role = "Member"
                         
+                    # Badge
                     if row[2] is not None:
                         badge = row[2]
                     else:
                         badge = "Not set"
-                        
+                    
+                    # Description
                     if row[5] is not None:
                         description = row[5]
                     else:
                         description = "Not set"
-                        
+                    
+                    # Discord Username
                     if row[7] is not None:
                         discord = MAGENTA + "@" + row[7]
                     else:
                         discord = "Not set"
+                        
+                    role = role.capitalize()
+                    role_color = role_color.capitalize()
                         
                     crown_badge = "- 👑 The legendary founder and owner!"
                     cool_badge = "- 😎 One of the coolest here!"
@@ -535,7 +537,7 @@ def clientThread(client):
         {GREEN + Colors.BOLD}Main Badge:{RESET + Colors.BOLD} {badge}{RESET + Colors.RESET}
         {GREEN + Colors.BOLD}Badges: {row[6]}{RESET + Colors.BOLD}{RESET + Colors.RESET}{Colors.BOLD}{all_badges}{Colors.RESET}
         {GREEN + Colors.BOLD}Role:{RESET + Colors.BOLD} {role}{RESET + Colors.RESET}
-        {GREEN + Colors.BOLD}Role Color:{RESET + Colors.BOLD} {userRoleColor(row[0])}{row[4]}{RESET + Colors.RESET}
+        {GREEN + Colors.BOLD}Role Color:{RESET + Colors.BOLD} {userRoleColor(row[0])}{role_color}{RESET + Colors.RESET}
         {GREEN + Colors.BOLD}Discord:{RESET + Colors.BOLD} {discord}{RESET + Colors.RESET}"""
                         .encode("utf8"))
                 continue
