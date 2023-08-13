@@ -458,6 +458,10 @@ def clientThread(client):
                     continue
                 
                 for row in c:
+                    
+                    role = row[3]
+                    role_color = row[4]
+                    
                     # Nickname
                     if row[1] is not None:
                         nickname = row[1]
