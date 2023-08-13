@@ -1054,13 +1054,14 @@ def clientThread(client):
                 args = arg.split(" ")
 
                 cmd = args[0]
+                i_ver = args[1]
                 
                 # Open News YML file
-                with open(server_dir + "/config.yml") as news_file:
+                with open(server_dir + "/news.yml") as news_file:
                     news_data = yaml.load(news_file, Loader=SafeLoader)
                         
                 if cmd == "list":
-                    client.send("Somelist".encode("utf8"))
+                    client.send(f"{GREEN + Colors.BOLD + Colors.UNDERLINE}Strawberry Chat News - v{i_ver}{Fore.RESET + Colors.RESET + CYAN + Colors.BOLD}\n{news_data[i_ver]['text']}{RESET + Colors.RESET}".encode("utf8"))
                     continue
                                 
 
