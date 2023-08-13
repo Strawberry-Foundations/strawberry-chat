@@ -865,8 +865,26 @@ def clientThread(client):
                     
                 else:
                     client.send(f"{RED}Sorry, you do not have permissons for that.{RESET}".encode("utf8"))
-                                
             
+            # /bwords Command
+            elif message.startswith("/badge "):
+                try: 
+                    c.execute('SELECT role FROM users WHERE username = ?', (user,))
+                    
+                except Exception as e:
+                    sqlError(e)
+                    
+                res = c.fetchone()
+                
+                if res[0] == "admin":
+                    arg = message.replace("/badge ", "")
+                    args = arg.split(" ")
+
+                    cmd = args[0]
+                
+                else:
+                    client.send(f"{RED}Sorry, you do not have permissons for that.{RESET}".encode("utf8"))
+
             # Match-Case-Pattern Commands
             match message:
                 # Quit / Exit Command
