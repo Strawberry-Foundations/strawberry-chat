@@ -1,8 +1,24 @@
-news:
-  1.6.0:
-    text: "- NEW: AFK user list command
-    - NEW: Sending messages in Afk status is now not possible
-    - NEW: AFK status stays even when you leave the chat
-    - NEW: Kickall command kicking all online users
-    - NEW: Changed Chat Name from Salware Chat to Strawberry Chat
-    - FIX: Fixed general formatting errors"
+1.6.0:
+  text: "
+  - NEW: AFK user list command\n
+  - NEW: Sending messages in Afk status is now not possible\n
+  - NEW: AFK status stays even when you leave the chat\n
+  - NEW: Kickall command kicking all online users\n
+  - NEW: Changed Chat Name from Salware Chat to Strawberry Chat\n
+  - FIX: Fixed general formatting errors"
+
+1.7.0:
+  text: "
+  - NEW: Bots are here!\n        You can now create and program your own bots - so\n        you can create your own commands, independent of the server! \n
+  - NEW: User Profiles are here! You can now link your discord, write something \n        about yourself in your description or take a look at your fantastic badges!\n
+  - NEW: You can now create an account from the login page!\n
+  - NEW: Fancy User Chat Badges and exclusive badges for your user profile!\n
+  - NEW: Blacklisted Words + Set/Get/Add/Reload Command for Admins\n
+  - NEW: Character Limit with some special 'easter eggs' :)\n
+  - NEW: User Nicknames and command to change your nickname\n
+  - NEW: Member Command to show registered users\n
+  - NEW: User info command to show information about a user\n
+  - NEW: New general messages with chat color support & more\n
+  - ADMIN: Broadcast Command, Mute Command, Role set/get/color Command, Command and Ban Command\n
+  - FIX: Fixed many many bugs\n
+  -> For more information visit https://github.com/orgs/Strawberry-Foundations/projects/1/views/1"
