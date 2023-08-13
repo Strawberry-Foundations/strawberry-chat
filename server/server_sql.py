@@ -864,7 +864,7 @@ def clientThread(client):
                     client.send(f"{RED}Sorry, you do not have permissons for that.{RESET}".encode("utf8"))
             
             
-            # /bwords Command
+            # /badge Command
             elif message.startswith("/badge "):
                 try: 
                     c.execute('SELECT role FROM users WHERE username = ?', (user,))
@@ -879,10 +879,39 @@ def clientThread(client):
                     args = arg.split(" ")
 
                     cmd = args[0]
-                
+                    
+                    # /badge add
+                    if cmd == "add":
+                        if len(args) == 2:
+                            try:
+                                badge_to_add = args[1]
+                                
+                            except:
+                                client.send(f"{RED + Colors.BOLD}Please pass a valid argument!{RESET + Colors.RESET}".encode("utf8"))
+                                continue
+                                    
+                            client.send(f"{GREEN + Colors.BOLD}Added badge '{badge_to_add}' to your user profile".encode("utf8"))
+                            continue
+                        
+                        elif len(args) == 3:
+                            try:
+                                badge_to_add = args[1]
+                                uname = args[1]
+                                
+                            except:
+                                client.send(f"{RED + Colors.BOLD}Please pass a valid argument!{RESET + Colors.RESET}".encode("utf8"))
+                                continue
+                                    
+                            client.send(f"{GREEN + Colors.BOLD}Added badge '{badge_to_add}' to {user}'s profile".encode("utf8"))
+                            continue
+                            
+                        elif len(args) < 2 or len(args) > 3:
+                            client.send(f"{RED + Colors.BOLD}Invalid command usage.{RESET + Colors.RESET}".encode("utf8"))
+                            continue
                 else:
                     client.send(f"{RED}Sorry, you do not have permissons for that.{RESET}".encode("utf8"))
                     continue
+                
 
             # Match-Case-Pattern Commands
             match message:
