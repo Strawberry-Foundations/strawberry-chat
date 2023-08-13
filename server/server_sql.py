@@ -474,6 +474,10 @@ def clientThread(client):
                 
                 if uname == "":
                     uname = user
+                    
+                if doesUserExist(uname) == False:
+                    client.send(f"{RED + Colors.BOLD}Sorry, this user does not exist!{RESET + Colors.RESET}".encode("utf8"))
+                    continue
                 
                 try:
                     c.execute("SELECT username, nickname, badge, role, role_color, description, badges, discord_name FROM users WHERE username = ?", (uname,))
@@ -586,6 +590,10 @@ def clientThread(client):
                 if res[0] == "admin":
                     uname = message.replace("/mute ", "")
                     
+                    if doesUserExist(uname) == False:
+                        client.send(f"{RED + Colors.BOLD}Sorry, this user does not exist!{RESET + Colors.RESET}".encode("utf8"))
+                        continue
+                    
                     c.execute("UPDATE users SET muted = 'true' WHERE username = ?", (uname,))
                     db.commit()
                     
@@ -608,6 +616,10 @@ def clientThread(client):
                 
                 if res[0] == "admin":
                     uname = message.replace("/unmute ", "")
+                    
+                    if doesUserExist(uname) == False:
+                        client.send(f"{RED + Colors.BOLD}Sorry, this user does not exist!{RESET + Colors.RESET}".encode("utf8"))
+                        continue
                     
                     c.execute("UPDATE users SET muted = 'false' WHERE username = ?", (uname,))
                     db.commit()
@@ -675,6 +687,10 @@ def clientThread(client):
                 if res[0] == "admin":
                     uname = message.replace("/ban ", "")
                     
+                    if doesUserExist(uname) == False:
+                        client.send(f"{RED + Colors.BOLD}Sorry, this user does not exist!{RESET + Colors.RESET}".encode("utf8"))
+                        continue
+                    
                     c.execute("UPDATE users SET accountEnabled = 'false' WHERE username = ?", (uname,))
                     db.commit()
                     
@@ -697,6 +713,10 @@ def clientThread(client):
                 
                 if res[0] == "admin":
                     uname = message.replace("/unban ", "")
+                    
+                    if doesUserExist(uname) == False:
+                        client.send(f"{RED + Colors.BOLD}Sorry, this user does not exist!{RESET + Colors.RESET}".encode("utf8"))
+                        continue
                     
                     c.execute("UPDATE users SET accountEnabled = 'true' WHERE username = ?", (uname,))
                     db.commit()
@@ -800,6 +820,10 @@ def clientThread(client):
                         try:
                             uname = args[1]
                             value = args[2]
+                            
+                            if doesUserExist(uname) == False:
+                                client.send(f"{RED + Colors.BOLD}Sorry, this user does not exist!{RESET + Colors.RESET}".encode("utf8"))
+                                continue
                          
                             c.execute("UPDATE users SET enableBlacklistedWords = ? WHERE username = ?", (value, uname))
                             db.commit()
