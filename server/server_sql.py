@@ -1080,11 +1080,11 @@ def clientThread(client):
         {BLUE + Colors.BOLD}/userinfo, /user, /member <user>/me: {RESET}Shows information about the specified user
         {BLUE + Colors.BOLD}/nick <nickname/remove>: {RESET}Changes nickname to <nickname> or removes it
         {BLUE + Colors.BOLD}/description <desc>: {RESET}Set your user description{RESET + Colors.RESET}
+        {BLUE + Colors.BOLD}/badge set <badge>: {RESET}Sets your main badge
         {BLUE + Colors.BOLD}/discord <discord_uname>: {RESET}Set your discord username{RESET + Colors.RESET}
         {BLUE + Colors.BOLD}/afk: {RESET}Toggle afk status
         {BLUE + Colors.BOLD}/unafk: {RESET}Untoggle afk status
         {BLUE + Colors.BOLD}/afks, /afklist: {RESET}Shows afk users
-        {BLUE + Colors.BOLD}/badge set: {RESET}Shows afk users
         """.encode("utf-8"))
                     
                     time.sleep(0.1)
@@ -1097,6 +1097,8 @@ def clientThread(client):
         {BLUE + Colors.BOLD}/broadcast <message>: {RESET}Broadcast a message{RESET + Colors.RESET}
         {BLUE + Colors.BOLD}/role get/set <user> (<role>) [<color>]: {RESET}Gets or sets the role of a user{RESET + Colors.RESET}
         {BLUE + Colors.BOLD}/role color <user> <color>: {RESET}Gets or sets the role of a user{RESET + Colors.RESET}
+        {BLUE + Colors.BOLD}/badge set <badge> <user>: {RESET}Changes main badge of <user> to <badge>
+        {BLUE + Colors.BOLD}/badge add <badge> (<user>): {RESET}Adds new badge to your profile or to <user>'s profile
         {BLUE + Colors.BOLD}/bwords set/get <user> (<true/false>): {RESET}Enable or disable whether a user should be affected by the bad words{RESET + Colors.RESET}
         {BLUE + Colors.BOLD}/bwords reload: {RESET}Reloads all blacklisted words{RESET + Colors.RESET}
         {BLUE + Colors.BOLD}/bwords add <word>: {RESET}Adds a blacklisted word{RESET + Colors.RESET}
