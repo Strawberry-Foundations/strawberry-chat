@@ -14,6 +14,9 @@ import sqlite3 as sql
 import time
 import errno
 import random
+import yaml
+from yaml import SafeLoader
+
 
 # Alias for colorama colors
 BLACK           = Fore.BLACK
@@ -1052,6 +1055,10 @@ def clientThread(client):
 
                 cmd = args[0]
                 
+                # Open News YML file
+                with open(server_dir + "/config.yml") as news_file:
+                    news_data = yaml.load(news_file, Loader=SafeLoader)
+                        
                 if cmd == "list":
                     client.send("Somelist".encode("utf8"))
                     continue
