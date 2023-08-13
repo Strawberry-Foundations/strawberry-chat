@@ -66,11 +66,11 @@ log_ch.setFormatter(LogFormatter())
 log.addHandler(log_ch)
 log.addHandler(log_fh)
 
-log.debug("DEBUG MESSAGE")
-log.info("INFO MESSAGE")
-log.warning("WARNING MESSAGE")
-log.error("ERROR MESSAGE")
-log.critical("CRITICAL MEESAGE")
+#log.debug("DEBUG MESSAGE")
+#log.info("INFO MESSAGE")
+#log.warning("WARNING MESSAGE")
+#log.error("ERROR MESSAGE")
+#log.critical("CRITICAL MEESAGE")
 
 # Path of server.py
 server_dir = os.path.dirname(os.path.realpath(__file__))
