@@ -54,10 +54,12 @@ class LogFormatter(logging.Formatter):
 
 
 log = logging.getLogger("LOG")
+
 if os.environ.get("LOG_LEVEL") is not None:
     log.setLevel(os.environ.get("LOG_LEVEL").upper())
 else:
     log.setLevel("INFO")
+    
 log_fh = logging.FileHandler('log.txt')
 log_fmt = logging.Formatter("%(asctime)s [%(levelname)s]  %(message)s")
 log_fh.setFormatter(log_fmt)
@@ -65,7 +67,6 @@ log_ch = logging.StreamHandler()
 log_ch.setFormatter(LogFormatter())
 log.addHandler(log_ch)
 log.addHandler(log_fh)
-
 
 #log.debug("DEBUG MESSAGE")
 #log.info("INFO MESSAGE")
