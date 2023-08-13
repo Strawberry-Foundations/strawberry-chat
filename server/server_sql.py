@@ -941,6 +941,11 @@ def clientThread(client):
                                 c.execute("SELECT badges FROM users WHERE username = ?", (uname,))
                             
                                 user_badges = c.fetchone()[0]
+                                
+                                if badge_to_add in user_badges:
+                                    client.send(f"{RED + Colors.BOLD}This badge is already assigned to your profile!{RESET + Colors.RESET}".encode("utf8"))
+                                    continue
+                                
                                 new_user_badges = user_badges + badge_to_add
                                 
                                 c.execute("UPDATE users SET badges = ? WHERE username = ?", (new_user_badges, uname))
