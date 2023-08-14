@@ -2,6 +2,9 @@
 ![stbchat- v1.7.0_b5](https://img.shields.io/badge/stbchat-1.7.0__b5-success) ![stbchat- v1.7.0_b5](https://img.shields.io/badge/stbchat_alpha-Soon:_1.8.0__a1-success) ![codename](https://img.shields.io/badge/Codename-Vanilla_Cake-cyan) ![Code Size](https://img.shields.io/github/languages/code-size/Strawberry-Foundations/strawberry-chat) ![Commit activity](https://img.shields.io/github/commit-activity/w/Strawberry-Foundations/strawberry-chat) ![License](https://img.shields.io/github/license/Strawberry-Foundations/strawberry-chat)<br>![100commits](https://img.shields.io/badge/100_Commits_in_5_days-success) ![100commits](https://img.shields.io/badge/150_Commits_in_6_days-cyan)<br>
 The universal chatting platform for your terminal!
 
+## Important note: Complete code will be reviewed and revised/reworked soon.
+Read more at [strawberry-chat/issues/17](https://github.com/Strawberry-Foundations/strawberry-chat/issues/17)
+
 ## What is Strawberry Chat?
 Strawberry Chat is a simple chat platform based on Python TCP sockets. It allows you to chat with other people in a simple and minimal way - without annoying tracking and spying. 
 
