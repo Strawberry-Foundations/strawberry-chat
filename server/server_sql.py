@@ -66,8 +66,10 @@ else:
 log_fh = logging.FileHandler('log.txt')
 log_fmt = logging.Formatter("%(asctime)s [%(levelname)s]  %(message)s")
 log_fh.setFormatter(log_fmt)
+
 log_ch = logging.StreamHandler()
 log_ch.setFormatter(LogFormatter())
+
 log.addHandler(log_ch)
 log.addHandler(log_fh)
 
