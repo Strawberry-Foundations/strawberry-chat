@@ -7,6 +7,7 @@
 COMPLETE CLEANUP + BETTER CODE
 STARTING AT VERSION 1.8.0
 LAST BETA VERSION FOR V1.7.0 IS BETA 6
+READ https://github.com/Strawberry-Foundations/strawberry-chat/issues/17 FOR MORE INFORMATION
 """
 
 import logging
