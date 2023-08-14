@@ -1665,10 +1665,8 @@ def cleanup():
 def main():
     try:
         atexit.register(cleanup)
-
-        socketFamily = socket.AF_INET
-        socketType = socket.SOCK_STREAM
-        serverSocket = socket.socket(socketFamily, socketType)
+        
+        serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         serverSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         serverSocket.bind((ipaddr, port))
         serverSocket.listen()
