@@ -163,6 +163,5 @@ server/users.db
 server/blacklist.txt
 server/messages.txt
 server/log.txt
-client/discord_webhook.py
-client/discord_bot.py
 discord/config.yml
+discord/webhook/discord_webhook_private.py
