@@ -1,5 +1,14 @@
 #!/usr/bin/env python3
 
+"""
+--- IMPORTANT ---
+--> SOON
+
+COMPLETE CLEANUP + BETTER CODE
+STARTING AT VERSION 1.8.0
+LAST BETA VERSION FOR V1.7.0 IS BETA 6
+"""
+
 import logging
 import atexit
 from colorama import Fore, Style
