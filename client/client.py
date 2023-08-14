@@ -182,10 +182,8 @@ def receive(sock):
 def main():
     global threadFlag
     colorama.init()
-
-    socketFamily = socket.AF_INET
-    socketType = socket.SOCK_STREAM
-    clientSocket = socket.socket(socketFamily, socketType)
+    
+    clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     
     try: 
         print(f"{Fore.YELLOW + Colors.BOLD}{Str[lang]['TryConnection']}{Fore.RESET + Colors.RESET}")
