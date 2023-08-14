@@ -164,3 +164,4 @@ server/blacklist.txt
 server/messages.txt
 server/log.txt
 client/discord_webhook.py
+client/discord_bot.py
