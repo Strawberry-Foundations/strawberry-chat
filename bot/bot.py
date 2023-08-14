@@ -96,10 +96,9 @@ def receive(sock):
 
 def main(host, port):
     global threadFlag
-    socketFamily = socket.AF_INET
-    socketType = socket.SOCK_STREAM
     global clientSocket
-    clientSocket = socket.socket(socketFamily, socketType)
+    
+    clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     
     
     try: 
