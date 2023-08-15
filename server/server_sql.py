@@ -111,7 +111,7 @@ chat_name               = "Strawberry Chat"
 codename                = "Vanilla Cake"
 server_edition          = "SQL Server"
 
-# Afk list
+# Lists & Sets
 afks = list([])
 blacklist = set()
 
@@ -154,6 +154,9 @@ class Colors:
     
 if "--enable-messages" in sys.argv:
     enable_messages = True
+
+if "--debug-mode" in sys.argv:
+    debug_mode = True
 
 # General Functions
 def userNickname(uname):
@@ -387,8 +390,7 @@ def clientThread(client):
                     client.send(f"{YELLOW + Colors.BOLD}junge niemand will sich hier die herr der ringe trilogie durchlesen{RESET + Colors.RESET}".encode("utf8"))
                     
                 elif rnd == 3:
-                    client.send(f"{YELLOW + Colors.BOLD}ne digga das liest sich doch keiner durch grundgesetz einfach. mach dich ab{RESET + Colors.RESET}".encode("utf8"))
-                    client.close()
+                    client.send(f"{YELLOW + Colors.BOLD}ne digga das liest sich doch keiner durch grundgesetz einfach.{RESET + Colors.RESET}".encode("utf8"))
                 continue
 
             # Blacklisted Word System
