@@ -1,7 +1,7 @@
 language: en_US
 server:
   0: 
-    name: chat.strawberrysoftware.xyz
+    name: chat.strawberryfoundations.xyz
     address: 65.21.77.13
     port: 49200
     verified: true
@@ -11,7 +11,7 @@ server:
       username: yourname
       password: yourpassword # Warning: This is very insecure
   1: 
-    name: chat.strawberrysoftware.xyz
+    name: chat.strawberryfoundations.xyz
     address: 65.21.77.13
     port: 49201
     verified: true
