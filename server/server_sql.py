@@ -17,7 +17,6 @@ import os
 import sys
 from os.path import exists
 
-import json
 import yaml
 from yaml import SafeLoader
 
@@ -93,22 +92,24 @@ server_dir = os.path.dirname(os.path.realpath(__file__))
 db = sql.connect(server_dir + "/users.db", check_same_thread=False)
 c = db.cursor()
 
-with open(server_dir + "/config.json", "r") as f:
-    config = json.load(f)
+# Open Configuration
+with open(server_dir + "/config.yml") as config_data:
+        config = yaml.load(config_data, Loader=SafeLoader)
 
 # Configuration
-ipaddr = config["address"]
-port = config["port"]
-enable_messages = config["enable_messages"]
-max_message_length = config["max_message_length"]
-debug_mode = config["debug_mode"]
+ipaddr                  = config['server']['address']
+port                    = config['server']['port']
+
+enable_messages         = config['flags']['enable_messages']
+max_message_length      = config['flags']['max_message_length']
+debug_mode              = config['flags']['debug_mode']
 
 # Version-specified Variables 
-short_ver = "1.7.0_b5"
-ver = short_ver + "-vc_sql"
-chat_name = "Strawberry Chat"
-codename = "Vanilla Cake"
-server_edition = "SQL Server"
+short_ver               = "1.7.0_b5"
+ver                     = short_ver + "-vc_sql"
+chat_name               = "Strawberry Chat"
+codename                = "Vanilla Cake"
+server_edition          = "SQL Server"
 
 # Afk list
 afks = list([])
