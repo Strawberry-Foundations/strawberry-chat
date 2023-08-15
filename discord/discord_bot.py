@@ -142,7 +142,7 @@ def main():
     # Start those threads
     receivingThread.start()
     sendingThread.start()
-    TOKEN = "MTA5OTgwMTE5ODEwMzYzMzkyMA.GTd-Mw.e8pXU7pp_U0z-tbgo5J3f1S4bsBZUgEyLmXpU8"
+    TOKEN = ":)"
     bot.run(TOKEN)
     
 
