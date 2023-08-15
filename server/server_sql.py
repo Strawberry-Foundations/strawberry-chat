@@ -390,7 +390,8 @@ def clientThread(client):
                     client.send(f"{YELLOW + Colors.BOLD}junge niemand will sich hier die herr der ringe trilogie durchlesen{RESET + Colors.RESET}".encode("utf8"))
                     
                 elif rnd == 3:
-                    client.send(f"{YELLOW + Colors.BOLD}ne digga das liest sich doch keiner durch grundgesetz einfach.{RESET + Colors.RESET}".encode("utf8"))
+                    client.send(f"{YELLOW + Colors.BOLD}ne digga das liest sich doch keiner durch grundgesetz einfach. mach dich ab{RESET + Colors.RESET}".encode("utf8"))
+                    client.close()
                 continue
 
             # Blacklisted Word System
