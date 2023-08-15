@@ -10,22 +10,25 @@ LAST BETA VERSION FOR V1.7.0 IS BETA 6
 READ https://github.com/Strawberry-Foundations/strawberry-chat/issues/17 FOR MORE INFORMATION
 """
 
+import socket
+import threading
+
+import os
+import sys
+from os.path import exists
+
+import json
+import yaml
+from yaml import SafeLoader
+
 import logging
 import atexit
 from colorama import Fore, Style
-import socket
-import threading
-import json
-import os
-from os.path import exists
-import sys
 import datetime
 import sqlite3 as sql
 import time
 import errno
 import random
-import yaml
-from yaml import SafeLoader
 
 
 # Alias for colorama colors
