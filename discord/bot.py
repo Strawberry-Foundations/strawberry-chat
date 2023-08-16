@@ -11,7 +11,6 @@ with open("config.yml", encoding="utf-8") as config:
 
 bot = commands.Bot(command_prefix='.',intents=discord.Intents.all())
 
-
 class DiscordBot(bot):
     def start_bot(self):
         try:
