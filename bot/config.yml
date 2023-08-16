@@ -1,7 +1,7 @@
 bot:
   id: 1234567890
   username: "Strawberry"
-  token: "TOKEN"
+  token: "QEAOyPaVCF6o-BJuIOaa0O1ss-psUTSjNyexNu"
 
 server:
   host: "192.168.0.157"
@@ -9,3 +9,4 @@ server:
 
 flags:
   enableUserInput: true
+  printReceivedMessagesToTerminal: false
