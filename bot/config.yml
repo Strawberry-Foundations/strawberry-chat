@@ -6,3 +6,6 @@ bot:
 server:
   host: "192.168.0.157"
   port: 8080
+
+flags:
+  enableUserInput: true
