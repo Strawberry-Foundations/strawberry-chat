@@ -28,4 +28,8 @@ def Commands():
             case "help":
                 Bot.send_message("Das kann ich noch nicht. Wie wärs wenn du dir mal die eingebauten Commands anschaust?")
 
-Bot.run(Commands)
+BotThread = threading.Thread(target=Bot.run)
+CommandThread = threading.Thread(target=Commands)
+
+BotThread.start()
+CommandThread.start()
