@@ -1,6 +1,8 @@
+import scapi
+from scapi import Scapi
+
 import yaml
 from yaml import SafeLoader
-from scapi import Scapi
 import threading
 
 with open("config.yml", encoding="utf-8") as config:
@@ -28,7 +30,12 @@ def Commands():
             case "!help":
                 Bot.send_message("Das kann ich noch nicht. Wie wärs wenn du dir mal die eingebauten Commands anschaust? Nutze dafür /help")
 
-BotThread = threading.Thread(target=Bot.run)
+
+@Bot.event
+def on_ready():
+    print(f"{Bot.log_msg}{scapi.BLUE}{Bot.username} started successfully!{scapi.RESET}")
+    
+BotThread = threading.Thread(target=Bot.run, args=(on_ready,))
 CommandThread = threading.Thread(target=Commands)
 
 BotThread.start()
