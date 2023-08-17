@@ -16,6 +16,7 @@ PURPLE = '\033[35m'
 CYAN = '\033[36m'
 WHITE = '\033[37m'
 
+version = "0.9.45b"
 
 class Scapi:
     class Bot:
@@ -27,6 +28,10 @@ class Scapi:
             self.port = port
             self.enableUserInput = enableUserInput
             self.printReceivedMessagesToTerminal = printReceivedMessagesToTerminal
+            
+            self.logger(f"{GREEN}Starting scapi.bot version {version}", type="info")
+            
+            self.count = 0
             
             try:
                 self.connect()
@@ -78,6 +83,11 @@ class Scapi:
                     
                 
                     if message:
+                        self.count = self.count + 1
+                
+                        if self.count > 3:
+                            self.logger(message, type="info")
+                        
                         if raw == False:
                             return message
                         
@@ -95,12 +105,11 @@ class Scapi:
                     self.disconnect()
                     threadFlag = False
         
-        def print_messages(self):
-            while threadFlag:
-                if message:
-                    self.logger(self.recv_message(), type="info")
+        # def print_messages(self):
+        #     while threadFlag:
+        #         if message:
+                    
             
-        
         def command(self, command_listener, ctx):
             def wrapper():
                 message = self.recv_message()
@@ -127,7 +136,7 @@ class Scapi:
         def disconnect(self):
             self.stbc_socket.close()
         
-        def run(self, command_listener):
+        def run(self):
             if self.enableUserInput is True:
                 self.logger(f"{YELLOW}Flag {GREEN + BOLD}'enableUserInput'{RESET + YELLOW} is enabled", type="info")
                 
@@ -138,11 +147,9 @@ class Scapi:
             
             recvThread = threading.Thread(target=self.recv_message)
             sendThread = threading.Thread(target=self.send)
-            printThread = threading.Thread(target=self.print_messages)
-            commandThread = threading.Thread(target=command_listener)
+            # printThread = threading.Thread(target=self.print_messages)
             
             recvThread.start()
             sendThread.start()
-            printThread.start()
-            commandThread.start()
+            # printThread.start()
             
