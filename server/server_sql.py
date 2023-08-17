@@ -493,7 +493,7 @@ def clientThread(client):
                     continue
                 
                 try:
-                    c.execute("SELECT username, nickname, badge, role, role_color, description, badges, discord_name FROM users WHERE username = ?", (uname,))
+                    c.execute("SELECT username, nickname, badge, role, role_color, description, badges, discord_name, user_id FROM users WHERE username = ?", (uname,))
                     
                 except:
                     client.send(f"{RED + Colors.BOLD}User not found.{RESET + Colors.RESET}".encode("utf8"))
@@ -578,7 +578,7 @@ def clientThread(client):
                     client.send(
                         f"""{CYAN + Colors.BOLD + Colors.UNDERLINE}User information about {row[0]}{RESET + Colors.RESET}
         {GREEN + Colors.BOLD}Username:{RESET + userRoleColor(row[0])} @{row[0].lower()}{RESET + Colors.RESET}
-        {GREEN + Colors.BOLD}User-ID:{RESET + LIGHTBLUE_EX} 0{RESET + Colors.RESET}
+        {GREEN + Colors.BOLD}User-ID:{RESET + LIGHTBLUE_EX} {row[8]}{RESET + Colors.RESET}
         {GREEN + Colors.BOLD}Nickname:{RESET + Colors.BOLD} {nickname}{RESET + Colors.RESET}
         {GREEN + Colors.BOLD}Description:{RESET + Colors.BOLD} {description}{RESET + Colors.RESET}
         {GREEN + Colors.BOLD}Main Badge:{RESET + Colors.BOLD} {badge}{RESET + Colors.RESET}
