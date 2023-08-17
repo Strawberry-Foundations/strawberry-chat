@@ -1,0 +1,10 @@
+bot:
+  channel_id: 1140708601372086313
+  token: ":)"
+
+stbchat:
+  username: "discord"
+  password: "discord"
+  server:
+    host: "192.168.0.157"
+    port: 8080
