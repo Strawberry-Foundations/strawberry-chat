@@ -25,8 +25,8 @@ def Commands():
             case "Hallo":
                 Bot.send_message("Hallo :D")
             
-            case "help":
-                Bot.send_message("Das kann ich noch nicht. Wie wärs wenn du dir mal die eingebauten Commands anschaust?")
+            case "!help":
+                Bot.send_message("Das kann ich noch nicht. Wie wärs wenn du dir mal die eingebauten Commands anschaust? Nutze dafür /help")
 
 BotThread = threading.Thread(target=Bot.run)
 CommandThread = threading.Thread(target=Commands)
