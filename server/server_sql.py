@@ -1130,7 +1130,7 @@ def clientThread(client):
                     client.close()
                     
                     log.info(f"[<] {address} ({user}) has left.")
-                    broadcast(f"{YELLOW + Colors.BOLD}<- {userRoleColor(user)}{user}{YELLOW + Colors.BOLD} has left the chat.{RESET + Colors.RESET}")
+                    broadcast(f"{Colors.GRAY + Colors.BOLD}<--{Colors.RESET} {userRoleColor(user)}{user}{YELLOW + Colors.BOLD} has left the chat room!{RESET + Colors.RESET}")
                     break
 
 

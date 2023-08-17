@@ -78,7 +78,7 @@ class Scapi:
                     
                     if message:
                         if self.printReceivedMessagesToTerminal == True:
-                            print(message)
+                            self.logger(message, type="info")
                             
                         else:
                             pass
