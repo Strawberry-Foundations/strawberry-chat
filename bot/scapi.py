@@ -19,13 +19,12 @@ WHITE = '\033[37m'
 
 class Scapi:
     class Bot:
-        def __init__(self, username, token, host, port, prefix, enableUserInput=False, printReceivedMessagesToTerminal=False):
+        def __init__(self, username, token, host, port, enableUserInput=False, printReceivedMessagesToTerminal=False):
             self.stbc_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.username = username
             self.token = token
             self.host = host
             self.port = port
-            self.prefix = prefix
             self.enableUserInput = enableUserInput
             self.printReceivedMessagesToTerminal = printReceivedMessagesToTerminal
             
@@ -128,7 +127,7 @@ class Scapi:
         def disconnect(self):
             self.stbc_socket.close()
         
-        def run(self):
+        def run(self, command_listener):
             if self.enableUserInput is True:
                 self.logger(f"{YELLOW}Flag {GREEN + BOLD}'enableUserInput'{RESET + YELLOW} is enabled", type="info")
                 
@@ -136,10 +135,14 @@ class Scapi:
                 self.logger(f"{YELLOW}Flag {GREEN + BOLD}'printReceivedMessagesToTerminal'{RESET + YELLOW} is enabled", type="info")
                 
             time.sleep(0.5)
+            
             recvThread = threading.Thread(target=self.recv_message)
             sendThread = threading.Thread(target=self.send)
             printThread = threading.Thread(target=self.print_messages)
+            commandThread = threading.Thread(target=command_listener)
+            
             recvThread.start()
             sendThread.start()
             printThread.start()
+            commandThread.start()
             
