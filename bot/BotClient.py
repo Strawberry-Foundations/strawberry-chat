@@ -29,6 +29,9 @@ def Commands():
             
             case "!help":
                 Bot.send_message("Das kann ich noch nicht. Wie wärs wenn du dir mal die eingebauten Commands anschaust? Nutze dafür /help")
+            
+            case "!about":
+                Bot.send_message(f"{Bot.username} Bot BETA VERSION! Not finished yet")
 
 
 @Bot.event
