@@ -105,7 +105,7 @@ max_message_length      = config['flags']['max_message_length']
 debug_mode              = config['flags']['debug_mode']
 
 # Version-specified Variables 
-short_ver               = "1.7.0_b5"
+short_ver               = "1.7.0_b6"
 ver                     = short_ver + "-vc_sql"
 chat_name               = "Strawberry Chat"
 codename                = "Vanilla Cake"
