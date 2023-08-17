@@ -20,6 +20,7 @@ news:
     - NEW: Member Command to show registered users\n
     - NEW: User info command to show information about a user\n
     - NEW: New general messages with chat color support & more\n
+    - NEW: A new bot api for bots is comming to Strawberry Chat!\n
     - ADMIN: Broadcast Command, Mute Command, Role set/get/color Command, Command and Ban Command\n
     - FIX: Fixed many many bugs\n
     -> For more information visit https://github.com/orgs/Strawberry-Foundations/projects/1/views/1"
