@@ -160,12 +160,10 @@ cython_debug/
 #.idea/
 
 client/config.yml
-discord/config.yml
 server/users.db
 server/blacklist.txt
 server/messages.txt
 server/log.txt
 discord/webhook/discord_webhook_private.py
-discord/DiscordBot.py
 deprecated/kickcommand.txt
 bot/config.yml
