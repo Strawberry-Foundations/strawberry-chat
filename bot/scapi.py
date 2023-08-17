@@ -69,27 +69,50 @@ class Scapi:
                         print("Message could not be sent")
                         break
         
-        def recv_message(self):
+        def recv_message(self, raw=False):
+            global threadFlag
             threadFlag = True
             try:
                 while threadFlag:
                     global message
                     message = self.stbc_socket.recv(2048).decode()
                     
+                
                     if message:
-                        if self.printReceivedMessagesToTerminal == True:
-                            self.logger(message, type="info")
-                            
-                        else:
-                            pass
+                        if raw == False:
+                            return message
                         
+                        elif raw == True:
+                            index = message.find(":")
+                            msg_splitted = message[index + 2:]
+                            return msg_splitted
                     else:
                         break
+                        
+                    
                     
             except (KeyboardInterrupt, SystemExit):
                 while threadFlag:
                     self.disconnect()
                     threadFlag = False
+        
+        def print_messages(self):
+            while threadFlag:
+                if message:
+                    self.logger(self.recv_message(), type="info")
+            
+        
+        def command(self, command_listener, ctx):
+            def wrapper():
+                message = self.recv_message()
+                index = message.find(":")
+                part = message[index + 2:]
+                
+                if part == command_listener:
+                    ctx()
+                    
+            return wrapper
+            
         
         def login(self):
             self.stbc_socket.send(self.username.encode("utf8"))
@@ -108,13 +131,15 @@ class Scapi:
         def run(self):
             if self.enableUserInput is True:
                 self.logger(f"{YELLOW}Flag {GREEN + BOLD}'enableUserInput'{RESET + YELLOW} is enabled", type="info")
+                
             if self.printReceivedMessagesToTerminal is True:
                 self.logger(f"{YELLOW}Flag {GREEN + BOLD}'printReceivedMessagesToTerminal'{RESET + YELLOW} is enabled", type="info")
-            
-            print()
+                
             time.sleep(0.5)
             recvThread = threading.Thread(target=self.recv_message)
             sendThread = threading.Thread(target=self.send)
+            printThread = threading.Thread(target=self.print_messages)
             recvThread.start()
             sendThread.start()
+            printThread.start()
             
