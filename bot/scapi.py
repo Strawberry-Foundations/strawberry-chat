@@ -23,6 +23,8 @@ class Scapi:
         class type:
             info = "info"
             error = "error"
+            msg = "msg"
+            message = "msg"
             
         def __init__(self, username, token, host, port, enableUserInput=False, printReceivedMessagesToTerminal=False):
             self.stbc_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -47,9 +49,11 @@ class Scapi:
 
         def logger(self, message, type):
             if type.lower() == "info":
-                print(f"{CYAN + BOLD}{datetime.date.today().strftime('%Y-%m-%d')} {datetime.datetime.now().strftime('%H:%M:%S')}  {BLUE}{type.upper()}   scapi  -->  {RESET}{message}{RESET}")            
+                print(f"{CYAN + BOLD}{datetime.date.today().strftime('%Y-%m-%d')} {datetime.datetime.now().strftime('%H:%M:%S')}  {BLUE}{type.upper()}{BLUE}   scapi  -->  {RESET}{message}{RESET}")            
             elif type.lower() == "error":
-                print(f"{CYAN + BOLD}{datetime.date.today().strftime('%Y-%m-%d')} {datetime.datetime.now().strftime('%H:%M:%S')}  {RED}{type.upper()}  scapi  -->  {RESET}{message}{RESET}")            
+                print(f"{CYAN + BOLD}{datetime.date.today().strftime('%Y-%m-%d')} {datetime.datetime.now().strftime('%H:%M:%S')}  {RED}{type.upper()}{BLUE}  scapi  -->  {RESET}{message}{RESET}")            
+            elif type.lower() == "msg":
+                print(f"{CYAN + BOLD}{datetime.date.today().strftime('%Y-%m-%d')} {datetime.datetime.now().strftime('%H:%M:%S')}  {GREEN}{type.upper()}{BLUE}    scapi  -->  {RESET}{message}{RESET}")            
             
         
         def flagHandler(self, enableUserInput=False, printReceivedMessagesToTerminal=False):
@@ -91,7 +95,7 @@ class Scapi:
                         self.count = self.count + 1
                 
                         if self.count > 3:
-                            self.logger(message, type=self.type.info)
+                            self.logger(message, type=self.type.msg)
                         
                         if raw == False:
                             return message
