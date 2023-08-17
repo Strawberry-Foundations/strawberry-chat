@@ -1,7 +1,7 @@
 bot:
   id: 0000-0005
   username: "Strawberry"
-  token: "QEAOyPaVCF6o-BJuIOaa0O1ss-psUTSjNyexNu"
+  token: "test"
   prefix: "!"
 
 server:
