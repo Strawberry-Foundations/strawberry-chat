@@ -16,10 +16,14 @@ PURPLE = '\033[35m'
 CYAN = '\033[36m'
 WHITE = '\033[37m'
 
-version = "0.9.45b"
+version = "0.9.50b"
 
 class Scapi:
     class Bot:
+        class type:
+            info = "info"
+            error = "error"
+            
         def __init__(self, username, token, host, port, enableUserInput=False, printReceivedMessagesToTerminal=False):
             self.stbc_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.username = username
@@ -29,17 +33,18 @@ class Scapi:
             self.enableUserInput = enableUserInput
             self.printReceivedMessagesToTerminal = printReceivedMessagesToTerminal
             
-            self.logger(f"{GREEN}Starting scapi.bot version {version}", type="info")
+            self.logger(f"{GREEN}Starting scapi.bot version {version}", type=self.type.info)
             
             self.count = 0
+            self.log_msg = f"{CYAN + BOLD}{datetime.date.today().strftime('%Y-%m-%d')} {datetime.datetime.now().strftime('%H:%M:%S')}  {BLUE}INFO   scapi  -->  {RESET}"
             
             try:
                 self.connect()
                 
             except: 
-                self.logger(f"{RED}Could not connect to server", type="error")
+                self.logger(f"{RED}Could not connect to server", type=self.type.error)
                 exit()
-        
+
         def logger(self, message, type):
             if type.lower() == "info":
                 print(f"{CYAN + BOLD}{datetime.date.today().strftime('%Y-%m-%d')} {datetime.datetime.now().strftime('%H:%M:%S')}  {BLUE}{type.upper()}   scapi  -->  {RESET}{message}{RESET}")            
@@ -86,7 +91,7 @@ class Scapi:
                         self.count = self.count + 1
                 
                         if self.count > 3:
-                            self.logger(message, type="info")
+                            self.logger(message, type=self.type.info)
                         
                         if raw == False:
                             return message
@@ -104,52 +109,38 @@ class Scapi:
                 while threadFlag:
                     self.disconnect()
                     threadFlag = False
-        
-        # def print_messages(self):
-        #     while threadFlag:
-        #         if message:
-                    
-            
-        def command(self, command_listener, ctx):
-            def wrapper():
-                message = self.recv_message()
-                index = message.find(":")
-                part = message[index + 2:]
+
                 
-                if part == command_listener:
-                    ctx()
-                    
-            return wrapper
-            
-        
         def login(self):
             self.stbc_socket.send(self.username.encode("utf8"))
             time.sleep(1)
             self.stbc_socket.send(self.token.encode("utf8"))
             
         def connect(self):
-            self.logger(f"{YELLOW}Connecting to {PURPLE}{self.host}:{self.port} {RESET + YELLOW}...", type="info")
+            self.logger(f"{YELLOW}Connecting to {PURPLE}{self.host}:{self.port} {RESET + YELLOW}...", type=self.type.info)
             self.stbc_socket.connect((self.host, self.port))
-            self.logger(f"{GREEN}Connected", type="info")
+            self.logger(f"{GREEN}Connected", type=self.type.info)
             
             
         def disconnect(self):
             self.stbc_socket.close()
-        
-        def run(self):
+            
+        def event(self, func):
+            setattr(self, func.__name__, func)
+            return func
+            
+        def run(self, ready_func):
             if self.enableUserInput is True:
-                self.logger(f"{YELLOW}Flag {GREEN + BOLD}'enableUserInput'{RESET + YELLOW} is enabled", type="info")
+                self.logger(f"{YELLOW}Flag {GREEN + BOLD}'enableUserInput'{RESET + YELLOW} is enabled", type=self.type.info)
                 
             if self.printReceivedMessagesToTerminal is True:
-                self.logger(f"{YELLOW}Flag {GREEN + BOLD}'printReceivedMessagesToTerminal'{RESET + YELLOW} is enabled", type="info")
+                self.logger(f"{YELLOW}Flag {GREEN + BOLD}'printReceivedMessagesToTerminal'{RESET + YELLOW} is enabled", type=self.type.info)
                 
             time.sleep(0.5)
+            ready_func()
             
             recvThread = threading.Thread(target=self.recv_message)
             sendThread = threading.Thread(target=self.send)
-            # printThread = threading.Thread(target=self.print_messages)
             
             recvThread.start()
             sendThread.start()
-            # printThread.start()
-            
