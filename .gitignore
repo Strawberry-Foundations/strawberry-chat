@@ -158,8 +158,8 @@ cython_debug/
 #  and can be added to the global gitignore or merged into this file.  For a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
+
 client/config.yml
-bot/config.yml
 discord/config.yml
 server/users.db
 server/blacklist.txt
@@ -168,3 +168,4 @@ server/log.txt
 discord/webhook/discord_webhook_private.py
 discord/DiscordBot.py
 deprecated/kickcommand.txt
+bot/
