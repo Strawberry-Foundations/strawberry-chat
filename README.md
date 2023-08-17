@@ -1,5 +1,5 @@
 # [Strawberry Chat](https://github.com/orgs/Strawberry-Foundations/projects/1)
-![stbchat- v1.7.0_b5](https://img.shields.io/badge/stbchat-1.7.0__b5-success) ![stbchat- v1.7.0_b5](https://img.shields.io/badge/stbchat_alpha-Soon:_1.8.0__a1-success) ![codename](https://img.shields.io/badge/Codename-Vanilla_Cake-cyan) ![Code Size](https://img.shields.io/github/languages/code-size/Strawberry-Foundations/strawberry-chat) ![Commit activity](https://img.shields.io/github/commit-activity/w/Strawberry-Foundations/strawberry-chat) ![License](https://img.shields.io/github/license/Strawberry-Foundations/strawberry-chat)<br>![100commits](https://img.shields.io/badge/100_Commits_in_5_days-success) ![150commits](https://img.shields.io/badge/150_Commits_in_6_days-cyan) ![200commits](https://img.shields.io/badge/200_Commits_in_7_days-gold)<br>
+![stbchat- v1.7.0_b6](https://img.shields.io/badge/stbchat-1.7.0__b6-success) ![stbchat- v1.8.0](https://img.shields.io/badge/stbchat_alpha-Soon:_1.8.0__a1-success) ![codename](https://img.shields.io/badge/Codename-Vanilla_Cake-cyan) ![Code Size](https://img.shields.io/github/languages/code-size/Strawberry-Foundations/strawberry-chat) ![Commit activity](https://img.shields.io/github/commit-activity/w/Strawberry-Foundations/strawberry-chat) ![License](https://img.shields.io/github/license/Strawberry-Foundations/strawberry-chat)<br>![100commits](https://img.shields.io/badge/100_Commits_in_5_days-success) ![150commits](https://img.shields.io/badge/150_Commits_in_6_days-cyan) ![200commits](https://img.shields.io/badge/200_Commits_in_7_days-gold)<br>
 The universal chatting platform for your terminal!
 
 ## Important note: Complete code will be reviewed and revised/reworked soon.
@@ -12,7 +12,7 @@ Strawberry Chat is a simple chat platform based on Python TCP sockets. It allows
 My goal was to develop a chat app for the terminal, which is not only minimal, but also useful. Strawberry Chat is actively developing and getting more and more features - and the best thing is, everything is free and stays free! 
 In addition, Strawberry Chat is open source. This means that everyone can contribute to the project. Also, every user can create his own server if he/she wants to chat privately with his/her friends - we are happy about every single user and accept everyone with a warm heart! 
 
-## Current state ![beta](https://img.shields.io/badge/Beta_5_--_v1.7.0-success)
+## Current state ![beta](https://img.shields.io/badge/Beta_6_--_v1.7.0-success)
 Currently, Strawberry Chat is being developed a lot, even almost daily. Currently we are in a middle **beta** stage. The big part already exists and Strawberry Chat is well usable, but there are still some things missing, ***including some admin commands, and very important bug fixes and security features, like encryption.***
 
 ## Disclaimer 
@@ -38,6 +38,6 @@ I don't want to see issues that talk about that encryption doesn't exist and how
 ### Server
 | Name                                                                             | Author                                                              | State                   | Version                                                                  |
 | --                                                                     | --                                                        | --                      | --                                                                       |
-| stbserver ![official](https://img.shields.io/badge/Official-success)  | [Strawberry-Foundations](https://github.com/Strawberry-Foundations) | ![state](https://img.shields.io/badge/Open--Source-success) ![state](https://img.shields.io/badge/Available-success)  | ![version](https://img.shields.io/badge/v1.7.0__b5-success)              |
+| stbserver ![official](https://img.shields.io/badge/Official-success)  | [Strawberry-Foundations](https://github.com/Strawberry-Foundations) | ![state](https://img.shields.io/badge/Open--Source-success) ![state](https://img.shields.io/badge/Available-success)  | ![version](https://img.shields.io/badge/v1.7.0__b6-success)              |
 | slfcserver ![official](https://img.shields.io/badge/Official-success) | [Strawberry-Foundations](https://github.com/Strawberry-Foundations) | ![version](https://img.shields.io/badge/Discontinued-orange) ![state](https://img.shields.io/badge/Available-success) | ![version](https://img.shields.io/badge/v1.2.0-orange)                   |
 
