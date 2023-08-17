@@ -166,3 +166,4 @@ server/log.txt
 discord/config.yml
 discord/webhook/discord_webhook_private.py
 discord/DiscordBot.py
+deprecated/kickcommand.txt
