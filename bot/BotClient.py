@@ -10,8 +10,9 @@ username    = conf["bot"]["username"]
 token       = conf["bot"]["token"]
 host        = conf["server"]["host"]
 port        = conf["server"]["port"]
+prefix      = conf["bot"]["prefix"]
 
-Bot = Scapi.Bot(username=username, token=token, host=host, port=port, prefix="!")
+Bot = Scapi.Bot(username=username, token=token, host=host, port=port)
 Bot.login()
 Bot.flagHandler(printReceivedMessagesToTerminal=True, enableUserInput=True)
 
@@ -27,8 +28,4 @@ def Commands():
             case "help":
                 Bot.send_message("Das kann ich noch nicht. Wie wärs wenn du dir mal die eingebauten Commands anschaust?")
 
-BotThread = threading.Thread(target=Bot.run)
-CommandThread = threading.Thread(target=Commands)
-
-BotThread.start()
-CommandThread.start()
+Bot.run(Commands)
