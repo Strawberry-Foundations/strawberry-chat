@@ -40,6 +40,9 @@ LIGHTCYAN_EX    = Fore.LIGHTCYAN_EX
 LIGHTWHITE_EX   = Fore.LIGHTWHITE_EX
 
 api = "http://192.168.0.157:8081/v1/"
+ver = "2.2.0_beta"
+author = "Juliandev02"
+
 try:
     requests.get(api)
     
@@ -69,8 +72,7 @@ if lang not in langs:
     time.sleep(1)
     lang = "en_US"
     
-ver = "2.1.4_beta"
-author = "Juliandev02"
+
 useSysArgv = False
 
 def isVerified(addr):
