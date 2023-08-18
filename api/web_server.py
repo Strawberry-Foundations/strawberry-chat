@@ -18,9 +18,9 @@ def ajson(json_file):
 def index():
     return ajson("api_index")
 
-@app.route('/v1/test', methods=['GET', 'POST'])
-def test():
-    return "stbchat"
+@app.route('/v1/', methods=['GET', 'POST'])
+def v1_index():
+    return ajson("api_index")
 
 @app.route('/v1/server/verified', methods=['GET', 'POST'])
 def server_verified():
