@@ -39,33 +39,44 @@ LIGHTMAGENTA_EX = Fore.LIGHTMAGENTA_EX
 LIGHTCYAN_EX    = Fore.LIGHTCYAN_EX
 LIGHTWHITE_EX   = Fore.LIGHTWHITE_EX
 
-api = "http://192.168.0.157:8081/v1/"
-ver = "2.2.0_beta"
-author = "Juliandev02"
+# Path of client.py
+client_dir = os.path.dirname(os.path.realpath(__file__))
 
+
+# Open Configuration
+with open(client_dir + "/config.yml") as config:
+        data = yaml.load(config, Loader=SafeLoader)
+
+
+# Variables
+lang            = data['language']
+autoserver      = data['autoserver']['status']
+autoserver_id   = data['autoserver']['server_id']
+
+langs           = ["de_DE", "en_US"]
+
+api             = "http://192.168.0.157:8081/v1/"
+# api             = "http://api.strawberryfoundations.xyz/v1/"
+ver             = "2.3.0-pre-release"
+author          = "Juliandev02"
+use_sys_argv      = False
+
+
+# Open language strings
+with open(client_dir + "/lang.yml", encoding="utf-8") as langStrings:
+        Str = yaml.load(langStrings, Loader=SafeLoader)
+
+
+# Try requesting our api server
 try:
     requests.get(api)
     
 except: 
     print(f"{RED + Colors.UNDERLINE}Connection Error{RESET + Colors.RESET}")
     print(f"{YELLOW}The server did not give a valid answer.\nEither the Strawberry API servers are overloaded, or offline. Please try again later{RESET}")
+ 
 
-# Path of client.py
-client_dir = os.path.dirname(os.path.realpath(__file__))
-
-# Open Configuration
-with open(client_dir + "/config.yml") as config:
-        data = yaml.load(config, Loader=SafeLoader)
-
-lang = data['language']
-langs = ["de_DE", "en_US"]
-
-with open(client_dir + "/lang.yml", encoding="utf-8") as langStrings:
-        Str = yaml.load(langStrings, Loader=SafeLoader)
-
-
-
-
+# check if language is available
 if lang not in langs:
     print(f"{Fore.RED + Colors.BOLD}Error loading selected language is not available.")
     print(f"{Fore.YELLOW + Colors.BOLD}Falling back to en_US\n")
@@ -73,8 +84,7 @@ if lang not in langs:
     lang = "en_US"
     
 
-useSysArgv = False
-
+# Check verification of a server
 def isVerified(addr):
     try:
         verified = requests.get(api + "server/verified?addr=" + addr)
@@ -87,9 +97,24 @@ def isVerified(addr):
     except Exception as e: 
         print(e)
 
+# Return current time
+def currentTime():
+    now = datetime.datetime.now()
+    formattedTime = now.strftime("%H:%M")
+    return formattedTime
+
+# Delete last line to now show the written message
+def deleteLastLine():
+    cursorUp = "\x1b[1A"
+    eraseLine = "\x1b[2K"
+    sys.stdout.write(cursorUp)
+    sys.stdout.write(eraseLine)
+
+
+# If --server is in the arguments, skip server selection input
 if len(sys.argv) >= 2:
     if sys.argv[1] == "--server":
-        useSysArgv = True
+        use_sys_argv = True
         server_selection = sys.argv[2]
         host = data["server"][(int(server_selection) - 1)]["address"]
         port = data["server"][(int(server_selection) - 1)]["port"]
@@ -105,6 +130,7 @@ if len(sys.argv) >= 2:
         print(f"{Fore.RED + Colors.BOLD}{Str[lang]['InvalidArgument']}{Fore.RESET + Colors.RESET}")
         sys.exit(1)
 
+# If no arguments passed, start client without any special functions
 else:
     print(f"{Fore.CYAN + Colors.BOLD + Colors.UNDERLINE}Strawberry Chat Client (stbchat) (v{ver}){Colors.RESET}")
     print(f"{Fore.LIGHTGREEN_EX}{Str[lang]['Welcome']}{Fore.RESET}\n")
@@ -156,21 +182,8 @@ else:
             pass
     
 
-def currentTime():
-    now = datetime.datetime.now()
-    formattedTime = now.strftime("%H:%M")
-    return formattedTime
-
-
-def deleteLastLine():
-    cursorUp = "\x1b[1A"
-    eraseLine = "\x1b[2K"
-    sys.stdout.write(cursorUp)
-    sys.stdout.write(eraseLine)
-
-
 def send(sock):
-    if useSysArgv == True:
+    if use_sys_argv == True:
         if enableAutologin == True:
             print(f"{Fore.GREEN + Colors.BOLD}{Str[lang]['AutologinActive']}{Fore.RESET + Colors.RESET}\n")
             sock.send(f"{data['server'][(int(server_selection) - 1)]['credentials']['username']}".encode("utf8"))
@@ -231,7 +244,7 @@ def main():
         print(f"{Fore.RED + Colors.BOLD}{Str[lang]['ErrNotReachable']}{Fore.RESET + Colors.RESET}")
         sys.exit(1)
     
-    if useSysArgv == True:
+    if use_sys_argv == True:
         pass
     
     elif server_selection == custom_server_sel:
