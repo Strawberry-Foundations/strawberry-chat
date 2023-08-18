@@ -10,6 +10,42 @@ import threading
 import yaml
 from yaml import SafeLoader
 import time
+import requests
+
+# Color Variables
+class Colors:
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+    RESET = '\033[0m'
+    GRAY = "\033[90m"
+
+# Alias for colorama colors
+BLACK           = Fore.BLACK
+RED             = Fore.RED
+GREEN           = Fore.GREEN
+YELLOW          = Fore.YELLOW
+BLUE            = Fore.BLUE
+MAGENTA         = Fore.MAGENTA
+CYAN            = Fore.CYAN
+WHITE           = Fore.WHITE
+RESET           = Fore.RESET
+
+LIGHTBLACK_EX   = Fore.LIGHTBLACK_EX
+LIGHTRED_EX     = Fore.LIGHTRED_EX
+LIGHTGREEN_EX   = Fore.LIGHTGREEN_EX
+LIGHTYELLOW_EX  = Fore.LIGHTYELLOW_EX
+LIGHTBLUE_EX    = Fore.LIGHTBLUE_EX
+LIGHTMAGENTA_EX = Fore.LIGHTMAGENTA_EX
+LIGHTCYAN_EX    = Fore.LIGHTCYAN_EX
+LIGHTWHITE_EX   = Fore.LIGHTWHITE_EX
+
+api = "http://192.168.0.157:8080/v1/"
+try:
+    requests.get(api)
+    
+except: 
+    print(f"{RED + Colors.UNDERLINE}Connection Error{RESET + Colors.RESET}")
+    print(f"{YELLOW}The server did not give a valid answer.\nEither the Strawberry API servers are overloaded, or offline. Please try again later{RESET}")
 
 # Path of client.py
 client_dir = os.path.dirname(os.path.realpath(__file__))
@@ -25,12 +61,7 @@ with open(client_dir + "/lang.yml", encoding="utf-8") as langStrings:
         Str = yaml.load(langStrings, Loader=SafeLoader)
 
 
-# Color Variables
-class Colors:
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
-    RESET = '\033[0m'
-    GRAY = "\033[90m"
+
 
 if lang not in langs:
     print(f"{Fore.RED + Colors.BOLD}Error loading selected language is not available.")
@@ -42,12 +73,17 @@ ver = "2.1.4_beta"
 author = "Juliandev02"
 useSysArgv = False
 
-def isVerified(index):
-    verified = data["server"][index]["verified"]
-    if verified == True:
-        return f"[{Str[lang]['Verified']}] "
-    else:
-        return ""
+def isVerified(addr):
+    try:
+        verified = requests.get(api + "server/verified?addr=" + addr)
+        
+        if verified.text == "True":
+            return f"[{Str[lang]['Verified']}] "
+        else:
+            return ""
+        
+    except Exception as e: 
+        print(e)
 
 if len(sys.argv) >= 2:
     if sys.argv[1] == "--server":
@@ -73,7 +109,7 @@ else:
     print(f"{Fore.GREEN + Colors.BOLD + Colors.UNDERLINE}{Str[lang]['AvailableServers']}:{Fore.RESET + Colors.RESET}")
 
     for i in range(len(data["server"])):
-        print(f"{Fore.LIGHTBLUE_EX}[{i + 1}]{Fore.RESET} {Colors.BOLD}{data['server'][i]['name']}{Colors.RESET} {Fore.LIGHTCYAN_EX}{isVerified(i)}{Fore.RESET}{Fore.LIGHTYELLOW_EX}({data['server'][i]['type']})")
+        print(f"{Fore.LIGHTBLUE_EX}[{i + 1}]{Fore.RESET} {Colors.BOLD}{data['server'][i]['name']}{Colors.RESET} {Fore.LIGHTCYAN_EX}{isVerified(data['server'][i]['address'])}{Fore.RESET}{Fore.LIGHTYELLOW_EX}({data['server'][i]['type']})")
 
     print(f"{Fore.LIGHTBLUE_EX}[{len(data['server']) + 1}]{Fore.RESET} {Colors.BOLD}{Str[lang]['Custom']}{Colors.RESET}\n")
 
