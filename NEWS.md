@@ -6,7 +6,7 @@
 - NEW: Changed Chat Name from Salware Chat to Strawberry Chat
 - FIX: Fixed general formatting errors
 
-# v1.7.0_b4
+# v1.7.0_pre-release-1
 - NEW: Bots are here!
        You can now create and program your own bots - so
        you can create your own commands, independent of the server! 
