@@ -39,7 +39,7 @@ LIGHTMAGENTA_EX = Fore.LIGHTMAGENTA_EX
 LIGHTCYAN_EX    = Fore.LIGHTCYAN_EX
 LIGHTWHITE_EX   = Fore.LIGHTWHITE_EX
 
-api = "http://192.168.0.157:8080/v1/"
+api = "http://192.168.0.157:8081/v1/"
 try:
     requests.get(api)
     
