@@ -1,7 +1,7 @@
 # [Strawberry Chat](https://github.com/orgs/Strawberry-Foundations/projects/1)
 ![Latest Release](https://img.shields.io/badge/Latest_Release-1.7.0__b6-success) ![In Development](https://img.shields.io/badge/In_Development-_1.8.0__a1-success) ![Codename](https://img.shields.io/badge/Codename-Vanilla_Cake-darkred)<br>
 ![Code Size](https://img.shields.io/github/languages/code-size/Strawberry-Foundations/strawberry-chat) ![Commit activity](https://img.shields.io/github/commit-activity/w/Strawberry-Foundations/strawberry-chat) ![License](https://img.shields.io/github/license/Strawberry-Foundations/strawberry-chat)<br>
-![Commit](https://img.shields.io/badge/100_Commits_in_5_days-success) ![Commit](https://img.shields.io/badge/150_Commits_in_6_days-cyan) ![Commit](https://img.shields.io/badge/200_Commits_in_7_days-gold)<br>
+![Commit](https://img.shields.io/badge/100_Commits_in_5_days-success) ![Commit](https://img.shields.io/badge/150_Commits_in_6_days-cyan) ![Commit](https://img.shields.io/badge/200_Commits_in_7_days-gold) ![Commit](https://img.shields.io/badge/300_Commits_in_10_days-darkblue)<br>
 The universal chatting platform for your terminal!
 
 ## Important note: Complete code will be reviewed and revised/reworked soon.
