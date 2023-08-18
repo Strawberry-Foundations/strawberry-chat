@@ -470,9 +470,6 @@ def clientThread(client):
                     
                 res = c.fetchone()
                 
-                print(cmd)
-                
-                
                 if cmd == "set":       
                     if res[0] == "admin":              
                         if len(args) == 3:
