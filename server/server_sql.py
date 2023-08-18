@@ -105,7 +105,7 @@ max_message_length      = config['flags']['max_message_length']
 debug_mode              = config['flags']['debug_mode']
 
 # Version-specified Variables 
-short_ver               = "1.7.0_b6"
+short_ver               = "1.7.0_pre-release-1"
 ver                     = short_ver + "-vc_sql"
 chat_name               = "Strawberry Chat"
 codename                = "Vanilla Cake"
@@ -293,7 +293,7 @@ def doesUserExist(uname):
     
     
 # News
-news = f"""{GREEN +  Colors.UNDERLINE + Colors.BOLD}{chat_name} News - v1.7.0 (Beta){RESET + Colors.RESET}{CYAN + Colors.BOLD}
+news = f"""{GREEN +  Colors.UNDERLINE + Colors.BOLD}{chat_name} News - v1.7.0 (Pre-Release){RESET + Colors.RESET}{CYAN + Colors.BOLD}
         - NEW: Bots are here!
                You can now create and program your own bots - so
                you can create your own commands, independent of the server! 

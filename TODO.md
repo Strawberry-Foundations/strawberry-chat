@@ -2,19 +2,14 @@
 Also see [Project/Strawberry Chat](https://github.com/orgs/Strawberry-Foundations/projects/1/views/1)
 
 # Fixes & Bugs
-- Fix interrupt bug 
-- Fix BrokenPipe
-- General fixes
-- When using Ctrl + C in Client, the server will crash ([#1](https://github.com/Strawberry-Foundations/strawberry-chat/issues/1))
+- When using Ctrl + C in Client, the server will crash (BrokenPipe) ([#1](https://github.com/Strawberry-Foundations/strawberry-chat/issues/1))
+- UTF-8 Only Protection
 
 # Todo
 - ^C Protection to prevent users crashing the server (Why? See ([#1](https://github.com/Strawberry-Foundations/strawberry-chat/issues/1)))
-- Nickname subcommand to change nickname from other users (Admin Command)
 
 # Ideas
-- UTF-8 Only Protection
 - Documentation for developers
-- Broadcast Command with Colors using #(red)Hello World for example
 
 # SBC+ (Strawberry Chat+)
 If you are a relatively active user, you start with SBC+ Basic. The more activity, the higher the chance to get the "normal" SBC+. 
