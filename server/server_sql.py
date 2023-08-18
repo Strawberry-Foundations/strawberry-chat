@@ -450,26 +450,69 @@ def clientThread(client):
             
     
             # /nick Command
-            elif message.startswith("/nick ") or message.startswith("/nickname "):  
+            elif message.startswith("/nick ") or message.startswith("/nickname "):
                 if message.startswith("/nick "):
-                    nick = message.replace("/nick ", "")
+                    arg = message.replace("/nick ", "")
                     
                 elif message.startswith("/nickname ") :
-                    nick = message.replace("/nickname ", "")
+                    arg = message.replace("/nickname ", "")
                     
-                if nick.lower() == "remove":
-                    c.execute("UPDATE users SET nickname = NULL WHERE username = ?", (user,))
+            
+                args = arg.split(" ")
+                cmd = args[0]
+                
+                # /nick set                        
+                try: 
+                    c.execute('SELECT role FROM users WHERE username = ?', (user,))
+                    
+                except Exception as e:
+                    sqlError(e)
+                    
+                res = c.fetchone()
+                
+                print(cmd)
+                
+                
+                if cmd == "set":       
+                    if res[0] == "admin":              
+                        if len(args) == 3:
+                            try:
+                                nick = args[2]
+                                uname = args[1]
+                                
+                            except:
+                                client.send(f"{RED + Colors.BOLD}Please pass a valid argument!{RESET + Colors.RESET}".encode("utf8"))
+                                continue
+                                
+                        
+                            c.execute("UPDATE users SET nickname = ? WHERE username = ?", (nick, uname))
+                            db.commit()
+                            
+                            client.send(f"{GREEN + Colors.BOLD}The nickname of {uname} has been updated to '{nick}'{RESET + Colors.RESET}".encode("utf8"))
+                            continue
+                        
+                        else:
+                            client.send(f"{RED + Colors.BOLD}Please pass a valid argument!{RESET + Colors.RESET}".encode("utf8"))
+                            continue                     
+                
+                    else:
+                        client.send(f"{RED}Sorry, you do not have permissons for that.{RESET}".encode("utf8"))
+                        continue
+                    
+                else:
+                    nick = cmd
+                    
+                    if nick.lower() == "remove":
+                        c.execute("UPDATE users SET nickname = NULL WHERE username = ?", (user,))
+                        db.commit()
+                        
+                        client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Removed nickname{RESET + Colors.RESET}".encode("utf8"))
+                        continue
+                    c.execute("UPDATE users SET nickname = ? WHERE username = ?", (nick, user))
                     db.commit()
                     
-                    client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Removed nickname{RESET + Colors.RESET}".encode("utf8"))
+                    client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Changed nickname to {RESET + userRoleColor(user)}{nick}{RESET + Colors.RESET}".encode("utf8"))
                     continue
-                    
-                c.execute("UPDATE users SET nickname = ? WHERE username = ?", (nick, user))
-                db.commit()
-                
-                client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Changed nickname to {RESET + userRoleColor(user)}{nick}{RESET + Colors.RESET}".encode("utf8"))
-                continue
-            
             
             # /member Command
             elif message.startswith("/member ") or message.startswith("/user ") or message.startswith("/userinfo "):  
@@ -944,6 +987,7 @@ def clientThread(client):
                     args = arg.split(" ")
 
                     cmd = args[0]
+                    
                     
                     # /badge add
                     if cmd == "add":
