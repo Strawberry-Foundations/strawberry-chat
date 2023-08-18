@@ -4,7 +4,6 @@ server:
     name: chat.strawberryfoundations.xyz
     address: 65.21.77.13
     port: 49200
-    verified: true
     type: Main
     autologin: false
     credentials:
@@ -14,11 +13,9 @@ server:
     name: chat.strawberryfoundations.xyz
     address: 65.21.77.13
     port: 49201
-    verified: true
     type: Off Topic
   2: 
     name: your.chatserver.com
     address: 0.0.0.0
     port: 8080
-    verified: false
     type: Some Type
