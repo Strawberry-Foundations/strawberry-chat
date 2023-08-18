@@ -129,6 +129,22 @@ if len(sys.argv) >= 2:
     else:
         print(f"{Fore.RED + Colors.BOLD}{Str[lang]['InvalidArgument']}{Fore.RESET + Colors.RESET}")
         sys.exit(1)
+        
+elif autoserver == True:
+    server_id = data["autoserver"]["server_id"]
+    
+    server_selection = int(server_id + 1)
+    custom_server_sel = 0
+    
+    host = data["server"][(int(server_id))]["address"]
+    port = data["server"][(int(server_id))]["port"]
+    port = int(port)
+    
+    try:
+        enableAutologin = data["server"][(int(server_id))]["autologin"]
+        
+    except KeyError:
+        enableAutologin = False
 
 # If no arguments passed, start client without any special functions
 else:
