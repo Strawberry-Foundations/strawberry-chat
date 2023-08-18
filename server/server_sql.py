@@ -441,7 +441,8 @@ def clientThread(client):
                         client.send(f"{RED + Colors.BOLD}Wrong usage{RESET + Colors.RESET}".encode("utf8"))
                         continue
                     
-                    broadcast(f"{text}")
+                    text = text.replace("#(red)", RED).replace("#(green)", GREEN).replace("#(yellow)", YELLOW).replace("#(blue)", BLUE).replace("#(magenta)", MAGENTA).replace("#(cyan)", CYAN).replace("#(white)", WHITE).replace("#(reset)", RESET)
+                    broadcast(f"{text}{RESET}")
                     continue
                     
                 else:
@@ -1215,6 +1216,7 @@ def clientThread(client):
         {BLUE + Colors.BOLD}/broadcast <message>: {RESET}Broadcast a message{RESET + Colors.RESET}
         {BLUE + Colors.BOLD}/role get/set <user> (<role>) [<color>]: {RESET}Gets or sets the role of a user{RESET + Colors.RESET}
         {BLUE + Colors.BOLD}/role color <user> <color>: {RESET}Gets or sets the role of a user{RESET + Colors.RESET}
+        {BLUE + Colors.BOLD}/nick set <username> <nickname/remove>: {RESET}Changes <user>'s nickname to <nickname> or removes it
         {BLUE + Colors.BOLD}/badge set <badge> <user>: {RESET}Changes main badge of <user> to <badge>
         {BLUE + Colors.BOLD}/badge add <badge> (<user>): {RESET}Adds new badge to your profile or to <user>'s profile
         {BLUE + Colors.BOLD}/bwords set/get <user> (<true/false>): {RESET}Enable or disable whether a user should be affected by the bad words{RESET + Colors.RESET}
