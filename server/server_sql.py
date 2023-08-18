@@ -441,7 +441,15 @@ def clientThread(client):
                         client.send(f"{RED + Colors.BOLD}Wrong usage{RESET + Colors.RESET}".encode("utf8"))
                         continue
                     
-                    text = text.replace("#(red)", RED).replace("#(green)", GREEN).replace("#(yellow)", YELLOW).replace("#(blue)", BLUE).replace("#(magenta)", MAGENTA).replace("#(cyan)", CYAN).replace("#(white)", WHITE).replace("#(reset)", RESET)
+                    text = text.replace("#(red)", RED
+                            ).replace("#(green)", GREEN
+                            ).replace("#(yellow)", YELLOW
+                            ).replace("#(blue)", BLUE
+                            ).replace("#(magenta)", MAGENTA
+                            ).replace("#(cyan)", CYAN
+                            ).replace("#(white)", WHITE
+                            ).replace("#(reset)", RESET)
+                            
                     broadcast(f"{text}{RESET}")
                     continue
                     
