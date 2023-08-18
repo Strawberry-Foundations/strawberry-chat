@@ -4,7 +4,7 @@
 ---
 
 <h1 id="allgemeine-nutzungsbedingungen-für-die-terminal-basierte-chat-plattform-strawberry-chat">Allgemeine Nutzungsbedingungen für die Terminal-basierte Chat-Plattform Strawberry Chat</h1>
-<h3 id="zuletzt-aktualisiert-am-08.-august-2023">Zuletzt aktualisiert am 08. August 2023</h3>
+<h3 id="zuletzt-aktualisiert-am-18.-august-2023">Zuletzt aktualisiert am 18. August 2023</h3>
 <h1 id="einleitung">Einleitung</h1>
 <h2 id="wer-sind-wir">Wer sind wir?</h2>
 <p>Wir sind eine Gruppe von freiwilligen Menschen die sich als Aufgabe gesetzt haben, eigene Software zu entwickeln.<br>
@@ -43,7 +43,7 @@ Dies gilt also auch für unseren Chat-Server (Der Knotenpunkt, wo sich Benutzer 
 <li>Den Code auf anderen “Code-Upload” Websiten hochladen (Bitte nur Forken…)</li>
 </ul>
 <h1 id="chat-server">Chat Server</h1>
-<p>Es gibt verschiedene Chat Server, darunter unser eigener und offizieller, <code>chat.strawberrysoftware.xyz</code> (Noch im Aufbau, Domain ist noch nicht aktiv). Um dich zu verbinden, downloade den Client (<a href="https://github.com/Strawberry-Foundations/strawberry-chat/blob/main/client/client.py">client.py</a>) und die passende Konfigurationsdatei (<a href="https://github.com/Strawberry-Foundations/strawberry-chat/blob/main/client/config.yml.example">config.yml.example</a>). Benenne die <code>config.yml.example</code> um in <code>config.yml</code> und editiere bei Bedarf die Server oder den Nutzernamen. Nach dem editieren führe den Client aus, in dem du im Terminal (unter dem gleichen Pfad wo der Client heruntergeladen wurde) <code>python3 client.py</code> ausführst. Wähle dort den offiziellen Chat-Server aus (In der Konfigurationsdatei als Server-Nummer 1 definiert)</p>
+<p>Es gibt verschiedene Chat Server, darunter unser eigener und offizieller, <code>chat.strawberryfoundations.xyz</code>. Um dich zu verbinden, downloade den Client (<a href="https://github.com/Strawberry-Foundations/strawberry-chat/blob/main/client/client.py">client.py</a>) und die passende Konfigurationsdatei (<a href="https://github.com/Strawberry-Foundations/strawberry-chat/blob/main/client/config.yml.example">config.yml.example</a>). Benenne die <code>config.yml.example</code> um in <code>config.yml</code> und editiere bei Bedarf die Server oder den Nutzernamen. Nach dem editieren führe den Client aus, in dem du im Terminal (unter dem gleichen Pfad wo der Client heruntergeladen wurde) <code>python3 client.py</code> ausführst. Wähle dort den offiziellen Chat-Server aus (In der Konfigurationsdatei als Server-Nummer 1 definiert)</p>
 <h2 id="nutzungsbedingungen-für-den-offiziellen-chat-server">Nutzungsbedingungen für den offiziellen Chat-Server</h2>
 <p>Bitte halte diese Nutzungsbedingungen ein, andersfalls könntest du von einem Administrator gemutet oder sogar gebannt werden!</p>
 <ul>
