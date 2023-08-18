@@ -21,6 +21,6 @@
 - NEW: User info command to show information about a user
 - NEW: New general messages with chat color support & more
 - NEW: A new bot api for bots is comming to Strawberry Chat!
-- ADMIN: Broadcast Command, Mute Command, Role set/get/color Command, Command and Ban Command
+- ADMIN: Broadcast Command, Mute Command, Role set/get/color Command, nick set Command and Ban Command
 - FIX: Fixed many many bugs
 -> For more information visit https://github.com/orgs/Strawberry-Foundations/projects/1/views/1
