@@ -9,14 +9,12 @@ Also see [Project/Strawberry Chat](https://github.com/orgs/Strawberry-Foundation
 
 # Todo
 - ^C Protection to prevent users crashing the server (Why? See ([#1](https://github.com/Strawberry-Foundations/strawberry-chat/issues/1)))
-- Badge add command & set main badge command (Admin Command)
 - Nickname subcommand to change nickname from other users (Admin Command)
 
 # Ideas
 - UTF-8 Only Protection
 - Documentation for developers
 - Broadcast Command with Colors using #(red)Hello World for example
-- Advanced news command with function to read old news
 
 # SBC+ (Strawberry Chat+)
 If you are a relatively active user, you start with SBC+ Basic. The more activity, the higher the chance to get the "normal" SBC+. 
