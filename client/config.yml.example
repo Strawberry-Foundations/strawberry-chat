@@ -1,4 +1,8 @@
 language: en_US
+autologin:
+  status: false
+  server_id: 0
+
 server:
   0: 
     name: chat.strawberryfoundations.xyz
