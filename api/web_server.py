@@ -16,7 +16,7 @@ def ajson(json_file):
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    return ajson("api_index")
+    return "Strawberry API Servers"
 
 @app.route('/v1/', methods=['GET', 'POST'])
 def v1_index():
