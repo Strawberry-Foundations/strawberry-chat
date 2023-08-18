@@ -307,7 +307,7 @@ news = f"""{GREEN +  Colors.UNDERLINE + Colors.BOLD}{chat_name} News - v1.7.0 (P
         - NEW: Member Command to show registered users
         - NEW: User info command to show information about a user
         - NEW: New general messages with chat color support & more
-        - ADMIN: Broadcast Command, Mute Command, Role set/get/color Command, Command and Ban Command
+        - ADMIN: Broadcast Command, Mute Command, Role set/get/color Command, nick set Command and Ban Command
         - FIX: Fixed many many bugs
         -> For more information visit https://github.com/orgs/Strawberry-Foundations/projects/1/views/1{RESET + Colors.RESET}"""
 
