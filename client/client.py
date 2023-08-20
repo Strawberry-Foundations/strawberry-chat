@@ -57,7 +57,7 @@ autoserver_id   = data['autoserver']['server_id']
 langs           = ["de_DE", "en_US"]
 
 api             = "http://api.strawberryfoundations.xyz/v1/"
-ver             = "2.3.0-pre-release"
+ver             = "2.3.1"
 author          = "Juliandev02"
 use_sys_argv      = False
 
