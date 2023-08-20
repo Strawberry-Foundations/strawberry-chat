@@ -1338,6 +1338,11 @@ def clientThread(client):
                     c.execute("SELECT description FROM users WHERE username = ?", (user,))
                     desc = c.fetchone()[0]
                     client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Your current description: {RESET}{desc}{Colors.RESET}".encode("utf8"))
+                    
+                # Server Description Command
+                case "/server-info" | "/info" | "/server-desc" | "/server-description":
+                    desc = config['server']['description']
+                    client.send(f"{WHITE + Colors.BOLD}{desc}{RESET + Colors.RESET}".encode("utf8"))
                 
                 
                 # Delete Account Command
