@@ -50,7 +50,7 @@ with open(client_dir + "/config.yml") as config:
 
 # Variables
 lang            = data['language']
-autoserver      = data['autoserver']['status']
+autoserver      = data['autoserver']['enabled']
 autoserver_id   = data['autoserver']['server_id']
 
 langs           = ["de_DE", "en_US"]
