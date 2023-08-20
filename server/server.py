@@ -31,6 +31,16 @@ import random
 
 from src.colors import *
 
+
+# Version-specified Variables & important variables
+base_ver                = "1.8.0"
+short_ver               = "1.8.0a1"
+ver                     = short_ver + "-vacakes"
+chat_name               = "Strawberry Chat"
+codename                = "Vanilla Cake"
+server_edition          = "Standard Edition"
+
+
 # Init logger
 class LogFormatter(logging.Formatter):
     format = f"[{datetime.datetime.now().strftime('%H:%M')}] [%(levelname)s] %(message)s"
@@ -85,13 +95,6 @@ enable_messages         = config['flags']['enable_messages']
 max_message_length      = config['flags']['max_message_length']
 debug_mode              = config['flags']['debug_mode']
 
-# Version-specified Variables 
-base_ver                = "1.7.1"
-short_ver               = "1.7.1"
-ver                     = short_ver + "-vacakes"
-chat_name               = "Strawberry Chat"
-codename                = "Vanilla Cake"
-server_edition          = "Standard Edition"
 
 # Lists & Sets
 afks = list([])
