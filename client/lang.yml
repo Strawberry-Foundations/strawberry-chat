@@ -17,7 +17,7 @@ de_DE:
   ErrCouldNotSendMessage: "Fehler beim Senden der Nachricht!"
   ErrNotReachable: "Der Server ist nicht erreichbar! Versuche es später erneuert oder kontaktiere den Server-Besitzer."
   CloseApplication: "Der Strawberry Client wurde beendet."
-  Aborted:  "Der Strawberry Client wurde abgebrochen!"
+  Aborted:  "Der Strawberry Chat Client wurde abgebrochen!"
   ConnectedToServer: "Verbindung mit dem Server %s war erfolgreich. Viel Spaß!"
 
 # Language Strings for en_US (English)
@@ -39,5 +39,5 @@ en_US:
   ErrCouldNotSendMessage: "Could not send the message!"
   ErrNotReachable: "The server is not available! Try again later or contact the server owner."
   CloseApplication: "The Strawberry client has been closed."
-  Aborted: "The Strawberry client has been cancelled!"
+  Aborted: "The Strawberry chat client has been cancelled!"
   ConnectedToServer: "Connection with the server %s was successful. Have fun!"
