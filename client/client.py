@@ -134,7 +134,8 @@ if len(sys.argv) >= 2:
     else:
         print(f"{Fore.RED + Colors.BOLD}{Str[lang]['InvalidArgument']}{Fore.RESET + Colors.RESET}")
         sys.exit(1)
-        
+
+# If autoserver is active, skip server selection input 
 elif autoserver == True:
     server_id = data["autoserver"]["server_id"]
     
