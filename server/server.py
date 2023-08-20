@@ -86,7 +86,8 @@ max_message_length      = config['flags']['max_message_length']
 debug_mode              = config['flags']['debug_mode']
 
 # Version-specified Variables 
-short_ver               = "1.7.0_pre-release-1"
+short_ver               = "1.7.1"
+base_ver                = "1.7.1"
 ver                     = short_ver + "-vc_sql"
 chat_name               = "Strawberry Chat"
 codename                = "Vanilla Cake"
@@ -266,25 +267,12 @@ def doesUserExist(uname):
         return True
     
     
+with open(server_dir + "/news.yml") as news_file:
+    tmp_news_data = yaml.load(news_file, Loader=SafeLoader)
     
 # News
-news = f"""{GREEN +  Colors.UNDERLINE + Colors.BOLD}{chat_name} News - v1.7.0 (Pre-Release){RESET + Colors.RESET}{CYAN + Colors.BOLD}
-        - NEW: Bots are here!
-               You can now create and program your own bots - so
-               you can create your own commands, independent of the server! 
-        - NEW: User Profiles are here! You can now link your discord, write something 
-               about yourself in your description or take a look at your fantastic badges!
-        - NEW: You can now create an account from the login page!
-        - NEW: Fancy User Chat Badges and exclusive badges for your user profile!
-        - NEW: Blacklisted Words + Set/Get/Add/Reload Command for Admins
-        - NEW: Character Limit with some special "easter eggs" :)
-        - NEW: User Nicknames and command to change your nickname
-        - NEW: Member Command to show registered users
-        - NEW: User info command to show information about a user
-        - NEW: New general messages with chat color support & more
-        - ADMIN: Broadcast Command, Mute Command, Role set/get/color Command, Badge set/... Command, nick set Command and Ban Command
-        - FIX: Fixed many many bugs
-        -> For more information visit https://github.com/orgs/Strawberry-Foundations/projects/1/views/1{RESET + Colors.RESET}"""
+news = f"""{GREEN +  Colors.UNDERLINE + Colors.BOLD}{chat_name} News - {short_ver}{RESET + Colors.RESET}{CYAN + Colors.BOLD}
+{tmp_news_data['news'][base_ver]['text']}{RESET + Colors.RESET}"""
 
 
 
