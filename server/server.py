@@ -1170,7 +1170,8 @@ def clientThread(client):
         {BLUE + Colors.BOLD}/clientinfo: {RESET}Get some information about you{RESET + Colors.RESET}
         {BLUE + Colors.BOLD}/shrug: {RESET}¯\_(ツ)_/¯
         {BLUE + Colors.BOLD}/tableflip: {RESET}(╯°□°)╯︵ ┻━┻
-        {BLUE + Colors.BOLD}/unflip: {RESET}┬─┬ノ( º _ ºノ){RESET + Colors.RESET}
+        {BLUE + Colors.BOLD}/unflip: {RESET}┬─┬ノ( º _ ºノ)
+        {BLUE + Colors.BOLD}/server-info, /info: {RESET}Shows a description about this server \o/{RESET + Colors.RESET}
         """.encode("utf-8"))
                     
                     time.sleep(0.1)
