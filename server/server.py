@@ -86,12 +86,12 @@ max_message_length      = config['flags']['max_message_length']
 debug_mode              = config['flags']['debug_mode']
 
 # Version-specified Variables 
-short_ver               = "1.7.1"
 base_ver                = "1.7.1"
-ver                     = short_ver + "-vc_sql"
+short_ver               = "1.7.1"
+ver                     = short_ver + "-vacakes"
 chat_name               = "Strawberry Chat"
 codename                = "Vanilla Cake"
-server_edition          = "SQL Server"
+server_edition          = "Standard Edition"
 
 # Lists & Sets
 afks = list([])
