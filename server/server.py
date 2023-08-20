@@ -135,6 +135,8 @@ if "--debug-mode" in sys.argv:
     debug_mode = True
 
 # General Functions
+
+# get user's nickname
 def userNickname(uname):
     c = db.cursor()
     c.execute('SELECT nickname FROM users WHERE username = ?', (uname,))
@@ -144,6 +146,7 @@ def userNickname(uname):
         unick = unick[0]
         return unick
 
+# Check if user has a nickname
 def hasNickname(uname):
     c = db.cursor()
     c.execute('SELECT nickname FROM users WHERE username = ?', (uname,))
@@ -155,6 +158,7 @@ def hasNickname(uname):
     else: 
         return False
 
+# Get user role color from the user
 def userRoleColor(uname):
     c = db.cursor()
     c.execute('SELECT role_color FROM users WHERE username = ?', (uname,))
@@ -221,6 +225,7 @@ def userRoleColor(uname):
     else: 
         return RESET
 
+# Check if user is muted
 def isMuted(uname):
     c = db.cursor()
     c.execute('SELECT muted FROM users WHERE username = ?', (uname,))
@@ -231,6 +236,7 @@ def isMuted(uname):
     else: 
         return False
 
+# Check if user's account is enabled
 def isAccountEnabled(uname):
     c = db.cursor()
     c.execute('SELECT accountEnabled FROM users WHERE username = ?', (uname,))
@@ -240,17 +246,20 @@ def isAccountEnabled(uname):
         return True
     else: 
         return False
-    
+
+# Print debug error codes
 def debugLogger(errorMessage, errorCode):
     if debug_mode:
         log.error(f"ErrCode {errorCode}: {errorMessage}")
     else:
         None
-        
+
+# SQL error message logger
 def sqlError(errorMessage):
     log.error(f"e096: An SQL Error occured: {errorMessage}")
 
 
+# Check if a user exists
 def doesUserExist(uname):
     uname = uname.lower()
 
