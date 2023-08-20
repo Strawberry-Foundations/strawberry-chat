@@ -7,4 +7,4 @@ flags:
   max_message_length: 256
   debug_mode: true
 
-config_ver: 1
+config_ver: 2
