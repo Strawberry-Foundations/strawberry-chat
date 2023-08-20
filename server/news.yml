@@ -27,7 +27,12 @@ news:
 
   1.7.1:
     text: "
-    - NEW: Modular code for better code structure\n
+    - NEW: Some Modular code (for color variables) for better code structure\n
+    -> For more information visit https://github.com/orgs/Strawberry-Foundations/projects/1/views/1 and read news for v1.7.0"
+  
+  1.8.0:
+    text: "
+    - NEW: Nothing. 
     -> For more information visit https://github.com/orgs/Strawberry-Foundations/projects/1/views/1"
 
 versions: [1.6.0, 1.7.0]
