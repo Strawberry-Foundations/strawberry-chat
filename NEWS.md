@@ -6,7 +6,7 @@
 - NEW: Changed Chat Name from Salware Chat to Strawberry Chat
 - FIX: Fixed general formatting errors
 
-# v1.7.0_pre-release-1
+# v1.7.0
 - NEW: Bots are here!
        You can now create and program your own bots - so
        you can create your own commands, independent of the server! 
@@ -23,4 +23,8 @@
 - NEW: A new bot api for bots is comming to Strawberry Chat!
 - ADMIN: Broadcast Command, Mute Command, Role set/get/color Command, Badge set/... Command nick set Command and Ban Command
 - FIX: Fixed many many bugs
+-> For more information visit https://github.com/orgs/Strawberry-Foundations/projects/1/views/1
+
+# v1.7.1
+- NEW: Modular code for better code structure
 -> For more information visit https://github.com/orgs/Strawberry-Foundations/projects/1/views/1
