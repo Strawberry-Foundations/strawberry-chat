@@ -1,4 +1,5 @@
 language: en_US
+online_mode: true
 autologin:
   enabled: false
   server_id: 0
