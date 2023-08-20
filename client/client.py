@@ -50,6 +50,7 @@ with open(client_dir + "/config.yml") as config:
 
 # Variables
 lang            = data['language']
+online_mode     = data['online_mode']
 autoserver      = data['autoserver']['enabled']
 autoserver_id   = data['autoserver']['server_id']
 
@@ -67,12 +68,13 @@ with open(client_dir + "/lang.yml", encoding="utf-8") as langStrings:
 
 
 # Try requesting our api server
-try:
-    requests.get(api)
-    
-except: 
-    print(f"{RED + Colors.UNDERLINE}Connection Error{RESET + Colors.RESET}")
-    print(f"{YELLOW}The server did not give a valid answer.\nEither the Strawberry API servers are overloaded, or offline. Please try again later{RESET}")
+if online_mode == True:
+    try:
+        requests.get(api)
+        
+    except: 
+        print(f"{RED + Colors.UNDERLINE}Connection Error{RESET + Colors.RESET}")
+        print(f"{YELLOW}The server did not give a valid answer.\nEither the Strawberry API servers are overloaded, or offline. Please try again later{RESET}")
  
 
 # check if language is available
@@ -86,10 +88,14 @@ if lang not in langs:
 # Check verification of a server
 def isVerified(addr):
     try:
-        verified = requests.get(api + "server/verified?addr=" + addr)
+        if online_mode == True:
+            verified = requests.get(api + "server/verified?addr=" + addr)
         
-        if verified.text == "True":
-            return f"[{Str[lang]['Verified']}] "
+            if verified.text == "True":
+                return f"[{Str[lang]['Verified']}] "
+            else:
+                return ""
+            
         else:
             return ""
         
