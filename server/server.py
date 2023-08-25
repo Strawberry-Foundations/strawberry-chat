@@ -1237,6 +1237,12 @@ def clientThread(client):
         {BLUE + Colors.BOLD}/kickall: {RESET}Kick all users (Currently not working){RESET + Colors.RESET}
         """.encode("utf8"))
                     
+                    time.sleep(0.1)
+                    client.send(
+                        f"""{RED +  Colors.UNDERLINE + Colors.BOLD}Strawberry Chat+ commands & features{RESET + Colors.RESET}
+        {BLUE + Colors.BOLD}Still nothing here? {RESET}Check back another time!{RESET + Colors.RESET}
+        """.encode("utf8"))
+                    
                     
                 # Online Command
                 case "/online":
