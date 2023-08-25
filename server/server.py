@@ -377,7 +377,7 @@ def clientThread(client):
             message_length = len(message)
         
             # Message length control system
-            rnd = random.randint(0, 3)    
+            rnd = random.randint(0, 2)    
             if message_length > max_message_length:
                 if rnd == 0:
                     client.send(f"{YELLOW + Colors.BOLD}Your message is too long.{RESET + Colors.RESET}".encode("utf8"))
@@ -387,11 +387,6 @@ def clientThread(client):
                     
                 elif rnd == 2:
                     client.send(f"{YELLOW + Colors.BOLD}junge niemand will sich hier die herr der ringe trilogie durchlesen{RESET + Colors.RESET}".encode("utf8"))
-                    
-                elif rnd == 3:
-                    client.send(f"{YELLOW + Colors.BOLD}ne digga das liest sich doch keiner durch grundgesetz einfach. mach dich ab{RESET + Colors.RESET}".encode("utf8"))
-                    client.close()
-                continue
 
             # Blacklisted Word System
             c.execute('SELECT role FROM users WHERE username = ?', (user,))    
