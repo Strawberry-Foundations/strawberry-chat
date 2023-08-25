@@ -293,7 +293,7 @@ def doesUserExist(uname):
         return True
 
 # Print a proper user name information for memberlist command
-def userNickname(uname):
+def memberListNickname(uname):
     c.execute("SELECT nickname FROM users WHERE username = ?", (uname,))
     nickname = c.fetchone()
     
@@ -1369,18 +1369,18 @@ def clientThread(client):
                     c.execute("SELECT username, badge FROM users WHERE role = 'admin'")
                     raw_admins  = c.fetchall()
                     admins_len  = len([raw_admins for raw_admins in sorted(raw_admins)])
-                    admins      = "\n           ".join([f"{userNickname(result[0])} [{result[1]}]" for result in raw_admins])
+                    admins      = "\n           ".join([f"{memberListNickname(result[0])} [{result[1]}]" for result in raw_admins])
                     
                     c.execute("SELECT username, badge FROM users WHERE role = 'bot'")
                     raw_bots    = c.fetchall()
                     bots_len    = len([raw_bots for raw_bots in sorted(raw_bots)])
-                    bots      = "\n           ".join([f"{userNickname(result[0])} [{result[1]}]" for result in raw_bots])
+                    bots      = "\n           ".join([f"{memberListNickname(result[0])} [{result[1]}]" for result in raw_bots])
                     
                     
                     c.execute("SELECT username, badge FROM users WHERE role = 'member'")
                     raw_members = c.fetchall()
                     members_len = len([raw_members for raw_members in sorted(raw_members)])
-                    members      = "\n           ".join([f"{userNickname(result[0])} [{result[1]}]" for result in raw_members])
+                    members      = "\n           ".join([f"{memberListNickname(result[0])} [{result[1]}]" for result in raw_members])
                     
                     try:
                         if online_mode == True:
