@@ -1360,6 +1360,13 @@ def clientThread(client):
                     
                 
                 case "/memberlist":
+                    def isOnline(uname):
+                        if uname in users.values():
+                            return "🟢"
+                        else:
+                            return f"{Colors.GRAY}〇{RESET}"
+            
+                    
                     c.execute("SELECT username FROM users")
                     raw_members = c.fetchall()
                     membersLen  = len([raw_members for raw_members in sorted(raw_members)])
@@ -1367,18 +1374,18 @@ def clientThread(client):
                     c.execute("SELECT username, badge FROM users WHERE role = 'admin'")
                     raw_admins  = c.fetchall()
                     admins_len  = len([raw_admins for raw_admins in sorted(raw_admins)])
-                    admins      = "\n           ".join([f"{memberListNickname(result[0])} [{result[1]}]" for result in raw_admins])
+                    admins      = "\n           ".join([f"{isOnline(result[0])}{LIGHTRED_EX} {memberListNickname(result[0])} [{result[1]}]" for result in raw_admins])
                     
                     c.execute("SELECT username, badge FROM users WHERE role = 'bot'")
                     raw_bots    = c.fetchall()
                     bots_len    = len([raw_bots for raw_bots in sorted(raw_bots)])
-                    bots      = "\n           ".join([f"{memberListNickname(result[0])} [{result[1]}]" for result in raw_bots])
+                    bots      = "\n           ".join([f"{isOnline(result[0])}{LIGHTMAGENTA_EX} {memberListNickname(result[0])} [{result[1]}]" for result in raw_bots])
                     
                     
                     c.execute("SELECT username, badge FROM users WHERE role = 'member'")
                     raw_members = c.fetchall()
                     members_len = len([raw_members for raw_members in sorted(raw_members)])
-                    members      = "\n           ".join([f"{memberListNickname(result[0])} [{result[1]}]" for result in raw_members])
+                    members      = "\n           ".join([f"{isOnline(result[0])}{LIGHTYELLOW_EX} {memberListNickname(result[0])} [{result[1]}]" for result in raw_members])
                     
                     try:
                         if online_mode == True:
