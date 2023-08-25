@@ -28,3 +28,7 @@
 # v1.7.1
 - NEW: Modular code for better code structure
 -> For more information visit https://github.com/orgs/Strawberry-Foundations/projects/1/views/1
+
+# v1.8.0
+- NEW: Memberlist command with beatiful representation of our members and their roles 🌟
+-> For more information visit https://github.com/orgs/Strawberry-Foundations/projects/1/views/1
