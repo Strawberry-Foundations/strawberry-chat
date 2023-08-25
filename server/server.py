@@ -1193,6 +1193,7 @@ def clientThread(client):
                         f"""{CYAN + Colors.UNDERLINE + Colors.BOLD}Profile & User Commands{RESET + Colors.RESET}
         {BLUE + Colors.BOLD}/online: {RESET}Shows online users
         {BLUE + Colors.BOLD}/members, /users: {RESET}Shows registered users
+        {BLUE + Colors.BOLD}/memberlist: {RESET}Displays a list of members with their badges and roles
         {BLUE + Colors.BOLD}/userinfo, /user, /member <user>/me: {RESET}Shows information about the specified user
         {BLUE + Colors.BOLD}/nick <nickname/remove>: {RESET}Changes nickname to <nickname> or removes it
         {BLUE + Colors.BOLD}/description <desc>: {RESET}Set your user description{RESET + Colors.RESET}
@@ -1349,6 +1350,17 @@ def clientThread(client):
                     
                 
                 case "/memberlist":
+                    
+                    def userNickname(uname):
+                        c.execute("SELECT nickname FROM users WHERE username = ?", (uname,))
+                        nickname = c.fetchone()
+                        
+                        if hasNickname(uname):
+                            return f"{nickname[0]} (@{uname})"
+                        
+                        else:
+                            return uname
+                    
                     c.execute("SELECT username FROM users")
                     raw_members = c.fetchall()
                     membersLen  = len([raw_members for raw_members in sorted(raw_members)])
@@ -1356,18 +1368,18 @@ def clientThread(client):
                     c.execute("SELECT username, badge FROM users WHERE role = 'admin'")
                     raw_admins  = c.fetchall()
                     admins_len  = len([raw_admins for raw_admins in sorted(raw_admins)])
-                    admins      = "\n           ".join([f"{result[0]} [{result[1]}]" for result in raw_admins])
+                    admins      = "\n           ".join([f"{userNickname(result[0])} [{result[1]}]" for result in raw_admins])
                     
                     c.execute("SELECT username, badge FROM users WHERE role = 'bot'")
                     raw_bots    = c.fetchall()
                     bots_len    = len([raw_bots for raw_bots in sorted(raw_bots)])
-                    bots      = "\n           ".join([f"{result[0]} [{result[1]}]" for result in raw_bots])
+                    bots      = "\n           ".join([f"{userNickname(result[0])} [{result[1]}]" for result in raw_bots])
                     
                     
                     c.execute("SELECT username, badge FROM users WHERE role = 'member'")
                     raw_members = c.fetchall()
                     members_len = len([raw_members for raw_members in sorted(raw_members)])
-                    members      = "\n           ".join([f"{result[0]} [{result[1]}]" for result in raw_members])
+                    members      = "\n           ".join([f"{userNickname(result[0])} [{result[1]}]" for result in raw_members])
                     
                     try:
                         if online_mode == True:
