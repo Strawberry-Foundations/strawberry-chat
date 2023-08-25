@@ -39,6 +39,7 @@ ver                     = short_ver + "-vacakes"
 chat_name               = "Strawberry Chat"
 codename                = "Vanilla Cake"
 server_edition          = "Standard Edition"
+authors                 = ["Juliandev02", "matteodev8", "Paddyk45"]
 
 
 # Init logger
@@ -1305,7 +1306,7 @@ def clientThread(client):
                         f"""{GREEN +  Colors.UNDERLINE + Colors.BOLD}About {chat_name}{RESET + Colors.RESET}
         {BLUE + Colors.BOLD}Thank you for using {chat_name}!{RESET}
         {BLUE + Colors.BOLD}Version: {RESET}{short_ver} {codename} ({server_edition})
-        {BLUE + Colors.BOLD}Author: {RESET}Juliandev02{RESET + Colors.RESET}"""
+        {BLUE + Colors.BOLD}Author: {RESET}{", ".join(authors)}{RESET + Colors.RESET}"""
         .encode("utf8"))
                     
                     
