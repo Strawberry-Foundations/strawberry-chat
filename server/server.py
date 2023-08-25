@@ -1371,8 +1371,7 @@ def clientThread(client):
                     
                     try:
                         if online_mode == True:
-                            verified = requests.get(api + "server/verified?addr=" + "65.21.77.13")
-                            # verified = requests.get(api + "server/verified?addr=" + global_ip)
+                            verified = requests.get(api + "server/verified?addr=" + global_ip)
                         
                             if verified.text == "True":
                                 verified_txt = f"{GREEN}[VERIFIED]{CYAN} "
