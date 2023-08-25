@@ -1360,8 +1360,6 @@ def clientThread(client):
                     
                 
                 case "/memberlist":
-                    
-                    
                     c.execute("SELECT username FROM users")
                     raw_members = c.fetchall()
                     membersLen  = len([raw_members for raw_members in sorted(raw_members)])
