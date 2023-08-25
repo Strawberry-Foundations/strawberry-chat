@@ -582,7 +582,7 @@ def clientThread(client):
                     crown_badge = "- 👑 The legendary founder and owner!"
                     cool_badge = "- 😎 One of the coolest here!"
                     flame_badge = "- 🔥 The hottest user!"
-                    lightning_badge = "- ⚡ Founder and owner of the Superchrgd Client!"
+                    lightning_badge = "- ⚡ Founder and owner of the (deprecated) Sprchrgd Client!"
                     bot_badge = "- 🤖 Just some bot"
                     macher_badge = "- 💪 In germany we say: \"Macher\""
                     kindness_badge = "- 👍 The badge of kindness!"
