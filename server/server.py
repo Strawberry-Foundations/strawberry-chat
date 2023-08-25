@@ -28,9 +28,14 @@ import sqlite3 as sql
 import time
 import errno
 import random
+import requests
 
 from src.colors import *
 
+def get_global_ip():
+    response = requests.get('https://httpbin.org/ip')
+    data = response.json()
+    return data['origin']
 
 # Version-specified Variables & important variables
 base_ver                = "1.8.0"
@@ -40,7 +45,11 @@ chat_name               = "Strawberry Chat"
 codename                = "Vanilla Cake"
 server_edition          = "Standard Edition"
 authors                 = ["Juliandev02", "matteodev8", "Paddyk45"]
+api                     = "http://api.strawberryfoundations.xyz/v1/"
 
+print(f"{CYAN + Colors.BOLD}* -- {chat_name} v{short_ver} {codename} ({server_edition}) -- *{RESET + Colors.RESET}")
+
+global_ip               = get_global_ip()
 
 # Init logger
 class LogFormatter(logging.Formatter):
@@ -95,6 +104,7 @@ port                    = config['server']['port']
 enable_messages         = config['flags']['enable_messages']
 max_message_length      = config['flags']['max_message_length']
 debug_mode              = config['flags']['debug_mode']
+online_mode             = config['flags']['online_mode']
 
 
 # Lists & Sets
@@ -1341,8 +1351,24 @@ def clientThread(client):
                     raw_members = c.fetchall()
                     membersLen = len([raw_members for raw_members in sorted(raw_members)])
                     members = ", ".join([result[0] for result in raw_members])
+                    
+                    try:
+                        if online_mode == True:
+                            verified = requests.get(api + "server/verified?addr=" + global_ip)
+                        
+                            if verified.text == "True":
+                                return "Verified"
+                            else:
+                                return ""
+                            
+                        else:
+                            return ""
+                        
+                    except Exception as e: 
+                        print(e)
+                    
 
-                    client.send(f"""{CYAN +  Colors.UNDERLINE + Colors.BOLD}Members on this server ({membersLen}){RESET + Colors.RESET}
+                    client.send(f"""{CYAN +  Colors.UNDERLINE + Colors.BOLD}{config['server']['name']} ({membersLen}){RESET + Colors.RESET}
         {Colors.BOLD}->{Colors.RESET} {CYAN}{members}{RESET}""".encode("utf8"))    
                 
                 
@@ -1727,16 +1753,13 @@ def main():
         serverSocket.bind((ipaddr, port))
         serverSocket.listen()
 
-        print(f"{GREEN + Colors.BOLD}* -- Server started -- *{RESET + Colors.RESET}")
-        print(f"{CYAN + Colors.BOLD}{chat_name} v{short_ver} {codename} ({server_edition}){RESET + Colors.RESET}")
-
-        if enable_messages == True:
-            print(f"{YELLOW + Colors.BOLD}[!] Enabled Flag {CYAN}'enable-messages'{RESET + Colors.RESET}")
+        if enable_messages:
+            print(f"{YELLOW + Colors.BOLD}>>> Enabled Flag {CYAN}'enable_messages'{RESET + Colors.RESET}")
         
         if debug_mode:
-            print(f"{YELLOW + Colors.BOLD}[!] Enabled debug mode for debugging{RESET + Colors.RESET}")
-            
-        print(f"{YELLOW + Colors.BOLD}>>> {RESET}Server is running on {ipaddr}:{port}")
+            print(f"{YELLOW + Colors.BOLD}>>> Enabled Flag {CYAN}'debug_mode'{RESET + Colors.RESET}")
+
+        print(f"{GREEN + Colors.BOLD}>>> {RESET}Server is running on {ipaddr}:{port}")
 
         connThread = threading.Thread(target=connectionThread, args=(serverSocket,))
         connThread.start()
