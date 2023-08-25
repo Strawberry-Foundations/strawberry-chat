@@ -1759,6 +1759,10 @@ def main():
         if debug_mode:
             print(f"{YELLOW + Colors.BOLD}>>> Enabled Flag {CYAN}'debug_mode'{RESET + Colors.RESET}")
 
+        if online_mode == False:
+            print(f"{RED + Colors.BOLD}>>> {YELLOW}WARNING:{RED} Online mode is disabled and your server might be in danger! Consider using the online mode!{RESET + Colors.RESET}")
+            
+        
         print(f"{GREEN + Colors.BOLD}>>> {RESET}Server is running on {ipaddr}:{port}")
 
         connThread = threading.Thread(target=connectionThread, args=(serverSocket,))
