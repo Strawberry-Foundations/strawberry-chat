@@ -49,8 +49,6 @@ api                     = "http://api.strawberryfoundations.xyz/v1/"
 
 print(f"{CYAN + Colors.BOLD}* -- {chat_name} v{short_ver} {codename} ({server_edition}) -- *{RESET + Colors.RESET}")
 
-global_ip               = get_global_ip()
-
 # Init logger
 class LogFormatter(logging.Formatter):
     format = f"[{datetime.datetime.now().strftime('%H:%M')}] [%(levelname)s] %(message)s"
@@ -106,6 +104,11 @@ max_message_length      = config['flags']['max_message_length']
 debug_mode              = config['flags']['debug_mode']
 online_mode             = config['flags']['online_mode']
 
+if online_mode:
+    global_ip               = get_global_ip()
+    
+else:
+    pass
 
 # Lists & Sets
 afks = list([])
@@ -1347,29 +1350,54 @@ def clientThread(client):
                 
                 case "/memberlist":
                     c.execute("SELECT username FROM users")
-                    
                     raw_members = c.fetchall()
-                    membersLen = len([raw_members for raw_members in sorted(raw_members)])
-                    members = ", ".join([result[0] for result in raw_members])
+                    membersLen  = len([raw_members for raw_members in sorted(raw_members)])
+                    
+                    c.execute("SELECT username FROM users WHERE role = 'admin'")
+                    raw_admins  = c.fetchall()
+                    admins_len  = len([raw_admins for raw_admins in sorted(raw_admins)])
+                    admins      = ", ".join([result[0] for result in sorted(raw_admins)])
+                    
+                    c.execute("SELECT username FROM users WHERE role = 'bot'")
+                    raw_bots    = c.fetchall()
+                    bots_len    = len([raw_bots for raw_bots in sorted(raw_bots)])
+                    bots        = ", ".join([result[0] for result in sorted(raw_bots)])
+                    
+                    
+                    c.execute("SELECT username FROM users WHERE role = 'member'")
+                    raw_members = c.fetchall()
+                    members_len = len([raw_members for raw_members in sorted(raw_members)])
+                    members     = ", ".join([result[0] for result in sorted(raw_members)])
                     
                     try:
                         if online_mode == True:
-                            verified = requests.get(api + "server/verified?addr=" + global_ip)
+                            verified = requests.get(api + "server/verified?addr=" + "65.21.77.13")
+                            # verified = requests.get(api + "server/verified?addr=" + global_ip)
                         
                             if verified.text == "True":
-                                return "Verified"
+                                verified_txt = f"{GREEN}[VERIFIED]{CYAN} "
                             else:
-                                return ""
+                                verified_txt = ""
                             
                         else:
-                            return ""
+                            pass
                         
                     except Exception as e: 
                         print(e)
                     
 
-                    client.send(f"""{CYAN +  Colors.UNDERLINE + Colors.BOLD}{config['server']['name']} ({membersLen}){RESET + Colors.RESET}
-        {Colors.BOLD}->{Colors.RESET} {CYAN}{members}{RESET}""".encode("utf8"))    
+                    client.send(f"""{CYAN +  Colors.UNDERLINE + Colors.BOLD}{verified_txt}{config['server']['name'].upper()} ({membersLen}){RESET + Colors.RESET}
+        {Colors.BOLD}->{Colors.RESET} {RED}Administrators ({admins_len}){RESET}
+           {LIGHTRED_EX}{admins}{RESET}
+           
+        {Colors.BOLD}->{Colors.RESET} {MAGENTA}Bots ({bots_len}){RESET}
+           {LIGHTMAGENTA_EX}{bots}{RESET}
+           
+        {Colors.BOLD}->{Colors.RESET} {YELLOW}Members ({members_len}){RESET}
+           {LIGHTYELLOW_EX}{members}{RESET}
+        """
+        
+        .encode("utf8"))
                 
                 
                 # Show Description Command
