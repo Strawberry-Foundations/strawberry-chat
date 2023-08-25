@@ -35,6 +35,7 @@ def discord_to_stbchat(sock, msg=None):
     except Exception as e:
         print(e)
 
+
 def stbchat_to_discord(sock):
     while threadFlag: 
         try:
@@ -42,7 +43,7 @@ def stbchat_to_discord(sock):
             message = sock.recv(2048).decode()
             
             if message:
-                print("[{}] {}".format(datetime.datetime.now().strftime("%H:%M"), message))
+                # print("[{}] {}".format(datetime.datetime.now().strftime("%H:%M"), message))
                 return message
 
             else:
@@ -51,22 +52,6 @@ def stbchat_to_discord(sock):
         except Exception as e:
             print(e)
             break
-
-# def receive(sock):
-#     while threadFlag: 
-#         try:
-#             message = str
-#             message = sock.recv(2048).decode()
-            
-#             if message:
-#                 print("[{}] {}".format(datetime.datetime.now().strftime("%H:%M"), message))
-
-#             else:
-#                 break
-            
-#         except Exception as e:
-#             print(e)
-#             break
 
 @bot.event
 async def on_ready():
@@ -86,7 +71,16 @@ async def on_message(message):
                 global log_message
                 global clientSocket
                 
-                log_message = f"({message.author.display_name}): {message.content}"
+                if message.attachments:
+                    if message.content == "":
+                        for attachment in message.attachments:
+                            log_message = f"({message.author.display_name}): {attachment.url}"
+                    else:
+                        for attachment in message.attachments:
+                            log_message = f"({message.author.display_name}): {message.content} ({attachment.url})"
+                            
+                else:
+                    log_message = f"({message.author.display_name}): {message.content}"
                 
                 discord_to_stbchat(clientSocket, log_message)
                 
@@ -95,17 +89,6 @@ async def on_message(message):
         
     await bot.process_commands(message)
             
-# @bot.event
-# async def on_message(message):
-#     log_channel = bot.get_channel(log_channel_id)
-    
-#     if log_channel:
-#         global clientSocket
-#         log_message = f"Message received: {stbchat_to_discord(clientSocket)}"
-#         await log_channel.send(log_message)
-        
-#     await bot.process_commands(message)
- 
 def main():
     global threadFlag
     global clientSocket
@@ -126,7 +109,7 @@ def main():
     receivingThread.start()
     sendingThread.start()
     
-    discord_login("blablablablablablablablablablablablablablablablabla")
+    discord_login("")
 
     try:
         while receivingThread.is_alive() and sendingThread.is_alive():
