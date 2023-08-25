@@ -20,7 +20,8 @@ Currently, Strawberry Chat is being developed a lot, even almost daily. Currentl
 ## Disclaimer 
 I don't want to see issues that talk about that encryption doesn't exist and how insecure it is.
 **I am aware that this is not the most secure chat app. We are actively working on implementing encryption, but each developer finds this difficult in different ways.** 
-### Please do not put pressure on us developers, we also have a private life. And yet we are actively working on the platform for you and for us! 
+### Please do not put pressure on us developers, we also have a private life. And yet we are actively working on the platform for you and for us!
+[See Issue #24](https://github.com/Strawberry-Foundations/strawberry-chat/issues/24)
 
 ## FaQ
 **Q:** Can I create my own client?<br>
