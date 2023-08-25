@@ -1333,6 +1333,17 @@ def clientThread(client):
 
                     client.send(f"""{CYAN +  Colors.UNDERLINE + Colors.BOLD}Members on this server ({membersLen}){RESET + Colors.RESET}
         {Colors.BOLD}->{Colors.RESET} {CYAN}{members}{RESET}""".encode("utf8"))
+                    
+                
+                case "/memberlist":
+                    c.execute("SELECT username FROM users")
+                    
+                    raw_members = c.fetchall()
+                    membersLen = len([raw_members for raw_members in sorted(raw_members)])
+                    members = ", ".join([result[0] for result in raw_members])
+
+                    client.send(f"""{CYAN +  Colors.UNDERLINE + Colors.BOLD}Members on this server ({membersLen}){RESET + Colors.RESET}
+        {Colors.BOLD}->{Colors.RESET} {CYAN}{members}{RESET}""".encode("utf8"))    
                 
                 
                 # Show Description Command
