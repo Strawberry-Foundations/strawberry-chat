@@ -1362,7 +1362,12 @@ def clientThread(client):
                 case "/memberlist":
                     def isOnline(uname):
                         if uname in users.values():
-                            return "🟢"
+                            if uname in afks:
+                                return "🌙"
+                            
+                            else:
+                                return "🟢"
+                        
                         else:
                             return f"{Colors.GRAY}〇{RESET}"
             
