@@ -375,18 +375,26 @@ def clientThread(client):
         try:
             message = client.recv(2048).decode("utf8")
             message_length = len(message)
+            
+            c.execute('SELECT role FROM users WHERE username = ?', (user,))    
+            res = c.fetchone()
         
             # Message length control system
-            rnd = random.randint(0, 2)    
-            if message_length > max_message_length:
-                if rnd == 0:
-                    client.send(f"{YELLOW + Colors.BOLD}Your message is too long.{RESET + Colors.RESET}".encode("utf8"))
-                    
-                elif rnd == 1:
-                    client.send(f"{YELLOW + Colors.BOLD}boah digga halbe bibel wer liest sich das durch{RESET + Colors.RESET}".encode("utf8"))
-                    
-                elif rnd == 2:
-                    client.send(f"{YELLOW + Colors.BOLD}junge niemand will sich hier die herr der ringe trilogie durchlesen{RESET + Colors.RESET}".encode("utf8"))
+            rnd = random.randint(0, 2)
+            
+            if res[0] == "bot":
+                pass
+            
+            else:
+                if message_length > max_message_length:
+                    if rnd == 0:
+                        client.send(f"{YELLOW + Colors.BOLD}Your message is too long.{RESET + Colors.RESET}".encode("utf8"))
+                        
+                    elif rnd == 1:
+                        client.send(f"{YELLOW + Colors.BOLD}boah digga halbe bibel wer liest sich das durch{RESET + Colors.RESET}".encode("utf8"))
+                        
+                    elif rnd == 2:
+                        client.send(f"{YELLOW + Colors.BOLD}junge niemand will sich hier die herr der ringe trilogie durchlesen{RESET + Colors.RESET}".encode("utf8"))
 
             # Blacklisted Word System
             c.execute('SELECT role FROM users WHERE username = ?', (user,))    
@@ -395,7 +403,7 @@ def clientThread(client):
             c.execute('SELECT enableBlacklistedWords FROM users WHERE username = ?', (user,))
             res2 = c.fetchone()
             
-            if res[0] == "admin" or res2[0] == "false":
+            if res[0] == "admin" or res[0] == "bot" or res2[0] == "false":
                 pass
             
             else:
