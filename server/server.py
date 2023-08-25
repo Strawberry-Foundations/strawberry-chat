@@ -1203,7 +1203,7 @@ def clientThread(client):
                         f"""{CYAN + Colors.UNDERLINE + Colors.BOLD}Profile & User Commands{RESET + Colors.RESET}
         {BLUE + Colors.BOLD}/online: {RESET}Shows online users
         {BLUE + Colors.BOLD}/members, /users: {RESET}Shows registered users
-        {BLUE + Colors.BOLD}/memberlist: {RESET}Displays a list of members with their badges and roles
+        {BLUE + Colors.BOLD}/memberlist, /userlist: {RESET}Displays a list of members with their badges and roles
         {BLUE + Colors.BOLD}/userinfo, /user, /member <user>/me: {RESET}Shows information about the specified user
         {BLUE + Colors.BOLD}/nick <nickname/remove>: {RESET}Changes nickname to <nickname> or removes it
         {BLUE + Colors.BOLD}/description <desc>: {RESET}Set your user description{RESET + Colors.RESET}
@@ -1359,7 +1359,7 @@ def clientThread(client):
         {Colors.BOLD}->{Colors.RESET} {CYAN}{members}{RESET}""".encode("utf8"))
                     
                 
-                case "/memberlist":
+                case "/memberlist" | "/userlist":
                     def isOnline(uname):
                         if uname in users.values():
                             if uname in afks:
