@@ -14,7 +14,7 @@ Strawberry Chat is a simple chat platform based on Python TCP sockets. It allows
 My goal was to develop a chat app for the terminal, which is not only minimal, but also useful. Strawberry Chat is actively developing and getting more and more features - and the best thing is, everything is free and stays free! 
 In addition, Strawberry Chat is open source. This means that everyone can contribute to the project. Also, every user can create his own server if he/she wants to chat privately with his/her friends - we are happy about every single user and accept everyone with a warm heart! 
 
-## Current state ![State](https://img.shields.io/badge/v1.7.1-success)
+## Current state ![State](https://img.shields.io/badge/v1.7.1-success) ![State](https://img.shields.io/badge/v1.8.0a2-success)
 Currently, Strawberry Chat is being developed a lot, even almost daily. Currently we are in a middle **beta** stage. The big part already exists and Strawberry Chat is well usable, but there are still some things missing, ***including some admin commands, and very important bug fixes and security features, like encryption.***
 
 ## Disclaimer 
