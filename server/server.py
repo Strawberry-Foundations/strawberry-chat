@@ -291,7 +291,17 @@ def doesUserExist(uname):
     
     if userExists.lower() == uname:
         return True
+
+# Print a proper user name information for memberlist command
+def userNickname(uname):
+    c.execute("SELECT nickname FROM users WHERE username = ?", (uname,))
+    nickname = c.fetchone()
     
+    if hasNickname(uname):
+        return f"{nickname[0]} (@{uname.lower()})"
+    
+    else:
+        return uname
     
 with open(server_dir + "/news.yml") as news_file:
     tmp_news_data = yaml.load(news_file, Loader=SafeLoader)
@@ -1351,15 +1361,6 @@ def clientThread(client):
                 
                 case "/memberlist":
                     
-                    def userNickname(uname):
-                        c.execute("SELECT nickname FROM users WHERE username = ?", (uname,))
-                        nickname = c.fetchone()
-                        
-                        if hasNickname(uname):
-                            return f"{nickname[0]} (@{uname.lower()})"
-                        
-                        else:
-                            return uname
                     
                     c.execute("SELECT username FROM users")
                     raw_members = c.fetchall()
