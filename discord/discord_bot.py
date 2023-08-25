@@ -19,7 +19,7 @@ def escape_ansi(line):
 
 
 def stbchat_login(sock):
-    sock.send("discord".encode("utf8"))
+    sock.send("Discord".encode("utf8"))
     time.sleep(1)
     sock.send("discord".encode("utf8"))
     time.sleep(1)
