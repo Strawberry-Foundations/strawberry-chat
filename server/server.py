@@ -541,7 +541,7 @@ def clientThread(client):
                     continue
                 
                 try:
-                    c.execute("SELECT username, nickname, badge, role, role_color, description, badges, discord_name, user_id FROM users WHERE username = ?", (uname,))
+                    c.execute("SELECT username, nickname, badge, role, role_color, description, badges, discord_name, user_id FROM users WHERE LOWER(username) = ?", (uname,))
                     
                 except:
                     client.send(f"{RED + Colors.BOLD}User not found.{RESET + Colors.RESET}".encode("utf8"))
