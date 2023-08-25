@@ -1353,21 +1353,21 @@ def clientThread(client):
                     raw_members = c.fetchall()
                     membersLen  = len([raw_members for raw_members in sorted(raw_members)])
                     
-                    c.execute("SELECT username FROM users WHERE role = 'admin'")
+                    c.execute("SELECT username, badge FROM users WHERE role = 'admin'")
                     raw_admins  = c.fetchall()
                     admins_len  = len([raw_admins for raw_admins in sorted(raw_admins)])
-                    admins      = ", ".join([result[0] for result in sorted(raw_admins)])
+                    admins      = "\n           ".join([f"{result[0]} [{result[1]}]" for result in raw_admins])
                     
-                    c.execute("SELECT username FROM users WHERE role = 'bot'")
+                    c.execute("SELECT username, badge FROM users WHERE role = 'bot'")
                     raw_bots    = c.fetchall()
                     bots_len    = len([raw_bots for raw_bots in sorted(raw_bots)])
-                    bots        = ", ".join([result[0] for result in sorted(raw_bots)])
+                    bots      = "\n           ".join([f"{result[0]} [{result[1]}]" for result in raw_bots])
                     
                     
-                    c.execute("SELECT username FROM users WHERE role = 'member'")
+                    c.execute("SELECT username, badge FROM users WHERE role = 'member'")
                     raw_members = c.fetchall()
                     members_len = len([raw_members for raw_members in sorted(raw_members)])
-                    members     = ", ".join([result[0] for result in sorted(raw_members)])
+                    members      = "\n           ".join([f"{result[0]} [{result[1]}]" for result in raw_members])
                     
                     try:
                         if online_mode == True:
