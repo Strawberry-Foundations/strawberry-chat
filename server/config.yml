@@ -5,8 +5,9 @@ server:
   description: "This is the official chat server for Strawberry Chat!"
 
 flags:
-  enable_messages: false
+  enable_messages: true
   max_message_length: 256
   debug_mode: true
+  online_mode: true
 
 config_ver: 2
