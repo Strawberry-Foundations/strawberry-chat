@@ -582,7 +582,7 @@ def clientThread(client):
                     crown_badge = "- 👑 The legendary founder and owner!"
                     cool_badge = "- 😎 One of the coolest here!"
                     flame_badge = "- 🔥 The hottest user!"
-                    lightning_badge = "- ⚡ Founder and owner of the (deprecated) Sprchrgd Client!"
+                    berryjuice_badge = "- 🫐 Founder and owner of the Berryjuice Client!"
                     bot_badge = "- 🤖 Just some bot"
                     macher_badge = "- 💪 In germany we say: \"Macher\""
                     kindness_badge = "- 👍 The badge of kindness!"
@@ -603,8 +603,8 @@ def clientThread(client):
                             all_badges = all_badges + "\n        " + cool_badge
                         if "🔥" in row[6]:
                             all_badges = all_badges + "\n        " + flame_badge
-                        if "⚡" in row[6]:
-                            all_badges = all_badges + "\n        " + lightning_badge
+                        if "🫐" in row[6]:
+                            all_badges = all_badges + "\n        " + berryjuice_badge
                         if "🤖" in row[6]:
                             all_badges = all_badges + "\n        " + bot_badge
                         if "💪" in row[6]:
