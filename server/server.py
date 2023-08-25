@@ -1569,7 +1569,7 @@ def clientLogin(client):
                 
                 client.send(f"{GREEN + Colors.BOLD}Creating your User account... {RESET + Colors.RESET}".encode("utf8"))
                 
-                c.execute('INSERT INTO users (username, password, role, role_color, enableBlacklistedWords, accountEnabled, muted) VALUES (?, ?, "member", ?, "true", "true", "false")', (registeredUsername, registeredPassword, registeredRoleColor.lower()))
+                c.execute('INSERT INTO users (username, password, role, role_color, enableBlacklistedWords, accountEnabled, muted, user_id) VALUES (?, ?, "member", ?, "true", "true", "false", "1234-5678")', (registeredUsername, registeredPassword, registeredRoleColor.lower()))
                 db.commit()
                 db.close()
                 
