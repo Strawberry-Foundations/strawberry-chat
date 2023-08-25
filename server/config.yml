@@ -1,7 +1,8 @@
 server:
   address: "0.0.0.0"
   port: 8080
-  description: "Write something about your server"
+  name: "Official Strawberry Chat Server"
+  description: "This is the official chat server for Strawberry Chat!"
 
 flags:
   enable_messages: false
