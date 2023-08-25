@@ -1356,7 +1356,7 @@ def clientThread(client):
                         nickname = c.fetchone()
                         
                         if hasNickname(uname):
-                            return f"{nickname[0]} (@{uname})"
+                            return f"{nickname[0]} (@{uname.lower()})"
                         
                         else:
                             return uname
