@@ -1198,7 +1198,7 @@ def clientThread(client):
                 else:
                     if found_keys:
                         client.send(f"{YELLOW + Colors.BOLD}Kicked {uname}{RESET + Colors.RESET}".encode("utf-8"))
-                        to_kick.send(f"{YELLOW + Colors.BOLD}You got kicked out of the chat for the following reason: {reason}{RESET + Colors.RESET}".encode("utf-8"))
+                        to_kick.send(f"{YELLOW + Colors.BOLD}You have been kicked out of the chat for the following reason: {reason}{RESET + Colors.RESET}".encode("utf-8"))
                         del addresses[to_kick]
                         del users[to_kick]
                         
