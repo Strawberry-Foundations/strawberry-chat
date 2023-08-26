@@ -8,6 +8,6 @@ flags:
   enable_messages: true
   max_message_length: 256
   debug_mode: true
-  online_mode: true
+  online_mode: false
 
 config_ver: 2
