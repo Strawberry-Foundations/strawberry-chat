@@ -600,18 +600,19 @@ def clientThread(client):
                     role = role.capitalize()
                     role_color = role_color.capitalize()
                         
-                    crown_badge = "- 👑 The legendary founder and owner!"
-                    cool_badge = "- 😎 One of the coolest here!"
-                    flame_badge = "- 🔥 The hottest user!"
-                    berryjuice_badge = "- 🫐 Founder and owner of the Berryjuice Client!"
-                    bot_badge = "- 🤖 Just some bot"
-                    macher_badge = "- 💪 In germany we say: \"Macher\""
-                    kindness_badge = "- 👍 The badge of kindness!"
-                    troll_badge = "- 🤡 Someone wo trolls.. watch out"
-                    evil_badge = "- 😈 The opposite of the kindness's badge - The evil badge"
-                    supporter_badge = "- 🤝 Active supporter and helper"
-                    newbie_badge = "- 👋 Say hi! I'm new!"
-                    og_badge = "- 😌 A real OG, who is one of the first members!"
+                    crown_badge         = "- 👑 The legendary founder and owner!"
+                    cool_badge          = "- 😎 One of the coolest here!"
+                    flame_badge         = "- 🔥 The hottest user!"
+                    berryjuice_badge    = "- 🫐 Founder and owner of the Berryjuice Client!"
+                    bot_badge           = "- 🤖 Just some bot"
+                    macher_badge        = "- 💪 In germany we say: \"Macher\""
+                    kindness_badge      = "- 👍 The badge of kindness!"
+                    troll_badge         = "- 🤡 Someone wo trolls.. watch out"
+                    evil_badge          = "- 😈 The opposite of the kindness's badge - The evil badge"
+                    supporter_badge     = "- 🤝 Active supporter and helper"
+                    newbie_badge        = "- 👋 Say hi! I'm new!"
+                    og_badge            = "- 😌 A real OG, who is one of the first members!"
+                    strawberry_badge    = "- 🍓 Strawberry ID & Network user! "
                     all_badges = ""
 
                     if row[6] is None:
