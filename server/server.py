@@ -1516,8 +1516,9 @@ def clientThread(client):
                     except Exception as e: 
                         print(e)
                     
-
-                    client.send(f"""{CYAN +  Colors.UNDERLINE + Colors.BOLD}{verified_txt}{config['server']['name'].upper()} ({membersLen}){RESET + Colors.RESET}
+                    onlineUsersLen2 = len([user for user in sorted(users.values())])
+                    
+                    client.send(f"""{CYAN +  Colors.UNDERLINE + Colors.BOLD}{verified_txt}{config['server']['name'].upper()} ({membersLen} Members, {onlineUsersLen2} Online){RESET + Colors.RESET}
         {Colors.BOLD}->{Colors.RESET} {RED}Administrators ({admins_len}){RESET}
            {LIGHTRED_EX}{admins}{RESET}
            
