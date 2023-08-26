@@ -1582,6 +1582,11 @@ def clientThread(client):
                 case "/":
                     client.send(f"{GREEN + Colors.BOLD}Need help? Take a look at our help command! /help{RESET + Colors.RESET}".encode("utf8"))
                 
+                case "/msgcount":
+                    c.execute("SELECT msg_count FROM users WHERE username = ?", (user,))
+                    msg_count = c.fetchone()
+                    client.send(f"{GREEN + Colors.BOLD}Your message count:{RESET + Colors.RESET} {msg_count[0]}".encode("utf8"))
+                    
                 
                 case _:
                     
@@ -1599,6 +1604,11 @@ def clientThread(client):
                             log.info(f"{user} ({address}): {message}")
                                 
                         broadcast(message, user)
+                        c.execute("SELECT msg_count FROM users WHERE username = ?", (user,))
+                        msg_count = c.fetchone()
+                        msg_count = msg_count[0] + 1
+                        c.execute("UPDATE users SET msg_count = ? WHERE username = ?", (msg_count, user))
+                        db.commit()
                 
             
                 
