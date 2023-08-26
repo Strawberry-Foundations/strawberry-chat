@@ -1162,8 +1162,8 @@ def clientThread(client):
                 
                 else:
                     if found_keys:
-                        client.send(f"{GREEN + Colors.BOLD}You{RESET} {Colors.GRAY}-->{Colors.RESET} {MAGENTA + Colors.BOLD}{uname}{RESET + Colors.RESET}: {msg}".encode("utf-8"))
-                        to_sent.send(f"{Colors.GRAY}-->{Colors.RESET + GREEN + Colors.BOLD} {user}{RESET + Colors.RESET}:{msg}".encode("utf-8"))
+                        client.send(f"{userRoleColor(user)}You{RESET} {Colors.GRAY}-->{Colors.RESET} {userRoleColor(uname)}{uname}{RESET + Colors.RESET}: {msg}".encode("utf-8"))
+                        to_sent.send(f"{Colors.RESET + userRoleColor(user)} {user} {Colors.GRAY}-->{RESET + Colors.RESET}{userRoleColor(uname)} You{Colors.RESET + RESET}: {msg}".encode("utf-8"))
                         
                     else:
                         client.send(f"{RED + Colors.BOLD}User not found or user is offline.{RESET + Colors.RESET}".encode("utf-8"))
