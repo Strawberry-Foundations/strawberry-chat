@@ -106,7 +106,7 @@ online_mode             = config['flags']['online_mode']
 
 if online_mode:
     print(f"{YELLOW + Colors.BOLD}>>> Connecting to the Strawberry API ...{RESET + Colors.RESET}")
-    global_ip               = get_global_ip()
+    global_ip           = get_global_ip()
     print(f"{GREEN + Colors.BOLD}>>> Connected{RESET + Colors.RESET}")
     
 else:
