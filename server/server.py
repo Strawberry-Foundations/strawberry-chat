@@ -12,7 +12,6 @@ import threading
 
 import os
 import sys
-from os.path import exists
 
 import yaml
 from yaml import SafeLoader
@@ -125,7 +124,7 @@ def create_empty_file(filename):
         pass
 
 # Blacklisted words set
-if exists(server_dir + "/blacklist.txt"):
+if os.path.exists(server_dir + "/blacklist.txt"):
     open_blacklist()
     
 else:
