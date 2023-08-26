@@ -22,48 +22,53 @@ Bot.flagHandler(printReceivedMessagesToTerminal=True, enableUserInput=True)
 
 def Commands():
     while True:
-        message = Bot.recv_message(raw=True)
-    
-        if message.startswith("!rps "):
-            choices = ["schere", "stein", "papier"]
-            bot_choice = random.choice(choices)
-            arg = message.replace("!rps ", "")
-            
-            if arg == "":
-                Bot.send_message("Du musst schon eine Möglichkeit angeben... Es gibt Schere, Stein oder Papier!")
-                continue
-            
-            else:
-                if arg.lower() not in choices:
-                    Bot.send_message("Du musst schon eine richtige Möglichkeit angeben... Es gibt Schere, Stein oder Papier!")
-                    
+        try:
+            message = Bot.recv_message(raw=True)
+        
+            if message.startswith("!rps "):
+                choices = ["schere", "stein", "papier"]
+                bot_choice = random.choice(choices)
+                arg = message.replace("!rps ", "")
+                
+                if arg == "":
+                    Bot.send_message("Du musst schon eine Möglichkeit angeben... Es gibt Schere, Stein oder Papier!")
+                    continue
+                
                 else:
-                    def determine_winner(user, computer):
-                        if user == computer:
-                            return "Unentschieden!"
-                        elif user == "schere":
-                            return "Du gewinnst!" if computer == "papier" else "Du verlierst!"
-                        elif user == "stein":
-                            return "Du gewinnst!" if computer == "schere" else "Du verlierst!"
-                        elif user == "papier":
-                            return "Du gewinnst!" if computer == "stein" else "Du verlierst!"
+                    if arg.lower() not in choices:
+                        Bot.send_message("Du musst schon eine richtige Möglichkeit angeben... Es gibt Schere, Stein oder Papier!")
+                        
+                    else:
+                        def determine_winner(user, computer):
+                            if user == computer:
+                                return "Unentschieden!"
+                            elif user == "schere":
+                                return "Du gewinnst!" if computer == "papier" else "Du verlierst!"
+                            elif user == "stein":
+                                return "Du gewinnst!" if computer == "schere" else "Du verlierst!"
+                            elif user == "papier":
+                                return "Du gewinnst!" if computer == "stein" else "Du verlierst!"
+                        
+                        
+                        Bot.send_message(f"""
+        * -- Schere, Stein, Papier! -- *
+        Du hast {arg.capitalize()}...
+        Ich habe {bot_choice.capitalize()}!
+        {determine_winner(arg.lower(), bot_choice.lower())}""")
+                
+            match message:
+                case "Hallo":
+                    Bot.send_message("Hallo :D")
+                
+                case "!help":
+                    Bot.send_message("Noch nicht implementiert. Wie wärs wenn du dir mal die eingebauten Commands anschaust? Nutze dafür /help")
+                
+                case "!about":
+                    Bot.send_message(f"{Bot.username} Bot BETA VERSION! Not finished yet")
                     
-                    
-                    Bot.send_message(f"""
-       * -- Schere, Stein, Papier! -- *
-       Du hast {arg.capitalize()}...
-       Ich habe {bot_choice.capitalize()}!
-       {determine_winner(arg.lower(), bot_choice.lower())}""")
-            
-        match message:
-            case "Hallo":
-                Bot.send_message("Hallo :D")
-            
-            case "!help":
-                Bot.send_message("Noch nicht implementiert. Wie wärs wenn du dir mal die eingebauten Commands anschaust? Nutze dafür /help")
-            
-            case "!about":
-                Bot.send_message(f"{Bot.username} Bot BETA VERSION! Not finished yet")
+        except: 
+            print(f"{Bot.log_msg}{scapi.BLUE}An unknown exception occured{scapi.RESET}")
+            break
 
 
 @Bot.event
