@@ -1206,7 +1206,7 @@ def clientThread(client):
                             to_kick.close()
                             sys.exit(1)
                             
-                        except: 
+                        except Exception as e: 
                             log.error("A socket-to-client error occured")
                             debugLogger(e, "005")
                         
