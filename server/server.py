@@ -1160,6 +1160,10 @@ def clientThread(client):
                     client.send(f"{YELLOW}You shouldn't send messages to you...{RESET}".encode("utf-8"))
                     continue
                 
+                elif uname in afks:
+                    client.send(f"{YELLOW}This user is currently afk...{RESET}".encode("utf-8"))
+                    continue
+                
                 else:
                     if found_keys:
                         client.send(f"{userRoleColor(user)}You{RESET} {Colors.GRAY}-->{Colors.RESET} {userRoleColor(uname)}{uname}{RESET + Colors.RESET}: {msg}".encode("utf-8"))
