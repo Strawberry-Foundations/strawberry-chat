@@ -1,0 +1,10 @@
+bot:
+  channel_id: 1234567890123456789
+  token: ":)"
+
+stbchat:
+  username: "yourbotusername"
+  password: "yourbotpassword"
+  server:
+    host: "1.2.3.4"
+    port: 1234
