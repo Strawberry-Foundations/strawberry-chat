@@ -28,6 +28,7 @@ import requests
 from colorama import Fore, Style
 from src.colors import *
 
+
 def get_global_ip():
     response = requests.get('https://api.ipify.org?format=json')
     data = response.json()
