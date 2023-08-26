@@ -1176,19 +1176,20 @@ def clientThread(client):
                 
             
             elif message.startswith("/kick "):                
-                arg = message.replace("/dm ", "")
+                arg = message.replace("/kick ", "")
                 args = arg.split(" ")
 
                 uname   = args[0]
-                msg     = ' '.join(args[1:])
+                # msg     = ' '.join(args[1:])
+                print(client)
                 
                 search_val = uname
                 found_keys = []
                 
                 for key, value in users.items():
                     if value == search_val:
-                        global to_sent
-                        to_sent = key
+                        global to_kick
+                        to_kick = key
                         found_keys.append(key)
                         
                 if uname == user:
@@ -1197,8 +1198,10 @@ def clientThread(client):
                 
                 else:
                     if found_keys:
-                        client.send(f"{userRoleColor(user)}You{RESET} {Colors.GRAY}-->{Colors.RESET} {userRoleColor(uname)}{uname}{RESET + Colors.RESET}: {msg}".encode("utf-8"))
-                        to_sent.send(f"{Colors.RESET + userRoleColor(user)}{user} {Colors.GRAY}-->{RESET + Colors.RESET}{userRoleColor(uname)} You{Colors.RESET + RESET}: {msg}".encode("utf-8"))
+                        client.send(f"{YELLOW + Colors.BOLD}Kicked {uname}{RESET + Colors.RESET}".encode("utf-8"))
+                        # to_kick.send(f"{Colors.RESET + userRoleColor(user)}{user} {Colors.GRAY}-->{RESET + Colors.RESET}{userRoleColor(uname)} You{Colors.RESET + RESET}: {msg}".encode("utf-8"))
+                        # del addresses[client]
+                        # del users[client]
                         
                     else:
                         client.send(f"{RED + Colors.BOLD}User not found or user is offline.{RESET + Colors.RESET}".encode("utf-8"))
