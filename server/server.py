@@ -548,6 +548,17 @@ def clientThread(client):
                     client.send(f"{RED + Colors.BOLD}Sorry, this user does not exist!{RESET + Colors.RESET}".encode("utf8"))
                     continue
                 
+                def isOnline(uname):
+                    if uname in users.values():
+                        if uname in afks:
+                            return "🌙"
+                        
+                        else:
+                            return "🟢"
+                    
+                    else:
+                        return f"{Colors.GRAY}〇{RESET}"
+                
                 try:
                     c.execute("SELECT username, nickname, badge, role, role_color, description, badges, discord_name, user_id, strawberry_id FROM users WHERE LOWER(username) = ?", (uname.lower(),))
                     
@@ -637,7 +648,7 @@ def clientThread(client):
                         
                         
                     client.send(
-                        f"""{CYAN + Colors.BOLD + Colors.UNDERLINE}User information about {row[0]}{RESET + Colors.RESET}
+                        f"""{CYAN + Colors.BOLD + Colors.UNDERLINE}User profile of {row[0]}{RESET + Colors.RESET}
         {GREEN + Colors.BOLD}Username:{RESET + userRoleColor(row[0])} @{row[0].lower()}{RESET + Colors.RESET}
         {GREEN + Colors.BOLD}User-ID:{RESET + LIGHTBLUE_EX} {row[8]}{RESET + Colors.RESET}
         {GREEN + Colors.BOLD}Nickname:{RESET + Colors.BOLD} {nickname}{RESET + Colors.RESET}
