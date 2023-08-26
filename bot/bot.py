@@ -4,6 +4,7 @@ from scapi import Scapi
 import yaml
 from yaml import SafeLoader
 import threading
+import random
 
 with open("config.yml", encoding="utf-8") as config:
     conf = yaml.load(config, Loader=SafeLoader)
@@ -23,6 +24,37 @@ def Commands():
     while True:
         message = Bot.recv_message(raw=True)
     
+        if message.startswith("!rps "):
+            choices = ["schere", "stein", "papier"]
+            bot_choice = random.choice(choices)
+            arg = message.replace("!rps ", "")
+            
+            if arg == "":
+                Bot.send_message("Du musst schon eine Möglichkeit angeben... Es gibt Schere, Stein oder Papier!")
+                continue
+            
+            else:
+                if arg.lower() not in choices:
+                    Bot.send_message("Du musst schon eine richtige Möglichkeit angeben... Es gibt Schere, Stein oder Papier!")
+                    
+                else:
+                    def determine_winner(user, computer):
+                        if user == computer:
+                            return "Unentschieden!"
+                        elif user == "schere":
+                            return "Du gewinnst!" if computer == "papier" else "Du verlierst!"
+                        elif user == "stein":
+                            return "Du gewinnst!" if computer == "schere" else "Du verlierst!"
+                        elif user == "papier":
+                            return "Du gewinnst!" if computer == "stein" else "Du verlierst!"
+                    
+                    
+                    Bot.send_message(f"""
+       * -- Schere, Stein, Papier! -- *
+       Du hast {arg.capitalize()}...
+       Ich habe {bot_choice.capitalize()}!
+       {determine_winner(arg.lower(), bot_choice.lower())}""")
+            
         match message:
             case "Hallo":
                 Bot.send_message("Hallo :D")
