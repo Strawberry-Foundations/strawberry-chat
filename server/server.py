@@ -613,7 +613,7 @@ def clientThread(client):
                     newbie_badge        = "- 👋 Say hi! I'm new!"
                     og_badge            = "- 😌 A real OG, who is one of the first members!"
                     strawberry_badge    = "- 🍓 Strawberry ID & Network user! "
-                    all_badges = ""
+                    all_badges          = ""
 
                     if row[6] is None:
                         all_badges = " Hmm... This user doesn't have any badges yet"
