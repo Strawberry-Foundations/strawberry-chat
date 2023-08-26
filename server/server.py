@@ -33,9 +33,9 @@ import requests
 from src.colors import *
 
 def get_global_ip():
-    response = requests.get('https://httpbin.org/ip')
+    response = requests.get('https://api.ipify.org?format=json')
     data = response.json()
-    return data['origin']
+    return data['ip']
 
 # Version-specified Variables & important variables
 base_ver                = "1.8.0"
