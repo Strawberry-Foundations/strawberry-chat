@@ -31,5 +31,9 @@ def server_verified():
     else:
         return "False"
 
+@app.route('/v1/utils/user/ip', methods=['GET'])
+def user():
+    return jsonify({'ip': request.remote_addr}), 200 
+
 if __name__ == "__main__":
     app.run(host=address, port=port, debug=debug_mode)
