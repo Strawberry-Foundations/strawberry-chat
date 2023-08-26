@@ -549,14 +549,18 @@ def clientThread(client):
                     continue
                 
                 try:
-                    c.execute("SELECT username, nickname, badge, role, role_color, description, badges, discord_name, user_id FROM users WHERE LOWER(username) = ?", (uname,))
+                    c.execute("SELECT username, nickname, badge, role, role_color, description, badges, discord_name, user_id FROM users WHERE LOWER(username) = ?", (uname.lower(),))
                     
                 except:
-                    client.send(f"{RED + Colors.BOLD}User not found.{RESET + Colors.RESET}".encode("utf8"))
+                    client.send(f"{RED + Colors.BOLD}Sorry, this user does not exist!{RESET + Colors.RESET}".encode("utf8"))
                     continue
+                    
+                print("Breakpoint 1")
+                print(uname)
+                print(user)
                 
                 for row in c:
-                    
+                    print("Breakpoint 2")
                     role = row[3]
                     role_color = row[4]
                     
