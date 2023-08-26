@@ -28,7 +28,7 @@ I don't want to see issues that talk about that encryption doesn't exist and how
 **A:** Yes, of course! As long as this client adheres to our terms of use (currently in progress), you may use and actively develop it! Just create a fork (You can also upload the client file individually in a separate GitHub repo, just please ask first if this is okay!), and edit the client file as it suits you! But please still adhere to our terms of use! :)
 
 **Q:** Can I host my own server?<br>
-**A:** Yes!! Hosting your own servers is totally easy and no problem! You can even add your own commands for your friends or community, and change the texts as you like! Only if you upload this to GitHub or something else, you should please follow our terms of use and create a fork :) 
+**A:** Yes. Hosting your own servers is totally easy! You can even add your own commands for your friends or community, and change the texts as you like! Only if you upload this to GitHub or something else, you should please follow our terms of use and create a fork :) We would be happy if you would chat with us on the official chat server :) The user experience is much better there
 
 ### Clients
 | Name                                                                         | Type | Author                                                              | State                                                                                                                 | Version     |
