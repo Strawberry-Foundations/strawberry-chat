@@ -105,7 +105,9 @@ debug_mode              = config['flags']['debug_mode']
 online_mode             = config['flags']['online_mode']
 
 if online_mode:
+    print(f"{YELLOW + Colors.BOLD}>>> Connecting to the Strawberry API ...{RESET + Colors.RESET}")
     global_ip               = get_global_ip()
+    print(f"{GREEN + Colors.BOLD}>>> Connected{RESET + Colors.RESET}")
     
 else:
     pass
@@ -372,7 +374,7 @@ def clientThread(client):
     broadcast(f"{Colors.GRAY + Colors.BOLD}-->{Colors.RESET} {userRoleColor(user)}{user}{GREEN + Colors.BOLD} has joined the chat room!{RESET + Colors.RESET}")
 
     while True:
-        try:
+        # try:
             message = client.recv(2048).decode("utf8")
             message_length = len(message)
             
@@ -1138,6 +1140,37 @@ def clientThread(client):
                         continue
             
             
+            elif message.startswith("/dm "):                
+                arg = message.replace("/dm ", "")
+                args = arg.split(" ")
+
+                uname   = args[0]
+                msg     = ' '.join(args[1:])
+                
+                search_val = uname
+                found_keys = []
+                
+                for key, value in users.items():
+                    if value == search_val:
+                        global to_sent
+                        to_sent = key
+                        found_keys.append(key)
+                        
+                if uname == user:
+                    client.send(f"{YELLOW}You shouldn't send messages to you...{RESET}".encode("utf-8"))
+                    continue
+                
+                else:
+                    if found_keys:
+                        client.send(f"{GREEN + Colors.BOLD}{user}{RESET} {Colors.GRAY}-->{Colors.RESET} {GREEN + Colors.BOLD}{uname}{RESET + Colors.RESET}: {msg}".encode("utf-8"))
+                        to_sent.send(f"{msg}".encode("utf-8"))
+                        
+                    else:
+                        client.send(f"{RED + Colors.BOLD}User not found or user is offline.{RESET + Colors.RESET}".encode("utf-8"))
+                        
+                    continue
+            
+            
             elif message.startswith("/news "):
                 arg = message.replace("/news ", "")
                 args = arg.split(" ")
@@ -1501,18 +1534,18 @@ def clientThread(client):
                 
             
                 
-        except Exception as e:
-            log.error("A client-side error occurred.")
+        # except Exception as e:
+        #     log.error("A client-side error occurred.")
             
-            debugLogger(e, "004")
-            log.info(f"[<] {user} ({address}) has left")
+        #     debugLogger(e, "004")
+        #     log.info(f"[<] {user} ({address}) has left")
             
-            del addresses[client]
-            del users[client]
-            client.close()
+        #     del addresses[client]
+        #     del users[client]
+        #     client.close()
             
-            broadcast(f"{Colors.GRAY + Colors.BOLD}<--{Colors.RESET} {userRoleColor(user)}{user}{YELLOW + Colors.BOLD} has left the chat room!{RESET + Colors.RESET}")
-            break
+        #     broadcast(f"{Colors.GRAY + Colors.BOLD}<--{Colors.RESET} {userRoleColor(user)}{user}{YELLOW + Colors.BOLD} has left the chat room!{RESET + Colors.RESET}")
+        #     break
 
 
 def clientLogin(client):
