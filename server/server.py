@@ -1216,7 +1216,6 @@ def clientThread(client):
                                 del addresses[to_kick]
                                 del users[to_kick]
                                 to_kick.close()
-                                sys.exit(1)
                                 
                             except Exception as e: 
                                 log.error("A socket-to-client error occured")
