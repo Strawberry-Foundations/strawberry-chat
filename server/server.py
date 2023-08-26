@@ -1315,6 +1315,7 @@ def clientThread(client):
                     time.sleep(0.1)
                     client.send(
                         f"""{MAGENTA +  Colors.UNDERLINE + Colors.BOLD}Admin commands{RESET + Colors.RESET}
+        {BLUE + Colors.BOLD}/kick <user> (<reason>): {RESET}Kick the specificed user for the (optionally) provided reason{RESET + Colors.RESET}
         {BLUE + Colors.BOLD}/ban <user>: {RESET}Bans the specificed user{RESET + Colors.RESET}
         {BLUE + Colors.BOLD}/unban <user>: {RESET}Unbans the specificed user{RESET + Colors.RESET}        
         {BLUE + Colors.BOLD}/mute <user>: {RESET}Mutes the specificed user{RESET + Colors.RESET}
