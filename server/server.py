@@ -1710,7 +1710,7 @@ def clientLogin(client):
         
     client.send(f"{Colors.BOLD}Welcome to Strawberry Chat!{Colors.RESET}".encode("utf8"))
     client.send(f"{Colors.BOLD}New here? Type '{MAGENTA}Register{RESET}' to register! You want to leave? Type '{MAGENTA}Exit{RESET}' {Colors.RESET}".encode("utf8"))
-    client.send(f"".encode("utf8"))
+    # client.send(f"".encode("utf8"))
     
     time.sleep(0.1)
     client.send(f"{GREEN + Colors.BOLD}Username: {RESET + Colors.RESET}".encode("utf8"))
