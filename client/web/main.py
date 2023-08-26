@@ -1,4 +1,4 @@
-from flask import Flask, render_template, Response
+from flask import *
 import datetime
 import socket
 import threading
@@ -15,7 +15,16 @@ def currentTime():
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return "Currently nothing here >->"
+
+@app.route('/chat')
+def chat():
+    global uname
+    global password
+    uname = request.args.get('uname')
+    password = request.args.get('password')
+    
+    return render_template('chat.html')
 
 def escape_ansi(line):
     ansi_escape = re.compile(r'(?:\x1B[@-_]|[\x80-\x9F])[0-?]*[ -/]*[@-~]')
