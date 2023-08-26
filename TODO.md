@@ -2,16 +2,16 @@
 Also see [Project/Strawberry Chat](https://github.com/orgs/Strawberry-Foundations/projects/1/views/1)
 
 # Fixes & Bugs
-- When using Ctrl + C in Client, the server will crash (BrokenPipe) ([#1](https://github.com/Strawberry-Foundations/strawberry-chat/issues/1))
-- UTF-8 Only Protection ([#14](https://github.com/Strawberry-Foundations/strawberry-chat/issues/14))
+* When using Ctrl + C in Client, the server will crash (BrokenPipe) ([#1](https://github.com/Strawberry-Foundations/strawberry-chat/issues/1))
+* *UTF-8 Only Protection ([#14](https://github.com/Strawberry-Foundations/strawberry-chat/issues/14))
 
 # Todo
-Feature Request/Suggestion: User Settings for easier management of user flags ([#27](https://github.com/Strawberry-Foundations/strawberry-chat/issues/27))
-Feature: Strawberry Chat+ ([#21](https://github.com/Strawberry-Foundations/strawberry-chat/issues/21))
-SECURITY: Password Encryption ([#24](https://github.com/Strawberry-Foundations/strawberry-chat/issues/24))
+* Feature Request/Suggestion: User Settings for easier management of user flags ([#27](https://github.com/Strawberry-Foundations/strawberry-chat/issues/27))
+* Feature: Strawberry Chat+ ([#21](https://github.com/Strawberry-Foundations/strawberry-chat/issues/21))
+* SECURITY: Password Encryption ([#24](https://github.com/Strawberry-Foundations/strawberry-chat/issues/24))
 
 # Ideas
-- Documentation for developers ([#13](https://github.com/Strawberry-Foundations/strawberry-chat/issues/13))
+* Documentation for developers ([#13](https://github.com/Strawberry-Foundations/strawberry-chat/issues/13))
 
 # SBC+ (Strawberry Chat+)
 If you are a relatively active user, you start with SBC+ Basic. The more activity, the higher the chance to get the "normal" SBC+. 
