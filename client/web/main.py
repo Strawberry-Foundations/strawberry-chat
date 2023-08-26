@@ -22,7 +22,6 @@ def escape_ansi(line):
     return ansi_escape.sub('', line)
 
 def recv():
-    count = 0
     while threadFlag:
         try:
             message = clientSocket.recv(2048).decode()
