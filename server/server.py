@@ -75,7 +75,7 @@ else:
     log.setLevel("INFO")
     
 log_fh = logging.FileHandler('log.txt')
-log_fmt = logging.Formatter(f"({datetime.datetime.now().strftime('%H:%M')}) [%(levelname)s]  %(message)s")
+log_fmt = logging.Formatter(f"(%(asctime)s) [%(levelname)s]  %(message)s")
 log_fh.setFormatter(log_fmt)
 
 log_ch = logging.StreamHandler()
