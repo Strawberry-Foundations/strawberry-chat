@@ -46,6 +46,7 @@ api                     = "http://api.strawberryfoundations.xyz/v1/"
 
 print(f"{CYAN + Colors.BOLD}* -- {chat_name} v{short_ver} {codename} ({server_edition}) -- *{RESET + Colors.RESET}")
 
+
 # Init logger
 class LogFormatter(logging.Formatter):
     format = f"[{datetime.datetime.now().strftime('%H:%M')}] [%(levelname)s] %(message)s"
@@ -150,9 +151,10 @@ if "--enable-messages" in sys.argv:
 if "--debug-mode" in sys.argv:
     debug_mode = True
 
+
 # General Functions
 
-# get user's nickname
+# Get user's nickname
 def userNickname(uname):
     c = db.cursor()
     c.execute('SELECT nickname FROM users WHERE username = ?', (uname,))
