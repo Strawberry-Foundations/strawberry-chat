@@ -12,20 +12,20 @@ import threading
 
 import os
 import sys
+import logging
+import sqlite3 as sql
 
 import yaml
 from yaml import SafeLoader
 
-import logging
 import atexit
-from colorama import Fore, Style
 import datetime
-import sqlite3 as sql
 import time
 import errno
 import random
 import requests
 
+from colorama import Fore, Style
 from src.colors import *
 
 def get_global_ip():
