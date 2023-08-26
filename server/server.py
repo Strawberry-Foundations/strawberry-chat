@@ -374,7 +374,7 @@ def clientThread(client):
     broadcast(f"{Colors.GRAY + Colors.BOLD}-->{Colors.RESET} {userRoleColor(user)}{user}{GREEN + Colors.BOLD} has joined the chat room!{RESET + Colors.RESET}")
 
     while True:
-        # try:
+        try:
             message = client.recv(2048).decode("utf8")
             message_length = len(message)
             
@@ -1199,8 +1199,12 @@ def clientThread(client):
                     if found_keys:
                         client.send(f"{YELLOW + Colors.BOLD}Kicked {uname}{RESET + Colors.RESET}".encode("utf-8"))
                         to_kick.send(f"{YELLOW + Colors.BOLD}You have been kicked out of the chat for the following reason: {reason}{RESET + Colors.RESET}".encode("utf-8"))
+                        
                         del addresses[to_kick]
                         del users[to_kick]
+                        to_kick.close()
+                        
+                        sys.exit(1)
                         
                     else:
                         client.send(f"{RED + Colors.BOLD}User not found or user is offline.{RESET + Colors.RESET}".encode("utf-8"))
@@ -1572,18 +1576,18 @@ def clientThread(client):
                 
             
                 
-        # except Exception as e:
-        #     log.error("A client-side error occurred.")
+        except Exception as e:
+            log.error("A client-side error occurred.")
             
-        #     debugLogger(e, "004")
-        #     log.info(f"[<] {user} ({address}) has left")
+            debugLogger(e, "004")
+            log.info(f"[<] {user} ({address}) has left")
             
-        #     del addresses[client]
-        #     del users[client]
-        #     client.close()
+            del addresses[client]
+            del users[client]
+            client.close()
             
-        #     broadcast(f"{Colors.GRAY + Colors.BOLD}<--{Colors.RESET} {userRoleColor(user)}{user}{YELLOW + Colors.BOLD} has left the chat room!{RESET + Colors.RESET}")
-        #     break
+            broadcast(f"{Colors.GRAY + Colors.BOLD}<--{Colors.RESET} {userRoleColor(user)}{user}{YELLOW + Colors.BOLD} has left the chat room!{RESET + Colors.RESET}")
+            break
 
 
 def clientLogin(client):
