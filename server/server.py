@@ -1696,7 +1696,6 @@ def clientLogin(client):
                 
                 c.execute('INSERT INTO users (username, password, role, role_color, enableBlacklistedWords, accountEnabled, muted, user_id, msg_count) VALUES (?, ?, "member", ?, "true", "true", "false", "1234-5678", 0)', (registeredUsername, registeredPassword, registeredRoleColor.lower()))
                 db.commit()
-                db.close()
                 
                 client.send(f"{GREEN + Colors.BOLD}Created!{RESET + Colors.RESET}".encode("utf8"))
                 client.close()
