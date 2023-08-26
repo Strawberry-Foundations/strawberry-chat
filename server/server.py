@@ -1200,11 +1200,15 @@ def clientThread(client):
                         client.send(f"{YELLOW + Colors.BOLD}Kicked {uname}{RESET + Colors.RESET}".encode("utf-8"))
                         to_kick.send(f"{YELLOW + Colors.BOLD}You have been kicked out of the chat for the following reason: {reason}{RESET + Colors.RESET}".encode("utf-8"))
                         
-                        del addresses[to_kick]
-                        del users[to_kick]
-                        to_kick.close()
-                        
-                        sys.exit(1)
+                        try:
+                            del addresses[to_kick]
+                            del users[to_kick]
+                            to_kick.close()
+                            sys.exit(1)
+                            
+                        except: 
+                            log.error("A socket-to-client error occured")
+                            debugLogger(e, "005")
                         
                     else:
                         client.send(f"{RED + Colors.BOLD}User not found or user is offline.{RESET + Colors.RESET}".encode("utf-8"))
@@ -1374,24 +1378,6 @@ def clientThread(client):
                         
                     else:
                         client.send(f"{RED}Sorry, you do not have permissons for that.{RESET}".encode("utf8"))
-                                
-                                                
-                # Kickall Command
-                case "/kickall":
-                    try: 
-                        c.execute('SELECT role FROM users WHERE username = ?', (user,))
-                        
-                    except Exception as e:
-                        sqlError(e)
-                        
-                    res = c.fetchone()
-                    
-                    if res[0] == "admin":
-                        cleanup()
-                        
-                    else:
-                        client.send(f"{RED}Sorry, you do not have permissons for that.{RESET}".encode("utf8"))
-                
                 
                 # Shrug Command
                 case "/shrug":
@@ -1582,9 +1568,14 @@ def clientThread(client):
             debugLogger(e, "004")
             log.info(f"[<] {user} ({address}) has left")
             
-            del addresses[client]
-            del users[client]
-            client.close()
+            try:
+                del addresses[client]
+                del users[client]
+                client.close()
+                
+            except Exception as e:
+                log.error("A socket-to-client error occured")
+                debugLogger(e, "005")
             
             broadcast(f"{Colors.GRAY + Colors.BOLD}<--{Colors.RESET} {userRoleColor(user)}{user}{YELLOW + Colors.BOLD} has left the chat room!{RESET + Colors.RESET}")
             break
