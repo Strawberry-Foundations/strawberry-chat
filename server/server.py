@@ -347,8 +347,8 @@ def clientThread(client):
         del addresses[client]
         return
     
+    
     log.info(f"{user} ({address}) logged in")
-
     users[client] = user
 
     try:
