@@ -1229,6 +1229,7 @@ def clientThread(client):
                         f"""{GREEN +  Colors.UNDERLINE + Colors.BOLD}Default commands{RESET + Colors.RESET}
         {BLUE + Colors.BOLD}/help: {RESET}Help Command
         {BLUE + Colors.BOLD}/about: {RESET}About {chat_name}
+        {BLUE + Colors.BOLD}/dm <user> <message>: {RESET}Send a private message to <user>
         {BLUE + Colors.BOLD}/news: {RESET}Newsletter{RESET + Colors.RESET}
         {BLUE + Colors.BOLD}/exit, /quit: {RESET}Leave chat
         {BLUE + Colors.BOLD}/clientinfo: {RESET}Get some information about you{RESET + Colors.RESET}
