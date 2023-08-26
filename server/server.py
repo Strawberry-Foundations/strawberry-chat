@@ -1177,6 +1177,10 @@ def clientThread(client):
                         global to_sent
                         to_sent = key
                         found_keys.append(key)
+                    
+                c.execute("SELECT enableDms FROM users WHERE username = ?", (uname,))
+                has_dm_enabled = c.fetchone()[0]   
+                print(has_dm_enabled)
                         
                 if uname == user:
                     client.send(f"{YELLOW}You shouldn't send messages to yourself...{RESET}".encode("utf-8"))
@@ -1184,6 +1188,10 @@ def clientThread(client):
                 
                 elif uname in afks:
                     client.send(f"{YELLOW}This user is currently afk...{RESET}".encode("utf-8"))
+                    continue
+                
+                elif has_dm_enabled == "false":
+                    client.send(f"{YELLOW}This user has deactivated his/her DM's{RESET}".encode("utf-8"))
                     continue
                 
                 else:
