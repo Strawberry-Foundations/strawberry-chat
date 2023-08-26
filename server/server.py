@@ -1444,7 +1444,7 @@ def clientThread(client):
                                 verified_txt = ""
                             
                         else:
-                            pass
+                            verified_txt = ""
                         
                     except Exception as e: 
                         print(e)
