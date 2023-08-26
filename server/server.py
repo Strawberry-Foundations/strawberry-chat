@@ -267,9 +267,12 @@ def isAccountEnabled(uname):
         return False
 
 # Print debug error codes
-def debugLogger(errorMessage, errorCode):
+def debugLogger(errorMessage, errorCode, type="error"):
     if debug_mode:
-        log.error(f"ErrCode {errorCode}: {errorMessage}")
+        if type == "error":
+            log.error(f"ErrCode {errorCode}: {errorMessage}")
+        elif type == "warning":
+            log.warning(f"ErrCode {errorCode}: {errorMessage}")
     else:
         None
 
@@ -1218,8 +1221,8 @@ def clientThread(client):
                                 to_kick.close()
                                 
                             except Exception as e: 
-                                log.error("A socket-to-client error occured")
-                                debugLogger(e, "005")
+                                log.warning("A socket-to-client exception occured")
+                                debugLogger(e, "005", type="warning")
                             
                         else:
                             client.send(f"{RED + Colors.BOLD}User not found or user is offline.{RESET + Colors.RESET}".encode("utf-8"))
@@ -1590,8 +1593,8 @@ def clientThread(client):
                 client.close()
                 
             except Exception as e:
-                log.error("A socket-to-client error occured")
-                debugLogger(e, "005")
+                log.warning("A socket-to-client exception occured")
+                debugLogger(e, "005", type="warning")
             
             broadcast(f"{Colors.GRAY + Colors.BOLD}<--{Colors.RESET} {userRoleColor(user)}{user}{YELLOW + Colors.BOLD} has left the chat room!{RESET + Colors.RESET}")
             break
