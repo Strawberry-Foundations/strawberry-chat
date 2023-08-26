@@ -549,18 +549,13 @@ def clientThread(client):
                     continue
                 
                 try:
-                    c.execute("SELECT username, nickname, badge, role, role_color, description, badges, discord_name, user_id FROM users WHERE LOWER(username) = ?", (uname.lower(),))
+                    c.execute("SELECT username, nickname, badge, role, role_color, description, badges, discord_name, user_id, strawberry_id FROM users WHERE LOWER(username) = ?", (uname.lower(),))
                     
                 except:
                     client.send(f"{RED + Colors.BOLD}Sorry, this user does not exist!{RESET + Colors.RESET}".encode("utf8"))
                     continue
-                    
-                print("Breakpoint 1")
-                print(uname)
-                print(user)
                 
                 for row in c:
-                    print("Breakpoint 2")
                     role = row[3]
                     role_color = row[4]
                     
@@ -587,6 +582,12 @@ def clientThread(client):
                         discord = MAGENTA + "@" + row[7]
                     else:
                         discord = "Not set"
+                        
+                    # Strawberry ID/Network
+                    if row[9] is not None:
+                        strawberry_id_name = MAGENTA + "@" + row[9]
+                    else:
+                        strawberry_id_name = "Not set"
                         
                     role = role.capitalize()
                     role_color = role_color.capitalize()
@@ -645,6 +646,7 @@ def clientThread(client):
         {GREEN + Colors.BOLD}Badges: {row[6]}{RESET + Colors.BOLD}{RESET + Colors.RESET}{Colors.BOLD}{all_badges}{Colors.RESET}
         {GREEN + Colors.BOLD}Role:{RESET + Colors.BOLD} {role}{RESET + Colors.RESET}
         {GREEN + Colors.BOLD}Role Color:{RESET + Colors.BOLD} {userRoleColor(row[0])}{role_color}{RESET + Colors.RESET}
+        {GREEN + Colors.BOLD}Strawberry Network:{RESET + Colors.BOLD} {strawberry_id_name}{RESET + Colors.RESET}
         {GREEN + Colors.BOLD}Discord:{RESET + Colors.BOLD} {discord}{RESET + Colors.RESET}"""
                         .encode("utf8"))
                 continue
