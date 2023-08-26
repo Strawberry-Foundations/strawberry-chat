@@ -613,6 +613,7 @@ def clientThread(client):
                     newbie_badge        = "- 👋 Say hi! I'm new!"
                     og_badge            = "- 😌 A real OG, who is one of the first members!"
                     strawberry_badge    = "- 🍓 Strawberry ID & Network user!"
+                    stbchat_plus_user   = "- 💫 Strawberry Chat+ user"
                     all_badges          = ""
 
                     if row[6] is None:
@@ -645,6 +646,8 @@ def clientThread(client):
                             all_badges = all_badges + "\n        " + og_badge
                         if "🍓" in row[6] or row[9] is not None:
                             all_badges = all_badges + "\n        " + strawberry_badge
+                        if "💫" in row[6]:
+                            all_badges = all_badges + "\n        " + stbchat_plus_user
                         
                         
                     client.send(
