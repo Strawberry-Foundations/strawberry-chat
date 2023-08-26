@@ -1180,8 +1180,7 @@ def clientThread(client):
                 args = arg.split(" ")
 
                 uname   = args[0]
-                # msg     = ' '.join(args[1:])
-                print(client)
+                reason  = ' '.join(args[1:])
                 
                 search_val = uname
                 found_keys = []
@@ -1199,9 +1198,9 @@ def clientThread(client):
                 else:
                     if found_keys:
                         client.send(f"{YELLOW + Colors.BOLD}Kicked {uname}{RESET + Colors.RESET}".encode("utf-8"))
-                        # to_kick.send(f"{Colors.RESET + userRoleColor(user)}{user} {Colors.GRAY}-->{RESET + Colors.RESET}{userRoleColor(uname)} You{Colors.RESET + RESET}: {msg}".encode("utf-8"))
-                        # del addresses[client]
-                        # del users[client]
+                        to_kick.send(f"{YELLOW + Colors.BOLD}You got kicked out of the chat for the following reason: {reason}{RESET + Colors.RESET}".encode("utf-8"))
+                        del addresses[to_kick]
+                        del users[to_kick]
                         
                     else:
                         client.send(f"{RED + Colors.BOLD}User not found or user is offline.{RESET + Colors.RESET}".encode("utf-8"))
