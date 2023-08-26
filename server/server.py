@@ -1175,44 +1175,60 @@ def clientThread(client):
                     continue
                 
             
-            elif message.startswith("/kick "):                
-                arg = message.replace("/kick ", "")
-                args = arg.split(" ")
+            elif message.startswith("/kick "):
+                try: 
+                    c.execute('SELECT role FROM users WHERE username = ?', (user,))
+                    
+                except Exception as e:
+                    sqlError(e)
+                    
+                res = c.fetchone()
+                
+                if res[0] == "admin":
+                    arg = message.replace("/kick ", "")
+                    args = arg.split(" ")
 
-                uname   = args[0]
-                reason  = ' '.join(args[1:])
-                
-                search_val = uname
-                found_keys = []
-                
-                for key, value in users.items():
-                    if value == search_val:
-                        global to_kick
-                        to_kick = key
-                        found_keys.append(key)
-                        
-                if uname == user:
-                    client.send(f"{YELLOW}You shouldn't kick yourself...{RESET}".encode("utf-8"))
-                    continue
+                    uname   = args[0]
+                    reason  = ' '.join(args[1:])
+                    
+                    if reason == "":
+                        reason = "No reason provided"
+                    
+                    search_val = uname
+                    found_keys = []
+                    
+                    for key, value in users.items():
+                        if value == search_val:
+                            global to_kick
+                            to_kick = key
+                            found_keys.append(key)
+                            
+                    if uname == user:
+                        client.send(f"{YELLOW}You shouldn't kick yourself...{RESET}".encode("utf-8"))
+                        continue
+                    
+                    else:
+                        if found_keys:
+                            client.send(f"{YELLOW + Colors.BOLD}Kicked {uname} for following reason: {reason}{RESET + Colors.RESET}".encode("utf-8"))
+                            to_kick.send(f"{YELLOW + Colors.BOLD}You have been kicked out of the chat for the following reason: {reason}{RESET + Colors.RESET}".encode("utf-8"))
+                            
+                            try:
+                                del addresses[to_kick]
+                                del users[to_kick]
+                                to_kick.close()
+                                sys.exit(1)
+                                
+                            except Exception as e: 
+                                log.error("A socket-to-client error occured")
+                                debugLogger(e, "005")
+                            
+                        else:
+                            client.send(f"{RED + Colors.BOLD}User not found or user is offline.{RESET + Colors.RESET}".encode("utf-8"))
+                            
+                        continue
                 
                 else:
-                    if found_keys:
-                        client.send(f"{YELLOW + Colors.BOLD}Kicked {uname} for following reason: {reason}{RESET + Colors.RESET}".encode("utf-8"))
-                        to_kick.send(f"{YELLOW + Colors.BOLD}You have been kicked out of the chat for the following reason: {reason}{RESET + Colors.RESET}".encode("utf-8"))
-                        
-                        try:
-                            del addresses[to_kick]
-                            del users[to_kick]
-                            to_kick.close()
-                            sys.exit(1)
-                            
-                        except Exception as e: 
-                            log.error("A socket-to-client error occured")
-                            debugLogger(e, "005")
-                        
-                    else:
-                        client.send(f"{RED + Colors.BOLD}User not found or user is offline.{RESET + Colors.RESET}".encode("utf-8"))
-                        
+                    client.send(f"{RED}Sorry, you do not have permissons for that.{RESET}".encode("utf8"))
                     continue
             
             
