@@ -39,7 +39,7 @@ def get_global_ip():
 
 # Version-specified Variables & important variables
 base_ver                = "1.8.0"
-short_ver               = "1.8.0a2"
+short_ver               = "1.8.0a3"
 ver                     = short_ver + "-vacakes"
 chat_name               = "Strawberry Chat"
 codename                = "Vanilla Cake"
