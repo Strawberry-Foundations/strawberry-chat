@@ -1,6 +1,7 @@
 {
     "python.analysis.extraPaths": [
         "./bot",
-        "./server"
+        "./server",
+        "./client/apps/android"
     ]
 }
