@@ -1692,7 +1692,7 @@ def clientLogin(client):
                 
                 client.send(f"{GREEN + Colors.BOLD}Creating your User account... {RESET + Colors.RESET}".encode("utf8"))
                 
-                c.execute('INSERT INTO users (username, password, role, role_color, enableBlacklistedWords, accountEnabled, muted, user_id, msg_count) VALUES (?, ?, "member", ?, "true", "true", "false", "1234-5678", ?)', (registeredUsername, registeredPassword, registeredRoleColor.lower(), 0))
+                c.execute('INSERT INTO users (username, password, role, role_color, enableBlacklistedWords, accountEnabled, muted, user_id, msg_count, enableDms) VALUES (?, ?, "member", ?, "true", "true", "false", "1234-5678", ?, "true")', (registeredUsername, registeredPassword, registeredRoleColor.lower(), 0))
                 db.commit()
                 
                 client.send(f"{GREEN + Colors.BOLD}Created!{RESET + Colors.RESET}".encode("utf8"))
