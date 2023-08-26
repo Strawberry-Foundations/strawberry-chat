@@ -645,7 +645,7 @@ def clientThread(client):
                         
                         
                     client.send(
-                        f"""{CYAN + Colors.BOLD + Colors.UNDERLINE}User profile of {row[0]}{RESET + Colors.RESET}
+                        f"""{CYAN + Colors.BOLD + Colors.UNDERLINE}User profile of {row[0]}{RESET + Colors.RESET} {isOnline(row[0])}
         {GREEN + Colors.BOLD}Username:{RESET + userRoleColor(row[0])} @{row[0].lower()}{RESET + Colors.RESET}
         {GREEN + Colors.BOLD}User-ID:{RESET + LIGHTBLUE_EX} {row[8]}{RESET + Colors.RESET}
         {GREEN + Colors.BOLD}Nickname:{RESET + Colors.BOLD} {nickname}{RESET + Colors.RESET}
