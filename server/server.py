@@ -528,15 +528,12 @@ def clientThread(client):
                     continue
             
             # /member Command
-            elif message.startswith("/member ") or message.startswith("/user ") or message.startswith("/userinfo "):  
+            elif message.startswith("/member ") or message.startswith("/user "):  
                 if message.startswith("/member "):
                     uname = message.replace("/member ", "")
                     
                 elif message.startswith("/user "):
                     uname = message.replace("/user ", "")
-                    
-                elif message.startswith("/userinfo "):
-                    uname = message.replace("/userinfo ", "")
                     
                 if uname.startswith("me"):
                     uname = user
@@ -1321,7 +1318,7 @@ def clientThread(client):
         {BLUE + Colors.BOLD}/online: {RESET}Shows online users
         {BLUE + Colors.BOLD}/members, /users: {RESET}Shows registered users
         {BLUE + Colors.BOLD}/memberlist, /userlist: {RESET}Displays a list of members with their badges and roles
-        {BLUE + Colors.BOLD}/userinfo, /user, /member <user>/me: {RESET}Shows information about the specified user
+        {BLUE + Colors.BOLD}/user, /member <user>/me: {RESET}Shows information about the specified user
         {BLUE + Colors.BOLD}/nick <nickname/remove>: {RESET}Changes nickname to <nickname> or removes it
         {BLUE + Colors.BOLD}/description <desc>: {RESET}Set your user description{RESET + Colors.RESET}
         {BLUE + Colors.BOLD}/badge set <badge>: {RESET}Sets your main badge
