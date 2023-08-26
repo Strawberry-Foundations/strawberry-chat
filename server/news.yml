@@ -34,6 +34,7 @@ news:
     text: "
     - NEW: Memberlist command with beatiful representation of our members and their roles 🌟\n
     - NEW: DM (direct message) command to send private/direct messages to members, instead sending it to everyone\n
+    - ADMIN: Working Kick command \n
     -> For more information visit https://github.com/orgs/Strawberry-Foundations/projects/1/views/1"
 
 versions: [1.6.0, 1.7.0, 1.8.0]
