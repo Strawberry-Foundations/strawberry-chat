@@ -33,5 +33,8 @@
 - NEW: Memberlist command with beatiful representation of our members and their roles 🌟
 - NEW: DM (direct message) command to send private/direct messages to members, instead sending it to everyone
 - NEW: Updated user info command with Strawberry ID/Network intregation and online/offline status information
+- NEW: HTCF color support (Hashtag Color Format) for chat messages and broadcast command (admin only) (e.g. #red)
+- NEW: HTPF placeholder support (Hashtag Placeholders Format) for chat messages and broadcast command (admin only) (e.g. #today)
+- NEW: If you mention a user (e.g. @someuser), it will be highlighted
 - ADMIN: Working Kick command
 -> For more information visit https://github.com/orgs/Strawberry-Foundations/projects/1/views/1
