@@ -603,12 +603,15 @@ def clientThread(client):
                     continue
             
             # /member Command
-            elif message.startswith("/member ") or message.startswith("/user "):  
+            elif message.startswith("/member ") or message.startswith("/user ") or message == "/user": 
                 if message.startswith("/member "):
                     uname = message.replace("/member ", "")
                     
                 elif message.startswith("/user "):
                     uname = message.replace("/user ", "")
+                
+                elif message == "/user":
+                    uname = user
                     
                 if uname.startswith("me"):
                     uname = user
