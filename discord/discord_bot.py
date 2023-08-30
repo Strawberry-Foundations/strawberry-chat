@@ -21,7 +21,7 @@ def escape_ansi(line):
 def stbchat_login(sock):
     sock.send("Discord".encode("utf8"))
     time.sleep(1)
-    sock.send("discord".encode("utf8"))
+    sock.send("".encode("utf8"))
     time.sleep(1)
 
 def discord_login(token):
@@ -109,7 +109,7 @@ def main():
     receivingThread.start()
     sendingThread.start()
     
-    discord_login("")
+    discord_login("s")
 
     try:
         while receivingThread.is_alive() and sendingThread.is_alive():
