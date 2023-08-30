@@ -1,4 +1,4 @@
-from colorama import Fore
+from colorama import Fore, Back
 
 # Alias for colorama colors
 BLACK           = Fore.BLACK
@@ -19,6 +19,9 @@ LIGHTBLUE_EX    = Fore.LIGHTBLUE_EX
 LIGHTMAGENTA_EX = Fore.LIGHTMAGENTA_EX
 LIGHTCYAN_EX    = Fore.LIGHTCYAN_EX
 LIGHTWHITE_EX   = Fore.LIGHTWHITE_EX
+
+BACKMAGENTA     = Back.MAGENTA
+BACKRESET       = Back.RESET
 
 class Colors:
     BOLD = '\033[1m'
