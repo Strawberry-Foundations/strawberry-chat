@@ -463,9 +463,12 @@ def clientThread(client):
                             ).replace("#(magenta)", MAGENTA
                             ).replace("#(cyan)", CYAN
                             ).replace("#(white)", WHITE
-                            ).replace("#(reset)", RESET)
+                            ).replace("#(reset)", RESET
+                            ).replace("#(bold)", Colors.BOLD
+                            ).replace("#(underline)", Colors.UNDERLINE
+                            )
                             
-                    broadcast(f"{text}{RESET}")
+                    broadcast(f"{text}{RESET + Colors.RESET}")
                     continue
                     
                 else:
@@ -1914,11 +1917,23 @@ def broadcast(message, sentBy=""):
                 # if f"@{userNickname(sentBy)}" in escape_ansi(message).split(" "):
                 #     message = message.replace(f"@{userNickname(sentBy)}", f"{BACKYELLOW}@{userNickname(sentBy)}{BACKYELLOW}")
                 
+                message = message.replace("#red", RED
+                            ).replace("#green", GREEN
+                            ).replace("#yellow", YELLOW
+                            ).replace("#blue", BLUE
+                            ).replace("#magenta", MAGENTA
+                            ).replace("#cyan", CYAN
+                            ).replace("#white", WHITE
+                            ).replace("#reset", RESET
+                            ).replace("#bold", Colors.BOLD
+                            ).replace("#underline", Colors.UNDERLINE
+                            )
+                
                 if hasNickname(sentBy) == True:
-                    user.send(f"{userRoleColor(sentBy)}{userNickname(sentBy)} (@{sentBy.lower()}){badge}{RESET + Colors.RESET}: {message}".encode("utf8"))
+                    user.send(f"{userRoleColor(sentBy)}{userNickname(sentBy)} (@{sentBy.lower()}){badge}{RESET + Colors.RESET}: {message}{RESET + Colors.RESET}".encode("utf8"))
                     
                 else: 
-                    user.send(f"{userRoleColor(sentBy)}{sentBy}{badge}{RESET + Colors.RESET}: {message}".encode("utf8"))
+                    user.send(f"{userRoleColor(sentBy)}{sentBy}{badge}{RESET + Colors.RESET}: {message}{RESET + Colors.RESET}".encode("utf8"))
                 
     except IOError as e:
         if e.errno == errno.EPIPE:
