@@ -35,6 +35,8 @@ news:
     - NEW: Memberlist command with beatiful representation of our members and their roles 🌟\n
     - NEW: DM (direct message) command to send private/direct messages to members, instead sending it to everyone\n
     - NEW: Updated user info command with Strawberry ID/Network intregation and online/offline status information\n
+    - NEW: HTCF color support for chat messages and broadcast command (admin only)
+    - NEW: If you mention a user (e.g. @someuser), it will be highlighted
     - ADMIN: Working Kick command \n
     -> For more information visit https://github.com/orgs/Strawberry-Foundations/projects/1/views/1"
 
