@@ -29,7 +29,7 @@ import re
 from colorama import Fore, Style
 from src.colors import *
 
-
+# Receive your global ip address for verification
 def get_global_ip():
     response = requests.get('https://api.ipify.org?format=json')
     data = response.json()
@@ -45,6 +45,7 @@ server_edition          = "Standard Edition"
 authors                 = ["Juliandev02", "matteodev8", "Paddyk45"]
 api                     = "http://api.strawberryfoundations.xyz/v1/"
 
+# Startup title
 print(f"{CYAN + Colors.BOLD}* -- {chat_name} v{short_ver} {codename} ({server_edition}) -- *{RESET + Colors.RESET}")
 
 
@@ -104,6 +105,7 @@ max_message_length      = config['flags']['max_message_length']
 debug_mode              = config['flags']['debug_mode']
 online_mode             = config['flags']['online_mode']
 
+# Check if online mode is enabled + receive the global ip
 if online_mode:
     print(f"{YELLOW + Colors.BOLD}>>> Connecting to the Strawberry API ...{RESET + Colors.RESET}")
     global_ip           = get_global_ip()
@@ -1834,77 +1836,7 @@ def clientLogin(client):
 
 
  
-def broadcast(message, sentBy=""):
-    def userRoleColor(uname):
-        db = sql.connect(server_dir + "/users.db", check_same_thread=False)
-        c = db.cursor()
-        c.execute('SELECT role_color FROM users WHERE username = ?', (uname,))
-        color = c.fetchone()
-        db.close()
-        
-        if color[0] is not None: 
-            match color[0]:
-                case "red": 
-                    return RED
-                
-                case "green": 
-                    return GREEN
-                    
-                case "cyan": 
-                    return CYAN
-                
-                case "blue": 
-                    return BLUE
-
-                case "yellow": 
-                    return YELLOW
-                 
-                case "magenta": 
-                    return MAGENTA
-                
-                case "lightred":
-                    return LIGHTRED_EX
-                
-                case "lightgreen":
-                    return LIGHTGREEN_EX
-                
-                case "lightcyan":
-                    return LIGHTCYAN_EX
-                
-                case "lightblue":
-                    return LIGHTBLUE_EX
-
-                case "lightyellow":
-                    return LIGHTYELLOW_EX
-
-                case "lightmagenta":
-                    return LIGHTMAGENTA_EX
-                
-                case "boldred":
-                    return Colors.BOLD + RED
-
-                case "boldgreen":
-                    return Colors.BOLD + GREEN
-                
-                case "boldcyan":
-                    return Colors.BOLD + CYAN
-                
-                case "boldblue":
-                    return Colors.BOLD + BLUE
-                
-                case "boldyellow":
-                    return Colors.BOLD + YELLOW
-                
-                case "boldmagenta":
-                    return Colors.BOLD + MAGENTA
-                
-                case _:
-                    return RESET
-        else: 
-            return RESET
-        
-                
-        
+def broadcast(message, sentBy=""):        
     try:
         if sentBy == "":
             for user in users:
