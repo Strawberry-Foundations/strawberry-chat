@@ -24,6 +24,7 @@ import time
 import errno
 import random
 import requests
+import re
 
 from colorama import Fore, Style
 from src.colors import *
@@ -309,7 +310,12 @@ def memberListNickname(uname):
     
     else:
         return uname
-    
+
+# Removed ansi characters
+def escape_ansi(line):
+    ansi_escape = re.compile(r'(?:\x1B[@-_]|[\x80-\x9F])[0-?]*[ -/]*[@-~]')
+    return ansi_escape.sub('', line)
+
 with open(server_dir + "/news.yml") as news_file:
     news_data = yaml.load(news_file, Loader=SafeLoader)
     
@@ -1613,8 +1619,6 @@ def clientThread(client):
                             log.info(f"{user} ({address}): {message}")
                         
                         
-                        print(message.split())
-                        
                         for u in users.values():
                             if f"@{u}" in message.split():
                                 message = message.replace(f"@{u}", f"{BACKMAGENTA + Colors.BOLD}@{userNickname(u)}{BACKRESET + Colors.RESET}")
@@ -1907,6 +1911,9 @@ def broadcast(message, sentBy=""):
                 except Exception as e:
                     log.error("Something went wrong while... doing something with the badges?: " + e)
                 
+                # if f"@{userNickname(sentBy)}" in escape_ansi(message).split(" "):
+                #     message = message.replace(f"@{userNickname(sentBy)}", f"{BACKYELLOW}@{userNickname(sentBy)}{BACKYELLOW}")
+                
                 if hasNickname(sentBy) == True:
                     user.send(f"{userRoleColor(sentBy)}{userNickname(sentBy)} (@{sentBy.lower()}){badge}{RESET + Colors.RESET}: {message}".encode("utf8"))
                     
@@ -1919,10 +1926,10 @@ def broadcast(message, sentBy=""):
             debugLogger(e, "122")
             exit(1)
   
-    # except Exception as e:
-    #     log.error(f"A broadcasting error occurred.")
-    #     debugLogger(e, "003")
-    #     exit(1)
+    except Exception as e:
+        log.error(f"A broadcasting error occurred.")
+        debugLogger(e, "003")
+        exit(1)
 
 
 
