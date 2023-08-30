@@ -70,6 +70,7 @@ log = logging.getLogger("LOG")
 
 if os.environ.get("LOG_LEVEL") is not None:
     log.setLevel(os.environ.get("LOG_LEVEL").upper())
+    
 else:
     log.setLevel("INFO")
     
