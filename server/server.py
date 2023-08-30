@@ -466,6 +466,16 @@ def clientThread(client):
                             ).replace("#(reset)", RESET
                             ).replace("#(bold)", Colors.BOLD
                             ).replace("#(underline)", Colors.UNDERLINE
+                            ).replace("#red", RED
+                            ).replace("#green", GREEN
+                            ).replace("#yellow", YELLOW
+                            ).replace("#blue", BLUE
+                            ).replace("#magenta", MAGENTA
+                            ).replace("#cyan", CYAN
+                            ).replace("#white", WHITE
+                            ).replace("#reset", RESET
+                            ).replace("#bold", Colors.BOLD
+                            ).replace("#underline", Colors.UNDERLINE
                             )
                             
                     broadcast(f"{text}{RESET + Colors.RESET}")
