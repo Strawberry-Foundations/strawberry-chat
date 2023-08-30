@@ -525,7 +525,9 @@ def clientThread(client):
                             ).replace("#curtime", datetime.datetime.now().strftime("%H:%M")
                             ).replace("#month", datetime.datetime.today().strftime("%m")
                             ).replace("#fullmonth", datetime.datetime.now().strftime("%h")
-                            ).replace("#ftime", datetime.datetime.now().strftime("%A, %d. %h %Y")
+                            ).replace("#ftoday", datetime.datetime.now().strftime("%A, %d. %h %Y")
+                            ).replace("#tomorrow", (datetime.date.today() + datetime.timedelta(days=1)).strftime("%Y-%m-%d")
+                            ).replace("#ftomorrow", (datetime.date.today() + datetime.timedelta(days=1)).strftime("%A, %d. %h %Y")
                             )
                             
                     broadcast(f"{text}{RESET + Colors.RESET}")
@@ -1878,7 +1880,9 @@ def broadcast(message, sentBy=""):
                             ).replace("#curtime", datetime.datetime.now().strftime("%H:%M")
                             ).replace("#month", datetime.datetime.today().strftime("%m")
                             ).replace("#fullmonth", datetime.datetime.now().strftime("%h")
-                            ).replace("#ftime", datetime.datetime.now().strftime("%A, %d. %h %Y")
+                            ).replace("#ftoday", datetime.datetime.now().strftime("%A, %d. %h %Y")
+                            ).replace("#tomorrow", (datetime.date.today() + datetime.timedelta(days=1)).strftime("%Y-%m-%d")
+                            ).replace("#ftomorrow", (datetime.date.today() + datetime.timedelta(days=1)).strftime("%A, %d. %h %Y")
                             )
                 
                 if hasNickname(sentBy) == True:
