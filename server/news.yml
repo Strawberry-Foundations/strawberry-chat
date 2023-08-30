@@ -38,6 +38,7 @@ news:
     - NEW: HTCF color support (Hashtag Color Format) for chat messages and broadcast command (admin only) (e.g. #red)\n
     - NEW: HTPF placeholder support (Hashtag Placeholders Format) for chat messages and broadcast command (admin only) (e.g. #today)\n
     - NEW: If you mention a user (e.g. @someuser), it will be highlighted\n
+    - FIX: Fixed duplicated code which led to formatting errors\n
     - ADMIN: Working Kick command \n
     -> For more information visit https://github.com/orgs/Strawberry-Foundations/projects/1/views/1"
 
