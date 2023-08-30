@@ -163,6 +163,9 @@ def userNickname(uname):
     if unick[0] is not None: 
         unick = unick[0]
         return unick
+    
+    else:
+        return uname
 
 # Check if user has a nickname
 def hasNickname(uname):
@@ -1608,6 +1611,13 @@ def clientThread(client):
                     else:
                         if enable_messages == True:
                             log.info(f"{user} ({address}): {message}")
+                        
+                        
+                        print(message.split())
+                        
+                        for u in users.values():
+                            if f"@{u}" in message.split():
+                                message = message.replace(f"@{u}", f"{BACKMAGENTA + Colors.BOLD}@{userNickname(u)}{BACKRESET + Colors.RESET}")
                                 
                         broadcast(message, user)
                         c.execute("SELECT msg_count FROM users WHERE username = ?", (user,))
@@ -1909,10 +1919,10 @@ def broadcast(message, sentBy=""):
             debugLogger(e, "122")
             exit(1)
   
-    except Exception as e:
-        log.error(f"A broadcasting error occurred.")
-        debugLogger(e, "003")
-        exit(1)
+    # except Exception as e:
+    #     log.error(f"A broadcasting error occurred.")
+    #     debugLogger(e, "003")
+    #     exit(1)
 
 
 
