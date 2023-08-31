@@ -91,7 +91,6 @@ server_dir = os.path.dirname(os.path.realpath(__file__))
 
 # Connect to the database
 db = sql.connect(server_dir + "/users.db", check_same_thread=False)
-c = db.cursor()
 
 # Open Configuration
 with open(server_dir + "/config.yml") as config_data:
@@ -212,8 +211,10 @@ stbchatplus_help_section    = f"""{RED +  Colors.UNDERLINE + Colors.BOLD}Strawbe
 
 # Get user's nickname
 def userNickname(uname):
+    c = db.cursor()
     c.execute('SELECT nickname FROM users WHERE username = ?', (uname,))
     unick = c.fetchone()
+    c.close()
     
     if unick[0] is not None: 
         unick = unick[0]
@@ -224,8 +225,10 @@ def userNickname(uname):
 
 # Check if user has a nickname
 def hasNickname(uname):
+    c = db.cursor()
     c.execute('SELECT nickname FROM users WHERE username = ?', (uname,))
     unick = c.fetchone()
+    c.close()
     
     if unick[0] is not None: 
         return True
@@ -235,8 +238,10 @@ def hasNickname(uname):
 
 # Get user role color from the user
 def userRoleColor(uname):
+    c = db.cursor()
     c.execute('SELECT role_color FROM users WHERE username = ?', (uname,))
     color = c.fetchone()
+    c.close()
     
     if color[0] is not None: 
         match color[0]:
@@ -301,8 +306,10 @@ def userRoleColor(uname):
 
 # Check if user is muted
 def isMuted(uname):
+    c = db.cursor()
     c.execute('SELECT muted FROM users WHERE username = ?', (uname,))
     mutedStatus = c.fetchone()
+    c.close()
     
     if mutedStatus[0] == "true":
         return True
@@ -311,8 +318,10 @@ def isMuted(uname):
 
 # Check if user's account is enabled
 def isAccountEnabled(uname):
+    c = db.cursor()
     c.execute('SELECT accountEnabled FROM users WHERE username = ?', (uname,))
     accountEnabledStatus = c.fetchone()
+    c.close()
     
     if accountEnabledStatus[0] == "true":
         return True
@@ -336,6 +345,7 @@ def sqlError(errorMessage):
 
 # Check if a user exists
 def doesUserExist(uname):
+    c = db.cursor()
     uname = uname.lower()
     c.execute('SELECT username FROM users WHERE LOWER(username) = ?', (uname,))
     
@@ -347,17 +357,22 @@ def doesUserExist(uname):
     
     if userExists.lower() == uname:
         return True
+    
+    c.close()
 
 # Print a proper user name information for memberlist command
 def memberListNickname(uname):
+    c = db.cursor()
     c.execute("SELECT nickname FROM users WHERE username = ?", (uname,))
     nickname = c.fetchone()
+    c.close()
     
     if hasNickname(uname):
         return f"{nickname[0]} (@{uname.lower()})"
     
     else:
         return uname
+    
 
 # Removed ansi characters
 def escape_ansi(line):
@@ -436,17 +451,19 @@ def clientThread(client):
     broadcast(f"{Colors.GRAY + Colors.BOLD}-->{Colors.RESET} {userRoleColor(user)}{user}{GREEN + Colors.BOLD} has joined the chat room!{RESET + Colors.RESET}")
 
     while True:
-        # try:            
+        try:            
             message = client.recv(2048).decode("utf8")
             message_length = len(message)
             
             clcur = db.cursor()
 
             clcur.execute('SELECT role FROM users WHERE username = ?', (user,))    
-            res = c.fetchone()
+            res = clcur.fetchone()
                     
             # Message length control system
             rnd = random.randint(0, 2)
+            
+            c = db.cursor()
             
             if res[0] == "bot":
                 pass
@@ -463,13 +480,10 @@ def clientThread(client):
                         client.send(f"{YELLOW + Colors.BOLD}junge niemand will sich hier die herr der ringe trilogie durchlesen{RESET + Colors.RESET}".encode("utf8"))
 
             # Blacklisted Word System
-            c.execute('SELECT role FROM users WHERE username = ?', (user,))    
-            res = c.fetchone()
+            clcur.execute('SELECT role, enableBlacklistedWords FROM users WHERE username = ?', (user,))    
+            res = clcur.fetchone()
             
-            c.execute('SELECT enableBlacklistedWords FROM users WHERE username = ?', (user,))
-            res2 = c.fetchone()
-            
-            if res[0] == "admin" or res[0] == "bot" or res2[0] == "false":
+            if res[0] == "admin" or res[0] == "bot" or res[1] == "false":
                 pass
             
             else:
@@ -1648,33 +1662,36 @@ def clientThread(client):
                         msg_count = msg_count[0] + 1
                         c.execute("UPDATE users SET msg_count = ? WHERE username = ?", (msg_count, user))
                         db.commit()
-                
+    c.close()            
             
                 
-        # except Exception as e:
-        #     log.error("A client-side error occurred.")
+        except Exception as e:
+            log.error("A client-side error occurred.")
             
-        #     debugLogger(e, "004")
-        #     log.info(f"[<] {user} ({address}) has left")
+            debugLogger(e, "004")
+            log.info(f"[<] {user} ({address}) has left")
             
-        #     try:
-        #         del addresses[client]
-        #         del users[client]
-        #         client.close()
+            try:
+                del addresses[client]
+                del users[client]
+                client.close()
                 
-        #     except Exception as e:
-        #         log.warning("A socket-to-client exception occured")
-        #         debugLogger(e, "005", type="warning")
+            except Exception as e:
+                log.warning("A socket-to-client exception occured")
+                debugLogger(e, "005", type="warning")
             
-        #     broadcast(f"{Colors.GRAY + Colors.BOLD}<--{Colors.RESET} {userRoleColor(user)}{user}{YELLOW + Colors.BOLD} has left the chat room!{RESET + Colors.RESET}")
-        #     break
+            broadcast(f"{Colors.GRAY + Colors.BOLD}<--{Colors.RESET} {userRoleColor(user)}{user}{YELLOW + Colors.BOLD} has left the chat room!{RESET + Colors.RESET}")
+            break
 
 
 def clientLogin(client):
+    global db
+    global logcur
+    logcur = db.cursor()
+    
     def register():
         global db
-        global c
-        
+        global logcur
         client.send(f"{MAGENTA + Colors.BOLD + Colors.UNDERLINE}Welcome!{RESET + Colors.RESET}\n        {Colors.BOLD}Register, to chat with us!{Colors.RESET}".encode("utf8"))
     
         time.sleep(0.05)
@@ -1693,9 +1710,9 @@ def clientLogin(client):
                 client.close()
                 sys.exit()
         try:
-            c.execute("SELECT username FROM users WHERE username = ? ", (registeredUsername,))
+            logcur.execute("SELECT username FROM users WHERE username = ? ", (registeredUsername,))
             
-            usedUsernames = c.fetchall()[0]
+            usedUsernames = logcur.fetchall()[0]
             usedUsernames = "".join(usedUsernames)
             
             
@@ -1705,9 +1722,7 @@ def clientLogin(client):
             
         except:
             pass
-            
-
-            
+    
         client.send(f"{GREEN + Colors.BOLD}Password: {RESET + Colors.RESET}".encode("utf8"))
         registeredPassword = client.recv(2048).decode("utf8")
         
@@ -1730,7 +1745,7 @@ def clientLogin(client):
             try:
                 client.send(f"{GREEN + Colors.BOLD}Creating your User account... {RESET + Colors.RESET}".encode("utf8"))
                 
-                c.execute('INSERT INTO users (username, password, role, role_color, enableBlacklistedWords, accountEnabled, muted, user_id, msg_count, enableDms) VALUES (?, ?, "member", ?, "true", "true", "false", "1234-5678", ?, "true")', (registeredUsername, registeredPassword, registeredRoleColor.lower(), 0))
+                logcur.execute('INSERT INTO users (username, password, role, role_color, enableBlacklistedWords, accountEnabled, muted, user_id, msg_count, enableDms) VALUES (?, ?, "member", ?, "true", "true", "false", "1234-5678", ?, "true")', (registeredUsername, registeredPassword, registeredRoleColor.lower(), 0))
                 db.commit()
                 
                 client.send(f"{GREEN + Colors.BOLD}Created!{RESET + Colors.RESET}".encode("utf8"))
@@ -1766,17 +1781,17 @@ def clientLogin(client):
     password = client.recv(2048).decode("utf8")
 
     try: 
-        c.execute('SELECT * FROM users WHERE username = ? AND password = ? AND accountEnabled = ?', (username, password, "true"))
+        logcur.execute('SELECT * FROM users WHERE username = ? AND password = ? AND accountEnabled = ?', (username, password, "true"))
         
     except Exception as e:
         log.error(f"A login-error occurred")
         debugLogger(e, "002")
         
-    res = c.fetchall()
+    res = logcur.fetchall()
     
     if res:
-        c.execute('SELECT username FROM users WHERE username = ? AND password = ?', (username, password))
-        result = c.fetchone()
+        logcur.execute('SELECT username FROM users WHERE username = ? AND password = ?', (username, password))
+        result = logcur.fetchone()
         
         if result is not None:
             nickname = result[0]      
@@ -1787,7 +1802,7 @@ def clientLogin(client):
         alreadyTaken = True
         while alreadyTaken:
             try:
-                enabled = c.execute('SELECT accountEnabled FROM users WHERE username = ? AND password = ?', (username, password))
+                enabled = logcur.execute('SELECT accountEnabled FROM users WHERE username = ? AND password = ?', (username, password))
                 enabled = str(enabled.fetchone()[0])
                 
             except TypeError:
@@ -1815,17 +1830,17 @@ def clientLogin(client):
             time.sleep(0.01)
             
             try: 
-                c.execute('SELECT * FROM users WHERE username = ? AND password = ? AND accountEnabled = ?', (username, password, "true"))
+                logcur.execute('SELECT * FROM users WHERE username = ? AND password = ? AND accountEnabled = ?', (username, password, "true"))
                 
             except Exception as e:
                 log.error(f"An error occurred.")
                 debugLogger(e, "100")
                 
-            res = c.fetchall()
+            res = logcur.fetchall()
             
             if res:
-                c.execute('SELECT username FROM users WHERE username = ? AND password = ?', (username, password))
-                result = c.fetchone()
+                logcur.execute('SELECT username FROM users WHERE username = ? AND password = ?', (username, password))
+                result = logcur.fetchone()
                 
                 if result is not None:
                     nickname = result[0]
@@ -1833,10 +1848,13 @@ def clientLogin(client):
                     return nickname
                 
             else: alreadyTaken = True
+            
+            logcur.close()
 
 
  
-def broadcast(message, sentBy=""):        
+def broadcast(message, sentBy=""):
+    c = db.cursor()
     try:
         if sentBy == "":
             for user in users:
@@ -1884,6 +1902,8 @@ def broadcast(message, sentBy=""):
                     
                 else: 
                     user.send(f"{userRoleColor(sentBy)}{sentBy}{badge}{RESET + Colors.RESET}: {message}{RESET + Colors.RESET}".encode("utf8"))
+                    
+        c.close()
                 
     except IOError as e:
         if e.errno == errno.EPIPE:
