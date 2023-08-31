@@ -391,6 +391,9 @@ def connectionThread(sock):
 
 
 def clientThread(client):
+    # Define db variable global
+    global db
+    
     address = addresses[client][0]
     
     try:
@@ -437,7 +440,9 @@ def clientThread(client):
             message = client.recv(2048).decode("utf8")
             message_length = len(message)
             
-            c.execute('SELECT role FROM users WHERE username = ?', (user,))    
+            clcur = db.cursor()
+
+            clcur.execute('SELECT role FROM users WHERE username = ?', (user,))    
             res = c.fetchone()
                     
             # Message length control system
@@ -477,9 +482,7 @@ def clientThread(client):
                         
                     else:
                         pass
-            
-            # Define db variable global
-            global db
+
                     
             # /broadcast Command            
             if message.startswith("/broadcast ") or message.startswith("/rawsay "):
