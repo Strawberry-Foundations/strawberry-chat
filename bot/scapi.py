@@ -90,7 +90,7 @@ class Scapi:
             
             uname_index = username.find("(")
             raw_username = username[uname_index + 1:]
-            raw_username = raw_username.replace(")", "").replace("@", "")
+            raw_username = raw_username.replace(")", "").replace("@", "").replace(" ", "")
             
             return raw_username
         
