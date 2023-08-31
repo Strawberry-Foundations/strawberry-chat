@@ -161,6 +161,7 @@ cython_debug/
 
 bot/default.yml
 bot/bard.yml
+bot/bardtest.py
 client/config.yml
 server/users.db
 server/blacklist.txt
