@@ -37,6 +37,7 @@
 - NEW: HTPF placeholder support (Hashtag Placeholders Format) for chat messages and broadcast command (admin only) (e.g. #today)
 - NEW: If you mention a user (e.g. @someuser), it will be highlighted
 - NEW: Added account creation date to user profile
+- NEW: Improved code, bug fixes and a Bard chat bot!
 - FIX: Fixed duplicated code which led to formatting errors
 - ADMIN: Working Kick command
 -> For more information visit https://github.com/orgs/Strawberry-Foundations/projects/1/views/1
