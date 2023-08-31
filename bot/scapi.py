@@ -17,7 +17,7 @@ PURPLE = '\033[35m'
 CYAN = '\033[36m'
 WHITE = '\033[37m'
 
-version = "0.9.60"
+version = "0.9.61"
 
 class Scapi:
     class Bot:
@@ -68,6 +68,32 @@ class Scapi:
             ansi_escape = re.compile(r'(?:\x1B[@-_]|[\x80-\x9F])[0-?]*[ -/]*[@-~]')
             return ansi_escape.sub('', line)
         
+        def get_username_by_msg(self, message):
+            username    = message.split(":")[0]
+            username    = username.replace("[", ""
+                                 ).replace("]", ""
+                                 ).replace("👑", ""
+                                 ).replace("😎", ""
+                                 ).replace("🔥", ""
+                                 ).replace("🫐", ""
+                                 ).replace("🤖", ""
+                                 ).replace("💪", ""
+                                 ).replace("👍", ""
+                                 ).replace("🤡", ""
+                                 ).replace("😈", ""
+                                 ).replace("🤝", ""
+                                 ).replace("👋", ""
+                                 ).replace("😌", ""
+                                 ).replace("🍓", ""
+                                 ).replace("💫", ""
+                                 )
+            
+            uname_index = username.find("(")
+            raw_username = username[uname_index + 1:]
+            raw_username = raw_username.replace(")", "").replace("@", "")
+            
+            return raw_username
+        
         def send(self):
             threadFlag = True
             def delete_last_line():
@@ -87,7 +113,7 @@ class Scapi:
                         print("Message could not be sent")
                         break
         
-        def recv_message(self, raw=False):
+        def recv_message(self, raw=False, ansi=True):
             global threadFlag
             threadFlag = True
             try:
@@ -102,7 +128,14 @@ class Scapi:
                             self.logger(message, type=self.type.msg)
                         
                         if raw == False:
-                            return message
+                            if ansi == True:
+                                return message
+                            
+                            elif ansi == False:
+                                return self.escape_ansi(message)
+                            
+                            else: 
+                                return message
                         
                         elif raw == True:
                             index = message.find(":")
