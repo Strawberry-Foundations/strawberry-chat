@@ -1662,8 +1662,7 @@ def clientThread(client):
                         msg_count = msg_count[0] + 1
                         c.execute("UPDATE users SET msg_count = ? WHERE username = ?", (msg_count, user))
                         db.commit()
-        c.close()            
-            
+            c.close()            
                 
         except Exception as e:
             log.error("A client-side error occurred.")
