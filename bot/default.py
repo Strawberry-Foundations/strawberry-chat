@@ -61,7 +61,12 @@ def Commands():
                     Bot.send_message("Hallo :D")
                 
                 case "!help":
-                    Bot.send_message("Noch nicht implementiert. Wie wärs wenn du dir mal die eingebauten Commands anschaust? Nutze dafür /help")
+                    help_msg    = f"""
+            {scapi.BLUE + scapi.BOLD + scapi.UNDERLINE}* -- Strawberry Bot -- *{scapi.RESET}
+            {scapi.CYAN}!help:           {scapi.RESET}Help Command
+            {scapi.CYAN}!rps <choice>: {scapi.RESET}Schere, Stein, Papier!
+            {scapi.CYAN}!about:           {scapi.RESET}About Strawberry Bot{scapi.RESET}"""
+                    Bot.send_message(help_msg)
                 
                 case "!about":
                     Bot.send_message(f"{Bot.username} Bot BETA VERSION! Not finished yet")
