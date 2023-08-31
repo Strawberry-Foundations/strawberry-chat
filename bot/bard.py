@@ -14,13 +14,15 @@ token       = conf["bot"]["token"]
 host        = conf["server"]["host"]
 port        = conf["server"]["port"]
 prefix      = conf["bot"]["prefix"]
-token       = conf["bard"]["token"]
+bard_token  = conf["bard"]["token"]
 
-bard = Bard(token=token)
 
 Bot = Scapi.Bot(username=username, token=token, host=host, port=port)
 Bot.login()
 Bot.flagHandler(printReceivedMessagesToTerminal=True, enableUserInput=True)
+
+bard = Bard(token=bard_token)
+print(f"{Bot.log_msg}{scapi.BLUE}Successfully connected to the Bard API.{scapi.RESET}")
 
 
 def Commands():
@@ -45,7 +47,7 @@ def Commands():
 
 @Bot.event
 def on_ready():
-    print(f"{Bot.log_msg}{scapi.BLUE}{Bot.username} started successfully!{scapi.RESET}")
+    print(f"{Bot.log_msg}{scapi.BLUE}Bard Chat Bot started successfully!{scapi.RESET}")
     
 BotThread = threading.Thread(target=Bot.run, args=(on_ready,))
 CommandThread = threading.Thread(target=Commands)
