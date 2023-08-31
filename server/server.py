@@ -29,6 +29,7 @@ import re
 from colorama import Fore, Style
 from src.colors import *
 
+
 # Receive your global ip address for verification
 def get_global_ip():
     response = requests.get('https://api.ipify.org?format=json')
@@ -211,7 +212,6 @@ stbchatplus_help_section    = f"""{RED +  Colors.UNDERLINE + Colors.BOLD}Strawbe
 
 # Get user's nickname
 def userNickname(uname):
-    c = db.cursor()
     c.execute('SELECT nickname FROM users WHERE username = ?', (uname,))
     unick = c.fetchone()
     
@@ -224,7 +224,6 @@ def userNickname(uname):
 
 # Check if user has a nickname
 def hasNickname(uname):
-    c = db.cursor()
     c.execute('SELECT nickname FROM users WHERE username = ?', (uname,))
     unick = c.fetchone()
     
@@ -236,7 +235,6 @@ def hasNickname(uname):
 
 # Get user role color from the user
 def userRoleColor(uname):
-    c = db.cursor()
     c.execute('SELECT role_color FROM users WHERE username = ?', (uname,))
     color = c.fetchone()
     
@@ -303,7 +301,6 @@ def userRoleColor(uname):
 
 # Check if user is muted
 def isMuted(uname):
-    c = db.cursor()
     c.execute('SELECT muted FROM users WHERE username = ?', (uname,))
     mutedStatus = c.fetchone()
     
@@ -314,7 +311,6 @@ def isMuted(uname):
 
 # Check if user's account is enabled
 def isAccountEnabled(uname):
-    c = db.cursor()
     c.execute('SELECT accountEnabled FROM users WHERE username = ?', (uname,))
     accountEnabledStatus = c.fetchone()
     
@@ -341,8 +337,6 @@ def sqlError(errorMessage):
 # Check if a user exists
 def doesUserExist(uname):
     uname = uname.lower()
-
-    c = db.cursor()
     c.execute('SELECT username FROM users WHERE LOWER(username) = ?', (uname,))
     
     try:
@@ -439,13 +433,13 @@ def clientThread(client):
     broadcast(f"{Colors.GRAY + Colors.BOLD}-->{Colors.RESET} {userRoleColor(user)}{user}{GREEN + Colors.BOLD} has joined the chat room!{RESET + Colors.RESET}")
 
     while True:
-        try:
+        # try:            
             message = client.recv(2048).decode("utf8")
             message_length = len(message)
             
             c.execute('SELECT role FROM users WHERE username = ?', (user,))    
             res = c.fetchone()
-        
+                    
             # Message length control system
             rnd = random.randint(0, 2)
             
@@ -1600,8 +1594,7 @@ def clientThread(client):
                                 client.send(f"{YELLOW + Colors.BOLD}Deleting your user account...{RESET + Colors.RESET}".encode("utf8"))
                                 
                                 try:
-                                    cursor = db.cursor()
-                                    cursor.execute("DELETE FROM users WHERE username = ?", (user,))
+                                    c.execute("DELETE FROM users WHERE username = ?", (user,))
                                     db.commit()
                                     client.send(f"{GREEN + Colors.BOLD}Deleted{RESET + Colors.RESET}".encode("utf8"))
                                     client.close()
@@ -1655,23 +1648,23 @@ def clientThread(client):
                 
             
                 
-        except Exception as e:
-            log.error("A client-side error occurred.")
+        # except Exception as e:
+        #     log.error("A client-side error occurred.")
             
-            debugLogger(e, "004")
-            log.info(f"[<] {user} ({address}) has left")
+        #     debugLogger(e, "004")
+        #     log.info(f"[<] {user} ({address}) has left")
             
-            try:
-                del addresses[client]
-                del users[client]
-                client.close()
+        #     try:
+        #         del addresses[client]
+        #         del users[client]
+        #         client.close()
                 
-            except Exception as e:
-                log.warning("A socket-to-client exception occured")
-                debugLogger(e, "005", type="warning")
+        #     except Exception as e:
+        #         log.warning("A socket-to-client exception occured")
+        #         debugLogger(e, "005", type="warning")
             
-            broadcast(f"{Colors.GRAY + Colors.BOLD}<--{Colors.RESET} {userRoleColor(user)}{user}{YELLOW + Colors.BOLD} has left the chat room!{RESET + Colors.RESET}")
-            break
+        #     broadcast(f"{Colors.GRAY + Colors.BOLD}<--{Colors.RESET} {userRoleColor(user)}{user}{YELLOW + Colors.BOLD} has left the chat room!{RESET + Colors.RESET}")
+        #     break
 
 
 def clientLogin(client):
@@ -1732,9 +1725,6 @@ def clientLogin(client):
             client.send(f"{YELLOW + Colors.BOLD}Processing... {RESET + Colors.RESET}".encode("utf8"))
             
             try:
-                db = sql.connect(server_dir + "/users.db", check_same_thread=False)
-                c = db.cursor()
-                
                 client.send(f"{GREEN + Colors.BOLD}Creating your User account... {RESET + Colors.RESET}".encode("utf8"))
                 
                 c.execute('INSERT INTO users (username, password, role, role_color, enableBlacklistedWords, accountEnabled, muted, user_id, msg_count, enableDms) VALUES (?, ?, "member", ?, "true", "true", "false", "1234-5678", ?, "true")', (registeredUsername, registeredPassword, registeredRoleColor.lower(), 0))
