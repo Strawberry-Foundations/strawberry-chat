@@ -160,7 +160,7 @@ cython_debug/
 #.idea/
 
 bot/default.yml
-bot/chatgpt.yml
+bot/bard.yml
 client/config.yml
 server/users.db
 server/blacklist.txt
