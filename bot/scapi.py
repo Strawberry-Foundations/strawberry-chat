@@ -17,7 +17,7 @@ PURPLE = '\033[35m'
 CYAN = '\033[36m'
 WHITE = '\033[37m'
 
-version = "0.9.61"
+version = "0.9.70"
 
 class Scapi:
     class Bot:
