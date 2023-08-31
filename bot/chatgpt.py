@@ -24,9 +24,6 @@ def Commands():
     while True:
         try:
             message = Bot.recv_message(raw=True)
-            
-            if message.rstrip() == "test":
-                print("RECEIVED MESSAGE IS TEST")
                 
         except: 
             Bot.logger(f"{scapi.RED}An unknown exception occured{scapi.RESET}", type=Bot.type.error)
