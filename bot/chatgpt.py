@@ -27,9 +27,9 @@ def Commands():
             if message.startswith("!test"):
                 Bot.send_message("This is a test message")
             
-            # elif message.startswith("!gpt "):
-            #     arg = message.replace("!gpt ", "")
-            #     Bot.send_message("Your Promt: " + arg)
+            elif message.startswith("!gpt "):
+                arg = message.replace("!gpt ", "")
+                Bot.send_message("Your Promt: " + arg)
                 
         except Exception as Error: 
             Bot.logger(f"{scapi.RED}An unknown exception occured{scapi.RESET}", type=Bot.type.error)
