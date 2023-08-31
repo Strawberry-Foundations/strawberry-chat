@@ -3,6 +3,7 @@ import threading
 import time
 import datetime
 import sys
+import re
 
 BOLD = '\033[1m'
 UNDERLINE = '\033[4m'
@@ -16,7 +17,7 @@ PURPLE = '\033[35m'
 CYAN = '\033[36m'
 WHITE = '\033[37m'
 
-version = "0.9.52b"
+version = "0.9.60"
 
 class Scapi:
     class Bot:
@@ -62,6 +63,10 @@ class Scapi:
 
         def send_message(self, message):
             self.stbc_socket.send(message.encode("utf8"))
+            
+        def escape_ansi(self, line):
+            ansi_escape = re.compile(r'(?:\x1B[@-_]|[\x80-\x9F])[0-?]*[ -/]*[@-~]')
+            return ansi_escape.sub('', line)
         
         def send(self):
             threadFlag = True
@@ -90,7 +95,6 @@ class Scapi:
                     global message
                     message = self.stbc_socket.recv(2048).decode()
                     
-                
                     if message:
                         self.count = self.count + 1
                 
@@ -103,7 +107,7 @@ class Scapi:
                         elif raw == True:
                             index = message.find(":")
                             msg_splitted = message[index + 2:]
-                            return msg_splitted
+                            return self.escape_ansi(msg_splitted)
                     else:
                         break
                         
