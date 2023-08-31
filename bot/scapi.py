@@ -69,24 +69,24 @@ class Scapi:
             return ansi_escape.sub('', line)
         
         def get_username_by_msg(self, message):
-            username    = message.split(":")[0]
-            username    = username.replace("[", ""
-                                 ).replace("]", ""
-                                 ).replace("👑", ""
-                                 ).replace("😎", ""
-                                 ).replace("🔥", ""
-                                 ).replace("🫐", ""
-                                 ).replace("🤖", ""
-                                 ).replace("💪", ""
-                                 ).replace("👍", ""
-                                 ).replace("🤡", ""
-                                 ).replace("😈", ""
-                                 ).replace("🤝", ""
-                                 ).replace("👋", ""
-                                 ).replace("😌", ""
-                                 ).replace("🍓", ""
-                                 ).replace("💫", ""
-                                 )
+            username = message.split(":")[0]
+            username = username.replace("[", ""
+                                       ).replace("]", ""
+                                       ).replace("👑", ""
+                                       ).replace("😎", ""
+                                       ).replace("🔥", ""
+                                       ).replace("🫐", ""
+                                       ).replace("🤖", ""
+                                       ).replace("💪", ""
+                                       ).replace("👍", ""
+                                       ).replace("🤡", ""
+                                       ).replace("😈", ""
+                                       ).replace("🤝", ""
+                                       ).replace("👋", ""
+                                       ).replace("😌", ""
+                                       ).replace("🍓", ""
+                                       ).replace("💫", ""
+                                       )
             
             uname_index = username.find("(")
             raw_username = username[uname_index + 1:]
