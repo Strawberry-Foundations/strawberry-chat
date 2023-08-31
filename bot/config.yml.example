@@ -1,0 +1,13 @@
+bot:
+  id: 1234-5678
+  username: "username"
+  token: "token"
+  prefix: "!"
+
+server:
+  host: "1.2.3.4"
+  port: 1234
+
+flags:
+  enableUserInput: true
+  printReceivedMessagesToTerminal: true
