@@ -4,7 +4,6 @@ from scapi import Scapi
 import yaml
 from yaml import SafeLoader
 import threading
-import random
 
 with open("chatgpt.yml", encoding="utf-8") as config:
     conf = yaml.load(config, Loader=SafeLoader)
@@ -24,9 +23,17 @@ def Commands():
     while True:
         try:
             message = Bot.recv_message(raw=True)
+            
+            if message.startswith("!test"):
+                Bot.send_message("This is a test message")
+            
+            # elif message.startswith("!gpt "):
+            #     arg = message.replace("!gpt ", "")
+            #     Bot.send_message("Your Promt: " + arg)
                 
-        except: 
+        except Exception as Error: 
             Bot.logger(f"{scapi.RED}An unknown exception occured{scapi.RESET}", type=Bot.type.error)
+            Bot.logger(f"{scapi.RED}{Error}{scapi.RESET}", type=Bot.type.error)
             break
 
 
