@@ -37,7 +37,7 @@ def Commands():
                 username    = Bot.get_username_by_msg(message)
                 print(username)
                 
-                if str(username) == "julian":
+                if username in allowed_users:
                     Bot.send_message("Youre allowed!")
                     
                 else:
