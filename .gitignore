@@ -171,3 +171,4 @@ server/log.txt
 discord/webhook/discord_webhook_private.py
 discord/config.yml
 deprecated/server/log.txt
+deprecated/server/messages.txt
