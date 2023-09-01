@@ -170,4 +170,4 @@ server/config.yml
 server/log.txt
 discord/webhook/discord_webhook_private.py
 discord/config.yml
-deprecated/kickcommand.txt
+deprecated/server/log.txt
