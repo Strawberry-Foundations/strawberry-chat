@@ -1906,8 +1906,6 @@ def clientLogin(client):
                 
             else: alreadyTaken = True
             
-#            logcur.close()
-
 
  
 def broadcast(message, sentBy=""):
