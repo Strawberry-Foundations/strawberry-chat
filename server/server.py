@@ -45,6 +45,24 @@ codename                = "Vanilla Cake"
 server_edition          = "Standard Edition"
 authors                 = ["Juliandev02", "matteodev8", "Paddyk45"]
 api                     = "http://api.strawberryfoundations.xyz/v1/"
+table_query = """
+    CREATE TABLE "users" (
+	"user_id"	TEXT,
+	"username"	TEXT,
+	"password"	TEXT,
+	"nickname"	INTEGER,
+	"description"	TEXT,
+	"badge"	TEXT,
+	"badges"	TEXT,
+	"role"	TEXT,
+	"role_color"	TEXT,
+	"enable_blacklisted_words"	TEXT,
+	"account_enabled"	TEXT,
+	"enable_dms"	TEXT,
+	"muted"	TEXT,
+	"strawberry_id"	TEXT,
+	"discord_name"	TEXT,
+	"msg_count"	INTEGER)"""
 
 # Startup title
 print(f"{CYAN + Colors.BOLD}* -- {chat_name} v{short_ver} {codename} ({server_edition}) -- *{RESET + Colors.RESET}")
@@ -101,25 +119,6 @@ else:
     cr_cursor = db.cursor()
     print(f"{GREEN + Colors.BOLD}>>> {RESET}Created database")
     
-    table_query = """
-    CREATE TABLE "users" (
-	"user_id"	TEXT,
-	"username"	TEXT,
-	"password"	TEXT,
-	"nickname"	INTEGER,
-	"description"	TEXT,
-	"badge"	TEXT,
-	"badges"	TEXT,
-	"role"	TEXT,
-	"role_color"	TEXT,
-	"enable_blacklisted_words"	TEXT,
-	"account_enabled"	TEXT,
-	"enable_dms"	TEXT,
-	"muted"	TEXT,
-	"strawberry_id"	TEXT,
-	"discord_name"	TEXT,
-	"msg_count"	INTEGER)"""
- 
     cr_cursor.execute(table_query)
     db.commit()
     
@@ -185,12 +184,30 @@ class Time:
         date = datetime.date.today()
         formattedDate = date.strftime("%Y-%m-%d")
         return formattedDate
-    
+
 if "--enable-messages" in sys.argv:
     enable_messages = True
 
 if "--debug-mode" in sys.argv:
     debug_mode = True
+    
+if "--regen-database" in sys.argv:
+    ays_input = input(f"{YELLOW + Colors.BOLD}>>> {RESET}WARNING: This will delete your database! Are you sure?: ")
+    
+    if ays_input.lower() == "yes":
+        db.close()
+        os.remove(server_dir + "/users.db")
+        db = sql.connect(server_dir + "/users.db", check_same_thread=False)
+        cr_cursor = db.cursor()
+        print(f"{GREEN + Colors.BOLD}>>> {RESET}Created database")
+    
+        cr_cursor.execute(table_query)
+        db.commit()
+        
+        print(f"{GREEN + Colors.BOLD}>>> {RESET}Created table")
+        
+    else:
+        print(f"{Colors.GRAY + Colors.BOLD}>>> {RESET + Colors.RESET + Colors.BOLD}Cancelled database regeneration process")
 
 
 default_help_section    = f"""{GREEN +  Colors.UNDERLINE + Colors.BOLD}Default commands{RESET + Colors.RESET}
