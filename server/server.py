@@ -98,6 +98,9 @@ if os.path.exists(server_dir + "/users.db"):
 else:
     # Connect/Create database
     db = sql.connect(server_dir + "/users.db", check_same_thread=False)
+    cr_cursor = db.cursor()
+    print(f"{GREEN + Colors.BOLD}>>> {RESET}Created database")
+    
     table_query = """
     CREATE TABLE "users" (
 	"user_id"	TEXT,
@@ -111,11 +114,17 @@ else:
 	"role_color"	TEXT,
 	"enable_blacklisted_words"	TEXT,
 	"account_enabled"	TEXT,
+	"enable_dms"	TEXT,
 	"muted"	TEXT,
+	"strawberry_id"	TEXT,
 	"discord_name"	TEXT,
-    "strawberry_id"	TEXT, 
-    "msg_count"	INTEGER,
-    "enable_dms"	TEXT)"""
+	"msg_count"	INTEGER)"""
+ 
+    cr_cursor.execute(table_query)
+    db.commit()
+    
+    print(f"{GREEN + Colors.BOLD}>>> {RESET}Created table")
+    
     
 # Connect to the database
 # db = sql.connect(server_dir + "/users.db", check_same_thread=False)
