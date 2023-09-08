@@ -1686,6 +1686,12 @@ def clientThread(client):
                     c.execute("SELECT msg_count FROM users WHERE username = ?", (user,))
                     msg_count = c.fetchone()
                     client.send(f"{GREEN + Colors.BOLD}Your message count:{RESET + Colors.RESET} {msg_count[0]}".encode("utf8"))
+                    
+                case "/changelog":
+                    with open(server_dir + "/CHANGELOG.txt") as f:
+                        changelog = f.read()
+                        client.send(f"{GREEN + Colors.BOLD + Colors.UNDERLINE}{chat_name} Changelog{RESET + Colors.RESET}".encode("utf8"))
+                        client.send((Colors.BOLD + changelog + Colors.RESET).encode("utf-8"))
 
                 case "/":
                     client.send(f"{GREEN + Colors.BOLD}Need help? Take a look at our help command! /help{RESET + Colors.RESET}".encode("utf8"))
