@@ -70,7 +70,7 @@ print(f"{CYAN + Colors.BOLD}* -- {chat_name} v{short_ver} {codename} ({server_ed
 
 # Init logger
 class LogFormatter(logging.Formatter):
-    format = f"[{datetime.datetime.now().strftime('%H:%M')}] [%(levelname)s] %(message)s"
+    format = f"[{datetime.datetime.now().strftime('%H:%M')}] [%(levelname)s]{RESET + Colors.RESET + Colors.BOLD} %(message)s"
 
     FORMATS = {
         logging.DEBUG:    WHITE  + Style.DIM    + format,
@@ -1450,7 +1450,7 @@ def clientThread(client):
                     del users[client]
                     client.close()
                     
-                    log.info(f"[<] {address} ({user}) has left.")
+                    log.info(f"{address} ({user}) has left.")
                     broadcast(f"{Colors.GRAY + Colors.BOLD}<--{Colors.RESET} {userRoleColor(user)}{user}{YELLOW + Colors.BOLD} has left the chat room!{RESET + Colors.RESET}")
                     break
 
@@ -1726,7 +1726,7 @@ def clientThread(client):
             log.error("A client-side error occurred.")
             
             debugLogger(e, "004")
-            log.info(f"[<] {user} ({address}) has left")
+            log.info(f"{user} ({address}) has left")
             
             try:
                 del addresses[client]
@@ -1932,8 +1932,8 @@ def broadcast(message, sentBy=""):
                 except Exception as e:
                     log.error("Something went wrong while... doing something with the badges?: " + e)
                 
-                # if f"@{userNickname(sentBy)}" in escape_ansi(message).split(" "):
-                #     message = message.replace(f"@{userNickname(sentBy)}", f"{BACKYELLOW}@{userNickname(sentBy)}{BACKYELLOW}")
+                
+                message = escape_ansi(message)
                 
                 message = message.replace("#red", RED
                             ).replace("#green", GREEN
@@ -1955,12 +1955,12 @@ def broadcast(message, sentBy=""):
                             )
                 
                 if hasNickname(sentBy) == True:
-                    # user.send(f"{userRoleColor(sentBy)}{userNickname(sentBy)} (@{sentBy.lower()}){badge}{RESET + Colors.RESET}: {message}{RESET + Colors.RESET}".encode("utf8"))
-                    user.send(remove_return_carriage(f"{userRoleColor(sentBy)}{userNickname(sentBy)} (@{sentBy.lower()}){badge}{RESET + Colors.RESET}: {message}{RESET + Colors.RESET}").encode("utf8"))
+                    user.send(f"{userRoleColor(sentBy)}{userNickname(sentBy)} (@{sentBy.lower()}){badge}{RESET + Colors.RESET}: {message}{RESET + Colors.RESET}".encode("utf8"))
+                    # user.send(remove_return_carriage(f"{userRoleColor(sentBy)}{userNickname(sentBy)} (@{sentBy.lower()}){badge}{RESET + Colors.RESET}: {message}{RESET + Colors.RESET}").encode("utf8"))
                     
                 else: 
-                    # user.send(f"{userRoleColor(sentBy)}{sentBy}{badge}{RESET + Colors.RESET}: {message}{RESET + Colors.RESET}".encode("utf8"))
-                    user.send(remove_return_carriage(f"{userRoleColor(sentBy)}{sentBy}{badge}{RESET + Colors.RESET}: {message}{RESET + Colors.RESET}").encode("utf8"))
+                    user.send(f"{userRoleColor(sentBy)}{sentBy}{badge}{RESET + Colors.RESET}: {message}{RESET + Colors.RESET}".encode("utf8"))
+                    # user.send(remove_return_carriage(f"{userRoleColor(sentBy)}{sentBy}{badge}{RESET + Colors.RESET}: {message}{RESET + Colors.RESET}").encode("utf8"))
                     
         c.close()
                 
