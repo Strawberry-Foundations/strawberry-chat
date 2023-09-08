@@ -99,9 +99,23 @@ else:
     # Connect/Create database
     db = sql.connect(server_dir + "/users.db", check_same_thread=False)
     table_query = """
-    
-    
-    """
+    CREATE TABLE "users" (
+	"user_id"	TEXT,
+	"username"	TEXT,
+	"password"	TEXT,
+	"nickname"	INTEGER,
+	"description"	TEXT,
+	"badge"	TEXT,
+	"badges"	TEXT,
+	"role"	TEXT,
+	"role_color"	TEXT,
+	"enable_blacklisted_words"	TEXT,
+	"account_enabled"	TEXT,
+	"muted"	TEXT,
+	"discord_name"	TEXT,
+    "strawberry_id"	TEXT, 
+    "msg_count"	INTEGER,
+    "enable_dms"	TEXT)"""
     
 # Connect to the database
 # db = sql.connect(server_dir + "/users.db", check_same_thread=False)
@@ -333,7 +347,7 @@ def isMuted(uname):
 # Check if user's account is enabled
 def isAccountEnabled(uname):
     c = db.cursor()
-    c.execute('SELECT accountEnabled FROM users WHERE username = ?', (uname,))
+    c.execute('SELECT account_enabled FROM users WHERE username = ?', (uname,))
     accountEnabledStatus = c.fetchone()
     c.close()
     
@@ -498,7 +512,7 @@ def clientThread(client):
                         client.send(f"{YELLOW + Colors.BOLD}junge niemand will sich hier die herr der ringe trilogie durchlesen{RESET + Colors.RESET}".encode("utf8"))
 
             # Blacklisted Word System
-            clcur.execute('SELECT role, enableBlacklistedWords FROM users WHERE username = ?', (user,))    
+            clcur.execute('SELECT role, enable_blacklisted_words FROM users WHERE username = ?', (user,))    
             res = clcur.fetchone()
             
             if res[0] == "admin" or res[0] == "bot" or res[1] == "false":
@@ -886,7 +900,7 @@ def clientThread(client):
                         client.send(f"{RED + Colors.BOLD}Sorry, this user does not exist!{RESET + Colors.RESET}".encode("utf8"))
                         continue
                     
-                    c.execute("UPDATE users SET accountEnabled = 'false' WHERE username = ?", (uname,))
+                    c.execute("UPDATE users SET account_enabled = 'false' WHERE username = ?", (uname,))
                     db.commit()
                     
                     client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Banned {uname}{RESET + Colors.RESET}".encode("utf8"))
@@ -913,7 +927,7 @@ def clientThread(client):
                         client.send(f"{RED + Colors.BOLD}Sorry, this user does not exist!{RESET + Colors.RESET}".encode("utf8"))
                         continue
                     
-                    c.execute("UPDATE users SET accountEnabled = 'true' WHERE username = ?", (uname,))
+                    c.execute("UPDATE users SET account_enabled = 'true' WHERE username = ?", (uname,))
                     db.commit()
                     
                     client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Unbanned {uname}{RESET + Colors.RESET}".encode("utf8"))
@@ -1020,7 +1034,7 @@ def clientThread(client):
                                 client.send(f"{RED + Colors.BOLD}Sorry, this user does not exist!{RESET + Colors.RESET}".encode("utf8"))
                                 continue
                          
-                            c.execute("UPDATE users SET enableBlacklistedWords = ? WHERE username = ?", (value, uname))
+                            c.execute("UPDATE users SET enable_blacklisted_words = ? WHERE username = ?", (value, uname))
                             db.commit()
                         
                             if value == "true":
@@ -1044,7 +1058,7 @@ def clientThread(client):
                         try:
                             uname = args[1]
                                 
-                            c.execute("SELECT enableBlacklistedWords FROM users WHERE username = ?", (uname,))
+                            c.execute("SELECT enable_blacklisted_words FROM users WHERE username = ?", (uname,))
                             value = c.fetchone()[0]
                             
                             if value == "true":
@@ -1285,7 +1299,7 @@ def clientThread(client):
                         to_sent = key
                         found_keys.append(key)
                     
-                c.execute("SELECT enableDms FROM users WHERE username = ?", (uname,))
+                c.execute("SELECT enable_dms FROM users WHERE username = ?", (uname,))
                 has_dm_enabled = c.fetchone()[0]   
                 print(has_dm_enabled)
                         
@@ -1762,7 +1776,7 @@ def clientLogin(client):
             try:
                 client.send(f"{GREEN + Colors.BOLD}Creating your User account... {RESET + Colors.RESET}".encode("utf8"))
                 
-                logcur.execute('INSERT INTO users (username, password, role, role_color, enableBlacklistedWords, accountEnabled, muted, user_id, msg_count, enableDms) VALUES (?, ?, "member", ?, "true", "true", "false", "1234-5678", ?, "true")', (registeredUsername, registeredPassword, registeredRoleColor.lower(), 0))
+                logcur.execute('INSERT INTO users (username, password, role, role_color, enable_blacklisted_words, account_enabled, muted, user_id, msg_count, enable_dms) VALUES (?, ?, "member", ?, "true", "true", "false", "1234-5678", ?, "true")', (registeredUsername, registeredPassword, registeredRoleColor.lower(), 0))
                 db.commit()
                 
                 client.send(f"{GREEN + Colors.BOLD}Created!{RESET + Colors.RESET}".encode("utf8"))
@@ -1798,7 +1812,7 @@ def clientLogin(client):
     password = client.recv(2048).decode("utf8")
 
     try: 
-        logcur.execute('SELECT * FROM users WHERE username = ? AND password = ? AND accountEnabled = ?', (username, password, "true"))
+        logcur.execute('SELECT * FROM users WHERE username = ? AND password = ? AND account_enabled = ?', (username, password, "true"))
         
     except Exception as e:
         log.error(f"A login-error occurred")
@@ -1819,7 +1833,7 @@ def clientLogin(client):
         alreadyTaken = True
         while alreadyTaken:
             try:
-                enabled = logcur.execute('SELECT accountEnabled FROM users WHERE username = ? AND password = ?', (username, password))
+                enabled = logcur.execute('SELECT account_enabled FROM users WHERE username = ? AND password = ?', (username, password))
                 enabled = str(enabled.fetchone()[0])
                 
             except TypeError:
@@ -1847,7 +1861,7 @@ def clientLogin(client):
             time.sleep(0.01)
             
             try: 
-                logcur.execute('SELECT * FROM users WHERE username = ? AND password = ? AND accountEnabled = ?', (username, password, "true"))
+                logcur.execute('SELECT * FROM users WHERE username = ? AND password = ? AND account_enabled = ?', (username, password, "true"))
                 
             except Exception as e:
                 log.error(f"An error occurred.")
