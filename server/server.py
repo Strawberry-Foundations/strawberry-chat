@@ -89,8 +89,22 @@ log.addHandler(log_fh)
 # Path of server.py
 server_dir = os.path.dirname(os.path.realpath(__file__))
 
+# Check if database file exists
+if os.path.exists(server_dir + "/users.db"):
+    # Connect to database
+    db = sql.connect(server_dir + "/users.db", check_same_thread=False)
+    print(f"{GREEN + Colors.BOLD}>>> {RESET}Connected to database")
+    
+else:
+    # Connect/Create database
+    db = sql.connect(server_dir + "/users.db", check_same_thread=False)
+    table_query = """
+    
+    
+    """
+    
 # Connect to the database
-db = sql.connect(server_dir + "/users.db", check_same_thread=False)
+# db = sql.connect(server_dir + "/users.db", check_same_thread=False)
 
 # Open Configuration
 with open(server_dir + "/config.yml") as config_data:
@@ -129,7 +143,7 @@ def create_empty_file(filename):
     with open(server_dir + "/" + filename, "w") as ef:
         pass
 
-# Blacklisted words set
+# Check if blacklist exists
 if os.path.exists(server_dir + "/blacklist.txt"):
     open_blacklist()
     
@@ -342,7 +356,6 @@ def debugLogger(errorMessage, errorCode, type="error"):
 def sqlError(errorMessage):
     log.error(f"e096: An SQL Error occured: {errorMessage}")
 
-
 # Check if a user exists
 def doesUserExist(uname):
     c = db.cursor()
@@ -372,18 +385,17 @@ def memberListNickname(uname):
     
     else:
         return uname
-    
 
 # Removed ansi characters
 def escape_ansi(line):
     ansi_escape = re.compile(r'(?:\x1B[@-_]|[\x80-\x9F])[0-?]*[ -/]*[@-~]')
     return ansi_escape.sub('', line)
 
-
 # Removed return carriages
 def remove_return_carriage(line):
     ansi_escape = re.compile(r'\r')
     return ansi_escape.sub('', line)
+
 
 with open(server_dir + "/news.yml") as news_file:
     news_data = yaml.load(news_file, Loader=SafeLoader)
