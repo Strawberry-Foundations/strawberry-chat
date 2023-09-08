@@ -124,9 +124,6 @@ else:
     
     print(f"{GREEN + Colors.BOLD}>>> {RESET}Created table")
     
-    
-# Connect to the database
-# db = sql.connect(server_dir + "/users.db", check_same_thread=False)
 
 # Open Configuration
 with open(server_dir + "/config.yml") as config_data:
