@@ -12,6 +12,7 @@
 - NEW: Added isOnline func to userinfo + changed string
 - NEW: Added strawberry id connection to user profile
 - NEW: Added reworked kick command
+- NEW: Added changelog command
 - NEW: Removed command alias "/userinfo"
 
 - NEW: Memberlist command with beatiful representation of our members and their roles
