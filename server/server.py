@@ -1956,11 +1956,9 @@ def broadcast(message, sentBy=""):
                 
                 if hasNickname(sentBy) == True:
                     user.send(f"{userRoleColor(sentBy)}{userNickname(sentBy)} (@{sentBy.lower()}){badge}{RESET + Colors.RESET}: {message}{RESET + Colors.RESET}".encode("utf8"))
-                    # user.send(remove_return_carriage(f"{userRoleColor(sentBy)}{userNickname(sentBy)} (@{sentBy.lower()}){badge}{RESET + Colors.RESET}: {message}{RESET + Colors.RESET}").encode("utf8"))
                     
                 else: 
                     user.send(f"{userRoleColor(sentBy)}{sentBy}{badge}{RESET + Colors.RESET}: {message}{RESET + Colors.RESET}".encode("utf8"))
-                    # user.send(remove_return_carriage(f"{userRoleColor(sentBy)}{sentBy}{badge}{RESET + Colors.RESET}: {message}{RESET + Colors.RESET}").encode("utf8"))
                     
         c.close()
                 
