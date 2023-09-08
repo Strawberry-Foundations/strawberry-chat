@@ -1,0 +1,50 @@
+# 1.8.0
+
+- NEW: Added message counter
+- NEW: Added online member count to memberlist
+- NEW: Added stbchat plus user badge
+- NEW: Added account creation date to user profile
+- NEW: Added "Member since" to user profile (displays currently unix time 0)
+- NEW: Added many new commands to help section
+- NEW: Added dm activation and disactivation (currently not adjustable)
+- NEW: Added strawberry badge
+- NEW: Added online/offline/... status to user profile command
+- NEW: Added isOnline func to userinfo + changed string
+- NEW: Added strawberry id connection to user profile
+- NEW: Added reworked kick command
+- NEW: Removed command alias "/userinfo"
+
+- NEW: Memberlist command with beatiful representation of our members and their roles
+- NEW: DM (direct message) command to send private/direct messages to members, instead sending it to everyone
+- NEW: HTCF color support (Hashtag Color Format) for chat messages and broadcast command (admin only) (e.g. #red)
+- NEW: HTPF placeholder support (Hashtag Placeholders Format) for chat messages and broadcast command (admin only) (e.g. #today)
+- NEW: If you mention a user (e.g. @someuser), it will be highlighted
+- NEW: Improved code, bug fixes and a Bard chat bot!
+- NEW: /user can now be used without argument to show your user profile
+
+- SIGNIFICANT: Fixed wrong time/date formatting for file logging (!!!)
+
+- FIX: Fixed duplicated code which led to formatting errors
+- FIX: Fixed wrong formatting with carriage return usage in custom clients
+- FIX: sqlite3.ProgrammingError: Recursive use of cursors not allowed + fixed illegal rule of multiple reusing c
+- FIX: Removed duplicated cursor creation and db variable assignment
+- FIX: re-definition of global db variable now at the top of the clientThread function
+- FIX: Removed duplicate import (os & os.path.exists)
+- FIX: Fixed closing database when registering a new user
+- FIX: Forgot to add to_kick.close() to close the connection between server and client (from kicked client)
+- FIX: Fixed memberlist command when offline mode is disabled
+
+- SCAPI: Fixed bug for receiving raw messages (hidden ansi chars)
+- SCAPI: Added get_username_by_msg function 
+
+- OPTIMIZATION: Removed example database, because the server will now create the database when the database does not exist
+- OPTIMIZATION: Moved table_query to top, added new sys argument to regenerate the database
+- OPTIMIZATION: Correct names for the database variables
+- OPTIMIZATION: Created separate variables for help messages at the top of the code
+- OPTIMIZATION: reodered some commands in the code
+- OPTIMIZATION: Removed duplicate of code piece (userRoleColor)
+
+- UPDATE: Updated important information header of server.py file
+- UPDATE: Registration updated; will now set msg_count to 0 when registering
+
+- API: Added function to get IP
