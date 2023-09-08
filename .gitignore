@@ -164,6 +164,7 @@ bot/bard.yml
 bot/bardtest.py
 client/config.yml
 server/users.db
+server/backup_users.db
 server/blacklist.txt
 server/messages.txt
 server/config.yml
