@@ -563,7 +563,7 @@ def clientThread(client):
                         return f"{Colors.GRAY}〇{RESET}"
                 
                 try:
-                    c.execute("SELECT username, nickname, badge, role, role_color, description, badges, discord_name, user_id, strawberry_id FROM users WHERE LOWER(username) = ?", (uname.lower(),))
+                    c.execute("SELECT username, nickname, badge, role, role_color, description, badges, discord_name, user_id, strawberry_id, creation_date FROM users WHERE LOWER(username) = ?", (uname.lower(),))
                     
                 except:
                     client.send(f"{RED + Colors.BOLD}Sorry, this user does not exist!{RESET + Colors.RESET}".encode("utf8"))
@@ -662,7 +662,7 @@ def clientThread(client):
         {GREEN + Colors.BOLD}User-ID:{RESET + LIGHTBLUE_EX} {row[8]}{RESET + Colors.RESET}
         {GREEN + Colors.BOLD}Nickname:{RESET + Colors.BOLD} {nickname}{RESET + Colors.RESET}
         {GREEN + Colors.BOLD}Description:{RESET + Colors.BOLD} {description}{RESET + Colors.RESET}
-        {GREEN + Colors.BOLD}Member since:{RESET + Colors.BOLD} {datetime.datetime.fromtimestamp(0).strftime("%a, %d. %h %Y")}{RESET + Colors.RESET}
+        {GREEN + Colors.BOLD}Member since:{RESET + Colors.BOLD} {datetime.datetime.fromtimestamp(row[10]).strftime("%a, %d. %h %Y")}{RESET + Colors.RESET}
         {GREEN + Colors.BOLD}Main Badge:{RESET + Colors.BOLD} {badge}{RESET + Colors.RESET}
         {GREEN + Colors.BOLD}Badges: {row[6]}{RESET + Colors.BOLD}{RESET + Colors.RESET}{Colors.BOLD}{all_badges}{Colors.RESET}
         {GREEN + Colors.BOLD}Role:{RESET + Colors.BOLD} {role}{RESET + Colors.RESET}
