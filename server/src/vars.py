@@ -2,7 +2,7 @@ from .colors import *
 
 # Version-specified Variables & important variables
 base_ver                = "1.8.0"
-short_ver               = "1.8.0b2+u2"
+short_ver               = "1.8.0b3+u1"
 ver                     = short_ver + "-vacakes"
 chat_name               = "Strawberry Chat"
 codename                = "Vanilla Cake"
