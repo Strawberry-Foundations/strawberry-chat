@@ -23,6 +23,7 @@ from src.colors import *
 from src.functions import *
 from src.vars import *
 from init import server_dir
+import src.commands.etc.ping_command
 
 # Startup title
 print(f"{CYAN + Colors.BOLD}* -- {chat_name} v{short_ver} {codename} ({server_edition}) -- *{RESET + Colors.RESET}")
@@ -470,6 +471,7 @@ def clientThread(client):
     
             # /nick Command
             elif message.startswith("/nick ") or message.startswith("/nickname "):
+                execute_command("test")
                 if message.startswith("/nick "):
                     arg = message.replace("/nick ", "")
                     
