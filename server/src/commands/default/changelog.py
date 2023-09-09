@@ -1,16 +1,10 @@
 from .. import register_command
 
 import socket
-import yaml
 
 from src.vars import chat_name
 from src.colors import *
-from yaml import SafeLoader
 from init import server_dir
-
-# Open Configuration
-with open(server_dir + "/config.yml") as config_data:
-        config = yaml.load(config_data, Loader=SafeLoader)
 
 @register_command("changelog")
 def changelog_command(socket: socket.socket, username: str, args: list):
