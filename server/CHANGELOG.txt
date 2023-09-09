@@ -17,6 +17,7 @@
 - NEW: Added changelog command
 - NEW: Added user mentioning (If you mention a user (e.g. @someuser), it will be highlighted)
 - NEW: Added variable source file for modularity
+- NEW: Added automatic user id allocation
 - NEW: Added functions source file for modularity
 - NEW: Applied repl_htpf function to broadcast command
 - NEW: Removed time class and time functions
