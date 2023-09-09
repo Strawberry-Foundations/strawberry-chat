@@ -19,6 +19,8 @@ import re
 
 from colorama import Fore, Style
 from .colors import *
+from init import server_dir
+from .vars import table_query
 
 # Receive your global ip address for verification
 def get_global_ip():
@@ -52,3 +54,13 @@ def repl_htpf(str):
                 )
                 
     return to_ret
+
+def regen_database():
+    os.remove(server_dir + "/users.db")
+    db = sql.connect(server_dir + "/users.db", check_same_thread=False)
+    cr_cursor = db.cursor()
+    print(f"{GREEN + Colors.BOLD}>>> {RESET}Created database")
+
+    cr_cursor.execute(table_query)
+    db.commit()
+    cr_cursor.close()
