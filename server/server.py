@@ -151,6 +151,9 @@ if "--regen-database" in sys.argv:
 
 if "--test-mode" in sys.argv:
     test_mode = True
+    
+else:
+    test_mode = False
 
 
 # General Functions
