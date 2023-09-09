@@ -1318,9 +1318,13 @@ def clientThread(client):
                         to_sent = key
                         found_keys.append(key)
                     
-                c.execute("SELECT enable_dms FROM users WHERE username = ?", (uname,))
-                has_dm_enabled = c.fetchone()[0]   
-                print(has_dm_enabled)
+                try:
+                    c.execute("SELECT enable_dms FROM users WHERE username = ?", (uname,))
+                    has_dm_enabled = c.fetchone()[0]
+                    
+                except:
+                    client.send(f"{RED + Colors.BOLD}User not found{RESET + Colors.RESET}".encode("utf-8"))
+                    continue
                         
                 if uname == user:
                     client.send(f"{YELLOW}You shouldn't send messages to yourself...{RESET}".encode("utf-8"))
@@ -1340,7 +1344,7 @@ def clientThread(client):
                         to_sent.send(f"{Colors.RESET + userRoleColor(user)}{user} {Colors.GRAY}-->{RESET + Colors.RESET}{userRoleColor(uname)} You{Colors.RESET + RESET}: {msg}".encode("utf-8"))
                         
                     else:
-                        client.send(f"{RED + Colors.BOLD}User not found or user is offline.{RESET + Colors.RESET}".encode("utf-8"))
+                        client.send(f"{RED + Colors.BOLD}User is offline.{RESET + Colors.RESET}".encode("utf-8"))
                         
                     continue
                 
