@@ -1,6 +1,7 @@
 import socket
 from enum import Enum
 
+from src.colors import *
 
 class PermissionLevel(Enum):
     MEMBER = 0
@@ -24,7 +25,7 @@ def execute_command(command_str, socket: socket.socket, user: str, user_perms: P
         cmd = command_registry[command_name]
         
         if user_perms.value < cmd[2].value:
-            socket.send("You lack the permission to use this command!".encode("utf8"))
+            socket.send(f"{RED}You lack the permission to use this command!{RESET}".encode("utf8"))
             return
         
         if cmd[1] > args.__len__():
