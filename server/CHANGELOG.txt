@@ -49,6 +49,7 @@
 - FIX: Fixed using forbidden \n in message with custom clients
 - FIX: Fixed not escaping ansi + stripping \n when logging messages to console
 - FIX: Fixed correct arrangement of log messages when leaving the chat
+- FIX: Fixed wrong user id allocation (allocated new user id to message count)
 
 - SCAPI: Fixed bug for receiving raw messages (hidden ansi chars)
 - SCAPI: Added get_username_by_msg function 
