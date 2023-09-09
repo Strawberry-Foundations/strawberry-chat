@@ -35,7 +35,7 @@ def execute_command(command_str, socket: socket.socket, user: str, user_perms: P
         cmd[0](socket, user, args)
         
     else:
-        socket.send(f"Command '{command_name}' not found.".encode("utf8"))
+        socket.send(f"{RED}Command '{command_name}' not found.{RESET}".encode("utf8"))
 
 
 def list_commands():
