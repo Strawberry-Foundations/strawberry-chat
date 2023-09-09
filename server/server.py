@@ -1448,7 +1448,7 @@ def clientThread(client):
                     del users[client]
                     client.close()
                     
-                    log.info(f"{address} ({user}) has left.")
+                    log.info(f"{user} ({address}) has left.")
                     broadcast(f"{Colors.GRAY + Colors.BOLD}<--{Colors.RESET} {userRoleColor(user)}{user}{YELLOW + Colors.BOLD} has left the chat room!{RESET + Colors.RESET}")
                     break
 
