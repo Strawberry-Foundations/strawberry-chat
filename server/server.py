@@ -428,11 +428,6 @@ def escape_ansi(line):
     ansi_escape = re.compile(r'(?:\x1B[@-_]|[\x80-\x9F])[0-?]*[ -/]*[@-~]')
     return ansi_escape.sub('', line)
 
-# Removed return carriages
-def remove_return_carriage(line):
-    ansi_escape = re.compile(r'\r')
-    return ansi_escape.sub('', line)
-
 
 with open(server_dir + "/news.yml") as news_file:
     news_data = yaml.load(news_file, Loader=SafeLoader)
@@ -1312,6 +1307,7 @@ def clientThread(client):
 
                 uname   = args[0]
                 msg     = ' '.join(args[1:])
+                msg     = escape_ansi(msg)
                 
                 search_val = uname
                 found_keys = []
