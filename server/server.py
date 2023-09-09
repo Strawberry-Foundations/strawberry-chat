@@ -1324,28 +1324,28 @@ def clientThread(client):
                     has_dm_enabled = c.fetchone()[0]
                     
                 except:
-                    client.send(f"{RED + Colors.BOLD}User not found{RESET + Colors.RESET}".encode("utf-8"))
+                    client.send(f"{RED + Colors.BOLD}User not found{RESET + Colors.RESET}".encode("utf8"))
                     continue
                         
                 if uname == user:
-                    client.send(f"{YELLOW}You shouldn't send messages to yourself...{RESET}".encode("utf-8"))
+                    client.send(f"{YELLOW}You shouldn't send messages to yourself...{RESET}".encode("utf8"))
                     continue
                 
                 elif uname in afks:
-                    client.send(f"{YELLOW}This user is currently afk...{RESET}".encode("utf-8"))
+                    client.send(f"{YELLOW}This user is currently afk...{RESET}".encode("utf8"))
                     continue
                 
                 elif has_dm_enabled == "false":
-                    client.send(f"{YELLOW}This user has deactivated his/her DM's{RESET}".encode("utf-8"))
+                    client.send(f"{YELLOW}This user has deactivated his/her DM's{RESET}".encode("utf8"))
                     continue
                 
                 else:
                     if found_keys:
-                        client.send(f"{userRoleColor(user)}You{RESET} {Colors.GRAY}-->{Colors.RESET} {userRoleColor(uname)}{uname}{RESET + Colors.RESET}: {msg}".encode("utf-8"))
-                        to_sent.send(f"{Colors.RESET + userRoleColor(user)}{user} {Colors.GRAY}-->{RESET + Colors.RESET}{userRoleColor(uname)} You{Colors.RESET + RESET}: {msg}".encode("utf-8"))
+                        client.send(f"{userRoleColor(user)}You{RESET} {Colors.GRAY}-->{Colors.RESET} {userRoleColor(uname)}{uname}{RESET + Colors.RESET}: {msg}".encode("utf8"))
+                        to_sent.send(f"{Colors.RESET + userRoleColor(user)}{user} {Colors.GRAY}-->{RESET + Colors.RESET}{userRoleColor(uname)} You{Colors.RESET + RESET}: {msg}".encode("utf8"))
                         
                     else:
-                        client.send(f"{RED + Colors.BOLD}User is offline.{RESET + Colors.RESET}".encode("utf-8"))
+                        client.send(f"{RED + Colors.BOLD}User is offline.{RESET + Colors.RESET}".encode("utf8"))
                         
                     continue
                 
@@ -1379,13 +1379,13 @@ def clientThread(client):
                             found_keys.append(key)
                             
                     if uname == user:
-                        client.send(f"{YELLOW}You shouldn't kick yourself...{RESET}".encode("utf-8"))
+                        client.send(f"{YELLOW}You shouldn't kick yourself...{RESET}".encode("utf8"))
                         continue
                     
                     else:
                         if found_keys:
-                            client.send(f"{YELLOW + Colors.BOLD}Kicked {uname} for following reason: {reason}{RESET + Colors.RESET}".encode("utf-8"))
-                            to_kick.send(f"{YELLOW + Colors.BOLD}You have been kicked out of the chat for the following reason: {reason}{RESET + Colors.RESET}".encode("utf-8"))
+                            client.send(f"{YELLOW + Colors.BOLD}Kicked {uname} for following reason: {reason}{RESET + Colors.RESET}".encode("utf8"))
+                            to_kick.send(f"{YELLOW + Colors.BOLD}You have been kicked out of the chat for the following reason: {reason}{RESET + Colors.RESET}".encode("utf8"))
                             
                             try:
                                 del addresses[to_kick]
@@ -1397,14 +1397,14 @@ def clientThread(client):
                                 debugLogger(e, "005", type="warning")
                             
                         else:
-                            client.send(f"{RED + Colors.BOLD}User not found or user is offline.{RESET + Colors.RESET}".encode("utf-8"))
+                            client.send(f"{RED + Colors.BOLD}User not found or user is offline.{RESET + Colors.RESET}".encode("utf8"))
                             
                         continue
                 
                 else:
                     client.send(f"{RED}Sorry, you do not have permissons for that.{RESET}".encode("utf8"))
                     continue
-            
+                    "".encode
             
             elif message.startswith("/news "):
                 arg = message.replace("/news ", "")
@@ -1456,10 +1456,10 @@ def clientThread(client):
                 # Help Command
                 case "/help":
                     broadcast(f"\033[90m--> {Colors.RESET + Colors.BOLD}{userRoleColor(user)}{user}{RESET} uses /help{RESET + Colors.RESET}")
-                    client.send(default_help_section.encode("utf-8"))
+                    client.send(default_help_section.encode("utf8"))
                     
                     time.sleep(0.1)
-                    client.send(user_help_section.encode("utf-8"))
+                    client.send(user_help_section.encode("utf8"))
                     
                     time.sleep(0.1)
                     client.send(admin_help_section.encode("utf8"))
@@ -1692,7 +1692,7 @@ def clientThread(client):
                     with open(server_dir + "/CHANGELOG.txt") as f:
                         changelog = f.read()
                         client.send(f"{GREEN + Colors.BOLD + Colors.UNDERLINE}{chat_name} Changelog{RESET + Colors.RESET}".encode("utf8"))
-                        client.send((Colors.BOLD + changelog + Colors.RESET).encode("utf-8"))
+                        client.send((Colors.BOLD + changelog + Colors.RESET).encode("utf8"))
 
                 case "/":
                     client.send(f"{GREEN + Colors.BOLD}Need help? Take a look at our help command! /help{RESET + Colors.RESET}".encode("utf8"))
