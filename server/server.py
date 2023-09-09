@@ -1308,6 +1308,7 @@ def clientThread(client):
                 uname   = args[0]
                 msg     = ' '.join(args[1:])
                 msg     = escape_ansi(msg)
+                msg     = msg.strip("\n")
                 
                 search_val = uname
                 found_keys = []
@@ -1935,6 +1936,7 @@ def broadcast(message, sentBy=""):
                 
                 
                 message = escape_ansi(message)
+                message = message.strip("\n")
                 
                 message = message.replace("#red", RED
                             ).replace("#green", GREEN
