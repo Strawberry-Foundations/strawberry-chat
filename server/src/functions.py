@@ -34,24 +34,24 @@ def escape_ansi(line):
     return ansi_escape.sub('', line)
 
 def repl_htpf(str):
-    to_ret = str.replace("#red", RED
-                ).replace("#green", GREEN
-                ).replace("#yellow", YELLOW
-                ).replace("#blue", BLUE
-                ).replace("#magenta", MAGENTA
-                ).replace("#cyan", CYAN
-                ).replace("#white", WHITE
-                ).replace("#reset", RESET
-                ).replace("#bold", Colors.BOLD
-                ).replace("#underline", Colors.UNDERLINE
-                ).replace("#today", datetime.datetime.today().strftime("%Y-%m-%d")
-                ).replace("#curtime", datetime.datetime.now().strftime("%H:%M")
-                ).replace("#month", datetime.datetime.today().strftime("%m")
-                ).replace("#fullmonth", datetime.datetime.now().strftime("%h")
-                ).replace("#ftoday", datetime.datetime.now().strftime("%A, %d. %h %Y")
-                ).replace("#tomorrow", (datetime.date.today() + datetime.timedelta(days=1)).strftime("%Y-%m-%d")
-                ).replace("#ftomorrow", (datetime.date.today() + datetime.timedelta(days=1)).strftime("%A, %d. %h %Y")
-                )
+    to_ret = str \
+            .replace("#red", RED) \
+            .replace("#green", GREEN) \
+            .replace("#yellow", YELLOW) \
+            .replace("#blue", BLUE) \
+            .replace("#magenta", MAGENTA) \
+            .replace("#cyan", CYAN) \
+            .replace("#white", WHITE) \
+            .replace("#reset", RESET) \
+            .replace("#bold", Colors.BOLD) \
+            .replace("#underline", Colors.UNDERLINE) \
+            .replace("#today", datetime.datetime.today().strftime("%Y-%m-%d")) \
+            .replace("#curtime", datetime.datetime.now().strftime("%H:%M")) \
+            .replace("#month", datetime.datetime.today().strftime("%m")) \
+            .replace("#fullmonth", datetime.datetime.now().strftime("%h")) \
+            .replace("#ftoday", datetime.datetime.now().strftime("%A, %d. %h %Y")) \
+            .replace("#tomorrow", (datetime.date.today() + datetime.timedelta(days=1)).strftime("%Y-%m-%d")) \
+            .replace("#ftomorrow", (datetime.date.today() + datetime.timedelta(days=1)).strftime("%A, %d. %h %Y"))
                 
     return to_ret
 
