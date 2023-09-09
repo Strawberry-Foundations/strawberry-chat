@@ -25,6 +25,7 @@ from src.functions import *
 from src.vars import *
 from init import server_dir
 import src.commands.etc.test_command
+import src.commands.default.help
 from src.commands import PermissionLevel
 
 # Startup title
