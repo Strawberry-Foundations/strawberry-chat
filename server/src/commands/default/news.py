@@ -16,5 +16,5 @@ news = f"""{GREEN +  Colors.UNDERLINE + Colors.BOLD}{chat_name} News - {short_ve
 {news_data['news'][base_ver]['text']}{RESET + Colors.RESET}"""
 
 @register_command("news")
-def help_command(socket: socket.socket, username: str, args: list):
+def news_command(socket: socket.socket, username: str, args: list):
     socket.send(news.encode("utf8"))
