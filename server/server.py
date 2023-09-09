@@ -17,7 +17,6 @@ import time
 import errno
 import random
 import requests
-import re
 
 from colorama import Fore, Style
 from src.colors import *
