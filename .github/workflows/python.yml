@@ -41,4 +41,4 @@ jobs:
         python ./server/server.py --test-mode
     - name: Test with pytest
       run: |
-        pytest ./server/server.py
+        pytest ./server/server.py -W ignore::DeprecationWarning
