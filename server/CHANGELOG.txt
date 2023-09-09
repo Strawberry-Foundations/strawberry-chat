@@ -20,6 +20,7 @@
 - NEW: Added automatic user id allocation
 - NEW: Added functions source file for modularity
 - NEW: Applied repl_htpf function to broadcast command
+- NEW: Added user creation date to user profile
 - NEW: Removed time class and time functions
 - NEW: Removed command alias "/userinfo"
 
