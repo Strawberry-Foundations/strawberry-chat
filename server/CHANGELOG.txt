@@ -30,6 +30,8 @@
 - MODULARITY: Moved escape_ansi function to functions source file
 - MODULARITY: Moved help sections to vars source file
 - MODULARITY: Added repl_htpf to replace placeholders from the Hashtag Placeholders Format
+- MODULARITY: Removed regen database code "procedure" and created function for database regeneration in functions source file
+- MODULARITY: Added init.py file for very specificed "init things"
 
 - FIX: Fixed wrong time/date formatting for file logging (!!!)
 - FIX: Fixed duplicated code which led to formatting errors
