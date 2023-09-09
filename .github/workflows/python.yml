@@ -38,7 +38,7 @@ jobs:
     - name: Run
       run: |
         mv ./server/config.yml.example ./server/config.yml
-        python ./server/server.py
+        python ./server/server.py --test-mode
     - name: Test with pytest
       run: |
         pytest
