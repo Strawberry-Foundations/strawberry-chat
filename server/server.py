@@ -165,17 +165,6 @@ else:
     open_blacklist()
 
 
-class Time:
-    def currentTime():
-        time = datetime.datetime.now()
-        formattedTime = time.strftime("%H:%M:%S")
-        return formattedTime
-
-    def currentDate():
-        date = datetime.date.today()
-        formattedDate = date.strftime("%Y-%m-%d")
-        return formattedDate
-
 if "--enable-messages" in sys.argv:
     enable_messages = True
 
