@@ -32,15 +32,12 @@ news:
   
   1.8.0:
     text: "
-    - NEW: Memberlist command with beatiful representation of our members and their roles 🌟\n
-    - NEW: DM (direct message) command to send private/direct messages to members, instead sending it to everyone\n
+    - NEW: Memberlist command with beautiful representation of registered members and their roles\n
+    - NEW: We added direct messages to send private messages to a specific member instead of sending them to everyone.\n
     - NEW: Updated user info command with Strawberry ID/Network intregation and online/offline status information\n
-    - NEW: HTCF color support (Hashtag Color Format) for chat messages and broadcast command (admin only) (e.g. #red)\n
-    - NEW: HTPF placeholder support (Hashtag Placeholders Format) for chat messages and broadcast command (admin only) (e.g. #today)\n
+    - NEW: Hashtag Placeholder Format (HTPF) for chat messages and broadcast command, to send\n        colorized messages or the current time (e.g. #today)\n
     - NEW: If you mention a user (e.g. @someuser), it will be highlighted\n
     - NEW: Added account creation date to user profile\n
-    - NEW: Improved code, bug fixes and a Bard chat bot!\n
-    - NEW: Added changelog command\n
     - FIX: Fixed duplicated code which led to formatting errors\n
     - ADMIN: Working Kick command \n
     -> For more information visit https://github.com/orgs/Strawberry-Foundations/projects/1/views/1"
