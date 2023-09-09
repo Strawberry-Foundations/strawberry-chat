@@ -23,8 +23,7 @@
 - NEW: Improved code, bug fixes and a Bard chat bot!
 - NEW: /user can now be used without argument to show your user profile
 
-- SIGNIFICANT: Fixed wrong time/date formatting for file logging (!!!)
-
+- FIX: Fixed wrong time/date formatting for file logging (!!!)
 - FIX: Fixed duplicated code which led to formatting errors
 - FIX: Fixed wrong formatting with carriage return usage in custom clients
 - FIX: sqlite3.ProgrammingError: Recursive use of cursors not allowed + fixed illegal rule of multiple reusing c
