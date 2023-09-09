@@ -41,4 +41,4 @@ jobs:
         python ./server/server.py --test-mode
     - name: Test with pytest
       run: |
-        pytest
+        pytest ./server/server.py --test-mode
