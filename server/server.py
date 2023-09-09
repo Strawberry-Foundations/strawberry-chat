@@ -24,9 +24,10 @@ from src.colors import *
 from src.functions import *
 from src.vars import *
 from init import server_dir
-import src.commands.etc.test_command
-import src.commands.default.help
 from src.commands import PermissionLevel
+
+import src.commands.etc.test_command
+from src.commands.default import help, server_info
 
 # Startup title
 print(f"{CYAN + Colors.BOLD}* -- {chat_name} v{short_ver} {codename} ({server_edition}) -- *{RESET + Colors.RESET}")
