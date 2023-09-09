@@ -1870,6 +1870,8 @@ def main():
     try:
         if test_mode:
             port = 49200
+        else:
+            port = config['server']['port']
             
         atexit.register(cleanup)
         
