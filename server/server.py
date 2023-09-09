@@ -28,13 +28,7 @@ import re
 
 from colorama import Fore, Style
 from src.colors import *
-
-
-# Receive your global ip address for verification
-def get_global_ip():
-    response = requests.get('https://api.ipify.org?format=json')
-    data = response.json()
-    return data['ip']
+from src.functions import *
 
 # Version-specified Variables & important variables
 base_ver                = "1.8.0"
