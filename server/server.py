@@ -1685,7 +1685,9 @@ def clientLogin(client):
                 user_ids = user_ids[1:-2].replace(",", "")
                 user_ids = int(user_ids) + 1
                 
-                logcur.execute('INSERT INTO users (username, password, role, role_color, enable_blacklisted_words, account_enabled, muted, user_id, msg_count, enable_dms) VALUES (?, ?, "member", ?, "true", "true", "false", ?, ?, "true")', (registeredUsername, registeredPassword, registeredRoleColor.lower(), user_ids, 0))
+                creation_date = time.time()
+                
+                logcur.execute('INSERT INTO users (username, password, role, role_color, enable_blacklisted_words, account_enabled, muted, user_id, msg_count, enable_dms, creation_date) VALUES (?, ?, "member", ?, "true", "true", "false", ?, ?, "true", ?)', (registeredUsername, registeredPassword, registeredRoleColor.lower(), user_ids, 0, creation_date))
                 db.commit()
                 
                 client.send(f"{GREEN + Colors.BOLD}Created!{RESET + Colors.RESET}".encode("utf8"))
