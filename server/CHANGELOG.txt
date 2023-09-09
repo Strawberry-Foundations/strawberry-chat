@@ -21,15 +21,13 @@
 - NEW: Added variable source file for modularity
 - NEW: Added automatic user id allocation
 - NEW: Added functions source file for modularity
-- NEW: Applied repl_htpf function to broadcast command
 - NEW: Added user creation date to user profile
+- NEW: Added Hashtag Placeholder Format Support (HTPF) for chat messages and broadcast command, to send colorized messages or the current time (e.g. #today or #red)
+- NEW: Added an (unstable) Bard chat bot!
 - NEW: Removed time class and time functions
 - NEW: Removed command alias "/userinfo"
-
-- NEW: HTCF color support (Hashtag Color Format) for chat messages and broadcast command (admin only) (e.g. #red)
-- NEW: HTPF placeholder support (Hashtag Placeholders Format) for chat messages and broadcast command (admin only) (e.g. #today)
-- NEW: Improved code, bug fixes and a Bard chat bot!
-- NEW: /user can now be used without argument to show your user profile
+- NEW: Updated /user command so it can now be used without argument to show your user profile
+- NEW: Applied repl_htpf function to broadcast command
 
 - MODULARITY: Moved escape_ansi function to functions source file
 - MODULARITY: Moved help sections to vars source file
