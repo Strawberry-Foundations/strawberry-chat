@@ -34,7 +34,8 @@
 - FIX: Fixed closing database when registering a new user
 - FIX: Forgot to add to_kick.close() to close the connection between server and client (from kicked client)
 - FIX: Fixed memberlist command when offline mode is disabled
-- FIX: Fixed illegal ansi usage in dm command (message) 
+- FIX: Fixed illegal ansi usage in dm command (message)
+- FIX: Fixed sending dm message to non-existent user
 
 - SCAPI: Fixed bug for receiving raw messages (hidden ansi chars)
 - SCAPI: Added get_username_by_msg function 
