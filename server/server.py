@@ -1711,7 +1711,10 @@ def clientThread(client):
                         
                     else:
                         if enable_messages == True:
-                            log.info(f"{user} ({address}): {message}")
+                            log_msg = escape_ansi(message)
+                            log_msg = message.strip("\n")
+                            
+                            log.info(f"{user} ({address}): {log_msg}")
                         
                         
                         for u in users.values():
@@ -1958,10 +1961,16 @@ def broadcast(message, sentBy=""):
                             )
                 
                 if hasNickname(sentBy) == True:
-                    user.send(f"{userRoleColor(sentBy)}{userNickname(sentBy)} (@{sentBy.lower()}){badge}{RESET + Colors.RESET}: {message}{RESET + Colors.RESET}".encode("utf8"))
+                    if message != "":
+                        user.send(f"{userRoleColor(sentBy)}{userNickname(sentBy)} (@{sentBy.lower()}){badge}{RESET + Colors.RESET}: {message}{RESET + Colors.RESET}".encode("utf8"))
+                    else:
+                        pass
                     
                 else: 
-                    user.send(f"{userRoleColor(sentBy)}{sentBy}{badge}{RESET + Colors.RESET}: {message}{RESET + Colors.RESET}".encode("utf8"))
+                    if message != "":
+                        user.send(f"{userRoleColor(sentBy)}{sentBy}{badge}{RESET + Colors.RESET}: {message}{RESET + Colors.RESET}".encode("utf8"))
+                    else:
+                        pass
                     
         c.close()
                 
