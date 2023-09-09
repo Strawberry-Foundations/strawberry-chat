@@ -16,12 +16,18 @@
 - NEW: Added reworked kick command
 - NEW: Added changelog command
 - NEW: Added user mentioning (If you mention a user (e.g. @someuser), it will be highlighted)
+- NEW: Added variable source file for modularity
+- NEW: Added functions source file for modularity
+- NEW: Removed time class and time functions
 - NEW: Removed command alias "/userinfo"
 
 - NEW: HTCF color support (Hashtag Color Format) for chat messages and broadcast command (admin only) (e.g. #red)
 - NEW: HTPF placeholder support (Hashtag Placeholders Format) for chat messages and broadcast command (admin only) (e.g. #today)
 - NEW: Improved code, bug fixes and a Bard chat bot!
 - NEW: /user can now be used without argument to show your user profile
+
+- MODULARITY: Moved escape_ansi function to functions source file
+- MODULARITY: Moved help sections to vars source file
 
 - FIX: Fixed wrong time/date formatting for file logging (!!!)
 - FIX: Fixed duplicated code which led to formatting errors
