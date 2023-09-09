@@ -1439,12 +1439,6 @@ def clientThread(client):
         {BLUE + Colors.BOLD}Author: {RESET}{", ".join(authors)}{RESET + Colors.RESET}"""
         .encode("utf8"))
                     
-                    
-                # News Command
-                case "/news":
-                    client.send(news.encode("utf8"))
-                
-                
                 # Clientinfo Command
                 case "/clientinfo":
                     client.send(f"{addresses[client]}".encode("utf8"))
