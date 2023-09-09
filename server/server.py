@@ -1711,7 +1711,8 @@ def clientLogin(client):
     
     time.sleep(0.1)
     client.send(f"{GREEN + Colors.BOLD}Username: {RESET + Colors.RESET}".encode("utf8"))
-    username = client.recv(2048).decode("utf8")
+    username = escape_ansi(client.recv(2048).decode("utf8"))
+    username = username.strip("\n")
     
     if username.lower() == "register":
         register()
@@ -1723,7 +1724,8 @@ def clientLogin(client):
     time.sleep(0.01)
     
     client.send(f"{GREEN + Colors.BOLD}Password: {RESET + Colors.RESET}".encode("utf8"))
-    password = client.recv(2048).decode("utf8")
+    password = escape_ansi(client.recv(2048).decode("utf8"))
+    password = password.strip("\n")
 
     try: 
         logcur.execute('SELECT * FROM users WHERE username = ? AND password = ? AND account_enabled = ?', (username, password, "true"))
