@@ -1560,7 +1560,14 @@ def clientThread(client):
                             client.send(f"{YELLOW + Colors.BOLD}Deletion of your account has been canceled...{RESET + Colors.RESET}".encode("utf8"))
                     else:
                         client.send(f"{YELLOW + Colors.BOLD}Deletion of your account has been canceled...{RESET + Colors.RESET}".encode("utf8"))
-
+                        
+                        
+                case "/changelog":
+                    with open(server_dir + "/CHANGELOG.txt") as f:
+                        changelog = f.read()
+                        client.send(f"{GREEN + Colors.BOLD + Colors.UNDERLINE}{chat_name} Changelog{RESET + Colors.RESET}".encode("utf8"))
+                        client.send((Colors.BOLD + changelog + Colors.RESET).encode("utf8"))
+                
                 
                 case "/msgcount":
                     c.execute("SELECT msg_count FROM users WHERE username = ?", (user,))
