@@ -35,6 +35,10 @@ jobs:
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 ./server --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
+    - name: Receive global ip address
+      run: |
+        python ./misc/net/ip_address.py
+
     - name: Run
       run: |
         mv ./server/config.yml.example ./server/config.yml
