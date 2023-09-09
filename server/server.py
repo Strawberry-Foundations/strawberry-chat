@@ -1562,7 +1562,7 @@ def clientThread(client):
                         changelog = f.read()
                         client.send(f"{GREEN + Colors.BOLD + Colors.UNDERLINE}{chat_name} Changelog{RESET + Colors.RESET}".encode("utf8"))
                         client.send((Colors.BOLD + changelog + Colors.RESET).encode("utf8"))
-
+                
                 case "/":
                     client.send(f"{GREEN + Colors.BOLD}Need help? Take a look at our help command! /help{RESET + Colors.RESET}".encode("utf8"))
                     
@@ -1677,8 +1677,15 @@ def clientLogin(client):
             
             try:
                 client.send(f"{GREEN + Colors.BOLD}Creating your User account... {RESET + Colors.RESET}".encode("utf8"))
+            
+                logcur.execute("SELECT user_id FROM users")
+            
+                user_ids = logcur.fetchall()
+                user_ids = str(user_ids[-1])
+                user_ids = user_ids[1:-2].replace(",", "")
+                user_ids = int(user_ids) + 1
                 
-                logcur.execute('INSERT INTO users (username, password, role, role_color, enable_blacklisted_words, account_enabled, muted, user_id, msg_count, enable_dms) VALUES (?, ?, "member", ?, "true", "true", "false", "1234-5678", ?, "true")', (registeredUsername, registeredPassword, registeredRoleColor.lower(), 0))
+                logcur.execute('INSERT INTO users (username, password, role, role_color, enable_blacklisted_words, account_enabled, muted, user_id, msg_count, enable_dms) VALUES (?, ?, "member", ?, "true", "true", "false", "1234-5678", ?, "true")', (registeredUsername, registeredPassword, registeredRoleColor.lower(), user_ids))
                 db.commit()
                 
                 client.send(f"{GREEN + Colors.BOLD}Created!{RESET + Colors.RESET}".encode("utf8"))
