@@ -1,9 +1,10 @@
-import socket
 from .. import register_command
-from src.colors import *
-import yaml
-from yaml import SafeLoader
 
+import socket
+import yaml
+
+from src.colors import *
+from yaml import SafeLoader
 from init import server_dir
 
 # Open Configuration
