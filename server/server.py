@@ -1,12 +1,5 @@
 #!/usr/bin/env python3
 
-"""
---- IMPORTANT ---
-Complete Code Cleanup + Better Code
-Starting at version 1.8.0
-Read https://github.com/Strawberry-Foundations/strawberry-chat/issues/17 for more information
-"""
-
 import socket
 import threading
 
