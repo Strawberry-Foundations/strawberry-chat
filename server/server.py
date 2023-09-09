@@ -30,6 +30,7 @@ from colorama import Fore, Style
 from src.colors import *
 from src.functions import *
 from src.vars import *
+from init import server_dir
 
 # Startup title
 print(f"{CYAN + Colors.BOLD}* -- {chat_name} v{short_ver} {codename} ({server_edition}) -- *{RESET + Colors.RESET}")
@@ -72,7 +73,7 @@ log.addHandler(log_ch)
 log.addHandler(log_fh)
 
 # Path of server.py
-server_dir = os.path.dirname(os.path.realpath(__file__))
+# server_dir = os.path.dirname(os.path.realpath(__file__))
 
 # Check if database file exists
 if os.path.exists(server_dir + "/users.db"):
@@ -149,13 +150,7 @@ if "--regen-database" in sys.argv:
     
     if ays_input.lower() == "yes":
         db.close()
-        os.remove(server_dir + "/users.db")
-        db = sql.connect(server_dir + "/users.db", check_same_thread=False)
-        cr_cursor = db.cursor()
-        print(f"{GREEN + Colors.BOLD}>>> {RESET}Created database")
-    
-        cr_cursor.execute(table_query)
-        db.commit()
+        regen_database()
         
         print(f"{GREEN + Colors.BOLD}>>> {RESET}Created table")
         
