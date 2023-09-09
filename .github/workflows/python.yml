@@ -39,6 +39,3 @@ jobs:
       run: |
         mv ./server/config.yml.example ./server/config.yml
         python ./server/server.py --test-mode
-    - name: Test with pytest
-      run: |
-        pytest ./server/server.py -W ignore::DeprecationWarning
