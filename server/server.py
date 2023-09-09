@@ -154,6 +154,12 @@ if "--regen-database" in sys.argv:
     else:
         print(f"{Colors.GRAY + Colors.BOLD}>>> {RESET + Colors.RESET + Colors.BOLD}Cancelled database regeneration process")
 
+if "--test-mode" in sys.argv:
+    test_mode = True
+    
+else:
+    test_mode = False
+
 
 # General Functions
 
@@ -601,7 +607,7 @@ def clientThread(client):
                         return f"{Colors.GRAY}〇{RESET}"
                 
                 try:
-                    c.execute("SELECT username, nickname, badge, role, role_color, description, badges, discord_name, user_id, strawberry_id FROM users WHERE LOWER(username) = ?", (uname.lower(),))
+                    c.execute("SELECT username, nickname, badge, role, role_color, description, badges, discord_name, user_id, strawberry_id, creation_date FROM users WHERE LOWER(username) = ?", (uname.lower(),))
                     
                 except:
                     client.send(f"{RED + Colors.BOLD}Sorry, this user does not exist!{RESET + Colors.RESET}".encode("utf8"))
@@ -660,8 +666,11 @@ def clientThread(client):
                     stbchat_plus_user   = "- 💫 Strawberry Chat+ user"
                     all_badges          = ""
 
+                    badges = row[6]
+                    
                     if row[6] is None:
-                        all_badges = " Hmm... This user doesn't have any badges yet"
+                        badges = ""
+                        all_badges = "This user doesn't have any badges yet"
                         
                     else:
                         if "👑" in row[6]:
@@ -700,9 +709,9 @@ def clientThread(client):
         {GREEN + Colors.BOLD}User-ID:{RESET + LIGHTBLUE_EX} {row[8]}{RESET + Colors.RESET}
         {GREEN + Colors.BOLD}Nickname:{RESET + Colors.BOLD} {nickname}{RESET + Colors.RESET}
         {GREEN + Colors.BOLD}Description:{RESET + Colors.BOLD} {description}{RESET + Colors.RESET}
-        {GREEN + Colors.BOLD}Member since:{RESET + Colors.BOLD} {datetime.datetime.fromtimestamp(0).strftime("%a, %d. %h %Y")}{RESET + Colors.RESET}
+        {GREEN + Colors.BOLD}Member since:{RESET + Colors.BOLD} {datetime.datetime.fromtimestamp(row[10]).strftime("%a, %d. %h %Y")}{RESET + Colors.RESET}
         {GREEN + Colors.BOLD}Main Badge:{RESET + Colors.BOLD} {badge}{RESET + Colors.RESET}
-        {GREEN + Colors.BOLD}Badges: {row[6]}{RESET + Colors.BOLD}{RESET + Colors.RESET}{Colors.BOLD}{all_badges}{Colors.RESET}
+        {GREEN + Colors.BOLD}Badges: {badges}{RESET + Colors.BOLD}{RESET + Colors.RESET}{Colors.BOLD}{all_badges}{Colors.RESET}
         {GREEN + Colors.BOLD}Role:{RESET + Colors.BOLD} {role}{RESET + Colors.RESET}
         {GREEN + Colors.BOLD}Role Color:{RESET + Colors.BOLD} {userRoleColor(row[0])}{role_color}{RESET + Colors.RESET}
         {GREEN + Colors.BOLD}Strawberry Network:{RESET + Colors.BOLD} {strawberry_id_name}{RESET + Colors.RESET}
@@ -1573,8 +1582,6 @@ def clientThread(client):
                     c.execute("SELECT msg_count FROM users WHERE username = ?", (user,))
                     msg_count = c.fetchone()
                     client.send(f"{GREEN + Colors.BOLD}Your message count:{RESET + Colors.RESET} {msg_count[0]}".encode("utf8"))
-
-
                 case "/":
                     client.send(f"{GREEN + Colors.BOLD}Need help? Take a look at our help command! /help{RESET + Colors.RESET}".encode("utf8"))
                     
@@ -1690,8 +1697,17 @@ def clientLogin(client):
             
             try:
                 client.send(f"{GREEN + Colors.BOLD}Creating your User account... {RESET + Colors.RESET}".encode("utf8"))
+            
+                logcur.execute("SELECT user_id FROM users")
+            
+                user_ids = logcur.fetchall()
+                user_ids = str(user_ids[-1])
+                user_ids = user_ids[1:-2].replace(",", "")
+                user_ids = int(user_ids) + 1
                 
-                logcur.execute('INSERT INTO users (username, password, role, role_color, enable_blacklisted_words, account_enabled, muted, user_id, msg_count, enable_dms) VALUES (?, ?, "member", ?, "true", "true", "false", "1234-5678", ?, "true")', (registeredUsername, registeredPassword, registeredRoleColor.lower(), 0))
+                creation_date = time.time()
+                
+                logcur.execute('INSERT INTO users (username, password, role, role_color, enable_blacklisted_words, account_enabled, muted, user_id, msg_count, enable_dms, creation_date) VALUES (?, ?, "member", ?, "true", "true", "false", ?, ?, "true", ?)', (registeredUsername, registeredPassword, registeredRoleColor.lower(), user_ids, 0, creation_date))
                 db.commit()
                 
                 client.send(f"{GREEN + Colors.BOLD}Created!{RESET + Colors.RESET}".encode("utf8"))
@@ -1712,7 +1728,8 @@ def clientLogin(client):
     
     time.sleep(0.1)
     client.send(f"{GREEN + Colors.BOLD}Username: {RESET + Colors.RESET}".encode("utf8"))
-    username = client.recv(2048).decode("utf8")
+    username = escape_ansi(client.recv(2048).decode("utf8"))
+    username = username.strip("\n")
     
     if username.lower() == "register":
         register()
@@ -1724,7 +1741,8 @@ def clientLogin(client):
     time.sleep(0.01)
     
     client.send(f"{GREEN + Colors.BOLD}Password: {RESET + Colors.RESET}".encode("utf8"))
-    password = client.recv(2048).decode("utf8")
+    password = escape_ansi(client.recv(2048).decode("utf8"))
+    password = password.strip("\n")
 
     try: 
         logcur.execute('SELECT * FROM users WHERE username = ? AND password = ? AND account_enabled = ?', (username, password, "true"))
@@ -1861,34 +1879,47 @@ def cleanup():
 
 def main():
     try:
+        if test_mode:
+            port = 49200
+        else:
+            port = config['server']['port']
+            
         atexit.register(cleanup)
         
         serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         serverSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         serverSocket.bind((ipaddr, port))
         serverSocket.listen()
-
-        if enable_messages:
-            print(f"{YELLOW + Colors.BOLD}>>> Enabled Flag {CYAN}'enable_messages'{RESET + Colors.RESET}")
         
-        if debug_mode:
-            print(f"{YELLOW + Colors.BOLD}>>> Enabled Flag {CYAN}'debug_mode'{RESET + Colors.RESET}")
-
-        if online_mode == False:
-            print(f"{RED + Colors.BOLD}>>> {YELLOW}WARNING:{RED} Online mode is disabled and your server might be in danger! Consider using the online mode!{RESET + Colors.RESET}")
+        if test_mode:
+            print(f"{YELLOW + Colors.BOLD}>>> Enabled test mode{RESET + Colors.RESET}")
+            print(f"{GREEN + Colors.BOLD}>>> {RESET}Server is running on {ipaddr}:{port}")
+            # print(f"{GREEN + Colors.BOLD}>>> {RESET}Global IP Address: {get_global_ip()}")
+            mainThread = threading.Thread(target=connectionThread, args=(serverSocket,), daemon=True)
+            mainThread.start()
+            time.sleep(30)
+        
+        else:
+            if enable_messages:
+                print(f"{YELLOW + Colors.BOLD}>>> Enabled Flag {CYAN}'enable_messages'{RESET + Colors.RESET}")
             
-        
-        print(f"{GREEN + Colors.BOLD}>>> {RESET}Server is running on {ipaddr}:{port}")
+            if debug_mode:
+                print(f"{YELLOW + Colors.BOLD}>>> Enabled Flag {CYAN}'debug_mode'{RESET + Colors.RESET}")
 
-        connThread = threading.Thread(target=connectionThread, args=(serverSocket,))
-        connThread.start()
-        connThread.join()
+            if online_mode == False:
+                print(f"{RED + Colors.BOLD}>>> {YELLOW}WARNING:{RED} Online mode is disabled and your server might be in danger! Consider using the online mode!{RESET + Colors.RESET}")
+            
+            print(f"{GREEN + Colors.BOLD}>>> {RESET}Server is running on {ipaddr}:{port}")
 
-        cleanup()
-        serverSocket.close()
-        log.info("Server stopped")
-        print("Server has shut down.")
-        
+            connThread = threading.Thread(target=connectionThread, args=(serverSocket,))
+            connThread.start()
+            connThread.join()
+
+            cleanup()
+            serverSocket.close()
+            log.info("Server stopped")
+            print("Server has shut down.")
+            
     except KeyboardInterrupt: 
         exit()
     

@@ -159,6 +159,7 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
+branches/
 bot/default.yml
 bot/bard.yml
 bot/bardtest.py
@@ -173,3 +174,4 @@ discord/webhook/discord_webhook_private.py
 discord/config.yml
 deprecated/server/log.txt
 deprecated/server/messages.txt
+client/client.java
