@@ -1,5 +1,4 @@
 import socket
-
 from .. import register_command
 
 
