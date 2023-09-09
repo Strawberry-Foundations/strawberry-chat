@@ -1868,6 +1868,9 @@ def cleanup():
 
 def main():
     try:
+        if test_mode:
+            port = 49200
+            
         atexit.register(cleanup)
         
         serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -1877,9 +1880,11 @@ def main():
         
         if test_mode:
             print(f"{YELLOW + Colors.BOLD}>>> Enabled test mode{RESET + Colors.RESET}")
+            print(f"{GREEN + Colors.BOLD}>>> {RESET}Server is running on {ipaddr}:{port}")
+            print(f"{GREEN + Colors.BOLD}>>> {RESET}Global IP Address: {get_global_ip()}")
             mainThread = threading.Thread(target=connectionThread, args=(serverSocket,), daemon=True)
             mainThread.start()
-            time.sleep(10)   
+            time.sleep(30)
         
         else:
             if enable_messages:
