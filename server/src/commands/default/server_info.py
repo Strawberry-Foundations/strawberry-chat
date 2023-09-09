@@ -15,6 +15,6 @@ with open(server_dir + "/config.yml") as config_data:
 @register_command("info")
 @register_command("server-desc")
 @register_command("server-description")
-def help_command(client: socket.socket, username: str, args: list):
+def help_command(socket: socket.socket, username: str, args: list):
     desc = config['server']['description']
-    client.send(f"{WHITE + Colors.BOLD}{desc}{RESET + Colors.RESET}".encode("utf8"))
+    socket.send(f"{WHITE + Colors.BOLD}{desc}{RESET + Colors.RESET}".encode("utf8"))
