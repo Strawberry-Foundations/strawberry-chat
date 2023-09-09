@@ -451,7 +451,7 @@ def clientThread(client):
                     sqlError(e)
                 res = c.fetchone()
                 role = None
-                match res:
+                match res[0]:
                     case "member":
                         role = PermissionLevel.MEMBER
                     case "admin":
