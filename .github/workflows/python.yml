@@ -37,7 +37,7 @@ jobs:
 
     - name: Receive global ip address
       run: |
-        python ./misc/net/ip_address.py
+        python ./misc/network/ip_address.py
 
     - name: Run
       run: |
