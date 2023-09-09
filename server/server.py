@@ -18,7 +18,7 @@ import errno
 import random
 import requests
 
-from colorama import Fore, Style
+from colorama import Style
 from src.colors import *
 from src.functions import *
 from src.vars import *
