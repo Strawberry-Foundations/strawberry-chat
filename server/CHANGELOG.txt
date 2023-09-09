@@ -18,6 +18,7 @@
 - NEW: Added user mentioning (If you mention a user (e.g. @someuser), it will be highlighted)
 - NEW: Added variable source file for modularity
 - NEW: Added functions source file for modularity
+- NEW: Applied repl_htpf function to broadcast command
 - NEW: Removed time class and time functions
 - NEW: Removed command alias "/userinfo"
 
