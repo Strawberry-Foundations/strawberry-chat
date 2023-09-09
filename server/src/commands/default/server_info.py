@@ -1,0 +1,19 @@
+import socket
+from .. import register_command
+from src.colors import *
+import yaml
+from yaml import SafeLoader
+
+from init import server_dir
+
+# Open Configuration
+with open(server_dir + "/config.yml") as config_data:
+        config = yaml.load(config_data, Loader=SafeLoader)
+
+@register_command("server-info")
+@register_command("info")
+@register_command("server-desc")
+@register_command("server-description")
+def help_command(client: socket.socket, username: str, args: list):
+    desc = config['server']['description']
+    client.send(f"{WHITE + Colors.BOLD}{desc}{RESET + Colors.RESET}".encode("utf8"))
