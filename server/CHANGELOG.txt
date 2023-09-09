@@ -1,5 +1,7 @@
 # 1.8.0
 
+- IMPORTANT: Complete new command system
+- IMPORTANT: Much more code modularity
 - NEW: Added memberlist command with beatiful representation of registered members and their roles
 - NEW: Added direct messages to send private/direct messages to members, instead sending it to everyone
 - NEW: Added message counter
