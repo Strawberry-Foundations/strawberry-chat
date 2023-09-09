@@ -7,6 +7,7 @@ import os
 import sys
 import logging
 import sqlite3 as sql
+import traceback
 
 import yaml
 from yaml import SafeLoader
@@ -23,7 +24,8 @@ from src.colors import *
 from src.functions import *
 from src.vars import *
 from init import server_dir
-import src.commands.etc.ping_command
+import src.commands.etc.test_command
+from src.commands import PermissionLevel
 
 # Startup title
 print(f"{CYAN + Colors.BOLD}* -- {chat_name} v{short_ver} {codename} ({server_edition}) -- *{RESET + Colors.RESET}")
@@ -436,7 +438,28 @@ def clientThread(client):
                         pass
 
                     
-            # /broadcast Command            
+            # /broadcast Command
+            if message.startswith("/"):
+                message = message[1:]
+                args = message.split()
+                cmd = args[0]
+                args = args[1:]
+                try:
+                    c.execute('SELECT role FROM users WHERE username = ?', (user,))
+
+                except Exception as e:
+                    sqlError(e)
+                res = c.fetchone()
+                role = None
+                match res:
+                    case "member":
+                        role = PermissionLevel.MEMBER
+                    case "admin":
+                        role = PermissionLevel.ADMIN
+
+                src.commands.execute_command(cmd, client, user, role, args)
+                continue
+
             if message.startswith("/broadcast ") or message.startswith("/rawsay "):
                 try: 
                     c.execute('SELECT role FROM users WHERE username = ?', (user,))
@@ -471,7 +494,8 @@ def clientThread(client):
     
             # /nick Command
             elif message.startswith("/nick ") or message.startswith("/nickname "):
-                execute_command("test")
+                src.commands.list_commands()
+                src.commands.execute_command("test")
                 if message.startswith("/nick "):
                     arg = message.replace("/nick ", "")
                     
@@ -1604,6 +1628,7 @@ def clientThread(client):
             log.error("A client-side error occurred.")
             
             debugLogger(e, "004")
+            traceback.print_exc()
             log.info(f"{user} ({address}) has left")
             
             try:
