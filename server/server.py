@@ -439,9 +439,19 @@ def clientThread(client):
                     else:
                         pass
 
-                    
+              
+            if message == "/exit":
+                client.send(f"{YELLOW + Colors.BOLD}You left the chat!{RESET + Colors.RESET}".encode("utf8"))
+                del addresses[client]
+                del users[client]
+                client.close()
+                
+                log.info(f"{user} ({address}) has left.")
+                broadcast(f"{Colors.GRAY + Colors.BOLD}<--{Colors.RESET} {userRoleColor(user)}{user}{YELLOW + Colors.BOLD} has left the chat room!{RESET + Colors.RESET}")
+                break
+            
             # /broadcast Command
-            if message.startswith("/"):
+            elif message.startswith("/"):
                 message = message[1:]
                 args = message.split()
                 cmd = args[0]
