@@ -1349,22 +1349,6 @@ def clientThread(client):
                     broadcast(f"{Colors.GRAY + Colors.BOLD}<--{Colors.RESET} {userRoleColor(user)}{user}{YELLOW + Colors.BOLD} has left the chat room!{RESET + Colors.RESET}")
                     break
 
-
-                # Help Command
-                case "/help":
-                    broadcast(f"\033[90m--> {Colors.RESET + Colors.BOLD}{userRoleColor(user)}{user}{RESET} uses /help{RESET + Colors.RESET}")
-                    client.send(default_help_section.encode("utf8"))
-                    
-                    time.sleep(0.1)
-                    client.send(user_help_section.encode("utf8"))
-                    
-                    time.sleep(0.1)
-                    client.send(admin_help_section.encode("utf8"))
-                    
-                    time.sleep(0.1)
-                    client.send(stbchatplus_help_section.encode("utf8"))
-                    
-                    
                 # Online Command
                 case "/online":
                     onlineUsers = ', '.join([user for user in sorted(users.values())])
@@ -1539,13 +1523,7 @@ def clientThread(client):
                 case "/description" | "/desc":
                     c.execute("SELECT description FROM users WHERE username = ?", (user,))
                     desc = c.fetchone()[0]
-                    client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Your current description: {RESET}{desc}{Colors.RESET}".encode("utf8"))
-                    
-                # Server Description Command
-                case "/server-info" | "/info" | "/server-desc" | "/server-description":
-                    desc = config['server']['description']
-                    client.send(f"{WHITE + Colors.BOLD}{desc}{RESET + Colors.RESET}".encode("utf8"))
-                
+                    client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Your current description: {RESET}{desc}{Colors.RESET}".encode("utf8"))                
                 
                 # Delete Account Command
                 case "/deleteaccount":
