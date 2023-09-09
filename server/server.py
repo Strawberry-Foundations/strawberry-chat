@@ -7,6 +7,7 @@ import os
 import sys
 import logging
 import sqlite3 as sql
+import traceback
 
 import yaml
 from yaml import SafeLoader
@@ -23,6 +24,10 @@ from src.colors import *
 from src.functions import *
 from src.vars import *
 from init import server_dir
+from src.commands import PermissionLevel
+
+import src.commands.etc.test_command
+from src.commands.default import help, server_info, news, changelog, about
 
 # Startup title
 print(f"{CYAN + Colors.BOLD}* -- {chat_name} v{short_ver} {codename} ({server_edition}) -- *{RESET + Colors.RESET}")
@@ -440,8 +445,39 @@ def clientThread(client):
                     else:
                         pass
 
-                    
-            # /broadcast Command            
+              
+            if message == "/exit":
+                client.send(f"{YELLOW + Colors.BOLD}You left the chat!{RESET + Colors.RESET}".encode("utf8"))
+                del addresses[client]
+                del users[client]
+                client.close()
+                
+                log.info(f"{user} ({address}) has left.")
+                broadcast(f"{Colors.GRAY + Colors.BOLD}<--{Colors.RESET} {userRoleColor(user)}{user}{YELLOW + Colors.BOLD} has left the chat room!{RESET + Colors.RESET}")
+                break
+            
+            # /broadcast Command
+            elif message.startswith("/"):
+                message = message[1:]
+                args = message.split()
+                cmd = args[0]
+                args = args[1:]
+                try:
+                    c.execute('SELECT role FROM users WHERE username = ?', (user,))
+
+                except Exception as e:
+                    sqlError(e)
+                res = c.fetchone()
+                role = None
+                match res[0]:
+                    case "member":
+                        role = PermissionLevel.MEMBER
+                    case "admin":
+                        role = PermissionLevel.ADMIN
+
+                src.commands.execute_command(cmd, client, user, role, args)
+                continue
+
             if message.startswith("/broadcast ") or message.startswith("/rawsay "):
                 try: 
                     c.execute('SELECT role FROM users WHERE username = ?', (user,))
@@ -476,6 +512,8 @@ def clientThread(client):
     
             # /nick Command
             elif message.startswith("/nick ") or message.startswith("/nickname "):
+                src.commands.list_commands()
+                src.commands.execute_command("test")
                 if message.startswith("/nick "):
                     arg = message.replace("/nick ", "")
                     
@@ -1330,22 +1368,6 @@ def clientThread(client):
                     broadcast(f"{Colors.GRAY + Colors.BOLD}<--{Colors.RESET} {userRoleColor(user)}{user}{YELLOW + Colors.BOLD} has left the chat room!{RESET + Colors.RESET}")
                     break
 
-
-                # Help Command
-                case "/help":
-                    broadcast(f"\033[90m--> {Colors.RESET + Colors.BOLD}{userRoleColor(user)}{user}{RESET} uses /help{RESET + Colors.RESET}")
-                    client.send(default_help_section.encode("utf8"))
-                    
-                    time.sleep(0.1)
-                    client.send(user_help_section.encode("utf8"))
-                    
-                    time.sleep(0.1)
-                    client.send(admin_help_section.encode("utf8"))
-                    
-                    time.sleep(0.1)
-                    client.send(stbchatplus_help_section.encode("utf8"))
-                    
-                    
                 # Online Command
                 case "/online":
                     onlineUsers = ', '.join([user for user in sorted(users.values())])
@@ -1426,12 +1448,6 @@ def clientThread(client):
         {BLUE + Colors.BOLD}Author: {RESET}{", ".join(authors)}{RESET + Colors.RESET}"""
         .encode("utf8"))
                     
-                    
-                # News Command
-                case "/news":
-                    client.send(news.encode("utf8"))
-                
-                
                 # Clientinfo Command
                 case "/clientinfo":
                     client.send(f"{addresses[client]}".encode("utf8"))
@@ -1520,13 +1536,7 @@ def clientThread(client):
                 case "/description" | "/desc":
                     c.execute("SELECT description FROM users WHERE username = ?", (user,))
                     desc = c.fetchone()[0]
-                    client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Your current description: {RESET}{desc}{Colors.RESET}".encode("utf8"))
-                    
-                # Server Description Command
-                case "/server-info" | "/info" | "/server-desc" | "/server-description":
-                    desc = config['server']['description']
-                    client.send(f"{WHITE + Colors.BOLD}{desc}{RESET + Colors.RESET}".encode("utf8"))
-                
+                    client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Your current description: {RESET}{desc}{Colors.RESET}".encode("utf8"))                
                 
                 # Delete Account Command
                 case "/deleteaccount":
@@ -1559,19 +1569,12 @@ def clientThread(client):
                             client.send(f"{YELLOW + Colors.BOLD}Deletion of your account has been canceled...{RESET + Colors.RESET}".encode("utf8"))
                     else:
                         client.send(f"{YELLOW + Colors.BOLD}Deletion of your account has been canceled...{RESET + Colors.RESET}".encode("utf8"))
-
+   
                 
                 case "/msgcount":
                     c.execute("SELECT msg_count FROM users WHERE username = ?", (user,))
                     msg_count = c.fetchone()
                     client.send(f"{GREEN + Colors.BOLD}Your message count:{RESET + Colors.RESET} {msg_count[0]}".encode("utf8"))
-                    
-                case "/changelog":
-                    with open(server_dir + "/CHANGELOG.txt") as f:
-                        changelog = f.read()
-                        client.send(f"{GREEN + Colors.BOLD + Colors.UNDERLINE}{chat_name} Changelog{RESET + Colors.RESET}".encode("utf8"))
-                        client.send((Colors.BOLD + changelog + Colors.RESET).encode("utf8"))
-                
                 case "/":
                     client.send(f"{GREEN + Colors.BOLD}Need help? Take a look at our help command! /help{RESET + Colors.RESET}".encode("utf8"))
                     
@@ -1611,6 +1614,7 @@ def clientThread(client):
             log.error("A client-side error occurred.")
             
             debugLogger(e, "004")
+            traceback.print_exc()
             log.info(f"{user} ({address}) has left")
             
             try:
