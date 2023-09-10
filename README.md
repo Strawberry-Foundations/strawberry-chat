@@ -1,6 +1,6 @@
 # [Strawberry Chat](https://github.com/orgs/Strawberry-Foundations/projects/1)
 ![Latest Release](https://img.shields.io/badge/Latest_Release-1.7.1-success) ![Latest Development Release](https://img.shields.io/badge/Latest_Development_Release-_1.8.0b3+u1-success) ![Codename](https://img.shields.io/badge/Codename-Vanilla_Cake-darkred)<br>
-![Code Size](https://img.shields.io/github/languages/code-size/Strawberry-Foundations/strawberry-chat) ![Commit activity](https://img.shields.io/github/commit-activity/w/Strawberry-Foundations/strawberry-chat) ![License](https://img.shields.io/github/license/Strawberry-Foundations/strawberry-chat)<br> [![Codacy Security Scan](https://github.com/Strawberry-Foundations/strawberry-chat/actions/workflows/codacy.yml/badge.svg)](https://github.com/Strawberry-Foundations/strawberry-chat/actions/workflows/codacy.yml) [![CodeQL](https://github.com/Strawberry-Foundations/strawberry-chat/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/Strawberry-Foundations/strawberry-chat/actions/workflows/github-code-scanning/codeql) [![Python Application](https://github.com/Strawberry-Foundations/strawberry-chat/actions/workflows/python.yml/badge.svg)](https://github.com/Strawberry-Foundations/strawberry-chat/actions/workflows/python.yml) <br>
+![Code Size](https://img.shields.io/github/languages/code-size/Strawberry-Foundations/strawberry-chat) ![Commit activity](https://img.shields.io/github/commit-activity/w/Strawberry-Foundations/strawberry-chat) ![License](https://img.shields.io/github/license/Strawberry-Foundations/strawberry-chat)<br> [![CodeQL](https://github.com/Strawberry-Foundations/strawberry-chat/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/Strawberry-Foundations/strawberry-chat/actions/workflows/github-code-scanning/codeql) [![Python Application](https://github.com/Strawberry-Foundations/strawberry-chat/actions/workflows/python.yml/badge.svg)](https://github.com/Strawberry-Foundations/strawberry-chat/actions/workflows/python.yml) <br>
 ![Commit](https://img.shields.io/badge/100_Commits_in_5_days-success?style=for-the-badge) ![Commit](https://img.shields.io/badge/200_Commits_in_7_days-gold?style=for-the-badge) ![Commit](https://img.shields.io/badge/300_Commits_in_10_days-darkblue?style=for-the-badge) ![Commit](https://img.shields.io/badge/400_Commits_in_18_Days-yellow?style=for-the-badge) ![Commit](https://img.shields.io/badge/500_Commits_in_19_Days-cyan?style=for-the-badge)<br>
 The universal chatting platform for your terminal!
 
@@ -18,10 +18,11 @@ In addition, Strawberry Chat is open source. This means that everyone can contri
 Currently, Strawberry Chat is being developed a lot, even almost daily. Currently we are in a middle **beta** stage. The big part already exists and Strawberry Chat is well usable, but there are still some things missing, ***including some admin commands, and very important bug fixes and security features, like encryption.***
 
 ## Disclaimer 
-I don't want to see issues that talk about that encryption doesn't exist and how insecure it is.
-**I am aware that this is not the most secure chat app. We are actively working on implementing encryption, but each developer finds this difficult in different ways.** 
-### Please do not put pressure on us developers, we also have a private life. And yet we are actively working on the platform for you and for us!
-[See Issue #24](https://github.com/Strawberry-Foundations/strawberry-chat/issues/24)
+> [!IMPORTANT]
+> I don't want to see issues that talk about that encryption doesn't exist and how insecure it is.
+> **I am aware that this is not the most secure chat app. We are actively working on implementing encryption, but each developer finds this difficult in different ways.** 
+> ### Please do not put pressure on us developers, we also have a private life. And yet we are actively working on the platform for you and for us!
+> [See Issue #24](https://github.com/Strawberry-Foundations/strawberry-chat/issues/24)
 
 ## FaQ
 **Q:** Can I create my own client?<br>
