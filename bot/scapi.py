@@ -54,8 +54,6 @@ class Scapi:
             self.enableUserInput = enableUserInput
             self.printReceivedMessagesToTerminal = printReceivedMessagesToTerminal
             
-            self.logger(f"{GREEN}Starting scapi.bot version {version}", type=Scapi.LogLevel.INFO)
-            
             self.trusted_list   = []
             self.admin_list     = []
             self.owner          = None
@@ -63,6 +61,8 @@ class Scapi:
             
             self.required_permissions = None
             self.count = 0
+            
+            self.logger(f"{GREEN}Starting scapi.bot version {version}", type=Scapi.LogLevel.INFO)
             self.log_msg = f"{CYAN + BOLD}{datetime.date.today().strftime('%Y-%m-%d')} {datetime.datetime.now().strftime('%H:%M:%S')}  {BLUE}INFO   scapi  -->  {RESET}"
         
             
