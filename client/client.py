@@ -12,6 +12,14 @@ from yaml import SafeLoader
 import time
 import requests
 
+if sys.platform == "linux":
+    import readline
+elif sys.platform == "win32":
+    pass
+# elif sys.platform == "darwin":
+#     import readline
+
+
 # Color Variables
 class Colors:
     BOLD = '\033[1m'
