@@ -6,10 +6,10 @@ import sys
 import re
 from enum import Enum
 
-# if sys.platform == "linux":
-#     import readline
-# elif sys.platform == "win32":
-#     pass
+if sys.platform == "linux":
+    import readline
+elif sys.platform == "win32":
+    pass
 
 BOLD = '\033[1m'
 UNDERLINE = '\033[4m'
