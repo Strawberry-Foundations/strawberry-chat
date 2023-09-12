@@ -210,31 +210,34 @@ class Scapi:
 
             return decorator
 
-        def execute_command(self, command_name, user: str, args: list):
+        def execute_command(self, command_name, user: str, args: list, permission_error_msg: str = None):
             if command_name in command_registry:
                 cmd = command_registry[command_name]
+                
+                if permission_error_msg == None:
+                    permission_error_msg = "#redYou lack the permission to use this command!#reset"
                 
                 if self.required_permissions == self.PermissionLevel.ALL:
                     pass
                 
                 elif self.required_permissions == self.PermissionLevel.TRUSTED:
                     if user not in self.trusted_list:
-                        self.send_message(f"#redYou lack the permission to use this command!#reset")
+                        self.send_message(permission_error_msg)
                         return    
                     
                 elif self.required_permissions == self.PermissionLevel.ADMIN:
                     if user not in self.admin_list:
-                        self.send_message(f"#redYou lack the permission to use this command!#reset")
+                        self.send_message(permission_error_msg)
                         return
                 
                 elif self.required_permissions == self.PermissionLevel.OWNER:
                     if user.lower() != self.owner:
-                        self.send_message(f"#redYou lack the permission to use this command!#reset")
+                        self.send_message(permission_error_msg)
                         return    
                 
                 elif self.required_permissions == self.PermissionLevel.CUSTOM:
                     if user not in self.custom_list:
-                        self.send_message(f"#redYou lack the permission to use this command!#reset")
+                        self.send_message(permission_error_msg)
                         return
                 
                 else:
