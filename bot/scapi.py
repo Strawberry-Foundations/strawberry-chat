@@ -82,9 +82,9 @@ class Scapi:
                 print(f"{CYAN + BOLD}{datetime.date.today().strftime('%Y-%m-%d')} {datetime.datetime.now().strftime('%H:%M:%S')}  {GREEN}{type.upper()}{BLUE}    scapi  -->  {RESET}{message}{RESET}")            
             
         
-        def flag_handler(self, enableUserInput=False, printReceivedMessagesToTerminal=False):
-            self.enableUserInput = enableUserInput
-            self.printReceivedMessagesToTerminal = printReceivedMessagesToTerminal
+        def flag_handler(self, enable_user_input=False, print_recv_msg=False):
+            self.enable_user_input  = enable_user_input
+            self.print_recv_msg     = print_recv_msg
             
         def permission_handler(self, trusted_list: list = [], admin_list: list = [], owner: str = None, custom_list: list = []):
             self.trusted_list   = trusted_list
