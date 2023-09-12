@@ -26,6 +26,10 @@ WHITE = '\033[37m'
 version = "0.10.0+u1"
 command_registry = {}
 
+class Messages:
+    permission_error_msg = "#redYou lack the permission to use this command!#reset"
+    command_not_found_msg = "#redCommand %s not found.#reset"
+
 class Scapi:
     class LogLevel:
         INFO = "INFO"
@@ -60,6 +64,7 @@ class Scapi:
             self.required_permissions = None
             self.count = 0
             self.log_msg = f"{CYAN + BOLD}{datetime.date.today().strftime('%Y-%m-%d')} {datetime.datetime.now().strftime('%H:%M:%S')}  {BLUE}INFO   scapi  -->  {RESET}"
+        
             
             try:
                 self.connect()
@@ -210,13 +215,10 @@ class Scapi:
 
             return decorator
 
-        def execute_command(self, command_name, user: str, args: list, permission_error_msg: str = None):
+        def execute_command(self, command_name, user: str, args: list, permission_error_msg=Messages.permission_error_msg, command_not_found_msg = Messages.command_not_found_msg):
             if command_name in command_registry:
                 cmd = command_registry[command_name]
-                
-                if permission_error_msg == None:
-                    permission_error_msg = "#redYou lack the permission to use this command!#reset"
-                
+
                 if self.required_permissions == self.PermissionLevel.ALL:
                     pass
                 
@@ -233,11 +235,13 @@ class Scapi:
                 elif self.required_permissions == self.PermissionLevel.OWNER:
                     if user.lower() != self.owner:
                         self.send_message(permission_error_msg)
-                        return    
+                        return
                 
                 elif self.required_permissions == self.PermissionLevel.CUSTOM:
-                    if user not in self.custom_list:
+                    if user.lower() not in self.custom_list:
                         self.send_message(permission_error_msg)
+                        print(f"User: {user.lower()}")
+                        print(f"Allowed: {self.custom_list}")
                         return
                 
                 else:
@@ -251,7 +255,7 @@ class Scapi:
                 cmd[0](self.stbc_socket, user, args)
                 
             else:
-                self.send_message(f"{RED}Command '{command_name}' not found.{RESET}")
+                self.send_message(command_not_found_msg % command_name)
             
         def run(self, ready_func):
             if self.enableUserInput is True:
