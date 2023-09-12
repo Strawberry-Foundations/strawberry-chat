@@ -219,22 +219,22 @@ class Scapi:
                 
                 elif self.required_permissions == self.PermissionLevel.TRUSTED:
                     if user not in self.trusted_list:
-                        self.send_message(f"{RED}You lack the permission to use this command!{RESET}")
+                        self.send_message(f"#redYou lack the permission to use this command!#reset")
                         return    
                     
                 elif self.required_permissions == self.PermissionLevel.ADMIN:
                     if user not in self.admin_list:
-                        self.send_message(f"{RED}You lack the permission to use this command!{RESET}")
+                        self.send_message(f"#redYou lack the permission to use this command!#reset")
                         return
                 
                 elif self.required_permissions == self.PermissionLevel.OWNER:
                     if user.lower() != self.owner:
-                        self.send_message(f"{RED}You lack the permission to use this command!{RESET}")
+                        self.send_message(f"#redYou lack the permission to use this command!#reset")
                         return    
                 
                 elif self.required_permissions == self.PermissionLevel.CUSTOM:
                     if user not in self.custom_list:
-                        self.send_message(f"{RED}You lack the permission to use this command!{RESET}")
+                        self.send_message(f"#redYou lack the permission to use this command!#reset")
                         return
                 
                 else:
