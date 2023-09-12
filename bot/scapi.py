@@ -181,7 +181,6 @@ class Scapi:
                 while threadFlag:
                     self.disconnect()
                     threadFlag = False
-
                 
         def login(self):
             self.stbc_socket.send(self.username.encode("utf8"))
@@ -192,7 +191,6 @@ class Scapi:
             self.logger(f"{YELLOW}Connecting to {PURPLE}{self.host}:{self.port} {RESET + YELLOW}...", type=Scapi.LogLevel.INFO)
             self.stbc_socket.connect((self.host, self.port))
             self.logger(f"{GREEN}Connected", type=Scapi.LogLevel.INFO)
-            
             
         def disconnect(self):
             self.stbc_socket.close()
