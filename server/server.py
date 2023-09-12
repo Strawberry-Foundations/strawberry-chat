@@ -1596,11 +1596,15 @@ def clientThread(client):
                             log.info(f"{user} ({address}): {log_msg}")
                                 
                         broadcast(message, user)
-                        c.execute("SELECT msg_count FROM users WHERE username = ?", (user,))
-                        msg_count = c.fetchone()
-                        msg_count = msg_count[0] + 1
-                        c.execute("UPDATE users SET msg_count = ? WHERE username = ?", (msg_count, user))
-                        db.commit()
+                        try:
+                            c.execute("SELECT msg_count FROM users WHERE username = ?", (user,))
+                            msg_count = c.fetchone()
+                            msg_count = msg_count[0] + 1
+                            c.execute("UPDATE users SET msg_count = ? WHERE username = ?", (msg_count, user))
+                            db.commit()
+                            
+                        except Exception as e:
+                            sqlError(e)
             c.close()            
                 
         except Exception as e:
