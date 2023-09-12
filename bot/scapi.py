@@ -255,7 +255,7 @@ class Scapi:
                 self.send_message(command_not_found_msg % command_name)
             
         def run(self, ready_func):
-            if self.enableUserInput is True:
+            if self.enable_user_input is True:
                 self.logger(f"{YELLOW}Flag {GREEN + BOLD}'enableUserInput'{RESET + YELLOW} is enabled", type=Scapi.LogLevel.INFO)
                 
             if self.print_recv_msg is True:
