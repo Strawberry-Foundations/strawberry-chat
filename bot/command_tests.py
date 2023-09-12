@@ -20,7 +20,7 @@ Bot = Scapi.Bot(username=username, token=token, host=host, port=port)
 Bot.login()
 Bot.flag_handler(print_recv_msg=True, enable_user_input=True)
 
-Bot.permission_handler(custom_list=["julian"])
+Bot.permission_handler(custom_list=["julian"], owner="julian")
 
 @Bot.command(name="test", arg_count=1, required_permissions=Scapi.Bot.PermissionLevel.CUSTOM)
 def test_command(username: str, args: list):
