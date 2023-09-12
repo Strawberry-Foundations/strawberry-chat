@@ -72,7 +72,7 @@ def Commands():
                     Bot.send_message(f"{Bot.username} Bot BETA VERSION! Not finished yet")
                     
         except: 
-            Bot.logger(f"{scapi.RED}An unknown exception occured{scapi.RESET}", type=Bot.type.error)
+            Bot.logger(f"{scapi.RED}An unknown exception occured{scapi.RESET}", type=Scapi.LogLevel.ERROR)
             break
 
 
