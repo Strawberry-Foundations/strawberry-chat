@@ -26,7 +26,7 @@ def test_command(username: str, args: list):
 
 def Commands():
     while True:
-        # try:
+        try:
             recv_message = Bot.recv_message(raw=False, ansi=False)
             index       = recv_message.find(":")
             raw_message = recv_message[index + 2:]
@@ -40,10 +40,10 @@ def Commands():
                 Bot.execute_command(cmd, Bot.get_username_by_msg(recv_message), args)
                 continue
 
-        # except Exception as e: 
-        #     Bot.logger(f"{scapi.RED}An unknown exception occured{scapi.RESET}", type=Scapi.LogLevel.ERROR)
-        #     Bot.logger(f"{scapi.RED}{e}{scapi.RESET}", type=Scapi.LogLevel.ERROR)
-        #     break
+        except Exception as e: 
+            Bot.logger(f"{scapi.RED}An unknown exception occured{scapi.RESET}", type=Scapi.LogLevel.ERROR)
+            Bot.logger(f"{scapi.RED}{e}{scapi.RESET}", type=Scapi.LogLevel.ERROR)
+            break
 
 
 @Bot.event
