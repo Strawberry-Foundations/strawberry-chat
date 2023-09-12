@@ -53,6 +53,7 @@
 - FIX: Fixed wrong user id allocation (allocated new user id to message count)
 - FIX: Fixed showing badges when you dont have badges in user command (displays buggy "None")
 - FIX: Fixed allowing ansi escape codes and \n while logging in
+- FIX: Fixed not saving log file to server directory when executing server from another directory
 
 - SCAPI: Fixed bug for receiving raw messages (hidden ansi chars)
 - SCAPI: Added get_username_by_msg function 
