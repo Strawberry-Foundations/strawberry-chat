@@ -119,7 +119,7 @@ class Scapi:
                         self.stbc_socket.send(message.encode("utf8"))
 
                     except:
-                        print("Message could not be sent")
+                        self.logger(f"{RED}Message could not be sent", type=Scapi.LogLevel.ERROR)
                         break
         
         def recv_message(self, raw=False, ansi=True):
