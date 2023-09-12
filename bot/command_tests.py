@@ -1,7 +1,6 @@
 import scapi
 from scapi import Scapi
 
-import socket
 import yaml
 from yaml import SafeLoader
 import threading
