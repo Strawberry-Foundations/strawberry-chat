@@ -18,7 +18,7 @@ prefix      = conf["bot"]["prefix"]
 
 Bot = Scapi.Bot(username=username, token=token, host=host, port=port)
 Bot.login()
-Bot.flag_handler(printReceivedMessagesToTerminal=True, enableUserInput=True)
+Bot.flag_handler(print_recv_msg=True, enable_user_input=True)
 
 Bot.permission_handler(custom_list=["julian"])
 
