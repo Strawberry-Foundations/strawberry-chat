@@ -50,7 +50,7 @@ class Scapi:
                 self.connect()
                 
             except: 
-                self.logger(f"{RED}Could not connect to server", type=Scapi.LogLevel.error)
+                self.logger(f"{RED}Could not connect to server", type=Scapi.LogLevel.ERROR)
                 exit()
 
         def logger(self, message, type):
@@ -73,26 +73,24 @@ class Scapi:
             ansi_escape = re.compile(r'(?:\x1B[@-_]|[\x80-\x9F])[0-?]*[ -/]*[@-~]')
             return ansi_escape.sub('', line)
         
-        
         def get_username_by_msg(self, message):
             username = message.split(":")[0]
-            username = username.replace("[", ""
-                                       ).replace("]", ""
-                                       ).replace("👑", ""
-                                       ).replace("😎", ""
-                                       ).replace("🔥", ""
-                                       ).replace("🫐", ""
-                                       ).replace("🤖", ""
-                                       ).replace("💪", ""
-                                       ).replace("👍", ""
-                                       ).replace("🤡", ""
-                                       ).replace("😈", ""
-                                       ).replace("🤝", ""
-                                       ).replace("👋", ""
-                                       ).replace("😌", ""
-                                       ).replace("🍓", ""
-                                       ).replace("💫", ""
-                                       )
+            username = username.replace("[", "") \
+                               .replace("]", "") \
+                               .replace("👑", "") \
+                               .replace("😎", "") \
+                               .replace("🔥", "") \
+                               .replace("🫐", "") \
+                               .replace("🤖", "") \
+                               .replace("💪", "") \
+                               .replace("👍", "") \
+                               .replace("🤡", "") \
+                               .replace("😈", "") \
+                               .replace("🤝", "") \
+                               .replace("👋", "") \
+                               .replace("😌", "") \
+                               .replace("🍓", "") \
+                               .replace("💫", "")
             
             uname_index = username.find("(")
             raw_username = username[uname_index + 1:]
