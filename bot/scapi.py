@@ -177,7 +177,6 @@ class Scapi:
                         break
                         
                     
-                    
             except (KeyboardInterrupt, SystemExit):
                 while threadFlag:
                     self.disconnect()
