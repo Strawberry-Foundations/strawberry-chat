@@ -17,7 +17,7 @@ prefix      = conf["bot"]["prefix"]
 
 Bot = Scapi.Bot(username=username, token=token, host=host, port=port)
 Bot.login()
-Bot.flagHandler(printReceivedMessagesToTerminal=True, enableUserInput=True)
+Bot.flag_handler(printReceivedMessagesToTerminal=True, enableUserInput=True)
 
 
 def Commands():
