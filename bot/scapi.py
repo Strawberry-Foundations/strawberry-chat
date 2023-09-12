@@ -59,8 +59,8 @@ class Scapi:
             self.custom_list        = []
             self.owner              = None
             
-            self.required_permissions = None
-            self.count = 0
+            self.req_permissions    = None
+            self.count              = 0
             
             self.logger(f"{GREEN}Starting scapi.bot version {version}", type=Scapi.LogLevel.INFO)
             self.log_msg = f"{CYAN + BOLD}{datetime.date.today().strftime('%Y-%m-%d')} {datetime.datetime.now().strftime('%H:%M:%S')}  {BLUE}INFO   scapi  -->  {RESET}"
@@ -209,7 +209,7 @@ class Scapi:
                 else:
                     self.custom_list = custom_permissions
                     
-                self.required_permissions = required_permissions
+                self.req_permissions = required_permissions
                 
                 
                 command_registry[name] = (func, arg_count, required_permissions)
@@ -221,25 +221,25 @@ class Scapi:
             if self.escape_ansi(command_name) in command_registry:
                 cmd = command_registry[self.escape_ansi(command_name)]
 
-                if self.required_permissions == self.PermissionLevel.ALL:
+                if self.req_permissions == self.PermissionLevel.ALL:
                     pass
                 
-                elif self.required_permissions == self.PermissionLevel.TRUSTED:
+                elif self.req_permissions == self.PermissionLevel.TRUSTED:
                     if user not in self.trusted_list:
                         self.send_message(permission_error_msg)
                         return    
                     
-                elif self.required_permissions == self.PermissionLevel.ADMIN:
+                elif self.req_permissions == self.PermissionLevel.ADMIN:
                     if user not in self.admin_list:
                         self.send_message(permission_error_msg)
                         return
                 
-                elif self.required_permissions == self.PermissionLevel.OWNER:
+                elif self.req_permissions == self.PermissionLevel.OWNER:
                     if user.lower() != self.owner:
                         self.send_message(permission_error_msg)
                         return
                 
-                elif self.required_permissions == self.PermissionLevel.CUSTOM:
+                elif self.req_permissions == self.PermissionLevel.CUSTOM:
                     if user.lower() not in self.custom_list:
                         self.send_message(permission_error_msg)
                         return
