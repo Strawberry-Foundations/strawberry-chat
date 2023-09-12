@@ -4,7 +4,6 @@ from scapi import Scapi
 import yaml
 from yaml import SafeLoader
 import threading
-import random
 
 with open("default.yml", encoding="utf-8") as config:
     conf = yaml.load(config, Loader=SafeLoader)
