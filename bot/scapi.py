@@ -263,7 +263,7 @@ class Scapi:
                     self.send_message(f"Not enough arguments - command requires {cmd[1]} arguments but {args.__len__()} were given")
                     return
                 
-                cmd[0](self.stbc_socket, user, args)
+                cmd[0](user, args)
                 
             else:
                 print(command_name)
