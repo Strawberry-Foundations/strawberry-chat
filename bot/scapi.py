@@ -134,7 +134,7 @@ class Scapi:
                 sys.stdout.write(cursorUp)
                 sys.stdout.write(eraseLine)
             
-            if self.enableUserInput is True:
+            if self.enable_user_input is True:
                 while threadFlag:
                     try:
                         message = input("")
@@ -258,7 +258,7 @@ class Scapi:
             if self.enableUserInput is True:
                 self.logger(f"{YELLOW}Flag {GREEN + BOLD}'enableUserInput'{RESET + YELLOW} is enabled", type=Scapi.LogLevel.INFO)
                 
-            if self.printReceivedMessagesToTerminal is True:
+            if self.print_recv_msg is True:
                 self.logger(f"{YELLOW}Flag {GREEN + BOLD}'printReceivedMessagesToTerminal'{RESET + YELLOW} is enabled", type=Scapi.LogLevel.INFO)
                 
             time.sleep(0.5)
