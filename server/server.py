@@ -59,7 +59,7 @@ if os.environ.get("LOG_LEVEL") is not None:
 else:
     log.setLevel("INFO")
     
-log_fh  = logging.FileHandler('log.txt')
+log_fh  = logging.FileHandler(server_dir + '/log.txt')
 log_fmt = logging.Formatter(f"(%(asctime)s) [%(levelname)s]  %(message)s")
 log_fh.setFormatter(log_fmt)
 
