@@ -28,7 +28,7 @@ command_registry = {}
 
 class Messages:
     permission_error_msg = "#redYou lack the permission to use this command!#reset"
-    command_not_found_msg = "#redCommand %s not found.#reset"
+    command_not_found_msg = "#redCommand '%s' not found.#reset"
 
 class Scapi:
     class LogLevel:
@@ -116,13 +116,24 @@ class Scapi:
                                .replace("👋", "") \
                                .replace("😌", "") \
                                .replace("🍓", "") \
-                               .replace("💫", "")
-            
+                               .replace("💫", "") \
+                               .replace("9mm", "") \
+                               .replace("1mm", "") \
+                                           
             username_index  = username.find("(")
             raw_username    = username[username_index + 1:]
             raw_username    = raw_username.replace(")", "").replace("@", "").replace(" ", "")
             
             return raw_username
+        
+        def str_filter(self, string):
+            string = string.split(":")[0]
+            string = string.replace("9mm", "") \
+                           .replace("1mm", "") \
+                           .replace("4m", "") \
+                               
+            return string
+                                   
         
         def send(self):
             threadFlag = True
@@ -143,7 +154,7 @@ class Scapi:
                         self.logger(f"{RED}Message could not be sent", type=Scapi.LogLevel.ERROR)
                         break
         
-        def recv_message(self, raw=False, ansi=True):
+        def recv_message(self, raw=False, ansi=False):
             global threadFlag
             threadFlag = True
             try:
@@ -216,8 +227,8 @@ class Scapi:
             return decorator
 
         def execute_command(self, command_name, user: str, args: list, permission_error_msg=Messages.permission_error_msg, command_not_found_msg = Messages.command_not_found_msg):
-            if command_name in command_registry:
-                cmd = command_registry[command_name]
+            if self.escape_ansi(command_name) in command_registry:
+                cmd = command_registry[self.escape_ansi(command_name)]
 
                 if self.required_permissions == self.PermissionLevel.ALL:
                     pass
@@ -255,6 +266,8 @@ class Scapi:
                 cmd[0](self.stbc_socket, user, args)
                 
             else:
+                print(command_name)
+                print(command_registry)
                 self.send_message(command_not_found_msg % command_name)
             
         def run(self, ready_func):
