@@ -251,8 +251,6 @@ class Scapi:
                 elif self.required_permissions == self.PermissionLevel.CUSTOM:
                     if user.lower() not in self.custom_list:
                         self.send_message(permission_error_msg)
-                        print(f"User: {user.lower()}")
-                        print(f"Allowed: {self.custom_list}")
                         return
                 
                 else:
