@@ -27,22 +27,17 @@ def test_command(username: str, args: list):
 def Commands():
     while True:
         # try:
-            message = Bot.recv_message(raw=True)
+            recv_message = Bot.recv_message(raw=False, ansi=False)
+            index       = recv_message.find(":")
+            raw_message = recv_message[index + 2:]
             
-            if message.startswith("!"):
-                message = message[1:]
+            if raw_message.startswith("!"):
+                message = raw_message[1:]
                 args = message.split()
                 cmd = args[0]
                 args = args[1:]
                 
-                role = "member"
-                match role:
-                    case "member":
-                        role = Scapi.Bot.PermissionLevel.ALL
-                    case "admin":
-                        role = Scapi.Bot.PermissionLevel.ADMIN
-                        
-                Bot.execute_command(cmd, Bot.get_username_by_msg(message), args)
+                Bot.execute_command(cmd, Bot.get_username_by_msg(recv_message), args)
                 continue
 
         # except Exception as e: 
