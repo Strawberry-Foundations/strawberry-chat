@@ -45,19 +45,19 @@ class Scapi:
             ADMIN   = 2
             OWNER   = 3
             
-        def __init__(self, username, token, host, port, enableUserInput=False, printReceivedMessagesToTerminal=False):
+        def __init__(self, username, token, host, port, enable_user_input=False, print_recv_msg=False):
             self.stbc_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            self.username = username
-            self.token = token
-            self.host = host
-            self.port = port
-            self.enableUserInput = enableUserInput
-            self.printReceivedMessagesToTerminal = printReceivedMessagesToTerminal
+            self.username           = username
+            self.token              = token
+            self.host               = host
+            self.port               = port
+            self.enable_user_input  = enable_user_input
+            self.print_recv_msg     = print_recv_msg
             
-            self.trusted_list   = []
-            self.admin_list     = []
-            self.owner          = None
-            self.custom_list    = []
+            self.trusted_list       = []
+            self.admin_list         = []
+            self.owner              = None
+            self.custom_list        = []
             
             self.required_permissions = None
             self.count = 0
