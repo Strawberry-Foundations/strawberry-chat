@@ -124,16 +124,7 @@ class Scapi:
             raw_username    = username[username_index + 1:]
             raw_username    = raw_username.replace(")", "").replace("@", "").replace(" ", "")
             
-            return raw_username
-        
-        def str_filter(self, string):
-            string = string.split(":")[0]
-            string = string.replace("9mm", "") \
-                           .replace("1mm", "") \
-                           .replace("4m", "") \
-                               
-            return string
-                                   
+            return raw_username     
         
         def send(self):
             threadFlag = True
