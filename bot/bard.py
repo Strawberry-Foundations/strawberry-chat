@@ -18,7 +18,7 @@ bard_token      = conf["bard"]["token"]
 
 Bot = Scapi.Bot(username=username, token=token, host=host, port=port)
 Bot.login()
-Bot.flagHandler(printReceivedMessagesToTerminal=True, enableUserInput=True)
+Bot.flag_handler(printReceivedMessagesToTerminal=True, enableUserInput=True)
 
 # bard = Bard(token=bard_token)
 print(f"{Bot.log_msg}{scapi.BLUE}Successfully connected to the Bard API.{scapi.RESET}")
