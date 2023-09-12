@@ -264,8 +264,6 @@ class Scapi:
                 cmd[0](user, args)
                 
             else:
-                print(command_name)
-                print(command_registry)
                 self.send_message(command_not_found_msg % command_name)
             
         def run(self, ready_func):
