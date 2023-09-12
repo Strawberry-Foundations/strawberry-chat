@@ -86,7 +86,7 @@ class Scapi:
             self.enableUserInput = enableUserInput
             self.printReceivedMessagesToTerminal = printReceivedMessagesToTerminal
             
-        def permission_handler(self, trusted_list: list, admin_list: list, owner: str, custom_list: list):
+        def permission_handler(self, trusted_list: list = [], admin_list: list = [], owner: str = None, custom_list: list = []):
             self.trusted_list   = trusted_list
             self.admin_list     = admin_list
             self.owner          = owner
