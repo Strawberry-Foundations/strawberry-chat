@@ -24,6 +24,7 @@
 - NEW: Added user creation date to user profile
 - NEW: Added Hashtag Placeholder Format Support (HTPF) for chat messages and broadcast command, to send colorized messages or the current time (e.g. #today or #red)
 - NEW: Added an (unstable) Bard chat bot!
+- NEW: Added that bots will no longer be affected of stripping new lines
 - NEW: Removed time class and time functions
 - NEW: Removed command alias "/userinfo"
 - NEW: Updated /user command so it can now be used without argument to show your user profile
