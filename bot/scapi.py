@@ -6,10 +6,10 @@ import sys
 import re
 from enum import Enum
 
-if sys.platform == "linux":
-    import readline
-elif sys.platform == "win32":
-    pass
+# if sys.platform == "linux":
+#     import readline
+# elif sys.platform == "win32":
+#     pass
 
 BOLD = '\033[1m'
 UNDERLINE = '\033[4m'
@@ -24,6 +24,7 @@ CYAN = '\033[36m'
 WHITE = '\033[37m'
 
 version = "0.10.0+u1"
+command_registry = {}
 
 class Scapi:
     class LogLevel:
@@ -31,12 +32,15 @@ class Scapi:
         ERROR = "ERROR"
         MSG = "MSG"
         MESSAGE = "MSG"
-            
-    class PermissionLevel(Enum):
-        MEMBER = 0
-        ADMIN = 1
-    
+                
     class Bot:    
+        class PermissionLevel(Enum):
+            CUSTOM  = -1
+            ALL     = 0
+            TRUSTED = 1
+            ADMIN   = 2
+            OWNER   = 3
+            
         def __init__(self, username, token, host, port, enableUserInput=False, printReceivedMessagesToTerminal=False):
             self.stbc_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.username = username
@@ -67,7 +71,7 @@ class Scapi:
                 print(f"{CYAN + BOLD}{datetime.date.today().strftime('%Y-%m-%d')} {datetime.datetime.now().strftime('%H:%M:%S')}  {GREEN}{type.upper()}{BLUE}    scapi  -->  {RESET}{message}{RESET}")            
             
         
-        def flagHandler(self, enableUserInput=False, printReceivedMessagesToTerminal=False):
+        def flag_handler(self, enableUserInput=False, printReceivedMessagesToTerminal=False):
             self.enableUserInput = enableUserInput
             self.printReceivedMessagesToTerminal = printReceivedMessagesToTerminal
 
@@ -178,6 +182,33 @@ class Scapi:
         def event(self, func):
             setattr(self, func.__name__, func)
             return func
+        
+        def command(self, name, arg_count=0, required_permissions=PermissionLevel.MEMBER) -> None:
+            def decorator(func):
+                command_registry[name] = (func, arg_count, required_permissions)
+                return func
+
+            return decorator
+
+        def execute_command(self, command_str, user: str, permissions: str, args: list):
+            command_name = command_str
+            if command_name in command_registry:
+                cmd = command_registry[command_name]
+                
+                if permissions == self.PermissionLevel.ALL:
+                    pass
+                elif 
+                    socket.send(f"{RED}You lack the permission to use this command!{RESET}".encode("utf8"))
+                    return
+                
+                if cmd[1] > args.__len__():
+                    self.send_message(f"Not enough arguments - command requires {cmd[1]} arguments but {args.__len__()} were given".encode("utf8"))
+                    return
+                
+                cmd[0](self.stbc_socket, user, args)
+                
+            else:
+                self.send_message(f"{RED}Command '{command_name}' not found.{RESET}".encode("utf8"))
             
         def run(self, ready_func):
             if self.enableUserInput is True:
