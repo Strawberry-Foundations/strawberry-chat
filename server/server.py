@@ -512,8 +512,8 @@ def clientThread(client):
     
             # /nick Command
             elif message.startswith("/nick ") or message.startswith("/nickname "):
-                src.commands.list_commands()
-                src.commands.execute_command("test")
+                list_commands()
+                execute_command("test")
                 if message.startswith("/nick "):
                     arg = message.replace("/nick ", "")
                     
@@ -1596,11 +1596,6 @@ def clientThread(client):
                             log_msg = message.strip("\n")
                             
                             log.info(f"{user} ({address}): {log_msg}")
-                        
-                        
-                        for u in users.values():
-                            if f"@{u}" in message.split():
-                                message = message.replace(f"@{u}", f"{BACKMAGENTA + Colors.BOLD}@{userNickname(u)}{BACKRESET + Colors.RESET}")
                                 
                         broadcast(message, user)
                         c.execute("SELECT msg_count FROM users WHERE username = ?", (user,))
@@ -1835,6 +1830,10 @@ def broadcast(message, sentBy=""):
                 message = message.strip("\n")
                 
                 message = repl_htpf(message)
+                
+                for u in users.values():
+                    if f"@{u}" in message.split():
+                        message = message.replace(f"@{u}", f"{BACKMAGENTA + Colors.BOLD}@{userNickname(u)}{BACKRESET + Colors.RESET}")
                 
                 if hasNickname(sentBy) == True:
                     if message != "":
