@@ -50,7 +50,8 @@ def Commands():
                 if username in allowed_users:
                     arg = raw_message.replace("!bard ", "")
                     Bot.send_message("Generating your response... this can take a while...")
-                    response = bard.get_answer(arg)['content']
+                    # response = bard.get_answer(arg)['content']
+                    response = "test"
                     
                     Bot.send_message(response)
                     
