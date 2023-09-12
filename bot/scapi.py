@@ -52,6 +52,12 @@ class Scapi:
             
             self.logger(f"{GREEN}Starting scapi.bot version {version}", type=Scapi.LogLevel.INFO)
             
+            self.trusted_list   = []
+            self.admin_list     = []
+            self.owner          = None
+            self.custom_list    = []
+            
+            self.required_permissions = None
             self.count = 0
             self.log_msg = f"{CYAN + BOLD}{datetime.date.today().strftime('%Y-%m-%d')} {datetime.datetime.now().strftime('%H:%M:%S')}  {BLUE}INFO   scapi  -->  {RESET}"
             
@@ -74,6 +80,12 @@ class Scapi:
         def flag_handler(self, enableUserInput=False, printReceivedMessagesToTerminal=False):
             self.enableUserInput = enableUserInput
             self.printReceivedMessagesToTerminal = printReceivedMessagesToTerminal
+            
+        def permission_handler(self, trusted_list: list, admin_list: list, owner: str, custom_list: list):
+            self.trusted_list   = trusted_list
+            self.admin_list     = admin_list
+            self.owner          = owner
+            self.custom_list    = custom_list
 
         def send_message(self, message):
             self.stbc_socket.send(message.encode("utf8"))
@@ -183,32 +195,60 @@ class Scapi:
             setattr(self, func.__name__, func)
             return func
         
-        def command(self, name, arg_count=0, required_permissions=PermissionLevel.MEMBER) -> None:
+        def command(self, name, arg_count: int = 0, required_permissions=PermissionLevel.ALL, custom_permissions: list = None) -> None:
             def decorator(func):
+                if custom_permissions is None:
+                    self.custom_list = self.custom_list
+                else:
+                    self.custom_list = custom_permissions
+                    
+                self.required_permissions = required_permissions
+                
+                
                 command_registry[name] = (func, arg_count, required_permissions)
                 return func
 
             return decorator
 
-        def execute_command(self, command_str, user: str, permissions: str, args: list):
-            command_name = command_str
+        def execute_command(self, command_name, user: str, args: list):
             if command_name in command_registry:
                 cmd = command_registry[command_name]
                 
-                if permissions == self.PermissionLevel.ALL:
+                if self.required_permissions == self.PermissionLevel.ALL:
                     pass
-                elif 
-                    socket.send(f"{RED}You lack the permission to use this command!{RESET}".encode("utf8"))
+                
+                elif self.required_permissions == self.PermissionLevel.TRUSTED:
+                    if user not in self.trusted_list:
+                        self.send_message(f"{RED}You lack the permission to use this command!{RESET}")
+                        return    
+                    
+                elif self.required_permissions == self.PermissionLevel.ADMIN:
+                    if user not in self.admin_list:
+                        self.send_message(f"{RED}You lack the permission to use this command!{RESET}")
+                        return
+                
+                elif self.required_permissions == self.PermissionLevel.OWNER:
+                    if user.lower() != self.owner:
+                        self.send_message(f"{RED}You lack the permission to use this command!{RESET}")
+                        return    
+                
+                elif self.required_permissions == self.PermissionLevel.CUSTOM:
+                    if user not in self.custom_list:
+                        self.send_message(f"{RED}You lack the permission to use this command!{RESET}")
+                        return
+                
+                else:
+                    self.logger(f"{RED}Invalid permission type!", type=Scapi.LogLevel.ERROR)
                     return
                 
                 if cmd[1] > args.__len__():
-                    self.send_message(f"Not enough arguments - command requires {cmd[1]} arguments but {args.__len__()} were given".encode("utf8"))
+                    self.send_message(f"Not enough arguments - command requires {cmd[1]} arguments but {args.__len__()} were given")
                     return
                 
                 cmd[0](self.stbc_socket, user, args)
                 
             else:
-                self.send_message(f"{RED}Command '{command_name}' not found.{RESET}".encode("utf8"))
+                self.send_message(f"{RED}Command '{command_name}' not found.{RESET}")
             
         def run(self, ready_func):
             if self.enableUserInput is True:
