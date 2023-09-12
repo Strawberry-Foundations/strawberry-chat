@@ -24,7 +24,7 @@ from src.colors import *
 from src.functions import *
 from src.vars import *
 from init import server_dir
-from src.commands import PermissionLevel
+from src.commands import PermissionLevel, execute_command, list_commands
 
 from src.commands.default import help, server_info, news, changelog, about
 from src.commands.etc import test_command
@@ -474,8 +474,8 @@ def clientThread(client):
                         role = PermissionLevel.MEMBER
                     case "admin":
                         role = PermissionLevel.ADMIN
-
-                src.commands.execute_command(cmd, client, user, role, args)
+                        
+                execute_command(cmd, client, user, role, args)
                 continue
 
             if message.startswith("/broadcast ") or message.startswith("/rawsay "):
