@@ -1828,9 +1828,13 @@ def broadcast(message, sentBy=""):
                     log.error("Something went wrong while... doing something with the badges?: " + e)
                 
                 
-                message = escape_ansi(message)
-                message = message.strip("\n")
+                c.execute('SELECT role FROM users WHERE username = ?', (sentBy,))
+                res = c.fetchone()
+                if res[0] != "bot":
+                    
+                    message = message.strip("\n")
                 
+                message = escape_ansi(message)
                 message = repl_htpf(message)
                 
                 for u in users.values():
