@@ -512,8 +512,6 @@ def clientThread(client):
     
             # /nick Command
             elif message.startswith("/nick ") or message.startswith("/nickname "):
-                list_commands()
-                execute_command("test")
                 if message.startswith("/nick "):
                     arg = message.replace("/nick ", "")
                     
