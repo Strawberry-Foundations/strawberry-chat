@@ -46,7 +46,7 @@ class Scapi:
             OWNER   = 3
             
         def __init__(self, username, token, host, port, enable_user_input=False, print_recv_msg=False):
-            self.stbc_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.stbc_socket        = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.username           = username
             self.token              = token
             self.host               = host
@@ -56,8 +56,8 @@ class Scapi:
             
             self.trusted_list       = []
             self.admin_list         = []
-            self.owner              = None
             self.custom_list        = []
+            self.owner              = None
             
             self.required_permissions = None
             self.count = 0
