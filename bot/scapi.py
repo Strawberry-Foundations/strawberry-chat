@@ -4,6 +4,7 @@ import time
 import datetime
 import sys
 import re
+from enum import Enum
 
 BOLD = '\033[1m'
 UNDERLINE = '\033[4m'
@@ -17,16 +18,20 @@ PURPLE = '\033[35m'
 CYAN = '\033[36m'
 WHITE = '\033[37m'
 
-version = "0.9.70+u1"
+version = "0.10.0+u1"
 
 class Scapi:
-    class Bot:
-        class type:
-            info = "info"
-            error = "error"
-            msg = "msg"
-            message = "msg"
+    class LogLevel:
+        INFO = "INFO"
+        ERROR = "ERROR"
+        MSG = "MSG"
+        MESSAGE = "MSG"
             
+    class PermissionLevel(Enum):
+        MEMBER = 0
+        ADMIN = 1
+    
+    class Bot:    
         def __init__(self, username, token, host, port, enableUserInput=False, printReceivedMessagesToTerminal=False):
             self.stbc_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.username = username
@@ -36,7 +41,7 @@ class Scapi:
             self.enableUserInput = enableUserInput
             self.printReceivedMessagesToTerminal = printReceivedMessagesToTerminal
             
-            self.logger(f"{GREEN}Starting scapi.bot version {version}", type=self.type.info)
+            self.logger(f"{GREEN}Starting scapi.bot version {version}", type=Scapi.LogLevel.INFO)
             
             self.count = 0
             self.log_msg = f"{CYAN + BOLD}{datetime.date.today().strftime('%Y-%m-%d')} {datetime.datetime.now().strftime('%H:%M:%S')}  {BLUE}INFO   scapi  -->  {RESET}"
@@ -45,7 +50,7 @@ class Scapi:
                 self.connect()
                 
             except: 
-                self.logger(f"{RED}Could not connect to server", type=self.type.error)
+                self.logger(f"{RED}Could not connect to server", type=Scapi.LogLevel.error)
                 exit()
 
         def logger(self, message, type):
@@ -67,6 +72,7 @@ class Scapi:
         def escape_ansi(self, line):
             ansi_escape = re.compile(r'(?:\x1B[@-_]|[\x80-\x9F])[0-?]*[ -/]*[@-~]')
             return ansi_escape.sub('', line)
+        
         
         def get_username_by_msg(self, message):
             username = message.split(":")[0]
@@ -125,7 +131,7 @@ class Scapi:
                         self.count = self.count + 1
                 
                         if self.count > 3:
-                            self.logger(message, type=self.type.msg)
+                            self.logger(message, type=Scapi.LogLevel.INFO)
                         
                         if raw == False:
                             if ansi == True:
@@ -158,9 +164,9 @@ class Scapi:
             self.stbc_socket.send(self.token.encode("utf8"))
             
         def connect(self):
-            self.logger(f"{YELLOW}Connecting to {PURPLE}{self.host}:{self.port} {RESET + YELLOW}...", type=self.type.info)
+            self.logger(f"{YELLOW}Connecting to {PURPLE}{self.host}:{self.port} {RESET + YELLOW}...", type=Scapi.LogLevel.INFO)
             self.stbc_socket.connect((self.host, self.port))
-            self.logger(f"{GREEN}Connected", type=self.type.info)
+            self.logger(f"{GREEN}Connected", type=Scapi.LogLevel.INFO)
             
             
         def disconnect(self):
@@ -172,10 +178,10 @@ class Scapi:
             
         def run(self, ready_func):
             if self.enableUserInput is True:
-                self.logger(f"{YELLOW}Flag {GREEN + BOLD}'enableUserInput'{RESET + YELLOW} is enabled", type=self.type.info)
+                self.logger(f"{YELLOW}Flag {GREEN + BOLD}'enableUserInput'{RESET + YELLOW} is enabled", type=Scapi.LogLevel.INFO)
                 
             if self.printReceivedMessagesToTerminal is True:
-                self.logger(f"{YELLOW}Flag {GREEN + BOLD}'printReceivedMessagesToTerminal'{RESET + YELLOW} is enabled", type=self.type.info)
+                self.logger(f"{YELLOW}Flag {GREEN + BOLD}'printReceivedMessagesToTerminal'{RESET + YELLOW} is enabled", type=Scapi.LogLevel.INFO)
                 
             time.sleep(0.5)
             ready_func()
