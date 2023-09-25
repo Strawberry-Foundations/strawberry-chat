@@ -87,8 +87,8 @@ if online_mode == True:
 
 # check if language is available
 if lang not in langs:
-    print(f"{Fore.RED + Colors.BOLD}Error loading selected language is not available.")
-    print(f"{Fore.YELLOW + Colors.BOLD}Falling back to en_US\n")
+    print(f"{Fore.RED + Colors.BOLD}Error loading language: Selected language is not available.{Fore.RESET}")
+    print(f"{Fore.YELLOW + Colors.BOLD}Falling back to en_US\n{Fore.RESET}")
     time.sleep(1)
     lang = "en_US"
     
