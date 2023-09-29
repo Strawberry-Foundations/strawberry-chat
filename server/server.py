@@ -29,7 +29,7 @@ from src.db import *
 from src.online import *
 from src.commands import PermissionLevel, execute_command, list_commands
 
-from src.commands.default import help, server_info, news, changelog, about
+from src.commands.default import help, server_info, news, changelog, about, online
 from src.commands.etc import test_command
 from src.commands.admin import broadcast
 
@@ -115,7 +115,7 @@ else:
     pass
 
 # Lists & Sets
-afks = list([])
+# afks = list([])
 blacklist = set()
 
 # Blacklisted word functions
@@ -1335,13 +1335,6 @@ def clientThread(client):
                     log.info(f"{user} ({address}) has left.")
                     broadcast(f"{Colors.GRAY + Colors.BOLD}<--{Colors.RESET} {userRoleColor(user)}{user}{YELLOW + Colors.BOLD} has left the chat room!{RESET + Colors.RESET}")
                     break
-
-                # Online Command
-                case "/online":
-                    onlineUsers = ', '.join([user for user in sorted(users.values())])
-                    onlineUsersLen2 = len([user for user in sorted(users.values())])
-                    client.send(f"""{GREEN +  Colors.UNDERLINE + Colors.BOLD}Users who are currently online ({onlineUsersLen2}){RESET + Colors.RESET}
-        {Colors.BOLD}->{Colors.RESET} {CYAN}{onlineUsers}{RESET + Colors.RESET}""".encode("utf8"))
                 
                 
                 # Afk Command
