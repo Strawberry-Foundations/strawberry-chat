@@ -25,6 +25,7 @@
 - NEW: Added Hashtag Placeholder Format Support (HTPF) for chat messages and broadcast command, to send colorized messages or the current time (e.g. #today or #red)
 - NEW: Added an (unstable) Bard chat bot!
 - NEW: Added that bots will no longer be affected of stripping new lines
+- NEW: Added custom database wrapper (currently in development)
 - NEW: Removed time class and time functions
 - NEW: Removed command alias "/userinfo"
 - NEW: Updated /user command so it can now be used without argument to show your user profile
@@ -37,6 +38,8 @@
 - MODULARITY: Added init.py file for very specificed "init things"
 - MODULARITY: Moved "some" online mode functions so separate file (src/online.py)
 - MODULARITY: Added broadcast_all function to functions.py for using the broadcast function in commands
+- MODULARITY: Moved afks variable to init
+- MODULARITY: Moved users variable to init.py
 
 - FIX: Fixed wrong time/date formatting for file logging (!!!)
 - FIX: Fixed duplicated code which led to formatting errors
@@ -68,6 +71,7 @@
 - OPTIMIZATION: Created separate variables for help messages at the top of the code
 - OPTIMIZATION: reodered some commands in the code
 - OPTIMIZATION: Removed duplicate of code piece (userRoleColor)
+- OPTIMIZATION: Test mode will now only be 10 seconds (better for GitHub Actions)
 
 - UPDATE: Updated important information header of server.py file
 - UPDATE: Registration updated; will now set msg_count to 0 when registering
