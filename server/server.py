@@ -1371,15 +1371,6 @@ def clientThread(client):
                 case "/unflip":
                     broadcast("┬─┬ノ( º _ ºノ)", user)
                 
-                
-                # About Command
-                case "/about":
-                    client.send(
-                        f"""{GREEN +  Colors.UNDERLINE + Colors.BOLD}About {chat_name}{RESET + Colors.RESET}
-        {BLUE + Colors.BOLD}Thank you for using {chat_name}!{RESET}
-        {BLUE + Colors.BOLD}Version: {RESET}{short_ver} {codename} ({server_edition})
-        {BLUE + Colors.BOLD}Author: {RESET}{", ".join(authors)}{RESET + Colors.RESET}"""
-        .encode("utf8"))
                     
                 # Clientinfo Command
                 case "/clientinfo":
