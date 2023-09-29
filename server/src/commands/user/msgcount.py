@@ -14,4 +14,3 @@ def msgcount_command(socket: socket.socket, username: str, args: list):
     msg_count = cmd_db.fetchone()
     socket.send(f"{GREEN + Colors.BOLD}Your message count:{RESET + Colors.RESET} {msg_count[0]}".encode("utf8"))
     cmd_db.cursor_close()
-    cmd_db.close()
