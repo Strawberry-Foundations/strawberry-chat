@@ -35,6 +35,8 @@
 - MODULARITY: Added repl_htpf to replace placeholders from the Hashtag Placeholders Format
 - MODULARITY: Removed regen database code "procedure" and created function for database regeneration in functions source file
 - MODULARITY: Added init.py file for very specificed "init things"
+- MODULARITY: Moved "some" online mode functions so separate file (src/online.py)
+- MODULARITY: Added broadcast_all function to functions.py for using the broadcast function in commands
 
 - FIX: Fixed wrong time/date formatting for file logging (!!!)
 - FIX: Fixed duplicated code which led to formatting errors
