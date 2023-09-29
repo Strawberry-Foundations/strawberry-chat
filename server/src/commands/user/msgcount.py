@@ -3,12 +3,15 @@ from .. import register_command
 import socket
 
 from src.colors import *
+from src.db import Database
 
-from init import users
+from init import users, server_dir
 
-@register_command("online")
-def online_command(socket: socket.socket, username: str, args: list):
-    onlineUsers = ', '.join([user for user in sorted(users.values())])
-    onlineUsersLen2 = len([user for user in sorted(users.values())])
-    socket.send(f"""{GREEN +  Colors.UNDERLINE + Colors.BOLD}Users who are currently online ({onlineUsersLen2}){RESET + Colors.RESET}
-        {Colors.BOLD}->{Colors.RESET} {CYAN}{onlineUsers}{RESET + Colors.RESET}""".encode("utf8"))
+@register_command("msgcount")
+def msgcount_command(socket: socket.socket, username: str, args: list):
+    cmd_db = Database(server_dir + "/users.db", check_same_thread=False)
+    cmd_db.execute("SELECT msg_count FROM users WHERE username = ?", (username,))
+    msg_count = cmd_db.fetchone()
+    socket.send(f"{GREEN + Colors.BOLD}Your message count:{RESET + Colors.RESET} {msg_count[0]}".encode("utf8"))
+    cmd_db.cursor_close()
+    cmd_db.close()
