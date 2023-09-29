@@ -81,11 +81,11 @@ if os.path.exists(server_dir + "/users.db"):
     
 else:
     # Connect/Create database
-    db = sql.connect(server_dir + "/users.db", check_same_thread=False)
-    cr_cursor = db.cursor()
+    # db = sql.connect(server_dir + "/users.db", check_same_thread=False)
+    db = Database(server_dir + "/users.db", check_same_thread=False)
     print(f"{GREEN + Colors.BOLD}>>> {RESET}Created database")
     
-    cr_cursor.execute(table_query)
+    db.execute(table_query)
     db.commit()
     
     print(f"{GREEN + Colors.BOLD}>>> {RESET}Created table")
