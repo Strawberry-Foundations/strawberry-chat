@@ -69,9 +69,6 @@ log_ch.setFormatter(LogFormatter())
 log.addHandler(log_ch)
 log.addHandler(log_fh)
 
-# Path of server.py
-# server_dir = os.path.dirname(os.path.realpath(__file__))
-
 # Check if database file exists
 if os.path.exists(server_dir + "/users.db"):
     # Connect to database
