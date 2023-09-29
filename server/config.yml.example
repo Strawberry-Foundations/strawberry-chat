@@ -3,7 +3,8 @@ server:
   port: 8080
   name: "Your Chat Server Name"
   description: "Write something about your server"
-
+  edition_key: "somekey"
+  
 flags:
   enable_messages: false
   max_message_length: 256
