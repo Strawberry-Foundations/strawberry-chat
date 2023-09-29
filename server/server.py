@@ -176,87 +176,6 @@ def userNickname(uname):
     else:
         return uname
 
-# Check if user has a nickname
-def hasNickname(uname):
-    c = db.cursor()
-    c.execute('SELECT nickname FROM users WHERE username = ?', (uname,))
-    unick = c.fetchone()
-    c.close()
-    
-    if unick[0] is not None: 
-        return True
-    
-    else: 
-        return False
-
-# Get user role color from the user
-def userRoleColor(uname):
-    c = db.cursor()
-    c.execute('SELECT role_color FROM users WHERE username = ?', (uname,))
-    color = c.fetchone()
-    c.close()
-    
-    if color[0] is not None: 
-        match color[0]:
-            case "red": 
-                return RED + Colors.BOLD
-            
-            case "green": 
-                return GREEN + Colors.BOLD
-                
-            case "cyan": 
-                return CYAN + Colors.BOLD
-            
-            case "blue": 
-                return BLUE
-
-            case "yellow": 
-                return YELLOW
-                
-            case "magenta": 
-                return MAGENTA
-            
-            case "lightred":
-                return LIGHTRED_EX
-            
-            case "lightgreen":
-                return LIGHTGREEN_EX
-            
-            case "lightcyan":
-                return LIGHTCYAN_EX
-            
-            case "lightblue":
-                return LIGHTBLUE_EX
-
-            case "lightyellow":
-                return LIGHTYELLOW_EX
-
-            case "lightmagenta":
-                return LIGHTMAGENTA_EX
-            
-            case "boldred":
-                return Colors.BOLD + RED
-
-            case "boldgreen":
-                return Colors.BOLD + GREEN
-            
-            case "boldcyan":
-                return Colors.BOLD + CYAN
-            
-            case "boldblue":
-                return Colors.BOLD + BLUE
-            
-            case "boldyellow":
-                return Colors.BOLD + YELLOW
-            
-            case "boldmagenta":
-                return Colors.BOLD + MAGENTA
-            
-            case _:
-                return RESET
-    else: 
-        return RESET
-
 # Check if user is muted
 def isMuted(uname):
     c = db.cursor()
@@ -311,19 +230,6 @@ def doesUserExist(uname):
         return True
     
     c.close()
-
-# Print a proper user name information for memberlist command
-def memberListNickname(uname):
-    c = db.cursor()
-    c.execute("SELECT nickname FROM users WHERE username = ?", (uname,))
-    nickname = c.fetchone()
-    c.close()
-    
-    if hasNickname(uname):
-        return f"{nickname[0]} (@{uname.lower()})"
-    
-    else:
-        return uname
 
 
 with open(server_dir + "/news.yml") as news_file:
