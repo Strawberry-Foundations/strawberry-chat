@@ -1373,13 +1373,7 @@ def clientThread(client):
         """
         
         .encode("utf8"))
-                
-                
-                # Show Description Command
-                case "/description" | "/desc":
-                    c.execute("SELECT description FROM users WHERE username = ?", (user,))
-                    desc = c.fetchone()[0]
-                    client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Your current description: {RESET}{desc}{Colors.RESET}".encode("utf8"))                
+
                 
                 # Delete Account Command
                 case "/deleteaccount":
