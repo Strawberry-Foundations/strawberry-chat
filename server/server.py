@@ -477,7 +477,7 @@ def clientThread(client):
                         role = PermissionLevel.ADMIN
                         
                 execute_command(cmd, client, user, role, args)
-                continues
+                continue
             
     
             # /nick Command
