@@ -26,6 +26,7 @@
 - NEW: Added an (unstable) Bard chat bot!
 - NEW: Added that bots will no longer be affected of stripping new lines
 - NEW: Added custom database wrapper (currently in development)
+- NEW: Added Feature/Edition Key for better User Experience
 - NEW: Removed time class and time functions
 - NEW: Removed command alias "/userinfo"
 - NEW: Updated /user command so it can now be used without argument to show your user profile
@@ -40,6 +41,7 @@
 - MODULARITY: Added broadcast_all function to functions.py for using the broadcast function in commands
 - MODULARITY: Moved afks variable to init
 - MODULARITY: Moved users variable to init.py
+- MODULARITY: Moved many functions from server.py to src/functions.py
 
 - FIX: Fixed wrong time/date formatting for file logging (!!!)
 - FIX: Fixed duplicated code which led to formatting errors
