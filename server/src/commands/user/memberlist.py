@@ -6,7 +6,7 @@ import requests
 from src.colors import *
 from src.db import Database
 
-from init import server_dir, afks, users, config, online_mode, global_ip
+from init import server_dir, users, config, online_mode, global_ip
 from src.vars import api
 from src.functions import memberListNickname, isOnline
 
