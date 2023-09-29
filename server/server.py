@@ -5,29 +5,32 @@ import threading
 
 import os
 import sys
-import logging
-import sqlite3 as sql
-import traceback
 
+import logging
+import traceback
+import errno
+
+import sqlite3 as sql
 import yaml
 from yaml import SafeLoader
 
 import atexit
 import datetime
 import time
-import errno
 import random
 import requests
-
 from colorama import Style
+
+from init import server_dir
 from src.colors import *
 from src.functions import *
 from src.vars import *
-from init import server_dir
+from src.db import * 
 from src.commands import PermissionLevel, execute_command, list_commands
 
 from src.commands.default import help, server_info, news, changelog, about
 from src.commands.etc import test_command
+
 
 # Startup title
 print(f"{CYAN + Colors.BOLD}* -- {chat_name} v{short_ver} {codename} ({server_edition}) -- *{RESET + Colors.RESET}")
