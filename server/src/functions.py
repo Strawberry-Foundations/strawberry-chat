@@ -80,3 +80,31 @@ def broadcast_all(message):
         # debugLogger(e, "003")
         print(e)
         exit(1)
+        
+# Check if user has a nickname
+def hasNickname(uname):
+    db = sql.connect(server_dir + "/users.db", check_same_thread=False)
+    c = db.cursor()
+    c.execute('SELECT nickname FROM users WHERE username = ?', (uname,))
+    unick = c.fetchone()
+    c.close()
+    
+    if unick[0] is not None: 
+        return True
+    
+    else: 
+        return False
+    
+# Print a proper user name information for memberlist command
+def memberListNickname(uname):
+    db = sql.connect(server_dir + "/users.db", check_same_thread=False)
+    c = db.cursor()
+    c.execute("SELECT nickname FROM users WHERE username = ?", (uname,))
+    nickname = c.fetchone()
+    c.close()
+    
+    if hasNickname(uname):
+        return f"{nickname[0]} (@{uname.lower()})"
+    
+    else:
+        return uname
