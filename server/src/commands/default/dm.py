@@ -6,8 +6,7 @@ from src.colors import *
 from src.db import Database
 
 from init import server_dir, users, afks
-from src.functions import escape_ansi
-from server import userRoleColor
+from src.functions import escape_ansi, userRoleColor
 
 @register_command("dm", arg_count=2)
 def dm_command(socket: socket.socket, username: str, args: list):
