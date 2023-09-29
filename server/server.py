@@ -122,11 +122,7 @@ def open_blacklist():
     with open(server_dir + "/blacklist.txt", "r") as f:
         for word in f:
             word = word.strip().lower()
-            blacklist.add(word)    
-
-def create_empty_file(filename):
-    with open(server_dir + "/" + filename, "w") as ef:
-        pass
+            blacklist.add(word)
 
 # Check if blacklist exists
 if os.path.exists(server_dir + "/blacklist.txt"):
