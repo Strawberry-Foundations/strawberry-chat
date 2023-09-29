@@ -8,7 +8,7 @@ from src.db import Database
 
 from init import server_dir, afks, users, config, online_mode, global_ip
 from src.vars import api
-from src.functions import hasNickname, memberListNickname
+from src.functions import hasNickname, memberListNickname, isOnline
 
 import yaml
 from yaml import SafeLoader
@@ -40,17 +40,6 @@ from yaml import SafeLoader
 @register_command("userlist")
 def memberlist_command(socket: socket.socket, username: str, args: list):
     cmd_db = Database(server_dir + "/users.db", check_same_thread=False)
-    def isOnline(uname):
-        if uname in users.values():
-            if uname in afks:
-                return "🌙"
-            
-            else:
-                return "🟢"
-        
-        else:
-            return f"{Colors.GRAY}〇{RESET}"
-
                 
     cmd_db.execute("SELECT username FROM users")
     raw_members = cmd_db.fetchall()
