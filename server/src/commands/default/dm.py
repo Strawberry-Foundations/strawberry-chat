@@ -18,14 +18,13 @@ def dm_command(socket: socket.socket, username: str, args: list):
     msg     = escape_ansi(msg)
     msg     = msg.strip("\n")
     
-    search_val = uname
     found_keys = []
     
-    for key, value in users.items():
-        if value == search_val:
+    for sock_object, sock_uname in users.items():
+        if sock_uname == uname:
             global to_sent
-            to_sent = key
-            found_keys.append(key)
+            to_sent = sock_object
+            found_keys.append(sock_object)
 
     
     try:
