@@ -32,7 +32,7 @@ from src.commands import PermissionLevel, execute_command, list_commands
 from src.commands.default import help, server_info, news, changelog, about
 from src.commands.etc import test_command
 from src.commands.admin import broadcast
-from src.commands.user import online, afklist, afk, unafk, msgcount
+from src.commands.user import online, afklist, afk, unafk, msgcount, members
 
 # Startup title
 print(f"{CYAN + Colors.BOLD}* -- {chat_name} v{short_ver} {codename} ({server_edition}) -- *{RESET + Colors.RESET}")
@@ -1380,19 +1380,7 @@ def clientThread(client):
                     client.send(f"{users[client]}".encode("utf8"))
                     time.sleep(0.1)
                     client.send(f"{client}".encode("utf8"))
-                    
-                
-                # Member Command
-                case "/members" | "/users":
-                    c.execute("SELECT username FROM users")
-                    raw_members = c.fetchall()
-                    membersLen = len([raw_members for raw_members in sorted(raw_members)])
-                    members = ", ".join([result[0] for result in raw_members])
-
-                    client.send(f"""{CYAN +  Colors.UNDERLINE + Colors.BOLD}Members on this server ({membersLen}){RESET + Colors.RESET}
-        {Colors.BOLD}->{Colors.RESET} {CYAN}{members}{RESET}""".encode("utf8"))
-                    
-                
+                            
                 case "/memberlist" | "/userlist":
                     def isOnline(uname):
                         if uname in users.values():
