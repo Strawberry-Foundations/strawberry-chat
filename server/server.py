@@ -21,7 +21,7 @@ import random
 import requests
 from colorama import Style
 
-from init import server_dir
+from init import *
 from src.colors import *
 from src.functions import *
 from src.vars import *
@@ -31,7 +31,7 @@ from src.commands import PermissionLevel, execute_command, list_commands
 
 from src.commands.default import help, server_info, news, changelog, about
 from src.commands.etc import test_command
-
+from src.commands.admin import broadcast
 
 # Startup title
 print(f"{CYAN + Colors.BOLD}* -- {chat_name} v{short_ver} {codename} ({server_edition}) -- *{RESET + Colors.RESET}")
@@ -1923,7 +1923,7 @@ def main():
         exit()
     
 
-users = {}
+# users = {}
 addresses = {}
 
 if __name__ == "__main__":
