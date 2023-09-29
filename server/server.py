@@ -32,7 +32,7 @@ from src.commands import PermissionLevel, execute_command, list_commands
 from src.commands.default import help, server_info, news, changelog, about, dm
 from src.commands.etc import test_command
 from src.commands.admin import broadcast
-from src.commands.user import online, afklist, afk, unafk, msgcount, members
+from src.commands.user import online, afklist, afk, unafk, msgcount, members, description
 
 # Startup title
 print(f"{CYAN + Colors.BOLD}* -- {chat_name} v{short_ver} {codename} ({server_edition}) -- *{RESET + Colors.RESET}")
@@ -759,31 +759,6 @@ def clientThread(client):
                 db.commit()
                 
                 client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Changed Discord Link to {MAGENTA}{discord_name}{RESET + Colors.RESET}".encode("utf8"))
-                continue
-
-            
-            # /description Command
-            elif message.startswith("/description "):
-                desc = message.replace("/description ", "")
-
-                if desc.lower() == "remove" or desc.lower() == "reset":
-                    c.execute("UPDATE users SET description = NULL WHERE username = ?", (user,))
-                    db.commit()
-                    
-                    client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Removed Description{RESET + Colors.RESET}".encode("utf8"))
-                    continue
-                
-                elif desc.lower() == "" or desc.lower() == " ":
-                    c.execute("SELECT description FROM users WHERE username = ?", (user,))
-                    desc = c.fetchone()[0]
-                    
-                    client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Your current description: {RESET}{desc}{Colors.RESET}".encode("utf8"))
-                    continue
-                
-                c.execute("UPDATE users SET description = ? WHERE username = ?", (desc, user))
-                db.commit()
-                
-                client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Changed Description to {CYAN}{desc}{RESET + Colors.RESET}".encode("utf8"))
                 continue
 
         
