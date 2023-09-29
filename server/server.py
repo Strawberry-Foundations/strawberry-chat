@@ -454,60 +454,8 @@ def clientThread(client):
                 log.info(f"{user} ({address}) has left.")
                 broadcast(f"{Colors.GRAY + Colors.BOLD}<--{Colors.RESET} {userRoleColor(user)}{user}{YELLOW + Colors.BOLD} has left the chat room!{RESET + Colors.RESET}")
                 break
-            
-            elif message.startswith("/#dm "):                
-                arg = message.replace("/dm ", "")
-                args = arg.split(" ")
-
-                uname   = args[0]
-                msg     = ' '.join(args[1:])
-                msg     = escape_ansi(msg)
-                msg     = msg.strip("\n")
-                
-                search_val = uname
-                found_keys = []
-                
-                for key, value in users.items():
-                    if value == search_val:
-                        global to_sent
-                        to_sent = key
-                        found_keys.append(key)
-                
-                print(user)   # Username vom Nutzer der diesen Command ausgeführt hat
-                print(key)    # zugewiesener Socket-Wert
-                print(value)  # zugewiesener Nutzername zum Socket-Wert
-                
-                try:
-                    c.execute("SELECT enable_dms FROM users WHERE username = ?", (uname,))
-                    has_dm_enabled = c.fetchone()[0]
-                    
-                except:
-                    client.send(f"{RED + Colors.BOLD}User not found{RESET + Colors.RESET}".encode("utf8"))
-                    continue
-                        
-                if uname == user:
-                    client.send(f"{YELLOW}You shouldn't send messages to yourself...{RESET}".encode("utf8"))
-                    continue
-                
-                elif uname in afks:
-                    client.send(f"{YELLOW}This user is currently afk...{RESET}".encode("utf8"))
-                    continue
-                
-                elif has_dm_enabled == "false":
-                    client.send(f"{YELLOW}This user has deactivated his/her DM's{RESET}".encode("utf8"))
-                    continue
-                
-                else:
-                    if found_keys:
-                        client.send(f"{userRoleColor(user)}You{RESET} {Colors.GRAY}-->{Colors.RESET} {userRoleColor(uname)}{uname}{RESET + Colors.RESET}: {msg}".encode("utf8"))
-                        to_sent.send(f"{Colors.RESET + userRoleColor(user)}{user} {Colors.GRAY}-->{RESET + Colors.RESET}{userRoleColor(uname)} You{Colors.RESET + RESET}: {msg}".encode("utf8"))
-                        
-                    else:
-
-                        client.send(f"{RED + Colors.BOLD}User is offline.{RESET + Colors.RESET}".encode("utf8"))
-                        
-                    continue
-            
+        
+        
             # Global Command Executor
             elif message.startswith("/"):
                 message = message[1:]
