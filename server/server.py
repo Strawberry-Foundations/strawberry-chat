@@ -26,6 +26,7 @@ from src.colors import *
 from src.functions import *
 from src.vars import *
 from src.db import * 
+from src.online import *
 from src.commands import PermissionLevel, execute_command, list_commands
 
 from src.commands.default import help, server_info, news, changelog, about
