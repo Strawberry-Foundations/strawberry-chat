@@ -1337,26 +1337,6 @@ def clientThread(client):
                     break
                 
                 
-                # Afk Command
-                case "/afk":
-                    if user in afks:
-                        client.send(f"{YELLOW + Colors.BOLD}You are already AFK!{RESET + Colors.RESET}".encode("utf8"))
-                        
-                    else:
-                        broadcast(f"{user} is now AFK 🌙..")
-                        afks.append(user)
-                
-                
-                # Unafk Comamnd
-                case "/unafk":
-                    if user not in afks:
-                        client.send(f"{YELLOW + Colors.BOLD}You are not AFK!{RESET + Colors.RESET}".encode("utf8"))
-                    
-                    else:
-                        broadcast(f"{user} is no longer AFK 🌻!")
-                        afks.remove(user)
-                    
-                
                 # Debug Command
                 case "/debug":
                     try: 
