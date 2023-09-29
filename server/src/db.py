@@ -5,7 +5,7 @@ from init import *
 
 
 class Database:
-    def __init__(self, database, check_same_thread: bool = ...):
+    def __init__(self, database, check_same_thread: bool = False):
         self.db_connection = sql.connect(database, check_same_thread)
         self.cursor = self.db_connection.cursor()
 
@@ -23,3 +23,6 @@ class Database:
         
     def fetchone(self):
         return self.cursor.fetchone()
+
+    def fetchall(self):
+        return self.cursor.fetchall()
