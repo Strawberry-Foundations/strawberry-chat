@@ -1504,7 +1504,6 @@ def clientThread(client):
                     
                 
                 case _:
-                    
                     if user in afks:
                         client.send(f"{RED}Sorry, you are AFK.{RESET}".encode("utf8"))
                         
