@@ -77,6 +77,7 @@ log.addHandler(log_fh)
 if os.path.exists(server_dir + "/users.db"):
     # Connect to database
     db = sql.connect(server_dir + "/users.db", check_same_thread=False)
+    # db = Database(server_dir + "/users.db", check_same_thread=False)
     print(f"{GREEN + Colors.BOLD}>>> {RESET}Connected to database")
     
 else:
