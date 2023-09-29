@@ -9,8 +9,8 @@ class Database:
         self.db_connection = sql.connect(database, check_same_thread)
         self.cursor = self.db_connection.cursor()
 
-    def execute(self, statement):
-        self.cursor.execute(statement)
+    def execute(self, statement, __parameters = ()):
+        self.cursor.execute(statement, __parameters)
     
     def commit(self):
         self.db_connection.commit()
@@ -20,3 +20,6 @@ class Database:
     
     def cursor_close(self):
         self.db_connection.close()
+        
+    def fetchone(self):
+        return self.cursor.fetchone()
