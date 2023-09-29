@@ -1895,7 +1895,7 @@ def main():
             print(f"{GREEN + Colors.BOLD}>>> {RESET}Server is running on {ipaddr}:{port}")
             mainThread = threading.Thread(target=connectionThread, args=(serverSocket,), daemon=True)
             mainThread.start()
-            time.sleep(30)
+            time.sleep(10)
         
         else:
             if enable_messages:
