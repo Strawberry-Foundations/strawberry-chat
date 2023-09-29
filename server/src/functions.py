@@ -19,7 +19,7 @@ import re
 
 from colorama import Fore, Style
 from .colors import *
-from init import server_dir
+from init import *
 from .vars import table_query
 
 # Removed ansi characters
@@ -62,3 +62,21 @@ def regen_database():
 def create_empty_file(filename):
     with open(server_dir + "/" + filename, "w") as ef:
         pass
+    
+def broadcast_all(message):
+    try:
+        for user in users:
+            user.send(message.encode("utf8"))
+                
+    except IOError as e:
+        if e.errno == errno.EPIPE:
+            # log.critical(f"Broken Pipe Error. You may need to restart your server!! DO NOT EXIT THE CHAT CLIENT WITH ^C!!!")
+            # debugLogger(e, "122")
+            print(e)
+            exit(1)
+  
+    except Exception as e:
+        # log.error(f"A broadcasting error occurred.")
+        # debugLogger(e, "003")
+        print(e)
+        exit(1)
