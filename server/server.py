@@ -459,14 +459,17 @@ def clientThread(client):
                 args = message.split()
                 cmd = args[0]
                 args = args[1:]
+                
                 try:
                     c.execute('SELECT role FROM users WHERE username = ?', (user,))
 
                 except Exception as e:
                     sqlError(e)
-                res = c.fetchone()
+                    
+                user_role = c.fetchone()[0]
                 role = None
-                match res[0]:
+                
+                match user_role:
                     case "member":
                         role = PermissionLevel.MEMBER
                     case "admin":
@@ -474,6 +477,7 @@ def clientThread(client):
                         
                 execute_command(cmd, client, user, role, args)
                 continue
+            
 
             if message.startswith("/broadcast ") or message.startswith("/rawsay "):
                 try: 
