@@ -58,3 +58,7 @@ def regen_database():
     cr_cursor.execute(table_query)
     db.commit()
     cr_cursor.close()
+
+def create_empty_file(filename):
+    with open(server_dir + "/" + filename, "w") as ef:
+        pass
