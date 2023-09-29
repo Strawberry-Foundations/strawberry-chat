@@ -22,7 +22,6 @@ def dm_command(socket: socket.socket, username: str, args: list):
     found_keys = []
     
     for key, value in users.items():
-        print(f"{value} <=> {search_val}")
         if value == search_val:
             global to_sent
             to_sent = key
