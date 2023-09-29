@@ -5,7 +5,7 @@ import socket
 from src.colors import *
 from src.db import Database
 
-from init import users, server_dir
+from init import server_dir
 
 @register_command("msgcount")
 def msgcount_command(socket: socket.socket, username: str, args: list):
