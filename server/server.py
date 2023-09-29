@@ -29,7 +29,7 @@ from src.db import *
 from src.online import *
 from src.commands import PermissionLevel, execute_command, list_commands
 
-from src.commands.default import help, server_info, news, changelog, about, online
+from src.commands.default import help, server_info, news, changelog, about, online, afklist
 from src.commands.etc import test_command
 from src.commands.admin import broadcast
 
@@ -1356,14 +1356,6 @@ def clientThread(client):
                         broadcast(f"{user} is no longer AFK 🌻!")
                         afks.remove(user)
                     
-                    
-                # Whois Afk Command
-                case "/afks" | "/afklist":
-                    afkUsers = ', '.join([afks for afks in sorted(afks)])
-                    afkUsersLen = len([afks for afks in sorted(afks)])
-                    client.send(f"""{GREEN +  Colors.UNDERLINE + Colors.BOLD}Users who are currently Afk ({afkUsersLen}){RESET + Colors.RESET}
-        {Colors.BOLD}->{Colors.RESET} {CYAN}{afkUsers}{RESET}""".encode("utf8"))
-                
                 
                 # Debug Command
                 case "/debug":
