@@ -477,39 +477,7 @@ def clientThread(client):
                         role = PermissionLevel.ADMIN
                         
                 execute_command(cmd, client, user, role, args)
-                continue
-            
-
-            if message.startswith("/broadcast ") or message.startswith("/rawsay "):
-                try: 
-                    c.execute('SELECT role FROM users WHERE username = ?', (user,))
-                    
-                except Exception as e:
-                    sqlError(e)
-                    
-                res = c.fetchone()
-                
-                if res[0] == "admin":
-                    text = message.replace("/broadcast ", "")
-                    
-                    if message.startswith("/broadcast "):
-                        text = message.replace("/broadcast ", "")
-                        
-                    elif message.startswith("/rawsay "):
-                        text = message.replace("/rawsay ", "")
-                    
-                    if message == "/broadcast " or message == "/rawsay ":
-                        client.send(f"{RED + Colors.BOLD}Wrong usage{RESET + Colors.RESET}".encode("utf8"))
-                        continue
-                    
-                    text = repl_htpf(text)
-                            
-                    broadcast(f"{text}{RESET + Colors.RESET}")
-                    continue
-                    
-                else:
-                    client.send(f"{RED}Sorry, you do not have permissons for that.{RESET}".encode("utf8"))
-                    continue
+                continues
             
     
             # /nick Command
