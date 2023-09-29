@@ -108,3 +108,72 @@ def memberListNickname(uname):
     
     else:
         return uname
+    
+# Get user role color from the user
+def userRoleColor(uname):
+    db = sql.connect(server_dir + "/users.db", check_same_thread=False)
+    c = db.cursor()
+    c.execute('SELECT role_color FROM users WHERE username = ?', (uname,))
+    color = c.fetchone()
+    c.close()
+    
+    if color[0] is not None: 
+        match color[0]:
+            case "red": 
+                return RED + Colors.BOLD
+            
+            case "green": 
+                return GREEN + Colors.BOLD
+                
+            case "cyan": 
+                return CYAN + Colors.BOLD
+            
+            case "blue": 
+                return BLUE
+
+            case "yellow": 
+                return YELLOW
+                
+            case "magenta": 
+                return MAGENTA
+            
+            case "lightred":
+                return LIGHTRED_EX
+            
+            case "lightgreen":
+                return LIGHTGREEN_EX
+            
+            case "lightcyan":
+                return LIGHTCYAN_EX
+            
+            case "lightblue":
+                return LIGHTBLUE_EX
+
+            case "lightyellow":
+                return LIGHTYELLOW_EX
+
+            case "lightmagenta":
+                return LIGHTMAGENTA_EX
+            
+            case "boldred":
+                return Colors.BOLD + RED
+
+            case "boldgreen":
+                return Colors.BOLD + GREEN
+            
+            case "boldcyan":
+                return Colors.BOLD + CYAN
+            
+            case "boldblue":
+                return Colors.BOLD + BLUE
+            
+            case "boldyellow":
+                return Colors.BOLD + YELLOW
+            
+            case "boldmagenta":
+                return Colors.BOLD + MAGENTA
+            
+            case _:
+                return RESET
+    else: 
+        return RESET
