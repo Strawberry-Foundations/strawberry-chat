@@ -85,7 +85,7 @@ else:
     db.commit()
     
     print(f"{GREEN + Colors.BOLD}>>> {RESET}Created table")
-    
+
 
 # Open Configuration
 with open(server_dir + "/config.yml") as config_data:
@@ -453,7 +453,7 @@ def clientThread(client):
                 broadcast(f"{Colors.GRAY + Colors.BOLD}<--{Colors.RESET} {userRoleColor(user)}{user}{YELLOW + Colors.BOLD} has left the chat room!{RESET + Colors.RESET}")
                 break
             
-            # /broadcast Command
+            # Global Command Executor
             elif message.startswith("/"):
                 message = message[1:]
                 args = message.split()
