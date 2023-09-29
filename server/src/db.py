@@ -16,7 +16,6 @@ class Database:
         self.db_connection.commit()
     
     def close(self):
-        # self.db_connection.close()
         self.cursor.close()
     
     def cursor_close(self):
