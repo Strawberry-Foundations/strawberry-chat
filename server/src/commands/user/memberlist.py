@@ -13,28 +13,6 @@ from src.functions import hasNickname, memberListNickname, isOnline
 import yaml
 from yaml import SafeLoader
 
-# def hasNickname(uname):
-#     cmd_db = Database(server_dir + "/users.db", check_same_thread=False)
-#     cmd_db.execute('SELECT nickname FROM users WHERE username = ?', (uname,))
-#     unick = cmd_db.fetchone()
-    
-#     if unick[0] is not None: 
-#         return True
-    
-#     else: 
-#         return False
-
-# # Print a proper user name information for memberlist command
-# def memberListNickname(uname):
-#     cmd_db = Database(server_dir + "/users.db", check_same_thread=False)
-#     cmd_db.execute("SELECT nickname FROM users WHERE username = ?", (uname,))
-#     nickname = cmd_db.fetchone()
-    
-#     if hasNickname(uname):
-#         return f"{nickname[0]} (@{uname.lower()})"
-    
-#     else:
-#         return uname
 
 @register_command("memberlist")
 @register_command("userlist")
