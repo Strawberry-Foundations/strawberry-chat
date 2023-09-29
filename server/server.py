@@ -1494,15 +1494,6 @@ def clientThread(client):
                             client.send(f"{YELLOW + Colors.BOLD}Deletion of your account has been canceled...{RESET + Colors.RESET}".encode("utf8"))
                     else:
                         client.send(f"{YELLOW + Colors.BOLD}Deletion of your account has been canceled...{RESET + Colors.RESET}".encode("utf8"))
-   
-                
-                case "/msgcount":
-                    c.execute("SELECT msg_count FROM users WHERE username = ?", (user,))
-                    msg_count = c.fetchone()
-                    client.send(f"{GREEN + Colors.BOLD}Your message count:{RESET + Colors.RESET} {msg_count[0]}".encode("utf8"))
-                case "/":
-                    client.send(f"{GREEN + Colors.BOLD}Need help? Take a look at our help command! /help{RESET + Colors.RESET}".encode("utf8"))
-                    
                 
                 case _:
                     if user in afks:
