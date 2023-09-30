@@ -29,7 +29,7 @@ from src.db import *
 from src.online import *
 from src.commands import PermissionLevel, execute_command, list_commands
 
-from src.commands.default import help, server_info, news, changelog, about, dm
+from src.commands.default import help, server_info, news, changelog, about, dm, exit
 from src.commands.etc import test_command
 from src.commands.admin import broadcast, mute, unmute
 from src.commands.user import online, afklist, afk, unafk, msgcount, members, description, memberlist, discord
@@ -334,7 +334,7 @@ def clientThread(client):
                         pass
 
               
-            if message == "/exit":
+            if message == "/eexit":
                 client.send(f"{YELLOW + Colors.BOLD}You left the chat!{RESET + Colors.RESET}".encode("utf8"))
                 del addresses[client]
                 del users[client]
@@ -1492,7 +1492,7 @@ def main():
     
 
 # users = {}
-addresses = {}
+# addresses = {}
 
 if __name__ == "__main__":
     main()
