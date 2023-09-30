@@ -214,23 +214,6 @@ def debugLogger(errorMessage, errorCode, type="error"):
 def sqlError(errorMessage):
     log.error(f"e096: An SQL Error occured: {errorMessage}")
 
-# Check if a user exists
-def doesUserExist(uname):
-    c = db.cursor()
-    uname = uname.lower()
-    c.execute('SELECT username FROM users WHERE LOWER(username) = ?', (uname,))
-    
-    try:
-        userExists = c.fetchone()[0]
-        
-    except:
-        return False
-    
-    if userExists.lower() == uname:
-        return True
-    
-    c.close()
-
 
 with open(server_dir + "/news.yml") as news_file:
     news_data = yaml.load(news_file, Loader=SafeLoader)
