@@ -34,7 +34,7 @@ LIGHTMAGENTA_EX = Fore.LIGHTMAGENTA_EX
 LIGHTCYAN_EX    = Fore.LIGHTCYAN_EX
 LIGHTWHITE_EX   = Fore.LIGHTWHITE_EX
 
-ver             = "1.0"
+ver             = "1.0.1"
 author          = "Juliandev02"
 use_sys_argv      = False
 
@@ -90,8 +90,11 @@ def send(sock):
             sock.send(message.encode("utf8"))
 
         except:
-            print(f"{Fore.RED + Colors.BOLD}Could not send the message!{Fore.RESET + Colors.RESET}")
-            break
+            if threadFlag == False:
+                pass
+            else:
+                print(f"{Fore.RED + Colors.BOLD}Could not send the message!{Fore.RESET + Colors.RESET}")
+                break
 
 def receive(sock):
     while threadFlag:
