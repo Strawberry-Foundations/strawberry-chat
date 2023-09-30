@@ -10,6 +10,7 @@ server_dir = os.path.dirname(os.path.realpath(__file__))
 
 afks = list([])
 users = {}
+addresses = {}
 
 # Open Configuration
 with open(server_dir + "/config.yml") as config_data:
