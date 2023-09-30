@@ -28,6 +28,11 @@ jobs:
       run: |
         cd server
         python3 -m nuitka ./server.py --follow-imports --onefile
+    
+    - uses: actions/upload-artifact@v3
+      with:
+        name: Strawberry Chat
+        path: builds/
         
   binary-windows:
     runs-on: windows-latest
@@ -50,3 +55,8 @@ jobs:
       run: |
         cd server
         python3 -m nuitka ./server.py --follow-imports --onefile
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: Strawberry Chat
+        path: builds/
