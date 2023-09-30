@@ -4,8 +4,10 @@ from enum import Enum
 from src.colors import *
 
 class PermissionLevel(Enum):
-    MEMBER = 0
-    ADMIN = 1
+    MEMBER  = 0
+    ADMIN   = 1
+    BOT     = 2
+    NONE    = -1
 
 
 command_registry = {}
