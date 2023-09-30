@@ -284,7 +284,7 @@ def clientThread(client):
                 
             except Exception as e:
                 log.warning(f"A side-by-side error occurred.")
-                print(e)
+                debugLogger(e, "242", type="warning")
                 return
             
             message_length = len(message)
@@ -1248,7 +1248,7 @@ def clientLogin(client):
                 hashed_password = SHAKE256.new()
                 hashed_password.update(registeredPassword)
                 registeredPassword = hashed_password.read(26).hex()
-                
+
                 logcur.execute('INSERT INTO users (username, password, role, role_color, enable_blacklisted_words, account_enabled, muted, user_id, msg_count, enable_dms, creation_date) VALUES (?, ?, "member", ?, "true", "true", "false", ?, ?, "true", ?)', (registeredUsername, registeredPassword, registeredRoleColor.lower(), user_ids, 0, creation_date))
                 db.commit()
                 
