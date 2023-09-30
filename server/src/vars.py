@@ -81,3 +81,31 @@ admin_help_section      = f"""{MAGENTA +  Colors.UNDERLINE + Colors.BOLD}Admin c
 stbchatplus_help_section    = f"""{RED +  Colors.UNDERLINE + Colors.BOLD}Strawberry Chat+ commands & features{RESET + Colors.RESET}
         {BLUE + Colors.BOLD}Still nothing here? {RESET}Check back another time!{RESET + Colors.RESET}
     """
+    
+
+user_settings_help          = f"""{CYAN + Colors.UNDERLINE + Colors.BOLD}User Settings{RESET + Colors.RESET}
+        {BLUE + Colors.BOLD}/settings help: {RESET}Help Command
+        {BLUE + Colors.BOLD}/settings xyz: {RESET}xyz
+        {BLUE + Colors.BOLD}/settings enable_dms <true/false>: {RESET}Enable or disable your dms
+        {BLUE + Colors.BOLD}/settings discord_name <discord_name>: {RESET}Change your discord name
+        {BLUE + Colors.BOLD}/settings role_color <color>: {RESET}Change your role color
+            -> Available Colors: <(light/bold)><red/green/cyan/blue/yellow/magenta>
+        {BLUE + Colors.BOLD}/settings badge <badge>: {RESET}Sets your main badge
+        {BLUE + Colors.BOLD}/settings description <description>: {RESET}Sets your description
+        {BLUE + Colors.BOLD}/settings account username <new username>: {RESET}Change your current username
+        {BLUE + Colors.BOLD}/settings account password <new password>: {RESET}Change your current password
+    """
+    
+admin_settings_help          = f"""{MAGENTA +  Colors.UNDERLINE + Colors.BOLD}Admin Settings{RESET + Colors.RESET}
+        {BLUE + Colors.BOLD}/admin help: {RESET}Help Command
+        {BLUE + Colors.BOLD}/admin enable_dms <username> <true/false>: {RESET}Enable or disable <username>'s dms
+        {BLUE + Colors.BOLD}/admin enable_blacklisted_words <username> <true/false>: {RESET}Enable/disable if <username>'s is affected by bad words
+        {BLUE + Colors.BOLD}/admin account_enabled <username> <true/false>: {RESET}Enable/disable <username>'s account
+        
+        {BLUE + Colors.BOLD}/admin discord_name <username> <discord_name>: {RESET}Change <username>'s discord name
+        {BLUE + Colors.BOLD}/admin role_color <username> <color>: {RESET}Change <username>'s role color
+            -> Available Colors: <(light/bold)><red/green/cyan/blue/yellow/magenta>
+        {BLUE + Colors.BOLD}/admin badge <username> <badge>: {RESET}Sets <username>'s main badge
+        {BLUE + Colors.BOLD}/admin description <username> <description>: {RESET}Sets <username>'s description
+        {BLUE + Colors.BOLD}/admin role <username> <role>: {RESET}Sets <username>'s role
+    """
