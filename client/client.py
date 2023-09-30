@@ -50,7 +50,7 @@ LIGHTWHITE_EX   = Fore.LIGHTWHITE_EX
 # Path of client.py
 client_dir = os.path.dirname(os.path.realpath(__file__))
 
-if os.path.exists(client_dir + "/users.db"):
+if os.path.exists(client_dir + "/config.yml"):
     # Open Configuration
     with open(client_dir + "/config.yml") as config:
             data = yaml.load(config, Loader=SafeLoader)
