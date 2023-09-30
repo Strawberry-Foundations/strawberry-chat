@@ -1,6 +1,7 @@
 from .. import register_command
 
 import socket
+from Cryptodome.Hash import SHAKE256
 
 from src.colors import *
 from src.db import Database
@@ -94,6 +95,11 @@ def user_settings_command(socket: socket.socket, username: str, args: list):
                 elif args[1] == "password":
                     socket.send(f"{GREEN + Colors.BOLD}New Password: {RESET + Colors.RESET}".encode("utf8"))
                     new_password = socket.recv(2048).decode("utf8")
+                    new_password = str.encode(new_password)
+                    
+                    hashed_password = SHAKE256.new()
+                    hashed_password.update(new_password)
+                    new_password = hashed_password.read(26).hex()
                     
                     cmd_db.execute("SELECT password FROM users WHERE username = ?", (username,))
                     current_password = cmd_db.fetchone()[0]
@@ -105,6 +111,11 @@ def user_settings_command(socket: socket.socket, username: str, args: list):
                     else:                        
                         socket.send(f"{GREEN + Colors.BOLD}Confirm Password: {RESET + Colors.RESET}".encode("utf8"))
                         confirm_password = socket.recv(2048).decode("utf8")
+                        confirm_password = str.encode(confirm_password)
+                        
+                        hashed_password = SHAKE256.new()
+                        hashed_password.update(confirm_password)
+                        confirm_password = hashed_password.read(26).hex()
                     
                     if new_password != confirm_password:
                         socket.send(f"{RED + Colors.BOLD}Passwords do not match{RESET + Colors.RESET}".encode("utf8"))
@@ -112,12 +123,7 @@ def user_settings_command(socket: socket.socket, username: str, args: list):
                     
                     else:
                         socket.send(f"{YELLOW + Colors.BOLD}Processing... {RESET + Colors.RESET}".encode("utf8"))
-                        
-                        new_password = str.encode(new_password)
-                        hashed_password = SHAKE256.new()
-                        hashed_password.update(new_password)
-                        new_password = hashed_password.read(26).hex()
-                        
+                                                
                         cmd_db.execute("UPDATE users SET password = ? WHERE username = ?", (new_password, username))
                         cmd_db.commit()
                         socket.send(f"{LIGHTGREEN_EX + Colors.BOLD}Your password has been updated.{RESET + Colors.RESET}".encode("utf8"))
@@ -130,6 +136,7 @@ def user_settings_command(socket: socket.socket, username: str, args: list):
                     
     except Exception as e: 
         socket.send(f"{RED}Not enough arguments!{RESET}".encode("utf8"))
+        print(e)
         
             
 @register_command("admin", arg_count=1)
