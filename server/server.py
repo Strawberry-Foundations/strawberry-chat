@@ -332,18 +332,6 @@ def clientThread(client):
                         
                     else:
                         pass
-
-              
-            if message == "/eexit":
-                client.send(f"{YELLOW + Colors.BOLD}You left the chat!{RESET + Colors.RESET}".encode("utf8"))
-                del addresses[client]
-                del users[client]
-                client.close()
-                
-                log.info(f"{user} ({address}) has left.")
-                broadcast(f"{Colors.GRAY + Colors.BOLD}<--{Colors.RESET} {userRoleColor(user)}{user}{YELLOW + Colors.BOLD} has left the chat room!{RESET + Colors.RESET}")
-                break
-        
         
             # Global Command Executor
             elif message.startswith("/"):
@@ -1060,19 +1048,7 @@ def clientThread(client):
 
 
             # Match-Case-Pattern Commands
-            match message:
-                # Quit / Exit Command
-                case "/quit" | "/exit":
-                    client.send(f"{YELLOW + Colors.BOLD}You left the chat!{RESET + Colors.RESET}".encode("utf8"))
-                    del addresses[client]
-                    del users[client]
-                    client.close()
-                    
-                    log.info(f"{user} ({address}) has left.")
-                    broadcast(f"{Colors.GRAY + Colors.BOLD}<--{Colors.RESET} {userRoleColor(user)}{user}{YELLOW + Colors.BOLD} has left the chat room!{RESET + Colors.RESET}")
-                    break
-                
-                
+            match message: 
                 # Debug Command
                 case "/debug":
                     try: 
