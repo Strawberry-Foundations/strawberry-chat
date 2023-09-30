@@ -85,7 +85,6 @@ stbchatplus_help_section    = f"""{RED +  Colors.UNDERLINE + Colors.BOLD}Strawbe
 
 user_settings_help          = f"""{CYAN + Colors.UNDERLINE + Colors.BOLD}User Settings{RESET + Colors.RESET}
         {BLUE + Colors.BOLD}/settings help: {RESET}Help Command
-        {BLUE + Colors.BOLD}/settings xyz: {RESET}xyz
         {BLUE + Colors.BOLD}/settings enable_dms <true/false>: {RESET}Enable or disable your dms
         {BLUE + Colors.BOLD}/settings discord_name <discord_name>: {RESET}Change your discord name
         {BLUE + Colors.BOLD}/settings role_color <color>: {RESET}Change your role color
