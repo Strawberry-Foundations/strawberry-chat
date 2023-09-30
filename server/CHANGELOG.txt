@@ -2,6 +2,7 @@
 
 - IMPORTANT: Complete new command system
 - IMPORTANT: Much more code modularity
+- IMPORTANT: Added password hashing
 - NEW: Added memberlist command with beatiful representation of registered members and their roles
 - NEW: Added direct messages to send private/direct messages to members, instead sending it to everyone
 - NEW: Added message counter
@@ -34,6 +35,7 @@
 - NEW: Removed command alias "/userinfo"
 - NEW: Updated /user command so it can now be used without argument to show your user profile
 - NEW: Applied repl_htpf function to broadcast command
+- NEW: The response url for getting versions from the stbapi will now be the url from src.vars
 
 - MODULARITY: Moved escape_ansi function to functions source file
 - MODULARITY: Moved help sections to vars source file
