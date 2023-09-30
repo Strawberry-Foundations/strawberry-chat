@@ -1,0 +1,1 @@
+# Entwicklerdokumentation für die Strawberry Chat API
