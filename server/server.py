@@ -31,7 +31,7 @@ from src.commands import PermissionLevel, execute_command, list_commands
 
 from src.commands.default import help, server_info, news, changelog, about, dm
 from src.commands.etc import test_command
-from src.commands.admin import broadcast, mute
+from src.commands.admin import broadcast, mute, unmute
 from src.commands.user import online, afklist, afk, unafk, msgcount, members, description, memberlist, discord
 
 # Startup title
