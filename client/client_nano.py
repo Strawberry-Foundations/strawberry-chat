@@ -6,7 +6,7 @@ import colorama
 import datetime
 import threading
 
-ver             = "1.0"
+ver             = "1.0.1"
 author          = "Juliandev02"
 use_sys_argv    = False
 
@@ -43,8 +43,11 @@ def send(sock):
             deleteLastLine()
             sock.send(message.encode("utf8"))
         except:
-            print(f"Could not send the message!")
-            break
+            if threadFlag == False:
+                pass
+            else:
+                print(f"Could not send the message!")
+                break
 
 def receive(sock):
     while threadFlag:
