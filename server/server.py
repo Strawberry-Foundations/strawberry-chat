@@ -1226,7 +1226,7 @@ def clientLogin(client):
         client.send(f"{GREEN + Colors.BOLD}Role Color (Red, Green, Cyan, Blue, Yellow, Magenta): {RESET + Colors.RESET}".encode("utf8"))
         registeredRoleColor = client.recv(2048).decode("utf8")
 
-        client.send(f"{YELLOW + Colors.BOLD}Are you sure? Changing the username is currently not possible and requires a lot of time.{RESET + Colors.RESET}".encode("utf8"))
+        client.send(f"{YELLOW + Colors.BOLD}Is everything correct? (You can change your username, role color and password at any time){RESET + Colors.RESET}".encode("utf8"))
         confirmUsername = client.recv(2048).decode("utf8")
         
         if confirmUsername == "yes":
@@ -1243,6 +1243,11 @@ def clientLogin(client):
                 user_ids = int(user_ids) + 1
                 
                 creation_date = time.time()
+                
+                registeredPassword = str.encode(registeredPassword)
+                hashed_password = SHAKE256.new()
+                hashed_password.update(registeredPassword)
+                registeredPassword = hashed_password.read(26).hex()
                 
                 logcur.execute('INSERT INTO users (username, password, role, role_color, enable_blacklisted_words, account_enabled, muted, user_id, msg_count, enable_dms, creation_date) VALUES (?, ?, "member", ?, "true", "true", "false", ?, ?, "true", ?)', (registeredUsername, registeredPassword, registeredRoleColor.lower(), user_ids, 0, creation_date))
                 db.commit()
@@ -1333,7 +1338,13 @@ def clientLogin(client):
                 sys.exit()
             
             client.send(f"{GREEN + Colors.BOLD}Password: {RESET + Colors.RESET}".encode("utf8"))
-            password = client.recv(2048).decode("utf8")
+            password = escape_ansi(client.recv(2048).decode("utf8"))
+            password = password.strip("\n")
+            password = str.encode(password)
+            
+            hashed_password = SHAKE256.new()
+            hashed_password.update(password)
+            password = hashed_password.read(26).hex()
             time.sleep(0.01)
             
             try: 
