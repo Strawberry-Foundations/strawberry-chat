@@ -1,9 +1,9 @@
 import requests
-from src.vars import full_ver, chat_name, update_channel
+from src.vars import full_ver, chat_name, update_channel, api
 from src.colors import * 
 from init import update_channel as online_update_channel
 
-response = requests.get('https://api.strawberryfoundations.xyz/v1/versions')
+response = requests.get(api + 'versions')
 data = response.json()
 
 online_ver = data['stbchat']['server'][online_update_channel]
