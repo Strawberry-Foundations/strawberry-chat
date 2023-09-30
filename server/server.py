@@ -14,6 +14,9 @@ import sqlite3 as sql
 import yaml
 from yaml import SafeLoader
 
+import hashlib
+from Cryptodome.Hash import SHAKE256
+
 import atexit
 import datetime
 import time
@@ -1277,6 +1280,10 @@ def clientLogin(client):
     client.send(f"{GREEN + Colors.BOLD}Password: {RESET + Colors.RESET}".encode("utf8"))
     password = escape_ansi(client.recv(2048).decode("utf8"))
     password = password.strip("\n")
+    password = str.encode(password)
+    hashed_password = SHAKE256.new()
+    hashed_password.update(password)
+    password = hashed_password.read(26).hex()
 
     try: 
         logcur.execute('SELECT * FROM users WHERE username = ? AND password = ? AND account_enabled = ?', (username, password, "true"))
