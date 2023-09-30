@@ -31,7 +31,7 @@ from src.commands import PermissionLevel, execute_command, list_commands
 
 from src.commands.default import help, server_info, news, changelog, about, dm
 from src.commands.etc import test_command
-from src.commands.admin import broadcast
+from src.commands.admin import broadcast, mute
 from src.commands.user import online, afklist, afk, unafk, msgcount, members, description, memberlist, discord
 
 # Startup title
@@ -583,62 +583,7 @@ def clientThread(client):
         {GREEN + Colors.BOLD}Discord:{RESET + Colors.BOLD} {discord}{RESET + Colors.RESET}"""
                         .encode("utf8"))
                 continue
-                
-                
-            # /mute Command
-            elif message.startswith("/mute "):
-                try: 
-                    c.execute('SELECT role FROM users WHERE username = ?', (user,))
-                    
-                except Exception as e:
-                    sqlError(e)
-                    
-                res = c.fetchone()
-                
-                if res[0] == "admin":
-                    uname = message.replace("/mute ", "")
-                    
-                    if doesUserExist(uname) == False:
-                        client.send(f"{RED + Colors.BOLD}Sorry, this user does not exist!{RESET + Colors.RESET}".encode("utf8"))
-                        continue
-                    
-                    c.execute("UPDATE users SET muted = 'true' WHERE username = ?", (uname,))
-                    db.commit()
-                    
-                    client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Muted {uname}{RESET + Colors.RESET}".encode("utf8"))
-                    continue
-                    
-                else:
-                    client.send(f"{RED}Sorry, you do not have permissons for that.{RESET}".encode("utf8"))
-                    
-                    
-            # /unmute Command
-            elif message.startswith("/unmute "):
-                try: 
-                    c.execute('SELECT role FROM users WHERE username = ?', (user,))
-                    
-                except Exception as e:
-                    sqlError(e)
-                    
-                res = c.fetchone()
-                
-                if res[0] == "admin":
-                    uname = message.replace("/unmute ", "")
-                    
-                    if doesUserExist(uname) == False:
-                        client.send(f"{RED + Colors.BOLD}Sorry, this user does not exist!{RESET + Colors.RESET}".encode("utf8"))
-                        continue
-                    
-                    c.execute("UPDATE users SET muted = 'false' WHERE username = ?", (uname,))
-                    db.commit()
-                    
-                    client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Unmuted {uname}{RESET + Colors.RESET}".encode("utf8"))
-                    continue
-                    
-                else:
-                    client.send(f"{RED}Sorry, you do not have permissons for that.{RESET}".encode("utf8"))
 
-        
             # /ban Command
             elif message.startswith("/ban "):
                 try: 
