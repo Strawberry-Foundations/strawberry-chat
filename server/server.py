@@ -14,7 +14,6 @@ import sqlite3 as sql
 import yaml
 from yaml import SafeLoader
 
-import hashlib
 from Cryptodome.Hash import SHAKE256
 
 import atexit
