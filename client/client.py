@@ -65,7 +65,7 @@ autoserver_id   = data['autoserver']['server_id']
 langs           = ["de_DE", "en_US"]
 
 api             = "http://api.strawberryfoundations.xyz/v1/"
-ver             = "2.3.1"
+ver             = "2.3.2"
 author          = "Juliandev02"
 use_sys_argv      = False
 
@@ -243,8 +243,11 @@ def send(sock):
             sock.send(message.encode("utf8"))
 
         except:
-            print(f"{Fore.RED + Colors.BOLD}{Str[lang]['ErrCouldNotSendMessage']}{Fore.RESET + Colors.RESET}")
-            break
+            if threadFlag == False:
+                pass
+            else:
+                print(f"{Fore.RED + Colors.BOLD}{Str[lang]['ErrCouldNotSendMessage']}{Fore.RESET + Colors.RESET}")
+                break
 
 def receive(sock):
     while threadFlag:
