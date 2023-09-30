@@ -25,11 +25,11 @@ def execute_command(command_str, socket: socket.socket, user: str, user_perms: P
         cmd = command_registry[command_name]
         
         if user_perms.value < cmd[2].value:
-            socket.send(f"{RED}You lack the permission to use this command!{RESET}".encode("utf8"))
+            socket.send(f"{RED}Sorry, you do not have permission for this command.{RESET}".encode("utf8"))
             return
         
         if cmd[1] > args.__len__():
-            socket.send(f"Not enough arguments - command requires {cmd[1]} arguments but {args.__len__()} were given".encode("utf8"))
+            socket.send(f"{RED}Not enough arguments! The command requires {cmd[1]} arguments but {args.__len__()} were given.{RESET}".encode("utf8"))
             return
         
         cmd[0](socket, user, args)
