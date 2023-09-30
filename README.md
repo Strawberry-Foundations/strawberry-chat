@@ -17,12 +17,15 @@ In addition, Strawberry Chat is open source. This means that everyone can contri
 ## Current state ![State](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2FStrawberry-Foundations%2Fstrawberry-chat%2Fmain%2Fapi%2Fjson%2Fversions.json&query=%24.stbchat.server.stable&label=%20&color=success) ![State](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2FStrawberry-Foundations%2Fstrawberry-chat%2Fmain%2Fapi%2Fjson%2Fversions.json&query=%24.stbchat.server.dev&label=%20&color=success)
 Currently, Strawberry Chat is being developed a lot, even almost daily. Currently we are in a middle **beta** stage. The big part already exists and Strawberry Chat is well usable, but there are still some things missing, ***including some admin commands, and very important bug fixes and security features, like encryption.***
 
-## Disclaimer 
+<!-- ## Disclaimer 
 > [!IMPORTANT]
 > I don't want to see issues that talk about that encryption doesn't exist and how insecure it is.
 > **I am aware that this is not the most secure chat app. We are actively working on implementing encryption, but each developer finds this difficult in different ways.** 
 > ### Please do not put pressure on us developers, we also have a private life. And yet we are actively working on the platform for you and for us!
-> [See Issue #24](https://github.com/Strawberry-Foundations/strawberry-chat/issues/24)
+> [See Issue #24](https://github.com/Strawberry-Foundations/strawberry-chat/issues/24) -->
+
+## Password Encryption/Hashing
+Yes! Finally! Password encryption/hashing is here! With the release of v1.8.0pre1 the team has officially added password hashing. If security issues should arise, or bugs should occur, please open an issue! The system has already been tested, but not completely. Thanks :)
 
 ## FaQ
 **Q:** Can I create my own client?<br>
