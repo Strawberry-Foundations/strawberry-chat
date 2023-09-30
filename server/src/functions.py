@@ -188,3 +188,21 @@ def isOnline(uname):
     
     else:
         return f"{Colors.GRAY}〇{RESET}"
+
+# Check if a user exists
+def doesUserExist(uname):
+    db = sql.connect(server_dir + "/users.db", check_same_thread=False)
+    c = db.cursor()
+    uname = uname.lower()
+    c.execute('SELECT username FROM users WHERE LOWER(username) = ?', (uname,))
+    
+    try:
+        userExists = c.fetchone()[0]
+        
+    except:
+        return False
+    
+    if userExists.lower() == uname:
+        return True
+    
+    c.close()
