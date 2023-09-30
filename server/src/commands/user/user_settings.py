@@ -136,7 +136,6 @@ def user_settings_command(socket: socket.socket, username: str, args: list):
                     
     except Exception as e: 
         socket.send(f"{RED}Not enough arguments!{RESET}".encode("utf8"))
-        print(e)
         
             
 @register_command("admin", arg_count=1)
