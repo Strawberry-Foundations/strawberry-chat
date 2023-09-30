@@ -1,17 +1,13 @@
 {
     "stbchat": {
         "server": {
-            "server": {
-                "stable": "v1.7.1",
-                "dev": "v1.8.0b4+u1"
-            }
+            "stable": "v1.7.1",
+            "dev": "v1.8.0b4+u1"
         },
-        
+    
         "client": {
-            "server": {
                 "stable": "v1.7.1",
                 "dev": "v1.8.0b4+u1"
-            }
         }
     }
 }
