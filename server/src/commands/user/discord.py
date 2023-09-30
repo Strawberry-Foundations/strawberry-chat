@@ -18,8 +18,9 @@ def discord_command(socket: socket.socket, username: str, args: list):
         cmd_db.commit()
         
         socket.send(f"{LIGHTGREEN_EX + Colors.BOLD}Removed Discord Link{RESET + Colors.RESET}".encode("utf8"))
-    
-    cmd_db.execute("UPDATE users SET discord_name = ? WHERE username = ?", (discord_name, username))
-    cmd_db.commit()
-    
-    socket.send(f"{LIGHTGREEN_EX + Colors.BOLD}Changed Discord Link to {MAGENTA}{discord_name}{RESET + Colors.RESET}".encode("utf8"))
+
+    else:
+        cmd_db.execute("UPDATE users SET discord_name = ? WHERE username = ?", (discord_name, username))
+        cmd_db.commit()
+        
+        socket.send(f"{LIGHTGREEN_EX + Colors.BOLD}Changed Discord Link to {MAGENTA}{discord_name}{RESET + Colors.RESET}".encode("utf8"))   
