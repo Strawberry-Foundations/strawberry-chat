@@ -37,5 +37,6 @@
 - NEW: If you mention a user (e.g. @someuser), it will be highlighted
 - NEW: Working Kick command
 - NEW: Added account creation date to user profile
+- NEW: User settings command to manage user flags
 - FIX: Fixed duplicated code which led to formatting errors
 -> For more information visit https://github.com/orgs/Strawberry-Foundations/projects/1/views/1
