@@ -70,6 +70,7 @@ def user_settings_command(socket: socket.socket, username: str, args: list):
                     
                     if new_username == username:
                         socket.send(f"{Colors.RESET + YELLOW}You shouldn't update your username to your current. Nothing changed.{RESET + Colors.RESET}".encode("utf8"))
+                        return
                         
                     else:                        
                         socket.send(f"{YELLOW + Colors.BOLD}Are you sure to change your username to {new_username}?{RESET + Colors.RESET}".encode("utf8"))
