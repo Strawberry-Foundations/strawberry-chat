@@ -34,9 +34,6 @@ from src.commands.etc import test_command
 from src.commands.admin import broadcast, mute, unmute
 from src.commands.user import online, afklist, afk, unafk, msgcount, members, description, memberlist, discord, user_settings
 
-# Startup title
-print(f"{CYAN + Colors.BOLD}* -- {chat_name} v{short_ver} {codename} ({server_edition}) -- *{RESET + Colors.RESET}")
-
 
 # Init logger
 class LogFormatter(logging.Formatter):
@@ -105,15 +102,6 @@ enable_messages         = config['flags']['enable_messages']
 max_message_length      = config['flags']['max_message_length']
 debug_mode              = config['flags']['debug_mode']
 online_mode             = config['flags']['online_mode']
-
-# Check if online mode is enabled + receive the global ip
-if online_mode:
-    print(f"{YELLOW + Colors.BOLD}>>> Connecting to the Strawberry API ...{RESET + Colors.RESET}")
-    global_ip           = get_global_ip()
-    print(f"{GREEN + Colors.BOLD}>>> Connected{RESET + Colors.RESET}")
-    
-else:
-    pass
 
 # Lists & Sets
 # afks = list([])
@@ -1449,11 +1437,13 @@ def server_commands(socket):
             socket.close()
             sys.exit(1)
         
-        elif command == "update":
+        elif command.startswith("update"):
+            args = command.replace("update", "").replace(" ", "")
+            
             if online_mode == False:
                 print(f"{YELLOW + Colors.BOLD}Updating strawberry-chat is not possible if online mode is disabled.{RESET + Colors.RESET}")
             else:
-                check_for_updates()
+                check_for_updates(args)
                 
                 
 
