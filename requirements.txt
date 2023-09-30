@@ -2,3 +2,4 @@ pyyaml
 colorama
 requests
 datetime
+pycryptodomex
