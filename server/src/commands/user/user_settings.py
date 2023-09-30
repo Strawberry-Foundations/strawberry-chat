@@ -90,7 +90,33 @@ def user_settings_command(socket: socket.socket, username: str, args: list):
                         
                     else:
                         socket.send(f"{Colors.RESET + RED}Cancelled!{RESET + Colors.RESET}".encode("utf8"))
+                
+                elif args[1] == "password":
+                    socket.send(f"{GREEN + Colors.BOLD}New Password: {RESET + Colors.RESET}".encode("utf8"))
+                    new_password = socket.recv(2048).decode("utf8")
                     
+                    cmd_db.execute("SELECT password FROM users WHERE username = ?", (username,))
+                    current_password = cmd_db.fetchone()[0]
+                    
+                    if new_password == current_password:
+                        socket.send(f"{Colors.RESET + YELLOW}You shouldn't update your password to your current. Nothing changed.{RESET + Colors.RESET}".encode("utf8"))
+                        return
+                        
+                    else:                        
+                        socket.send(f"{GREEN + Colors.BOLD}Confirm Password: {RESET + Colors.RESET}".encode("utf8"))
+                        confirm_password = socket.recv(2048).decode("utf8")
+                    
+                    if new_password != confirm_password:
+                        socket.send(f"{RED + Colors.BOLD}Passwords do not match{RESET + Colors.RESET}".encode("utf8"))
+                        return
+                    
+                    else:
+                        socket.send(f"{YELLOW + Colors.BOLD}Processing... {RESET + Colors.RESET}".encode("utf8"))
+                        
+                        cmd_db.execute("UPDATE users SET password = ? WHERE username = ?", (new_password, username))
+                        cmd_db.commit()
+                        socket.send(f"{LIGHTGREEN_EX + Colors.BOLD}Your password has been updated.{RESET + Colors.RESET}".encode("utf8"))
+                                        
                 else:
                     socket.send(f"{Colors.RESET + RED}Please pass a valid argument!{RESET + Colors.RESET}".encode("utf8"))
             
