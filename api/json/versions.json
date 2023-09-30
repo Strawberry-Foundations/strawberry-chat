@@ -1,4 +1,6 @@
 {
-    "stbchat": "v1.8.0b4+u1",
-    "stbclient": "v2.3.2"
+    "stbchat": {
+        "server:stable": "v1.7.1",
+        "server:dev": "v1.8.0b4+u1"
+    }
 }
