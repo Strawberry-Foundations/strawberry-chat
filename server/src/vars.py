@@ -108,3 +108,8 @@ admin_settings_help          = f"""{MAGENTA +  Colors.UNDERLINE + Colors.BOLD}Ad
         {BLUE + Colors.BOLD}/admin description <username> <description>: {RESET}Sets <username>'s description
         {BLUE + Colors.BOLD}/admin role <username> <role>: {RESET}Sets <username>'s role
     """
+    
+server_help_section    = f"""  {GREEN +  Colors.UNDERLINE + Colors.BOLD}Server commands{RESET + Colors.RESET}
+  {BLUE + Colors.BOLD}/help: {RESET}Help Command
+  {BLUE + Colors.BOLD}/about: {RESET}About {chat_name}
+  {BLUE + Colors.BOLD}/update: {RESET}Check for updates"""
