@@ -113,6 +113,11 @@ def user_settings_command(socket: socket.socket, username: str, args: list):
                     else:
                         socket.send(f"{YELLOW + Colors.BOLD}Processing... {RESET + Colors.RESET}".encode("utf8"))
                         
+                        new_password = str.encode(new_password)
+                        hashed_password = SHAKE256.new()
+                        hashed_password.update(new_password)
+                        new_password = hashed_password.read(26).hex()
+                        
                         cmd_db.execute("UPDATE users SET password = ? WHERE username = ?", (new_password, username))
                         cmd_db.commit()
                         socket.send(f"{LIGHTGREEN_EX + Colors.BOLD}Your password has been updated.{RESET + Colors.RESET}".encode("utf8"))
