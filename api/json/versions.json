@@ -6,8 +6,9 @@
         },
     
         "client": {
-                "stable": "v1.7.1",
-                "dev": "v1.8.0b4+u1"
+            "stable": "v2.3.2",
+            "lite": "v1.0.1",
+            "pico": "v1.0.1"
         }
     }
 }
