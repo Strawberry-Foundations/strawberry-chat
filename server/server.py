@@ -334,7 +334,7 @@ def clientThread(client):
                         pass
         
             # Global Command Executor
-            elif message.startswith("/"):
+            if message.startswith("/"):
                 message = message[1:]
                 args = message.split()
                 cmd = args[0]
