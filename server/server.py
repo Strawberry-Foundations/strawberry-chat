@@ -1183,7 +1183,6 @@ def clientThread(client):
             broadcast(f"{Colors.GRAY + Colors.BOLD}<--{Colors.RESET} {userRoleColor(user)}{user}{YELLOW + Colors.BOLD} has left the chat room!{RESET + Colors.RESET}")
             break
 
-
 def clientLogin(client):
     global db
     global logcur
@@ -1425,12 +1424,38 @@ def broadcast(message, sentBy=""):
 
 
 
-def cleanup():
+def cleanup(info_msg=True):
     if len(addresses) != 0:
         for sock in addresses.keys():
             sock.close()
-    print(f"{YELLOW + Colors.BOLD}Runtime has stopped.{RESET + Colors.RESET}")
-
+        
+    if info_msg:
+        log.info(f"{YELLOW + Colors.BOLD}Runtime has stopped.{RESET + Colors.RESET}")
+    
+def server_commands(socket):
+    while True:
+        command = input(f"{RESET + Colors.RESET}> ")
+        if command == "help":
+            print(server_help_section)
+            
+        elif command == "about":
+            print(f"""  {GREEN + Colors.UNDERLINE + Colors.BOLD}About {chat_name}{RESET + Colors.RESET}
+  {BLUE + Colors.BOLD}Thank you for using {chat_name}!{RESET}
+  {BLUE + Colors.BOLD}Version: {RESET}{short_ver} {codename} ({server_edition})
+  {BLUE + Colors.BOLD}Author: {RESET}{", ".join(authors)}{RESET + Colors.RESET}""")
+            
+        elif command == "exit":
+            cleanup(info_msg=False)
+            socket.close()
+            sys.exit(1)
+        
+        elif command == "update":
+            if online_mode == False:
+                print(f"{YELLOW + Colors.BOLD}Updating strawberry-chat is not possible if online mode is disabled.{RESET + Colors.RESET}")
+            else:
+                check_for_updates()
+                
+                
 
 def main():
     try:
@@ -1448,7 +1473,7 @@ def main():
         
         if test_mode:
             print(f"{YELLOW + Colors.BOLD}>>> Enabled test mode{RESET + Colors.RESET}")
-            print(f"{GREEN + Colors.BOLD}>>> {RESET}Server is running on {ipaddr}:{port}")
+            print(f"{GREEN + Colors.BOLD}>>> {RESET}Server is running on {ipaddr}:{port}{RESET + Colors.RESET}")
             mainThread = threading.Thread(target=connectionThread, args=(serverSocket,), daemon=True)
             mainThread.start()
             time.sleep(10)
@@ -1465,24 +1490,21 @@ def main():
             
             print(f"{GREEN + Colors.BOLD}>>> {RESET}Server is running on {ipaddr}:{port}")
             
-            def server_commands():
-                while True:
-                    command = input("> ")
-                    if command == "help":
-                        print("no u")
-
             connThread = threading.Thread(target=connectionThread, args=(serverSocket,))
             connThread.start()
             # connThread.join()
             
-            cmdThread = threading.Thread(target=server_commands)
-            cmdThread.start()
-            cmdThread.join()
+            try:
+                cmdThread = threading.Thread(target=server_commands, args=(serverSocket,))
+                cmdThread.start()
+                cmdThread.join()
+                
+            except KeyboardInterrupt:
+                pass
 
             cleanup()
             serverSocket.close()
             log.info("Server stopped")
-            print("Server has shut down.")
             
     except KeyboardInterrupt: 
         exit()
