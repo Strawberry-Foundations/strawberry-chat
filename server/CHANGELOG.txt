@@ -27,6 +27,8 @@
 - NEW: Added that bots will no longer be affected of stripping new lines
 - NEW: Added custom database wrapper (currently in development)
 - NEW: Added Feature/Edition Key for better User Experience
+- NEW: Added username changing feature
+- NEW: Added settings command for easier management of user flags (#27)
 - NEW: Removed time class and time functions
 - NEW: Removed command alias "/userinfo"
 - NEW: Updated /user command so it can now be used without argument to show your user profile
