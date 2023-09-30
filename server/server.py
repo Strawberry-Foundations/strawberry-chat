@@ -1464,10 +1464,20 @@ def main():
                 print(f"{RED + Colors.BOLD}>>> {YELLOW}WARNING:{RED} Online mode is disabled and your server might be in danger! Consider using the online mode!{RESET + Colors.RESET}")
             
             print(f"{GREEN + Colors.BOLD}>>> {RESET}Server is running on {ipaddr}:{port}")
+            
+            def server_commands():
+                while True:
+                    command = input("> ")
+                    if command == "help":
+                        print("no u")
 
             connThread = threading.Thread(target=connectionThread, args=(serverSocket,))
             connThread.start()
-            connThread.join()
+            # connThread.join()
+            
+            cmdThread = threading.Thread(target=server_commands)
+            cmdThread.start()
+            cmdThread.join()
 
             cleanup()
             serverSocket.close()
