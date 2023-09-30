@@ -17,6 +17,9 @@ import random
 import requests
 import re
 
+import hashlib
+from Cryptodome.Hash import SHAKE256
+
 from colorama import Fore, Style
 from .colors import *
 from init import *
@@ -206,3 +209,6 @@ def doesUserExist(uname):
         return True
     
     c.close()
+
+def check_password(hashed_password, user_password):
+    return hashed_password == hashlib.shake256(user_password.encode()).hexdigest()
