@@ -50,10 +50,12 @@ LIGHTWHITE_EX   = Fore.LIGHTWHITE_EX
 # Path of client.py
 client_dir = os.path.dirname(os.path.realpath(__file__))
 
-
-# Open Configuration
-with open(client_dir + "/config.yml") as config:
-        data = yaml.load(config, Loader=SafeLoader)
+if os.path.exists(client_dir + "/users.db"):
+    # Open Configuration
+    with open(client_dir + "/config.yml") as config:
+            data = yaml.load(config, Loader=SafeLoader)
+else:
+    print(f"{RED}Error: Your configuration is not available. Please check if there is a config.yml in the client.py folder. {RESET}")
 
 
 # Variables
