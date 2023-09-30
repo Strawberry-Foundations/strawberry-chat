@@ -34,9 +34,10 @@
 - NEW: We added direct messages to send private messages to a specific member instead of sending them to everyone.
 - NEW: Updated user info command with Strawberry ID/Network intregation and online/offline status information
 - NEW: Hashtag Placeholder Format (HTPF) for chat messages and broadcast command, to send colorized messages or the current time (e.g. #today)
-- NEW: If you mention a user (e.g. @someuser), it will be highlighted
+- NEW: NEW: Added user mentioning, so if you mention a user (e.g. @someuser), it will be highlighted
 - NEW: Working Kick command
 - NEW: Added account creation date to user profile
 - NEW: User settings command to manage user flags
+- NEW: Reworked command system
 - FIX: Fixed duplicated code which led to formatting errors
 -> For more information visit https://github.com/orgs/Strawberry-Foundations/projects/1/views/1
