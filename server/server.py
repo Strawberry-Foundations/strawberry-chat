@@ -287,8 +287,15 @@ def clientThread(client):
     broadcast(f"{Colors.GRAY + Colors.BOLD}-->{Colors.RESET} {userRoleColor(user)}{user}{GREEN + Colors.BOLD} has joined the chat room!{RESET + Colors.RESET}")
 
     while True:
-        try:            
-            message = client.recv(2048).decode("utf8")
+        try:
+            try:
+                message = client.recv(2048).decode("utf8")
+                
+            except Exception as e:
+                log.warning(f"A side-by-side error occurred.")
+                print(e)
+                return
+            
             message_length = len(message)
             
             clcur = db.cursor()
