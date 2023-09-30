@@ -36,7 +36,7 @@ def user():
     return jsonify({'ip': request.remote_addr}), 200 
 
 @app.route('/v1/versions', methods=['GET', 'POST'])
-def v1_index():
+def versions():
     return ajson("versions")
 
 if __name__ == "__main__":
