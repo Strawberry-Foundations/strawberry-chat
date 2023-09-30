@@ -32,7 +32,7 @@ from src.commands import PermissionLevel, execute_command, list_commands
 from src.commands.default import help, server_info, news, changelog, about, dm
 from src.commands.etc import test_command
 from src.commands.admin import broadcast
-from src.commands.user import online, afklist, afk, unafk, msgcount, members, description, memberlist
+from src.commands.user import online, afklist, afk, unafk, msgcount, members, description, memberlist, discord
 
 # Startup title
 print(f"{CYAN + Colors.BOLD}* -- {chat_name} v{short_ver} {codename} ({server_edition}) -- *{RESET + Colors.RESET}")
@@ -637,24 +637,6 @@ def clientThread(client):
                     
                 else:
                     client.send(f"{RED}Sorry, you do not have permissons for that.{RESET}".encode("utf8"))
-            
-            
-            # /discord Command
-            elif message.startswith("/discord "):
-                discord_name = message.replace("/discord ", "")
-
-                if discord_name.lower() == "remove":
-                    c.execute("UPDATE users SET discord_name = NULL WHERE username = ?", (user,))
-                    db.commit()
-                    
-                    client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Removed Discord Link{RESET + Colors.RESET}".encode("utf8"))
-                    continue
-                
-                c.execute("UPDATE users SET discord_name = ? WHERE username = ?", (discord_name, user))
-                db.commit()
-                
-                client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Changed Discord Link to {MAGENTA}{discord_name}{RESET + Colors.RESET}".encode("utf8"))
-                continue
 
         
             # /ban Command
