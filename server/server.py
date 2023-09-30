@@ -354,6 +354,10 @@ def clientThread(client):
                         role = PermissionLevel.MEMBER
                     case "admin":
                         role = PermissionLevel.ADMIN
+                    case "bot":
+                        role = PermissionLevel.BOT
+                    case _:
+                        role = PermissionError.NONE
                         
                 execute_command(cmd, client, user, role, args)
                 continue
