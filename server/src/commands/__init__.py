@@ -29,7 +29,12 @@ def execute_command(command_str, socket: socket.socket, user: str, user_perms: P
             return
         
         if cmd[1] > args.__len__():
-            socket.send(f"{RED}Not enough arguments! The command requires {cmd[1]} arguments but {args.__len__()} were given.{RESET}".encode("utf8"))
+            if cmd[1] == 1:
+                argumentsString = "argument"
+            else: 
+                argumentsString = "arguments"
+                
+            socket.send(f"{RED}Not enough arguments! The command requires {cmd[1]} {argumentsString} but {args.__len__()} were given.{RESET}".encode("utf8"))
             return
         
         cmd[0](socket, user, args)
