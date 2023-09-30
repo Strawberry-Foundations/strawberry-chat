@@ -6,7 +6,7 @@ from src.colors import *
 from src.db import Database
 from src.vars import user_settings_help, admin_settings_help
 
-from init import server_dir
+from init import server_dir, users, addresses
 
 
 @register_command("settings", arg_count=1)
@@ -30,11 +30,20 @@ def user_settings_command(socket: socket.socket, username: str, args: list):
                 cmd_db.execute("UPDATE users SET discord_name = ? WHERE username = ?", (args[1], username))
                 cmd_db.commit()
                 socket.send(f"{LIGHTGREEN_EX + Colors.BOLD}Updated discord name to {args[1]}{RESET + Colors.RESET}".encode("utf8"))
+            
+            case "role_color":
+                color = args[1]
+                colors = ["red", "green", "cyan", "blue", "yellow", "magenta",
+                          "lightred", "lightgreen", "lightcyan", "lightblue", "lightyellow", "lightmagenta"
+                          "boldred", "boldgreen", "boldcyan", "boldblue", "boldyellow", "boldmagenta"]
                 
-            case "description":
-                cmd_db.execute("UPDATE users SET description = ? WHERE username = ?", (args[1], username))
-                cmd_db.commit()
-                socket.send(f"{LIGHTGREEN_EX + Colors.BOLD}Updated description to {args[1]}{RESET + Colors.RESET}".encode("utf8"))
+                if color in colors:
+                    cmd_db.execute("UPDATE users SET role_color = ? WHERE username = ?", (color, username))
+                    cmd_db.commit()
+                    socket.send(f"{LIGHTGREEN_EX + Colors.BOLD}Your role color has been updated to {color}{RESET + Colors.RESET}".encode("utf8"))
+                
+                else:
+                    socket.send(f"{Colors.RESET + RED}Invalid role color!{RESET + Colors.RESET}".encode("utf8"))                
             
             case "badge":
                 cmd_db.execute("SELECT badges FROM users WHERE username = ?", (username,))
@@ -49,28 +58,47 @@ def user_settings_command(socket: socket.socket, username: str, args: list):
                 
                 else:
                     socket.send(f"{RED + Colors.BOLD}You do not own this badge!{RESET + Colors.RESET}".encode("utf8"))
-            
-            case "role_color":
-                color = args[1]
-                colors = ["red", "green", "cyan", "blue", "yellow", "magenta",
-                          "lightred", "lightgreen", "lightcyan", "lightblue", "lightyellow", "lightmagenta"
-                          "boldred", "boldgreen", "boldcyan", "boldblue", "boldyellow", "boldmagenta"]
+                    
+            case "description":
+                cmd_db.execute("UPDATE users SET description = ? WHERE username = ?", (args[1], username))
+                cmd_db.commit()
+                socket.send(f"{LIGHTGREEN_EX + Colors.BOLD}Updated description to {args[1]}{RESET + Colors.RESET}".encode("utf8"))
                 
-                if color in colors:
-                    cmd_db.execute("UPDATE users SET role_color = ? WHERE username = ?", (color, username))
-                    cmd_db.commit()
-                    socket.send(f"{LIGHTGREEN_EX + Colors.BOLD}Your role color has been updated to {color}{RESET + Colors.RESET}".encode("utf8"))
-                
+            case "account":
+                if args[1] == "username":
+                    new_username = args[2]
+                    
+                    if new_username == username:
+                        socket.send(f"{Colors.RESET + YELLOW}You shouldn't update your username to your current. Nothing changed.{RESET + Colors.RESET}".encode("utf8"))
+                        
+                    else:                        
+                        socket.send(f"{YELLOW + Colors.BOLD}Are you sure to change your username to {new_username}?{RESET + Colors.RESET}".encode("utf8"))
+                        confirmUsername = socket.recv(2048).decode("utf8")
+                    
+                    if confirmUsername == "yes":
+                        socket.send(f"{YELLOW + Colors.BOLD}Processing... {RESET + Colors.RESET}".encode("utf8"))
+                        
+                        cmd_db.execute("UPDATE users SET username = ? WHERE username = ?", (new_username, username))
+                        cmd_db.commit()
+                        socket.send(f"{LIGHTGREEN_EX + Colors.BOLD}Your username has been updated to {new_username}. You may need to relogin in strawberry chat.{RESET + Colors.RESET}".encode("utf8"))
+                        
+                        del addresses[socket]
+                        del users[socket]
+                        socket.close()
+                        return
+                        
+                    else:
+                        socket.send(f"{Colors.RESET + RED}Cancelled!{RESET + Colors.RESET}".encode("utf8"))
+                    
                 else:
-                    socket.send(f"{Colors.RESET + RED}Invalid role color!{RESET + Colors.RESET}".encode("utf8"))
+                    socket.send(f"{Colors.RESET + RED}Please pass a valid argument!{RESET + Colors.RESET}".encode("utf8"))
             
             case _:
                 socket.send(f"{Colors.RESET + RED}Invalid subcommand!{RESET + Colors.RESET}".encode("utf8"))
                     
     except Exception as e: 
         socket.send(f"{RED}Not enough arguments!{RESET}".encode("utf8"))
-        print(e)
-            
+        
             
 @register_command("admin", arg_count=1)
 def admin_settings_command(socket: socket.socket, username: str, args: list):
