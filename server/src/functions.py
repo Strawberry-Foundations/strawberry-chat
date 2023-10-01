@@ -6,6 +6,7 @@ import sys
 import logging
 import sqlite3 as sql
 import hashlib
+import argon2
 
 import yaml
 from yaml import SafeLoader
@@ -215,3 +216,19 @@ def password_hashing(password):
     password = sha256.hexdigest()
     
     return password
+
+def hash_password(password):
+    ph = argon2.PasswordHasher()
+    hashed_password = ph.hash(password)
+    
+    return hashed_password
+
+def verify_password(stored_password, entered_password):
+    ph = argon2.PasswordHasher()
+    
+    try:
+        ph.verify(stored_password, entered_password)
+        return True
+    
+    except argon2.exceptions.VerifyMismatchError:
+        return False
