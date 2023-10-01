@@ -14,7 +14,6 @@ import sqlite3 as sql
 import yaml
 from yaml import SafeLoader
 
-
 import atexit
 import datetime
 import time
