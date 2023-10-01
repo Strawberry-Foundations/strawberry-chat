@@ -6,10 +6,10 @@ import sys
 import re
 from enum import Enum
 
-if sys.platform == "linux":
-    import readline
-elif sys.platform == "win32":
-    pass
+# if sys.platform == "linux":
+#     import readline
+# elif sys.platform == "win32":
+#     pass
 
 BOLD = '\033[1m'
 UNDERLINE = '\033[4m'
@@ -142,8 +142,12 @@ class Scapi:
                         self.stbc_socket.send(message.encode("utf8"))
 
                     except:
-                        self.logger(f"{RED}Message could not be sent", type=Scapi.LogLevel.ERROR)
-                        break
+                        if threadFlag == False:
+                            pass
+                        
+                        else:
+                            self.logger(f"{RED}Message could not be sent", type=Scapi.LogLevel.ERROR)
+                            break
         
         def recv_message(self, raw=False, ansi=False):
             global threadFlag
