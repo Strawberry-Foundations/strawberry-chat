@@ -1199,12 +1199,12 @@ def clientRegister(client):
     for uname in registered_username.split():
         uname = uname.lower()
         
-        # If username is in blacklisted words, return a error message and start from the beginning
+        # If username is in blacklisted words, return an error message and start from the beginning
         if uname in blacklist:
             client.send(f"{YELLOW + Colors.BOLD}This username is not allowed{RESET + Colors.RESET}\n".encode("utf8"))    
             clientRegister(client)
             
-        # If username is in this set of blacklisted words, return a error message and start from the beginning
+        # If username is in this set of blacklisted words, return an error message and start from the beginning
         elif uname in ["exit", "register", "login"]:
             client.send(f"{YELLOW + Colors.BOLD}This username is not allowed{RESET + Colors.RESET}\n".encode("utf8"))    
             clientRegister(client)
@@ -1224,23 +1224,29 @@ def clientRegister(client):
         log.error("A registration exception occured")
         debugLogger(e, "021")
 
+    # Ask and receive password
     client.send(f"{GREEN + Colors.BOLD}Password: {RESET + Colors.RESET}".encode("utf8"))
-    registeredPassword = client.recv(2048).decode("utf8")
+    registered_password = client.recv(2048).decode("utf8")
     
+    # Confirm the new password
     client.send(f"{GREEN + Colors.BOLD}Confirm Password: {RESET + Colors.RESET}".encode("utf8"))
-    confirmPassword = client.recv(2048).decode("utf8")
+    confirm_password = client.recv(2048).decode("utf8")
     
-    if registeredPassword != confirmPassword:
+    # If passwords does not match, return an error message
+    if registered_password != confirm_password:
         client.send(f"{RED + Colors.BOLD}Passwords do not match{RESET + Colors.RESET}".encode("utf8"))
-        clientRegister()
+        clientRegister(client)
     
+    # Ask and receive role color
     client.send(f"{GREEN + Colors.BOLD}Role Color (Red, Green, Cyan, Blue, Yellow, Magenta): {RESET + Colors.RESET}".encode("utf8"))
-    registeredRoleColor = client.recv(2048).decode("utf8")
+    registered_role_color = client.recv(2048).decode("utf8")
 
+    # Ask if everything is correct
     client.send(f"{YELLOW + Colors.BOLD}Is everything correct? (You can change your username, role color and password at any time){RESET + Colors.RESET}".encode("utf8"))
-    confirmUsername = client.recv(2048).decode("utf8")
+    confirm_account_creation = client.recv(2048).decode("utf8")
     
-    if confirmUsername == "yes":
+    # If confirm_account_creation is yes, create the new account
+    if confirm_account_creation.lower() == "yes":
         client.send(f"{YELLOW + Colors.BOLD}Processing... {RESET + Colors.RESET}".encode("utf8"))
         
         try:
@@ -1251,14 +1257,28 @@ def clientRegister(client):
             user_ids = logcur.fetchall()
             user_ids = str(user_ids[-1])
             user_ids = user_ids[1:-2].replace(",", "")
-            user_ids = int(user_ids) + 1
+            user_id = int(user_ids) + 1
             
             creation_date = time.time()
             
-            registeredPassword = str.encode(registeredPassword)
-            registeredPassword = password_hashing(registeredPassword)
+            registered_password = hash_password(registered_password)
 
-            logcur.execute('INSERT INTO users (username, password, role, role_color, enable_blacklisted_words, account_enabled, muted, user_id, msg_count, enable_dms, creation_date) VALUES (?, ?, "member", ?, "true", "true", "false", ?, ?, "true", ?)', (registered_username, registeredPassword, registeredRoleColor.lower(), user_ids, 0, creation_date))
+            # logcur.execute('INSERT INTO users (username, password, role, role_color, enable_blacklisted_words, account_enabled, muted, user_id, msg_count, enable_dms, creation_date) VALUES (?, ?, "member", ?, "true", "true", "false", ?, ?, "true", ?)', (registered_username, registered_password, registered_role_color.lower(), user_ids, 0, creation_date))
+            logcur.execute('''
+                           INSERT INTO users (
+                               username,
+                               password,
+                               role,
+                               role_color,
+                               enable_blacklisted_words,
+                               account_enabled,
+                               muted,
+                               user_id,
+                               msg_count,
+                               enable_dms,
+                               creation_date)
+                               VALUES (?, ?, "member", ?, "true", "true", "false", ?, ?, "true", ?)''',
+                            (registered_username, registered_password, registered_role_color.lower(), user_id, 0, creation_date))
             db.commit()
             
             client.send(f"{GREEN + Colors.BOLD}Created!{RESET + Colors.RESET}".encode("utf8"))
@@ -1343,11 +1363,11 @@ def clientLogin(client):
                     logged_in = True    
                     return username
             
-            # If passwords does not match, return a error message and start from the beginning
+            # If passwords does not match, return an error message and start from the beginning
             else:
                 client.send(f"{RED + Colors.BOLD}Wrong username or password.{RESET + Colors.RESET}\n".encode("utf8"))
         
-        # If the password could not be fetched from the database, return a error message and start from the beginning
+        # If the password could not be fetched from the database, return an error message and start from the beginning
         else:
             client.send(f"{RED + Colors.BOLD}User not found.\n{RESET + Colors.RESET}".encode("utf8"))
 
