@@ -11,10 +11,10 @@ Strawberry Chat is a simple chat platform based on Python TCP sockets. It allows
 My goal was to develop a chat app for the terminal, which is not only minimal, but also useful. Strawberry Chat is actively developing and getting more and more features - and the best thing is, everything is free and stays free! 
 In addition, Strawberry Chat is open source. This means that everyone can contribute to the project. Also, every user can create his own server if he/she wants to chat privately with his/her friends - we are happy about every single user and accept everyone with a warm heart! 
 
-## Current state ![State](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2FStrawberry-Foundations%2Fstrawberry-chat%2Fmain%2Fapi%2Fjson%2Fversions.json&query=%24.stbchat.server.stable&label=%20&color=success) ![State](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2FStrawberry-Foundations%2Fstrawberry-chat%2Fmain%2Fapi%2Fjson%2Fversions.json&query=%24.stbchat.server.dev&label=%20&color=success)
-Currently, Strawberry Chat is being developed a lot, even almost daily. Currently we are in a end **beta** stage. The big part already exists and Strawberry Chat is very well usable, but there are still some things missing, ***including some commands, complete porting of all commands to the new command system and important bug fixes***
+<!-- ## Current state ![State](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2FStrawberry-Foundations%2Fstrawberry-chat%2Fmain%2Fapi%2Fjson%2Fversions.json&query=%24.stbchat.server.stable&label=%20&color=success) ![State](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2FStrawberry-Foundations%2Fstrawberry-chat%2Fmain%2Fapi%2Fjson%2Fversions.json&query=%24.stbchat.server.dev&label=%20&color=success)
+Currently, Strawberry Chat is being developed a lot, even almost daily. Currently we are in a end **beta** stage. The big part already exists and Strawberry Chat is very well usable, but there are still some things missing, ***including some commands, complete porting of all commands to the new command system and important bug fixes*** -->
 
-## Password Encryption/Hashing
+## Password Hashing
 Yes! Finally! Password encryption/hashing is here! With the release of v1.8.0pre1 the team has officially added password hashing. If security issues should arise, or bugs should occur, please open an issue! The system has already been tested, but not completely. Thanks :)
 
 ## FaQ
