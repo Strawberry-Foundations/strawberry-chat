@@ -1178,36 +1178,51 @@ def clientThread(client):
 def clientRegister(client):
     global db
     global logcur
+    
+    # Send a welcome message
     client.send(f"{MAGENTA + Colors.BOLD + Colors.UNDERLINE}Welcome!{RESET + Colors.RESET}\n        {Colors.BOLD}Register, to chat with us!{Colors.RESET}".encode("utf8"))
 
     time.sleep(0.05)
-    client.send(f"{GREEN + Colors.BOLD}Username: {RESET + Colors.RESET}".encode("utf8"))
-    registeredUsername = client.recv(2048).decode("utf8")
     
-    if registeredUsername.lower() == "exit":
+    # Ask for a username that the user wants
+    client.send(f"{GREEN + Colors.BOLD}Username: {RESET + Colors.RESET}".encode("utf8"))
+    
+    # Receive username
+    registered_username = client.recv(2048).decode("utf8")
+    
+    # If username is exit, exit the registration process 
+    if registered_username.lower() == "exit":
         client.close()
         sys.exit()
     
-    for uname in registeredUsername.split():
+    # Check if the username is allowed
+    for uname in registered_username.split():
         uname = uname.lower()
         
+        # If username is in blacklisted words, return a error message and start from the beginning
         if uname in blacklist:
-            client.send(f"{YELLOW + Colors.BOLD}This username is not allowed{RESET + Colors.RESET}".encode("utf8"))    
-            client.close()
-            sys.exit()
+            client.send(f"{YELLOW + Colors.BOLD}This username is not allowed{RESET + Colors.RESET}\n".encode("utf8"))    
+            clientRegister(client)
+            
+        # If username is in this set of blacklisted words, return a error message and start from the beginning
+        elif uname in ["exit", "register", "login"]:
+            client.send(f"{YELLOW + Colors.BOLD}This username is not allowed{RESET + Colors.RESET}\n".encode("utf8"))    
+            clientRegister(client)
+    
+    # Check if the username is already in use
     try:
-        logcur.execute("SELECT username FROM users WHERE username = ? ", (registeredUsername,))
+        logcur.execute("SELECT username FROM users WHERE username = ? ", (registered_username,))
         
         usedUsernames = logcur.fetchall()[0]
         usedUsernames = "".join(usedUsernames)
         
-        
         if usedUsernames == usedUsernames:
-            client.send(f"{YELLOW + Colors.BOLD}This username is already in use!{RESET + Colors.RESET}".encode("utf8"))    
-            clientRegister()
+            client.send(f"{YELLOW + Colors.BOLD}This username is already in use!{RESET + Colors.RESET}\n".encode("utf8"))    
+            clientRegister(client)
         
-    except:
-        pass
+    except Exception as e:
+        log.error("A registration exception occured")
+        debugLogger(e, "021")
 
     client.send(f"{GREEN + Colors.BOLD}Password: {RESET + Colors.RESET}".encode("utf8"))
     registeredPassword = client.recv(2048).decode("utf8")
@@ -1243,7 +1258,7 @@ def clientRegister(client):
             registeredPassword = str.encode(registeredPassword)
             registeredPassword = password_hashing(registeredPassword)
 
-            logcur.execute('INSERT INTO users (username, password, role, role_color, enable_blacklisted_words, account_enabled, muted, user_id, msg_count, enable_dms, creation_date) VALUES (?, ?, "member", ?, "true", "true", "false", ?, ?, "true", ?)', (registeredUsername, registeredPassword, registeredRoleColor.lower(), user_ids, 0, creation_date))
+            logcur.execute('INSERT INTO users (username, password, role, role_color, enable_blacklisted_words, account_enabled, muted, user_id, msg_count, enable_dms, creation_date) VALUES (?, ?, "member", ?, "true", "true", "false", ?, ?, "true", ?)', (registered_username, registeredPassword, registeredRoleColor.lower(), user_ids, 0, creation_date))
             db.commit()
             
             client.send(f"{GREEN + Colors.BOLD}Created!{RESET + Colors.RESET}".encode("utf8"))
