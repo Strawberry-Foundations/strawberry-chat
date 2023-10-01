@@ -23,12 +23,13 @@ PURPLE = '\033[35m'
 CYAN = '\033[36m'
 WHITE = '\033[37m'
 
-version = "0.10.1"
+version = "0.10.2"
 command_registry = {}
 
 class Messages:
     permission_error_msg = "#redYou lack the permission to use this command!#reset"
     command_not_found_msg = "#redCommand '%s' not found.#reset"
+    not_enough_arguments = "#redNot enough arguments! Command requires %s arguments but %s were given#reset"
 
 class Scapi:
     class LogLevel:
@@ -250,7 +251,7 @@ class Scapi:
                     return
                 
                 if cmd[1] > args.__len__():
-                    self.send_message(f"Not enough arguments - command requires {cmd[1]} arguments but {args.__len__()} were given")
+                    self.send_message(Messages.not_enough_arguments % (cmd[1], args.__len__()))
                     return
                 
                 cmd[0](user, args)
