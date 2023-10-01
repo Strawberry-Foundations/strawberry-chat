@@ -175,3 +175,4 @@ discord/config.yml
 deprecated/server/log.txt
 deprecated/server/messages.txt
 client/client.java
+tokens.json
