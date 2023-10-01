@@ -73,6 +73,7 @@
 - SCAPI: Added get_username_by_msg function 
 - SCPAI: Rework of command system, now with decorators
 - SCAPI: Fixed printing "Message could not be sent" when exiting/stopping the bot
+- SCAPI: Unimported readline because it makes problems
 
 - OPTIMIZATION: Removed example database, because the server will now create the database when the database does not exist
 - OPTIMIZATION: Moved table_query to top, added new sys argument to regenerate the database
