@@ -5,7 +5,7 @@ import socket
 from src.colors import *
 from src.db import Database
 from src.vars import user_settings_help, admin_settings_help
-from src.functions import password_hashing
+from src.functions import hash_password
 
 from init import server_dir, users, addresses
 
@@ -96,8 +96,7 @@ def user_settings_command(socket: socket.socket, username: str, args: list):
                     socket.send(f"{GREEN + Colors.BOLD}New Password: {RESET + Colors.RESET}".encode("utf8"))
                     new_password = socket.recv(2048).decode("utf8")
                     
-                    new_password = str.encode(new_password)
-                    new_password = password_hashing(new_password)
+                    new_password = hash_password(new_password)
                     
                     cmd_db.execute("SELECT password FROM users WHERE username = ?", (username,))
                     current_password = cmd_db.fetchone()[0]
@@ -110,8 +109,7 @@ def user_settings_command(socket: socket.socket, username: str, args: list):
                         socket.send(f"{GREEN + Colors.BOLD}Confirm Password: {RESET + Colors.RESET}".encode("utf8"))
                         confirm_password = socket.recv(2048).decode("utf8")
                         
-                        confirm_password = str.encode(confirm_password)
-                        confirm_password = password_hashing(confirm_password)
+                        confirm_password = hash_password(confirm_password)
                     
                     if new_password != confirm_password:
                         socket.send(f"{RED + Colors.BOLD}Passwords do not match{RESET + Colors.RESET}".encode("utf8"))
