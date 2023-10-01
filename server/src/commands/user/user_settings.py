@@ -111,11 +111,9 @@ def user_settings_command(socket: socket.socket, username: str, args: list):
                     else:                        
                         socket.send(f"{GREEN + Colors.BOLD}Confirm Password: {RESET + Colors.RESET}".encode("utf8"))
                         confirm_password = socket.recv(2048).decode("utf8")
-                        confirm_password = str.encode(confirm_password)
                         
-                        hashed_password = SHA256.new()
-                        hashed_password.update(confirm_password)
-                        confirm_password = hashed_password.read(26).hex()
+                        confirm_password = str.encode(confirm_password)
+                        confirm_password = password_hashing(confirm_password)
                     
                     if new_password != confirm_password:
                         socket.send(f"{RED + Colors.BOLD}Passwords do not match{RESET + Colors.RESET}".encode("utf8"))
