@@ -14,8 +14,6 @@ import sqlite3 as sql
 import yaml
 from yaml import SafeLoader
 
-from Cryptodome.Hash import SHA256
-import hashlib
 
 import atexit
 import datetime
