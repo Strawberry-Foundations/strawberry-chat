@@ -38,6 +38,7 @@
 - NEW: Updated /user command so it can now be used without argument to show your user profile
 - NEW: Applied repl_htpf function to broadcast command
 - NEW: The response url for getting versions from the stbapi will now be the url from src.vars
+- NEW: Improved user register system
 
 - MODULARITY: Moved escape_ansi function to functions source file
 - MODULARITY: Moved help sections to vars source file
