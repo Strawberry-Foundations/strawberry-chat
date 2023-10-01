@@ -2,9 +2,9 @@ from .colors import *
 
 # Version-specified Variables & important variables
 base_ver                = "1.8.0"
-short_ver               = "1.8.0pre2+u1"
+short_ver               = "1.8.0"
 full_ver                = "v" + short_ver
-update_channel          = "dev"
+update_channel          = "stable"
 ver                     = short_ver + "-vacakes"
 chat_name               = "Strawberry Chat"
 codename                = "Vanilla Cake"
