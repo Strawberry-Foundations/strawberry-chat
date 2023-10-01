@@ -2,7 +2,7 @@ from .colors import *
 
 # Version-specified Variables & important variables
 base_ver                = "1.8.0"
-short_ver               = "1.8.0pre1"
+short_ver               = "1.8.0pre2"
 full_ver                = "v" + short_ver
 update_channel          = "dev"
 ver                     = short_ver + "-vacakes"
