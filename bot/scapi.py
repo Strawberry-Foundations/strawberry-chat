@@ -219,7 +219,7 @@ class Scapi:
 
             return decorator
 
-        def execute_command(self, command_name, user: str, args: list, permission_error_msg=Messages.permission_error_msg, command_not_found_msg = Messages.command_not_found_msg):
+        def execute_command(self, command_name, user: str, args: list, permission_error_msg=Messages.permission_error_msg, command_not_found_msg = Messages.command_not_found_msg, not_enough_arguments = Messages.not_enough_arguments):
             if self.escape_ansi(command_name) in command_registry:
                 cmd = command_registry[self.escape_ansi(command_name)]
 
@@ -251,7 +251,7 @@ class Scapi:
                     return
                 
                 if cmd[1] > args.__len__():
-                    self.send_message(Messages.not_enough_arguments % (cmd[1], args.__len__()))
+                    self.send_message(not_enough_arguments % (cmd[1], args.__len__()))
                     return
                 
                 cmd[0](user, args)
