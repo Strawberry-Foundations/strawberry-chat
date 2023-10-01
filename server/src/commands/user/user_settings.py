@@ -1,7 +1,7 @@
 from .. import register_command
 
 import socket
-from Cryptodome.Hash import SHAKE256
+from Cryptodome.Hash import SHA256
 
 from src.colors import *
 from src.db import Database
@@ -97,7 +97,7 @@ def user_settings_command(socket: socket.socket, username: str, args: list):
                     new_password = socket.recv(2048).decode("utf8")
                     new_password = str.encode(new_password)
                     
-                    hashed_password = SHAKE256.new()
+                    hashed_password = SHA256.new()
                     hashed_password.update(new_password)
                     new_password = hashed_password.read(26).hex()
                     
@@ -113,7 +113,7 @@ def user_settings_command(socket: socket.socket, username: str, args: list):
                         confirm_password = socket.recv(2048).decode("utf8")
                         confirm_password = str.encode(confirm_password)
                         
-                        hashed_password = SHAKE256.new()
+                        hashed_password = SHA256.new()
                         hashed_password.update(confirm_password)
                         confirm_password = hashed_password.read(26).hex()
                     
