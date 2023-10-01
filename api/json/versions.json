@@ -2,7 +2,7 @@
     "stbchat": {
         "server": {
             "stable": "v1.7.1",
-            "dev": "v1.8.0pre2"
+            "dev": "v1.8.0pre2+u1"
         },
     
         "client": {
@@ -14,7 +14,7 @@
         "scapi": {
             "bot": {
                 "stable": "-",
-                "latest": "0.10.1"
+                "latest": "0.10.2"
             }
         }
     }
