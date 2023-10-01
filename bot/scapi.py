@@ -23,7 +23,7 @@ PURPLE = '\033[35m'
 CYAN = '\033[36m'
 WHITE = '\033[37m'
 
-version = "0.10.0+u1"
+version = "0.10.1"
 command_registry = {}
 
 class Messages:
