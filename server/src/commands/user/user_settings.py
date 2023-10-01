@@ -5,7 +5,7 @@ import socket
 from src.colors import *
 from src.db import Database
 from src.vars import user_settings_help, admin_settings_help
-from src.functions import hash_password
+from src.functions import hash_password, verify_password, escape_ansi
 
 from init import server_dir, users, addresses
 
@@ -94,18 +94,18 @@ def user_settings_command(socket: socket.socket, username: str, args: list):
                 
                 elif args[1] == "password":
                     socket.send(f"{GREEN + Colors.BOLD}New Password: {RESET + Colors.RESET}".encode("utf8"))
-                    new_password = socket.recv(2048).decode("utf8")
-                    
-                    new_password = hash_password(new_password)
+                    new_password = escape_ansi(socket.recv(2048).decode("utf8"))
+                    new_password = new_password.strip("\n")
                     
                     cmd_db.execute("SELECT password FROM users WHERE username = ?", (username,))
-                    current_password = cmd_db.fetchone()[0]
+                    result = cmd_db.fetchone()
+                    stored_password = result[0]
                     
-                    if new_password == current_password:
+                    if verify_password(stored_password, new_password):
                         socket.send(f"{Colors.RESET + YELLOW}You shouldn't update your password to your current. Nothing changed.{RESET + Colors.RESET}".encode("utf8"))
                         return
                         
-                    else:                        
+                    else:                   
                         socket.send(f"{GREEN + Colors.BOLD}Confirm Password: {RESET + Colors.RESET}".encode("utf8"))
                         confirm_password = socket.recv(2048).decode("utf8")
                         
