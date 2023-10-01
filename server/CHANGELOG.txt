@@ -2,18 +2,18 @@
 
 - IMPORTANT: Complete new command system
 - IMPORTANT: Much more code modularity
-- IMPORTANT: Added password hashing
+- NEW: Added password hashing (#24, #40, #41)
 - NEW: Added memberlist command with beatiful representation of registered members and their roles
 - NEW: Added direct messages to send private/direct messages to members, instead sending it to everyone
 - NEW: Added message counter
 - NEW: Added online member count to memberlist
 - NEW: Added stbchat plus user badge
 - NEW: Added account creation date to user profile
-- NEW: Added "Member since" to user profile (displays currently unix time 0)
+- NEW: Added "Member since" to user profile
 - NEW: Added many new commands to help section
-- NEW: Added dm activation and disactivation (currently not adjustable)
+- NEW: Added dm activation and disactivation
 - NEW: Added strawberry badge
-- NEW: Added online/offline/... status to user profile command
+- NEW: Added online/offline/afk status to user profile command
 - NEW: Added isOnline func to userinfo + changed string
 - NEW: Added strawberry id connection to user profile
 - NEW: Added reworked kick command
@@ -24,13 +24,14 @@
 - NEW: Added functions source file for modularity
 - NEW: Added user creation date to user profile
 - NEW: Added Hashtag Placeholder Format Support (HTPF) for chat messages and broadcast command, to send colorized messages or the current time (e.g. #today or #red)
-- NEW: Added an (unstable) Bard chat bot!
+- NEW: Added an (unstable) Bard chat bot
 - NEW: Added that bots will no longer be affected of stripping new lines
 - NEW: Added custom database wrapper (currently in development)
 - NEW: Added Feature/Edition Key for better User Experience
 - NEW: Added username changing feature
 - NEW: Added password changing feature
 - NEW: Added settings command for easier management of user flags (#27)
+- NEW: Added server command input, for example updating the server or getting information about the server
 - NEW: Removed time class and time functions
 - NEW: Removed command alias "/userinfo"
 - NEW: Updated /user command so it can now be used without argument to show your user profile
@@ -84,3 +85,4 @@
 - UPDATE: Registration updated; will now set msg_count to 0 when registering
 
 - API: Added function to get IP
+- API: Added new url endpoint to get versions from our products (e.g. strawberry-chat server/client, ...)
