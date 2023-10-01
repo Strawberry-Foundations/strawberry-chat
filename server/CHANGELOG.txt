@@ -2,7 +2,8 @@
 
 - IMPORTANT: Complete new command system
 - IMPORTANT: Much more code modularity
-- NEW: Added password hashing (#24, #40, #41)
+- NEW: Added password hashing (#24, #40, #41, #42)
+- NEW: Added a complete new login system, which fixed security issue #42
 - NEW: Added memberlist command with beatiful representation of registered members and their roles
 - NEW: Added direct messages to send private/direct messages to members, instead sending it to everyone
 - NEW: Added message counter
@@ -48,6 +49,7 @@
 - MODULARITY: Moved afks variable to init
 - MODULARITY: Moved users variable to init.py
 - MODULARITY: Moved many functions from server.py to src/functions.py
+- MODULARITY: Separated clientRegister function from the clientLogin function
 
 - FIX: Fixed wrong time/date formatting for file logging (!!!)
 - FIX: Fixed duplicated code which led to formatting errors
