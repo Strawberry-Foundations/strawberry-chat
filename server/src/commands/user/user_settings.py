@@ -1,7 +1,6 @@
 from .. import register_command
 
 import socket
-from Cryptodome.Hash import SHA256
 
 from src.colors import *
 from src.db import Database
