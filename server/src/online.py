@@ -3,10 +3,6 @@ from src.vars import full_ver, chat_name, update_channel, api
 from src.colors import * 
 from init import update_channel as online_update_channel
 
-class DataType:
-    Default = 0
-    ServerVersion = 1
-
 def fetch_update_data():
     response = requests.get(api + 'versions')
     data = response.json()
