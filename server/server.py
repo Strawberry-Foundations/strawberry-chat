@@ -15,6 +15,7 @@ import yaml
 from yaml import SafeLoader
 
 from Cryptodome.Hash import SHA256
+import hashlib
 
 import atexit
 import datetime
@@ -1178,6 +1179,7 @@ def clientLogin(client):
     global logcur
     logcur = db.cursor()
     
+    # register function
     def register():
         global db
         global logcur
@@ -1261,11 +1263,11 @@ def clientLogin(client):
             client.send(f"{RED + Colors.BOLD}Registration has been canceled. Start from the beginning...{RESET + Colors.RESET}".encode("utf8"))
             time.sleep(0.5)
             register()
-            
-        
+    
+    
+    # User Login
     client.send(f"{Colors.BOLD}Welcome to Strawberry Chat!{Colors.RESET}".encode("utf8"))
     client.send(f"{Colors.BOLD}New here? Type '{MAGENTA}Register{RESET}' to register! You want to leave? Type '{MAGENTA}Exit{RESET}' {Colors.RESET}".encode("utf8"))
-    # client.send(f"".encode("utf8"))
     
     time.sleep(0.1)
     client.send(f"{GREEN + Colors.BOLD}Username: {RESET + Colors.RESET}".encode("utf8"))
@@ -1285,11 +1287,9 @@ def clientLogin(client):
     
     password = escape_ansi(client.recv(2048).decode("utf8"))
     password = password.strip("\n")
-    password = str.encode(password)
     
-    hashed_password = SHA256.new()
-    hashed_password.update(password)
-    password = hashed_password.read(26).hex()
+    password = str.encode(password)
+    password = password_hashing(password)
 
     try: 
         logcur.execute('SELECT * FROM users WHERE username = ? AND password = ? AND account_enabled = ?', (username, password, "true"))
@@ -1339,11 +1339,10 @@ def clientLogin(client):
             client.send(f"{GREEN + Colors.BOLD}Password: {RESET + Colors.RESET}".encode("utf8"))
             password = escape_ansi(client.recv(2048).decode("utf8"))
             password = password.strip("\n")
-            password = str.encode(password)
             
-            hashed_password = SHA256.new()
-            hashed_password.update(password)
-            password = hashed_password.read(26).hex()
+            password = str.encode(password)    
+            password = password_hashing(password)
+            
             time.sleep(0.01)
             
             try: 
