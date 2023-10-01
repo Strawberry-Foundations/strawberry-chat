@@ -9,6 +9,12 @@
             "stable": "v2.3.2",
             "lite": "v1.0.1",
             "nano": "v1.0.1"
+        },
+
+        "scapi":
+        {
+            "stable": "-",
+            "latest": "0.10.1"
         }
     }
 }
