@@ -14,7 +14,7 @@ import sqlite3 as sql
 import yaml
 from yaml import SafeLoader
 
-from Cryptodome.Hash import SHAKE256
+from Cryptodome.Hash import SHA256
 
 import atexit
 import datetime
@@ -1244,7 +1244,7 @@ def clientLogin(client):
                 creation_date = time.time()
                 
                 registeredPassword = str.encode(registeredPassword)
-                hashed_password = SHAKE256.new()
+                hashed_password = SHA256.new()
                 hashed_password.update(registeredPassword)
                 registeredPassword = hashed_password.read(26).hex()
 
