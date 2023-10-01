@@ -108,14 +108,13 @@ def user_settings_command(socket: socket.socket, username: str, args: list):
                     else:                   
                         socket.send(f"{GREEN + Colors.BOLD}Confirm Password: {RESET + Colors.RESET}".encode("utf8"))
                         confirm_password = socket.recv(2048).decode("utf8")
-                        
-                        confirm_password = hash_password(confirm_password)
                     
                     if new_password != confirm_password:
                         socket.send(f"{RED + Colors.BOLD}Passwords do not match{RESET + Colors.RESET}".encode("utf8"))
                         return
                     
                     else:
+                        new_password = hash_password(new_password)
                         socket.send(f"{YELLOW + Colors.BOLD}Processing... {RESET + Colors.RESET}".encode("utf8"))
                                                 
                         cmd_db.execute("UPDATE users SET password = ? WHERE username = ?", (new_password, username))
