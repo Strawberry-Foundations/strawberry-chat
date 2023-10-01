@@ -1270,6 +1270,7 @@ def clientLogin(client):
     logged_in = False
     logcur = db.cursor()
 
+    # Send a welcome message
     client.send(f"{Colors.BOLD}Welcome to Strawberry Chat!{Colors.RESET}".encode("utf8"))
     client.send(f"{Colors.BOLD}New here? Type '{MAGENTA}Register{RESET}' to register! You want to leave? Type '{MAGENTA}Exit{RESET}' {Colors.RESET}".encode("utf8"))
     
@@ -1334,91 +1335,8 @@ def clientLogin(client):
         # If the password could not be fetched from the database, return a error message and start from the beginning
         else:
             client.send(f"{RED + Colors.BOLD}User not found.\n{RESET + Colors.RESET}".encode("utf8"))
-            
-    
-    # # Check if the user exists
-    # try: 
-    #     logcur.execute('SELECT * FROM users WHERE username = ? AND password = ? AND account_enabled = ?', (username, password, "true"))
-    
-    # # Error Handling if some type of error occures
-    # except Exception as e:
-    #     log.error(f"A login-error occurred")
-    #     debugLogger(e, "002")
-    
-    # # fetch * from users depending on given username and password
-    # res = logcur.fetchall()
-    
-    # # if this works, continue logging in user
-    # if res:
-    #     logcur.execute('SELECT username FROM users WHERE username = ? AND password = ?', (username, password))
-    #     result = logcur.fetchone()
-        
-    #     if result is not None:
-    #         nickname = result[0]      
-    #         return nickname
 
-    # # if not works, try some "error handling"
-    # else:   
-    #     alreadyTaken = True
-    #     while alreadyTaken:
-    #         # lookup if user's account is enabled
-    #         try:
-    #             enabled = logcur.execute('SELECT account_enabled FROM users WHERE username = ? AND password = ?', (username, password))
-    #             enabled = str(enabled.fetchone()[0])
-                
-    #         except TypeError:
-    #             pass
-            
-    #         # if account is disabled, print error message
-    #         if enabled == "false":
-    #             client.send(f"{RED + Colors.BOLD}Your account was disabled by an administrator.{RESET + Colors.RESET}".encode("utf8"))
-    #             client.recv(2048).decode("utf8")
-    #             client.close()
-            
-    #         # if other handling didn't worked, retry logging in 
-    #         client.send(f"{RED + Colors.BOLD}Wrong username or password.{RESET + Colors.RESET}".encode("utf8"))
-    #         client.send(f"{GREEN + Colors.BOLD}Username: {RESET + Colors.RESET}".encode("utf8"))
-    #         username = client.recv(2048).decode("utf8")
-    #         time.sleep(0.01)
-            
-    #         if username.lower() == "register":
-    #             register()
-                
-    #         elif username.lower() == "exit":
-    #             client.close()
-    #             sys.exit()
-            
-    #         client.send(f"{GREEN + Colors.BOLD}Password: {RESET + Colors.RESET}".encode("utf8"))
-    #         password = escape_ansi(client.recv(2048).decode("utf8"))
-    #         password = password.strip("\n")
-            
-    #         password = str.encode(password)    
-    #         password = password_hashing(password)
-            
-    #         time.sleep(0.01)
-            
-    #         try: 
-    #             logcur.execute('SELECT * FROM users WHERE username = ? AND password = ? AND account_enabled = ?', (username, password, "true"))
-                
-    #         except Exception as e:
-    #             log.error(f"An error occurred.")
-    #             debugLogger(e, "100")
-                
-    #         res = logcur.fetchall()
-            
-    #         if res:
-    #             logcur.execute('SELECT username FROM users WHERE username = ? AND password = ?', (username, password))
-    #             result = logcur.fetchone()
-                
-    #             if result is not None:
-    #                 nickname = result[0]
-    #                 alreadyTaken = False
-    #                 return nickname
-                
-    #         else: alreadyTaken = True
-            
 
- 
 def broadcast(message, sentBy=""):
     c = db.cursor()
     try:
