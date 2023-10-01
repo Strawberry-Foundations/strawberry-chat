@@ -11,10 +11,11 @@
             "nano": "v1.0.1"
         },
 
-        "scapi":
-        {
-            "stable": "-",
-            "latest": "0.10.1"
+        "scapi": {
+            "bot": {
+                "stable": "-",
+                "latest": "0.10.1"
+            }
         }
     }
 }
