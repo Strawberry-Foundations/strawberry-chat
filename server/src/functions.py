@@ -5,6 +5,7 @@ import os
 import sys
 import logging
 import sqlite3 as sql
+import hashlib
 
 import yaml
 from yaml import SafeLoader
@@ -206,3 +207,11 @@ def doesUserExist(uname):
         return True
     
     c.close()
+    
+
+def password_hashing(password):
+    sha256 = hashlib.sha256()
+    sha256.update(password)
+    password = sha256.hexdigest()
+    
+    return password
