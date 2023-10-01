@@ -6,6 +6,7 @@ from Cryptodome.Hash import SHA256
 from src.colors import *
 from src.db import Database
 from src.vars import user_settings_help, admin_settings_help
+from src.functions import password_hashing
 
 from init import server_dir, users, addresses
 
@@ -95,11 +96,9 @@ def user_settings_command(socket: socket.socket, username: str, args: list):
                 elif args[1] == "password":
                     socket.send(f"{GREEN + Colors.BOLD}New Password: {RESET + Colors.RESET}".encode("utf8"))
                     new_password = socket.recv(2048).decode("utf8")
-                    new_password = str.encode(new_password)
                     
-                    hashed_password = SHA256.new()
-                    hashed_password.update(new_password)
-                    new_password = hashed_password.read(26).hex()
+                    new_password = str.encode(new_password)
+                    new_password = password_hashing(new_password)
                     
                     cmd_db.execute("SELECT password FROM users WHERE username = ?", (username,))
                     current_password = cmd_db.fetchone()[0]
@@ -134,6 +133,7 @@ def user_settings_command(socket: socket.socket, username: str, args: list):
                     
     except Exception as e: 
         socket.send(f"{RED}Not enough arguments!{RESET}".encode("utf8"))
+        print(e)
         
             
 @register_command("admin", arg_count=1)
