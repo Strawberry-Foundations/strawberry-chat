@@ -238,6 +238,9 @@ def clientThread(client):
     
     try:
         user = clientLogin(client)
+        if user == "CltExit":
+            del addresses[client]
+            return
             
     except Exception as e:
         log.error(f"A login error with {address} occured!")
@@ -1172,217 +1175,247 @@ def clientThread(client):
             broadcast(f"{Colors.GRAY + Colors.BOLD}<--{Colors.RESET} {userRoleColor(user)}{user}{YELLOW + Colors.BOLD} has left the chat room!{RESET + Colors.RESET}")
             break
 
+def clientRegister(client):
+    global db
+    global logcur
+    client.send(f"{MAGENTA + Colors.BOLD + Colors.UNDERLINE}Welcome!{RESET + Colors.RESET}\n        {Colors.BOLD}Register, to chat with us!{Colors.RESET}".encode("utf8"))
+
+    time.sleep(0.05)
+    client.send(f"{GREEN + Colors.BOLD}Username: {RESET + Colors.RESET}".encode("utf8"))
+    registeredUsername = client.recv(2048).decode("utf8")
+    
+    if registeredUsername.lower() == "exit":
+        client.close()
+        sys.exit()
+    
+    for uname in registeredUsername.split():
+        uname = uname.lower()
+        
+        if uname in blacklist:
+            client.send(f"{YELLOW + Colors.BOLD}This username is not allowed{RESET + Colors.RESET}".encode("utf8"))    
+            client.close()
+            sys.exit()
+    try:
+        logcur.execute("SELECT username FROM users WHERE username = ? ", (registeredUsername,))
+        
+        usedUsernames = logcur.fetchall()[0]
+        usedUsernames = "".join(usedUsernames)
+        
+        
+        if usedUsernames == usedUsernames:
+            client.send(f"{YELLOW + Colors.BOLD}This username is already in use!{RESET + Colors.RESET}".encode("utf8"))    
+            clientRegister()
+        
+    except:
+        pass
+
+    client.send(f"{GREEN + Colors.BOLD}Password: {RESET + Colors.RESET}".encode("utf8"))
+    registeredPassword = client.recv(2048).decode("utf8")
+    
+    client.send(f"{GREEN + Colors.BOLD}Confirm Password: {RESET + Colors.RESET}".encode("utf8"))
+    confirmPassword = client.recv(2048).decode("utf8")
+    
+    if registeredPassword != confirmPassword:
+        client.send(f"{RED + Colors.BOLD}Passwords do not match{RESET + Colors.RESET}".encode("utf8"))
+        clientRegister()
+    
+    client.send(f"{GREEN + Colors.BOLD}Role Color (Red, Green, Cyan, Blue, Yellow, Magenta): {RESET + Colors.RESET}".encode("utf8"))
+    registeredRoleColor = client.recv(2048).decode("utf8")
+
+    client.send(f"{YELLOW + Colors.BOLD}Is everything correct? (You can change your username, role color and password at any time){RESET + Colors.RESET}".encode("utf8"))
+    confirmUsername = client.recv(2048).decode("utf8")
+    
+    if confirmUsername == "yes":
+        client.send(f"{YELLOW + Colors.BOLD}Processing... {RESET + Colors.RESET}".encode("utf8"))
+        
+        try:
+            client.send(f"{GREEN + Colors.BOLD}Creating your User account... {RESET + Colors.RESET}".encode("utf8"))
+        
+            logcur.execute("SELECT user_id FROM users")
+        
+            user_ids = logcur.fetchall()
+            user_ids = str(user_ids[-1])
+            user_ids = user_ids[1:-2].replace(",", "")
+            user_ids = int(user_ids) + 1
+            
+            creation_date = time.time()
+            
+            registeredPassword = str.encode(registeredPassword)
+            registeredPassword = password_hashing(registeredPassword)
+
+            logcur.execute('INSERT INTO users (username, password, role, role_color, enable_blacklisted_words, account_enabled, muted, user_id, msg_count, enable_dms, creation_date) VALUES (?, ?, "member", ?, "true", "true", "false", ?, ?, "true", ?)', (registeredUsername, registeredPassword, registeredRoleColor.lower(), user_ids, 0, creation_date))
+            db.commit()
+            
+            client.send(f"{GREEN + Colors.BOLD}Created!{RESET + Colors.RESET}".encode("utf8"))
+            client.close()
+            
+        except Exception as e:
+            sqlError(e)
+        
+    else:
+        client.send(f"{RED + Colors.BOLD}Registration has been canceled. Start from the beginning...{RESET + Colors.RESET}".encode("utf8"))
+        time.sleep(0.5)
+        clientRegister()
+
+
+
+"""
+--- CLIENT LOGIN ---
+The client login function for logging into the chat.
+This piece of code is well commented so that you understand what almost every line does.
+"""
 def clientLogin(client):
     global db
     global logcur
+    logged_in = False
     logcur = db.cursor()
-    
-    # register function
-    def register():
-        global db
-        global logcur
-        client.send(f"{MAGENTA + Colors.BOLD + Colors.UNDERLINE}Welcome!{RESET + Colors.RESET}\n        {Colors.BOLD}Register, to chat with us!{Colors.RESET}".encode("utf8"))
-    
-        time.sleep(0.05)
-        client.send(f"{GREEN + Colors.BOLD}Username: {RESET + Colors.RESET}".encode("utf8"))
-        registeredUsername = client.recv(2048).decode("utf8")
-        
-        if registeredUsername.lower() == "exit":
-            client.close()
-            sys.exit()
-        
-        for uname in registeredUsername.split():
-            uname = uname.lower()
-            
-            if uname in blacklist:
-                client.send(f"{YELLOW + Colors.BOLD}This username is not allowed{RESET + Colors.RESET}".encode("utf8"))    
-                client.close()
-                sys.exit()
-        try:
-            logcur.execute("SELECT username FROM users WHERE username = ? ", (registeredUsername,))
-            
-            usedUsernames = logcur.fetchall()[0]
-            usedUsernames = "".join(usedUsernames)
-            
-            
-            if usedUsernames == usedUsernames:
-                client.send(f"{YELLOW + Colors.BOLD}This username is already in use!{RESET + Colors.RESET}".encode("utf8"))    
-                register()
-            
-        except:
-            pass
-    
-        client.send(f"{GREEN + Colors.BOLD}Password: {RESET + Colors.RESET}".encode("utf8"))
-        registeredPassword = client.recv(2048).decode("utf8")
-        
-        client.send(f"{GREEN + Colors.BOLD}Confirm Password: {RESET + Colors.RESET}".encode("utf8"))
-        confirmPassword = client.recv(2048).decode("utf8")
-        
-        if registeredPassword != confirmPassword:
-            client.send(f"{RED + Colors.BOLD}Passwords do not match{RESET + Colors.RESET}".encode("utf8"))
-            register()
-        
-        client.send(f"{GREEN + Colors.BOLD}Role Color (Red, Green, Cyan, Blue, Yellow, Magenta): {RESET + Colors.RESET}".encode("utf8"))
-        registeredRoleColor = client.recv(2048).decode("utf8")
 
-        client.send(f"{YELLOW + Colors.BOLD}Is everything correct? (You can change your username, role color and password at any time){RESET + Colors.RESET}".encode("utf8"))
-        confirmUsername = client.recv(2048).decode("utf8")
-        
-        if confirmUsername == "yes":
-            client.send(f"{YELLOW + Colors.BOLD}Processing... {RESET + Colors.RESET}".encode("utf8"))
-            
-            try:
-                client.send(f"{GREEN + Colors.BOLD}Creating your User account... {RESET + Colors.RESET}".encode("utf8"))
-            
-                logcur.execute("SELECT user_id FROM users")
-            
-                user_ids = logcur.fetchall()
-                user_ids = str(user_ids[-1])
-                user_ids = user_ids[1:-2].replace(",", "")
-                user_ids = int(user_ids) + 1
-                
-                creation_date = time.time()
-                
-                registeredPassword = str.encode(registeredPassword)
-                registeredPassword = password_hashing(registeredPassword)
-
-                logcur.execute('INSERT INTO users (username, password, role, role_color, enable_blacklisted_words, account_enabled, muted, user_id, msg_count, enable_dms, creation_date) VALUES (?, ?, "member", ?, "true", "true", "false", ?, ?, "true", ?)', (registeredUsername, registeredPassword, registeredRoleColor.lower(), user_ids, 0, creation_date))
-                db.commit()
-                
-                client.send(f"{GREEN + Colors.BOLD}Created!{RESET + Colors.RESET}".encode("utf8"))
-                client.close()
-                
-            except Exception as e:
-                sqlError(e)
-            
-        else:
-            client.send(f"{RED + Colors.BOLD}Registration has been canceled. Start from the beginning...{RESET + Colors.RESET}".encode("utf8"))
-            time.sleep(0.5)
-            register()
-    
-    
-    # User Login
     client.send(f"{Colors.BOLD}Welcome to Strawberry Chat!{Colors.RESET}".encode("utf8"))
     client.send(f"{Colors.BOLD}New here? Type '{MAGENTA}Register{RESET}' to register! You want to leave? Type '{MAGENTA}Exit{RESET}' {Colors.RESET}".encode("utf8"))
     
     time.sleep(0.1)
-    client.send(f"{GREEN + Colors.BOLD}Username: {RESET + Colors.RESET}".encode("utf8"))
-    username = escape_ansi(client.recv(2048).decode("utf8"))
-    username = username.strip("\n")
     
-    if username.lower() == "register":
-        register()
+    while not logged_in:
+        # Ask for the username
+        client.send(f"{GREEN + Colors.BOLD}Username: {RESET + Colors.RESET}".encode("utf8"))
         
-    elif username.lower() == "exit":
-        client.close()
-        sys.exit()
+        # Receive the ansi-escaped username and strip all new lines in case
+        username = escape_ansi(client.recv(2048).decode("utf8"))
+        username = username.strip("\n")
         
-    time.sleep(0.01)
-    
-    # Ask for password
-    client.send(f"{GREEN + Colors.BOLD}Password: {RESET + Colors.RESET}".encode("utf8"))
-    
-    # Receive password
-    password = escape_ansi(client.recv(2048).decode("utf8"))
-    password = password.strip("\n")
-    
-    logcur.execute("SELECT password, username FROM users WHERE username = ?", (username,))
-    result = logcur.fetchone()
-
-    if result is not None:
-        stored_password = result[0]
+        # Check if the "username" is register, if yes, go to the register form
+        if username.lower() == "register":
+            clientRegister(client)
         
-        if verify_password(stored_password, password):
-            nickname = result[1]      
-            return nickname
-        
-        else:
-            client.send(f"{RED + Colors.BOLD}Wrong username or password.{RESET + Colors.RESET}".encode("utf8"))
-    
-    else:
-        client.send(f"{RED + Colors.BOLD}User not found.{RESET + Colors.RESET}".encode("utf8"))
+        # Check if the "username" is exit, if yes, exit the login process
+        elif username.lower() == "exit":
+            client.close()
+            sys.exit()
             
-
-    # Check if the user exists
-    try: 
-        logcur.execute('SELECT * FROM users WHERE username = ? AND password = ? AND account_enabled = ?', (username, password, "true"))
-    
-    # Error Handling if some type of error occures
-    except Exception as e:
-        log.error(f"A login-error occurred")
-        debugLogger(e, "002")
-    
-    # fetch * from users depending on given username and password
-    res = logcur.fetchall()
-    
-    # if this works, continue logging in user
-    if res:
-        logcur.execute('SELECT username FROM users WHERE username = ? AND password = ?', (username, password))
+        time.sleep(0.01)
+        
+        # Ask for the password
+        client.send(f"{GREEN + Colors.BOLD}Password: {RESET + Colors.RESET}".encode("utf8"))
+        
+        # Receive the ansi-escaped password and strip all new lines in case
+        password = escape_ansi(client.recv(2048).decode("utf8"))
+        password = password.strip("\n")
+        
+        # Select the password from the database and fetch it 
+        logcur.execute("SELECT password, account_enabled FROM users WHERE username = ?", (username,))
         result = logcur.fetchone()
-        
-        if result is not None:
-            nickname = result[0]      
-            return nickname
 
-    # if not works, try some "error handling"
-    else:   
-        alreadyTaken = True
-        while alreadyTaken:
-            # lookup if user's account is enabled
-            try:
-                enabled = logcur.execute('SELECT account_enabled FROM users WHERE username = ? AND password = ?', (username, password))
-                enabled = str(enabled.fetchone()[0])
-                
-            except TypeError:
-                pass
+        # If the result is not none, fetch some things from the database [...].
+        if result is not None:
+            stored_password = result[0]
+            account_enabled = result[1]
             
-            # if account is disabled, print error message
-            if enabled == "false":
+            # If account is not enabled, return error message and close connection between server and client
+            if account_enabled == "false":
                 client.send(f"{RED + Colors.BOLD}Your account was disabled by an administrator.{RESET + Colors.RESET}".encode("utf8"))
-                client.recv(2048).decode("utf8")
                 client.close()
+                return "CltExit"
             
-            # if other handling didn't worked, retry logging in 
-            client.send(f"{RED + Colors.BOLD}Wrong username or password.{RESET + Colors.RESET}".encode("utf8"))
-            client.send(f"{GREEN + Colors.BOLD}Username: {RESET + Colors.RESET}".encode("utf8"))
-            username = client.recv(2048).decode("utf8")
-            time.sleep(0.01)
-            
-            if username.lower() == "register":
-                register()
-                
-            elif username.lower() == "exit":
-                client.close()
-                sys.exit()
-            
-            client.send(f"{GREEN + Colors.BOLD}Password: {RESET + Colors.RESET}".encode("utf8"))
-            password = escape_ansi(client.recv(2048).decode("utf8"))
-            password = password.strip("\n")
-            
-            password = str.encode(password)    
-            password = password_hashing(password)
-            
-            time.sleep(0.01)
-            
-            try: 
-                logcur.execute('SELECT * FROM users WHERE username = ? AND password = ? AND account_enabled = ?', (username, password, "true"))
-                
-            except Exception as e:
-                log.error(f"An error occurred.")
-                debugLogger(e, "100")
-                
-            res = logcur.fetchall()
-            
-            if res:
-                logcur.execute('SELECT username FROM users WHERE username = ? AND password = ?', (username, password))
+            # If the stored password from the database matches with the entered password, fetch the username and login the user
+            if verify_password(stored_password, password):
+                logcur.execute('SELECT username FROM users WHERE username = ?', (username,))
                 result = logcur.fetchone()
                 
+                # If username exists, login the user
                 if result is not None:
-                    nickname = result[0]
-                    alreadyTaken = False
-                    return nickname
+                    username = result[0]
+                    logged_in = True    
+                    return username
+            
+            # If passwords does not match, return a error message and start from the beginning
+            else:
+                client.send(f"{RED + Colors.BOLD}Wrong username or password.{RESET + Colors.RESET}\n".encode("utf8"))
+        
+        # If the password could not be fetched from the database, return a error message and start from the beginning
+        else:
+            client.send(f"{RED + Colors.BOLD}User not found.\n{RESET + Colors.RESET}".encode("utf8"))
+            
+    
+    # # Check if the user exists
+    # try: 
+    #     logcur.execute('SELECT * FROM users WHERE username = ? AND password = ? AND account_enabled = ?', (username, password, "true"))
+    
+    # # Error Handling if some type of error occures
+    # except Exception as e:
+    #     log.error(f"A login-error occurred")
+    #     debugLogger(e, "002")
+    
+    # # fetch * from users depending on given username and password
+    # res = logcur.fetchall()
+    
+    # # if this works, continue logging in user
+    # if res:
+    #     logcur.execute('SELECT username FROM users WHERE username = ? AND password = ?', (username, password))
+    #     result = logcur.fetchone()
+        
+    #     if result is not None:
+    #         nickname = result[0]      
+    #         return nickname
+
+    # # if not works, try some "error handling"
+    # else:   
+    #     alreadyTaken = True
+    #     while alreadyTaken:
+    #         # lookup if user's account is enabled
+    #         try:
+    #             enabled = logcur.execute('SELECT account_enabled FROM users WHERE username = ? AND password = ?', (username, password))
+    #             enabled = str(enabled.fetchone()[0])
                 
-            else: alreadyTaken = True
+    #         except TypeError:
+    #             pass
+            
+    #         # if account is disabled, print error message
+    #         if enabled == "false":
+    #             client.send(f"{RED + Colors.BOLD}Your account was disabled by an administrator.{RESET + Colors.RESET}".encode("utf8"))
+    #             client.recv(2048).decode("utf8")
+    #             client.close()
+            
+    #         # if other handling didn't worked, retry logging in 
+    #         client.send(f"{RED + Colors.BOLD}Wrong username or password.{RESET + Colors.RESET}".encode("utf8"))
+    #         client.send(f"{GREEN + Colors.BOLD}Username: {RESET + Colors.RESET}".encode("utf8"))
+    #         username = client.recv(2048).decode("utf8")
+    #         time.sleep(0.01)
+            
+    #         if username.lower() == "register":
+    #             register()
+                
+    #         elif username.lower() == "exit":
+    #             client.close()
+    #             sys.exit()
+            
+    #         client.send(f"{GREEN + Colors.BOLD}Password: {RESET + Colors.RESET}".encode("utf8"))
+    #         password = escape_ansi(client.recv(2048).decode("utf8"))
+    #         password = password.strip("\n")
+            
+    #         password = str.encode(password)    
+    #         password = password_hashing(password)
+            
+    #         time.sleep(0.01)
+            
+    #         try: 
+    #             logcur.execute('SELECT * FROM users WHERE username = ? AND password = ? AND account_enabled = ?', (username, password, "true"))
+                
+    #         except Exception as e:
+    #             log.error(f"An error occurred.")
+    #             debugLogger(e, "100")
+                
+    #         res = logcur.fetchall()
+            
+    #         if res:
+    #             logcur.execute('SELECT username FROM users WHERE username = ? AND password = ?', (username, password))
+    #             result = logcur.fetchone()
+                
+    #             if result is not None:
+    #                 nickname = result[0]
+    #                 alreadyTaken = False
+    #                 return nickname
+                
+    #         else: alreadyTaken = True
             
 
  
