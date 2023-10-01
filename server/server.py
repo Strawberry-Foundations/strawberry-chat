@@ -1287,7 +1287,7 @@ def clientLogin(client):
     password = password.strip("\n")
     password = str.encode(password)
     
-    hashed_password = SHAKE256.new()
+    hashed_password = SHA256.new()
     hashed_password.update(password)
     password = hashed_password.read(26).hex()
 
@@ -1341,7 +1341,7 @@ def clientLogin(client):
             password = password.strip("\n")
             password = str.encode(password)
             
-            hashed_password = SHAKE256.new()
+            hashed_password = SHA256.new()
             hashed_password.update(password)
             password = hashed_password.read(26).hex()
             time.sleep(0.01)
