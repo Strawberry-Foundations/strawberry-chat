@@ -4,5 +4,8 @@
         "./server",
         "./client/apps/android",
         "./branches"
-    ]
+    ],
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.python"
+    },
 }
