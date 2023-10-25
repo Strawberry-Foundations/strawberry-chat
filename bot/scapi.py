@@ -35,7 +35,16 @@ PURPLE = '\033[35m'
 CYAN = '\033[36m'
 WHITE = '\033[37m'
 
-version = "0.10.2"
+# Version-specified Variables & important variables
+base_version    = "0.11.0"
+ext_version     = base_version + "b1"
+version         = "v" + ext_version
+full_version    = ext_version + "-vacakes"
+update_channel  = "stable"
+codename        = "Vanilla Cake"
+authors         = ["Juliandev02"]
+api             = "http://api.strawberryfoundations.xyz/v1/"
+
 command_registry = {}
 
 class Messages:
@@ -84,6 +93,11 @@ class Scapi:
             except: 
                 self.logger(f"{RED}Could not connect to server", Scapi.LogLevel.ERROR)
                 exit()
+    
+        def connect(self):
+            self.logger(f"{YELLOW}Connecting to {PURPLE}{self.host}:{self.port} {RESET + YELLOW}...", type=Scapi.LogLevel.INFO)
+            self.socket.connect((self.host, self.port))
+            self.logger(f"{GREEN}Connected", type=Scapi.LogLevel.INFO)
 
         def logger(self, message, type: Enum):
             match type:
@@ -203,11 +217,7 @@ class Scapi:
             self.socket.send(self.username.encode("utf8"))
             time.sleep(1)
             self.socket.send(self.token.encode("utf8"))
-            
-        def connect(self):
-            self.logger(f"{YELLOW}Connecting to {PURPLE}{self.host}:{self.port} {RESET + YELLOW}...", type=Scapi.LogLevel.INFO)
-            self.socket.connect((self.host, self.port))
-            self.logger(f"{GREEN}Connected", type=Scapi.LogLevel.INFO)
+        
             
         def disconnect(self):
             self.socket.close()
