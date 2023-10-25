@@ -114,10 +114,10 @@ class Scapi:
             self.print_recv_msg     = print_recv_msg
             
         def permission_handler(self, trusted_list: list = [], admin_list: list = [], owner: str = None, custom_list: list = []):
-            self.trusted_list   = trusted_list
-            self.admin_list     = admin_list
-            self.owner          = owner
-            self.custom_list    = custom_list
+            self.trusted_list       = trusted_list
+            self.admin_list         = admin_list
+            self.owner              = owner
+            self.custom_list        = custom_list
 
         def send_message(self, message):
             self.socket.send(message.encode("utf8"))
