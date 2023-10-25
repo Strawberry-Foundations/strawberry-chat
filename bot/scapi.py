@@ -6,11 +6,6 @@ import sys
 import re
 from enum import Enum
 
-# if sys.platform == "linux":
-#     import readline
-# elif sys.platform == "win32":
-#     pass
-
 BOLD = '\033[1m'
 UNDERLINE = '\033[4m'
 RESET = '\033[0m'
@@ -27,8 +22,8 @@ version = "0.10.2"
 command_registry = {}
 
 class Messages:
-    permission_error_msg = "#redYou lack the permission to use this command!#reset"
-    command_not_found_msg = "#redCommand '%s' not found.#reset"
+    permission_error = "#redYou lack the permission to use this command!#reset"
+    command_not_found = "#redCommand '%s' not found.#reset"
     not_enough_arguments = "#redNot enough arguments! Command requires %s arguments but %s were given#reset"
 
 class Scapi:
@@ -62,15 +57,15 @@ class Scapi:
             self.req_permissions    = None
             self.count              = 0
             
-            self.logger(f"{GREEN}Starting scapi.bot version {version}", type=Scapi.LogLevel.INFO)
-            self.log_msg = f"{CYAN + BOLD}{datetime.date.today().strftime('%Y-%m-%d')} {datetime.datetime.now().strftime('%H:%M:%S')}  {BLUE}INFO   scapi  -->  {RESET}"
+            self.logger(f"{GREEN}Starting scapi.bot version {version}", Scapi.LogLevel.INFO)
+            self.log_msg = f"{CYAN + BOLD}{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}  {BLUE}INFO   scapi  -->  {RESET}"
         
             
             try:
                 self.connect()
                 
             except: 
-                self.logger(f"{RED}Could not connect to server", type=Scapi.LogLevel.ERROR)
+                self.logger(f"{RED}Could not connect to server", Scapi.LogLevel.ERROR)
                 exit()
 
         def logger(self, message, type: Enum):
@@ -83,7 +78,7 @@ class Scapi:
                     print(f"{CYAN + BOLD}{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}  {GREEN}MESSAGE{BLUE}    scapi  -->  {RESET}{message}{RESET}")            
             
         
-        def flag_handler(self, enable_user_input=False, print_recv_msg=False):
+        def flag_handler(self, enable_user_input: bool = False, print_recv_msg: bool = False):
             self.enable_user_input  = enable_user_input
             self.print_recv_msg     = print_recv_msg
             
@@ -219,7 +214,7 @@ class Scapi:
 
             return decorator
 
-        def execute_command(self, command_name, user: str, args: list, permission_error_msg=Messages.permission_error_msg, command_not_found_msg = Messages.command_not_found_msg, not_enough_arguments = Messages.not_enough_arguments):
+        def execute_command(self, command_name, user: str, args: list, permission_error_msg=Messages.permission_error, command_not_found_msg = Messages.command_not_found, not_enough_arguments = Messages.not_enough_arguments):
             if self.escape_ansi(command_name) in command_registry:
                 cmd = command_registry[self.escape_ansi(command_name)]
 
