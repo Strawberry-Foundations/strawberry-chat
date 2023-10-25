@@ -1292,6 +1292,10 @@ def clientRegister(client):
         clientRegister()
 
 
+def strawberryIdLogin(client):
+    client.send(f"{GREEN + Colors.BOLD}Visit https://id.strawberryfoundations.xyz/v1/de?redirect=https://api.strawberryfoundations.xyz/stbchat&hl=de to login!{RESET + Colors.RESET}".encode("utf8"))
+    
+
 
 """
 --- CLIENT LOGIN ---
@@ -1326,6 +1330,9 @@ def clientLogin(client):
         elif username.lower() == "exit":
             client.close()
             sys.exit()
+        
+        elif username.lower() == "sid":
+            strawberryIdLogin(client)
             
         time.sleep(0.01)
         
