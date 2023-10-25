@@ -11,6 +11,7 @@ codename                = "Vanilla Cake"
 server_edition          = "Standard Edition"
 authors                 = ["Juliandev02", "matteodev8", "Paddyk45"]
 api                     = "http://api.strawberryfoundations.xyz/v1/"
+sid_api                 = "https://id.strawberryfoundations.xyz/v1"
 
 # SQL table query
 table_query = """
