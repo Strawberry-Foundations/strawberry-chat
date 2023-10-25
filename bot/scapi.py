@@ -41,7 +41,7 @@ class Scapi:
             OWNER   = 3
             
         def __init__(self, username, token, host, port, enable_user_input=False, print_recv_msg=False):
-            self.stbc_socket        = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.socket        = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.username           = username
             self.token              = token
             self.host               = host
@@ -89,7 +89,7 @@ class Scapi:
             self.custom_list    = custom_list
 
         def send_message(self, message):
-            self.stbc_socket.send(message.encode("utf8"))
+            self.socket.send(message.encode("utf8"))
             
         def escape_ansi(self, line):
             ansi_escape = re.compile(r'(?:\x1B[@-_]|[\x80-\x9F])[0-?]*[ -/]*[@-~]')
@@ -135,7 +135,7 @@ class Scapi:
                     try:
                         message = input("")
                         delete_last_line()
-                        self.stbc_socket.send(message.encode("utf8"))
+                        self.socket.send(message.encode("utf8"))
 
                     except:
                         if threadFlag == False:
@@ -151,7 +151,7 @@ class Scapi:
             try:
                 while threadFlag:
                     global message
-                    message = self.stbc_socket.recv(2048).decode()
+                    message = self.socket.recv(2048).decode()
                     
                     if message:
                         self.count = self.count + 1
@@ -183,17 +183,17 @@ class Scapi:
                     threadFlag = False
                 
         def login(self):
-            self.stbc_socket.send(self.username.encode("utf8"))
+            self.socket.send(self.username.encode("utf8"))
             time.sleep(1)
-            self.stbc_socket.send(self.token.encode("utf8"))
+            self.socket.send(self.token.encode("utf8"))
             
         def connect(self):
             self.logger(f"{YELLOW}Connecting to {PURPLE}{self.host}:{self.port} {RESET + YELLOW}...", type=Scapi.LogLevel.INFO)
-            self.stbc_socket.connect((self.host, self.port))
+            self.socket.connect((self.host, self.port))
             self.logger(f"{GREEN}Connected", type=Scapi.LogLevel.INFO)
             
         def disconnect(self):
-            self.stbc_socket.close()
+            self.socket.close()
             
         def event(self, func):
             setattr(self, func.__name__, func)
