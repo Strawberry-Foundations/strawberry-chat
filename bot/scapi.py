@@ -32,11 +32,10 @@ class Messages:
     not_enough_arguments = "#redNot enough arguments! Command requires %s arguments but %s were given#reset"
 
 class Scapi:
-    class LogLevel:
-        INFO = "INFO"
-        ERROR = "ERROR"
-        MSG = "MSG"
-        MESSAGE = "MSG"
+    class LogLevel(Enum):
+        INFO = 0
+        ERROR = 1
+        MESSAGE = 2
                 
     class Bot:    
         class PermissionLevel(Enum):
@@ -74,13 +73,14 @@ class Scapi:
                 self.logger(f"{RED}Could not connect to server", type=Scapi.LogLevel.ERROR)
                 exit()
 
-        def logger(self, message, type):
-            if type.lower() == "info":
-                print(f"{CYAN + BOLD}{datetime.date.today().strftime('%Y-%m-%d')} {datetime.datetime.now().strftime('%H:%M:%S')}  {BLUE}{type.upper()}{BLUE}   scapi  -->  {RESET}{message}{RESET}")            
-            elif type.lower() == "error":
-                print(f"{CYAN + BOLD}{datetime.date.today().strftime('%Y-%m-%d')} {datetime.datetime.now().strftime('%H:%M:%S')}  {RED}{type.upper()}{BLUE}  scapi  -->  {RESET}{message}{RESET}")            
-            elif type.lower() == "msg":
-                print(f"{CYAN + BOLD}{datetime.date.today().strftime('%Y-%m-%d')} {datetime.datetime.now().strftime('%H:%M:%S')}  {GREEN}{type.upper()}{BLUE}    scapi  -->  {RESET}{message}{RESET}")            
+        def logger(self, message, type: Enum):
+            match type:
+                case Scapi.LogLevel.INFO:
+                    print(f"{CYAN + BOLD}{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}  {BLUE}INFO{BLUE}   scapi  -->  {RESET}{message}{RESET}")            
+                case Scapi.LogLevel.ERROR:
+                    print(f"{CYAN + BOLD}{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}  {RED}ERROR{BLUE}  scapi  -->  {RESET}{message}{RESET}")            
+                case Scapi.LogLevel.MESSAGE:
+                    print(f"{CYAN + BOLD}{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}  {GREEN}MESSAGE{BLUE}    scapi  -->  {RESET}{message}{RESET}")            
             
         
         def flag_handler(self, enable_user_input=False, print_recv_msg=False):
