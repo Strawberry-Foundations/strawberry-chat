@@ -5,14 +5,14 @@ import yaml
 from yaml import SafeLoader
 import threading
 
-with open("default.yml", encoding="utf-8") as config:
-    conf = yaml.load(config, Loader=SafeLoader)
+with open("default.yml", encoding="utf-8") as config_file:
+    config = yaml.load(config_file, Loader=SafeLoader)
 
-username    = conf["bot"]["username"]
-token       = conf["bot"]["token"]
-host        = conf["server"]["host"]
-port        = conf["server"]["port"]
-prefix      = conf["bot"]["prefix"]
+username    = config["bot"]["username"]
+token       = config["bot"]["token"]
+host        = config["server"]["host"]
+port        = config["server"]["port"]
+prefix      = config["bot"]["prefix"]
 
 Bot = Scapi.Bot(username=username, token=token, host=host, port=port)
 Bot.login()
