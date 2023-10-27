@@ -244,33 +244,34 @@ class Scapi:
         def execute_command(self, command_name, user: str, args: list, permission_error_msg=Messages.permission_error, command_not_found_msg = Messages.command_not_found, not_enough_arguments = Messages.not_enough_arguments):
             if self.escape_ansi(command_name) in command_registry:
                 cmd = command_registry[self.escape_ansi(command_name)]
-
-                if self.req_permissions == self.PermissionLevel.ALL:
-                    pass
                 
-                elif self.req_permissions == self.PermissionLevel.TRUSTED:
-                    if user not in self.trusted_list:
-                        self.send_message(permission_error_msg)
-                        return    
+                match self.req_permissions:
+                    case self.PermissionLevel.ALL:
+                        pass
                     
-                elif self.req_permissions == self.PermissionLevel.ADMIN:
-                    if user not in self.admin_list:
-                        self.send_message(permission_error_msg)
-                        return
+                    case self.PermissionLevel.TRUSTED:
+                        if user not in self.trusted_list:
+                            self.send_message(permission_error_msg)
+                            return    
+                    
+                    case self.PermissionLevel.ADMIN:
+                        if user not in self.admin_list:
+                            self.send_message(permission_error_msg)
+                            return
                 
-                elif self.req_permissions == self.PermissionLevel.OWNER:
-                    if user.lower() != self.owner:
-                        self.send_message(permission_error_msg)
-                        return
+                    case self.PermissionLevel.OWNER:
+                        if user.lower() != self.owner:
+                            self.send_message(permission_error_msg)
+                            return
                 
-                elif self.req_permissions == self.PermissionLevel.CUSTOM:
-                    if user.lower() not in self.custom_list:
-                        self.send_message(permission_error_msg)
-                        return
+                    case self.PermissionLevel.CUSTOM:
+                        if user.lower() not in self.custom_list:
+                            self.send_message(permission_error_msg)
+                            return
                 
-                else:
-                    self.logger(f"{RED}Invalid permission type!", type=Scapi.LogLevel.ERROR)
-                    return
+                    case _:
+                        self.logger(f"{RED}Invalid permission type!", type=Scapi.LogLevel.ERROR)
+                        return
                 
                 if cmd[1] > args.__len__():
                     self.send_message(not_enough_arguments % (cmd[1], args.__len__()))
