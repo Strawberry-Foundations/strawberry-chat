@@ -1127,23 +1127,25 @@ def clientThread(client):
                         client.send(f"{YELLOW + Colors.BOLD}Deletion of your account has been canceled...{RESET + Colors.RESET}".encode("utf8"))
                 
                 case _:
-                    if user in afks:
+                    if isMuted(user):
+                        client.send(f"{RED + Colors.BOLD}Sorry, but you were muted by an administrator. Please contact him/her if you have done nothing wrong, or wait until you are unmuted.{RESET + Colors.RESET}".encode("utf8"))
+                        
+                    elif user in afks:
                         client.send(f"{RED}Sorry, you are AFK.{RESET}".encode("utf8"))
                         
-                    elif isMuted(user) == True:
-                        client.send(f"{RED + Colors.BOLD}Sorry, but you were muted by an administrator. Please contact him/her if you have done nothing wrong, or wait until you are unmuted.{RESET + Colors.RESET}".encode("utf8"))
-                    
-                    elif isAccountEnabled(user) == False:
+                    elif not isAccountEnabled(user):
                         client.send(f"{RED + Colors.BOLD}Your account was disabled by an administrator.{RESET + Colors.RESET}".encode("utf8"))
                         
                     else:
-                        if enable_messages == True:
+                        if enable_messages:
                             log_msg = escape_ansi(message)
+                            log_msg = escape_htpf(message)
                             log_msg = message.strip("\n")
                             
                             log.info(f"{user} ({address}): {log_msg}")
                                 
                         broadcast(message, user)
+                        
                         try:
                             c.execute("SELECT msg_count FROM users WHERE username = ?", (user,))
                             msg_count = c.fetchone()
