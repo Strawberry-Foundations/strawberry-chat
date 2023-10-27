@@ -26,8 +26,7 @@ def memberlist_command(socket: socket.socket, username: str, args: list):
     cmd_db.execute("SELECT username, badge FROM users WHERE role = 'admin'")
     raw_admins  = cmd_db.fetchall()
     admins_len  = len([raw_admins for raw_admins in sorted(raw_admins)])
-    admins      = "\n           ".join([f"{isOnline(result[0])}{LIGHTRED_EX} {memberListNickname(result[0])} [{result[1]}]" for result in raw_admins if result[1] is not None])
-    admins      = "\n           ".join([f"{isOnline(result[0])}{LIGHTRED_EX} {memberListNickname(result[0])}" for result in raw_admins if result[1] is None])
+    admins      = "\n           ".join([f"{isOnline(result[0])}{LIGHTRED_EX} {memberListNickname(result[0])} [{result[1]}]" for result in raw_admins])
     
     cmd_db.execute("SELECT username, badge FROM users WHERE role = 'bot'")
     raw_bots    = cmd_db.fetchall()
@@ -38,8 +37,7 @@ def memberlist_command(socket: socket.socket, username: str, args: list):
     cmd_db.execute("SELECT username, badge FROM users WHERE role = 'member'")
     raw_members = cmd_db.fetchall()
     members_len = len([raw_members for raw_members in sorted(raw_members)])
-    members      = "\n           ".join([f"{isOnline(result[0])}{LIGHTYELLOW_EX} {memberListNickname(result[0])} [{result[1]}]" for result in raw_members if result[1] is not None])
-    members      = "\n           ".join([f"{isOnline(result[0])}{LIGHTYELLOW_EX} {memberListNickname(result[0])}" for result in raw_members if result[1] is None])
+    members      = "\n           ".join([f"{isOnline(result[0])}{LIGHTYELLOW_EX} {memberListNickname(result[0])} [{result[1]}]" for result in raw_members])
     
     try:
         if online_mode == True:
