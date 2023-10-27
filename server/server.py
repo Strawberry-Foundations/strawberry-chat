@@ -237,6 +237,9 @@ def clientThread(client):
     
     try:
         user = clientLogin(client)
+        
+        user_logged_in[user] = True
+        
         if user == "CltExit":
             del addresses[client]
             return
@@ -280,8 +283,16 @@ def clientThread(client):
     while True:
         try:
             try:
-                message = client.recv(2048).decode("utf8")
-                
+                if user_logged_in[user]:
+                    message = client.recv(2048).decode("utf8")
+                    
+                else:
+                    return
+                    
+            
+            except OSError: 
+                return
+            
             except Exception as e:
                 log.warning(f"A side-by-side error occurred.")
                 debugLogger(e, "242", type="warning")
