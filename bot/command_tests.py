@@ -3,7 +3,6 @@ from scapi import Scapi
 
 import yaml
 from yaml import SafeLoader
-import threading
 
 with open("default.yml", encoding="utf-8") as config_file:
     config = yaml.load(config_file, Loader=SafeLoader)
@@ -53,8 +52,4 @@ def Commands():
 def on_ready():
     print(f"{Bot.log_msg}{scapi.BLUE}{Bot.username} started successfully!{scapi.RESET}")
     
-BotThread = threading.Thread(target=Bot.run, args=(on_ready,))
-CommandThread = threading.Thread(target=Commands)
-
-BotThread.start()
-CommandThread.start()
+Bot.run(on_ready)
