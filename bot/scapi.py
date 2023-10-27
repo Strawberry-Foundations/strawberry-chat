@@ -281,6 +281,27 @@ class Scapi:
                 
             else:
                 self.send_message(command_not_found_msg % command_name)
+        
+        def command_runner(self):
+            while True:
+                try:
+                    recv_message = self.recv_message(raw=False, ansi=False)
+                    index       = recv_message.find(":")
+                    raw_message = recv_message[index + 2:]
+                    
+                    if raw_message.startswith("!"):
+                        message = raw_message[1:]
+                        args = message.split()
+                        cmd = args[0]
+                        args = args[1:]
+                        
+                        self.execute_command(cmd, self.get_username_by_msg(recv_message), args)
+                        continue
+
+                except Exception as e: 
+                    self.logger(f"{RED}An unknown exception occured{RESET}", type=Scapi.LogLevel.ERROR)
+                    self.logger(f"{RED}{e}{RESET}", type=Scapi.LogLevel.ERROR)
+                    break
             
         def run(self, ready_func):
             if self.enable_user_input is True:
@@ -292,8 +313,10 @@ class Scapi:
             time.sleep(0.5)
             ready_func()
             
-            recvThread = threading.Thread(target=self.recv_message)
-            sendThread = threading.Thread(target=self.send)
+            recv_thread = threading.Thread(target=self.recv_message)
+            send_thread = threading.Thread(target=self.send)
+            cmd_thread  = threading.Thread(target=self.command_runner)
             
-            recvThread.start()
-            sendThread.start()
+            recv_thread.start()
+            send_thread.start()
+            cmd_thread.start()
