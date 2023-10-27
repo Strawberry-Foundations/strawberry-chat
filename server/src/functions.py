@@ -24,12 +24,27 @@ from init import *
 from .vars import table_query
 
 # Removed ansi characters
-def escape_ansi(line):
+def escape_ansi(string):
     ansi_escape = re.compile(r'(?:\x1B[@-_]|[\x80-\x9F])[0-?]*[ -/]*[@-~]')
-    return ansi_escape.sub('', line)
+    return ansi_escape.sub('', string)
 
-def repl_htpf(str):
-    to_ret = str \
+def escape_htpf(string):
+    to_ret = string \
+            .replace("#red", "") \
+            .replace("#green", "") \
+            .replace("#yellow", "") \
+            .replace("#blue", "") \
+            .replace("#magenta", "") \
+            .replace("#cyan", "") \
+            .replace("#white", "") \
+            .replace("#reset", "") \
+            .replace("#bold", "") \
+            .replace("#underline", "")
+                
+    return to_ret
+
+def repl_htpf(string):
+    to_ret = string \
             .replace("#red", RED) \
             .replace("#green", GREEN) \
             .replace("#yellow", YELLOW) \
