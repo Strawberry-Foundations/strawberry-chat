@@ -95,6 +95,20 @@ def hasNickname(uname):
     
     else: 
         return False
+
+# Check if user has a (main) badge
+def hasBadge(uname):
+    db = sql.connect(server_dir + "/users.db", check_same_thread=False)
+    c = db.cursor()
+    c.execute('SELECT badge FROM users WHERE username = ?', (uname,))
+    unick = c.fetchone()
+    c.close()
+    
+    if unick[0] is not None: 
+        return True
+    
+    else: 
+        return False
     
 # Print a proper user name information for memberlist command
 def memberListNickname(uname):
@@ -109,6 +123,19 @@ def memberListNickname(uname):
     
     else:
         return uname
+
+def memberListBadge(uname):
+    db = sql.connect(server_dir + "/users.db", check_same_thread=False)
+    c = db.cursor()
+    c.execute("SELECT badge FROM users WHERE username = ?", (uname,))
+    badge = c.fetchone()
+    c.close()
+    
+    if hasBadge(uname):
+        return f"[{badge[0]}]"
+    
+    else:
+        return ""
     
 # Get user role color from the user
 def userRoleColor(uname):
