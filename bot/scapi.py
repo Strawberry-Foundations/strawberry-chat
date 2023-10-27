@@ -40,7 +40,7 @@ base_version    = "0.11.0"
 ext_version     = base_version + "b1"
 version         = "v" + ext_version
 full_version    = ext_version + "-vacakes"
-update_channel  = "stable"
+update_channel  = "dev"
 codename        = "Vanilla Cake"
 authors         = ["Juliandev02"]
 api             = "http://api.strawberryfoundations.xyz/v1/"
@@ -302,6 +302,7 @@ class Scapi:
                     self.logger(f"{RED}An unknown exception occured{RESET}", type=Scapi.LogLevel.ERROR)
                     self.logger(f"{RED}{e}{RESET}", type=Scapi.LogLevel.ERROR)
                     break
+            
             
         def run(self, ready_func = None):
             if self.enable_user_input is True:
