@@ -303,7 +303,7 @@ class Scapi:
                     self.logger(f"{RED}{e}{RESET}", type=Scapi.LogLevel.ERROR)
                     break
             
-        def run(self, ready_func):
+        def run(self, ready_func = None):
             if self.enable_user_input is True:
                 self.logger(f"{YELLOW}Flag {GREEN + BOLD}'enableUserInput'{RESET + YELLOW} is enabled", type=Scapi.LogLevel.INFO)
                 
@@ -311,7 +311,8 @@ class Scapi:
                 self.logger(f"{YELLOW}Flag {GREEN + BOLD}'printReceivedMessagesToTerminal'{RESET + YELLOW} is enabled", type=Scapi.LogLevel.INFO)
                 
             time.sleep(0.5)
-            ready_func()
+            if not ready_func is None:
+                ready_func()
             
             recv_thread = threading.Thread(target=self.recv_message)
             send_thread = threading.Thread(target=self.send)
