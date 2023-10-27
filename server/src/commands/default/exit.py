@@ -5,7 +5,7 @@ import yaml
 
 from src.colors import *
 from yaml import SafeLoader
-from init import server_dir, addresses, users
+from init import server_dir, addresses, users, user_logged_in
 from src.functions import broadcast_all, userRoleColor
 
 # Open Configuration
@@ -19,6 +19,8 @@ def exit_command(socket: socket.socket, username: str, args: list):
     del addresses[socket]
     del users[socket]
     socket.close()
+    
+    user_logged_in[username] = False
     
     # log.info(f"{user} ({address}) has left.")
     broadcast_all(f"{Colors.GRAY + Colors.BOLD}<--{Colors.RESET} {userRoleColor(username)}{username}{YELLOW + Colors.BOLD} has left the chat room!{RESET + Colors.RESET}")
