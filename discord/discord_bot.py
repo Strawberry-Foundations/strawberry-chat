@@ -6,71 +6,52 @@ import datetime
 import re
 import time
 import threading
+import yaml
+from yaml import SafeLoader
+
+import scapi
+from scapi import Scapi
+
+with open("config.yml", encoding="utf-8") as config_file:
+    config = yaml.load(config_file, Loader=SafeLoader)
+
+log_channel_id  = config["bot"]["channel_id"]
+token           = config["bot"]["token"]
+
+stbchat_uname   = config["stbchat"]["username"]
+stbchat_token   = config["stbchat"]["password"]
+stbchat_host    = config["stbchat"]["server"]["host"]
+stbchat_port    = config["stbchat"]["server"]["port"]
 
 bot = commands.Bot(command_prefix='.', intents=discord.Intents.all())
-log_channel_id = 1140708601372086313
-host = "192.168.0.157"
-port = 8080
+scapi_bot = Scapi.Bot(username=stbchat_uname, token=stbchat_token, host=stbchat_host, port=stbchat_port)
+
+scapi_bot.login()
+scapi_bot.flag_handler(print_recv_msg=False, enable_user_input=True)
 
 
 def escape_ansi(line):
     ansi_escape = re.compile(r'(?:\x1B[@-_]|[\x80-\x9F])[0-?]*[ -/]*[@-~]')
     return ansi_escape.sub('', line)
 
-
-def stbchat_login(sock):
-    sock.send("Discord".encode("utf8"))
-    time.sleep(1)
-    sock.send("".encode("utf8"))
-    time.sleep(1)
-
-def discord_login(token):
-    bot.run(token)
-
-
-def discord_to_stbchat(sock, msg=None):    
-    try:
-        sock.send(escape_ansi(msg).encode("utf8"))
-
-    except Exception as e:
-        print(e)
-
-
-def stbchat_to_discord(sock):
-    while threadFlag: 
-        try:
-            message = str
-            message = sock.recv(2048).decode()
-            
-            if message:
-                # print("[{}] {}".format(datetime.datetime.now().strftime("%H:%M"), message))
-                return message
-
-            else:
-                break
-            
-        except Exception as e:
-            print(e)
-            break
-
 @bot.event
 async def on_ready():
     print(f'Logged in as {bot.user.name}')
-    
 
 @bot.event
 async def on_message(message):
-    log_channel = bot.get_channel(log_channel_id)
+    target_channel_name = "🍓┇strawberry-chat"
+    target_channel = discord.utils.get(message.guild.text_channels, name=target_channel_name)
     
     if message.author == bot.user:
         pass
     
     else:
         try:
-            if log_channel:
+            
+            if message.channel.id == log_channel_id:
                 global log_message
-                global clientSocket
-                
+
                 if message.attachments:
                     if message.content == "":
                         for attachment in message.attachments:
@@ -82,53 +63,118 @@ async def on_message(message):
                 else:
                     log_message = f"({message.author.display_name}): {message.content}"
                 
-                discord_to_stbchat(clientSocket, log_message)
-                
+                scapi_bot.send_message(log_message)
+            
+            if target_channel:
+                threadFlag = True
+                while threadFlag: 
+                    try:
+                        msg = str
+                        msg = clientSocket.recv(2048).decode()
+                        
+                        if msg:
+                            print(msg + "\n")
+                            await target_channel.send(escape_ansi(msg))
+
+                        else:
+                            break
+                        
+                    except Exception as e:
+                        print(e)
+                        break
+                    
         except Exception as e:
             print(e)
         
     await bot.process_commands(message)
+
+async def Commands():
+    target_channel_name = "🍓┇strawberry-chat"
+    target_channel = discord.utils.get(message.guild.text_channels, name=target_channel_name)
+    
+    while True:
+        try:
+            message = scapi_bot.recv_message(raw=True)
+            await target_channel.send(escape_ansi(message))
             
-def main():
-    global threadFlag
-    global clientSocket
-    clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        except: 
+            scapi_bot.logger(f"{scapi.RED}An unknown exception occured{scapi.RESET}", type=Scapi.LogLevel.ERROR)
+            break
+
+# @bot.event
+# async def on_message(message):
+#     if message.author == bot.user:
+#         return  # Ignoriere Nachrichten vom Bot selbst
+
+#     # Bestimme den Zielkanal, in den die Nachricht weitergeleitet werden soll
+#     target_channel_name = "🍓┇strawberry-chat"  # Ersetze "zielkanal" durch den Namen deines Zielkanals
+#     target_channel = discord.utils.get(message.guild.text_channels, name=target_channel_name)
+
+#     if target_channel:
+#         # Sende die empfangene Nachricht in den Zielkanal
+#         await target_channel.send(f'{message.author.name} hat geschrieben: {message.content}')
+         
+# def main():
+#     global threadFlag
+#     global clientSocket
+#     clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     
-    try: 
-        clientSocket.connect((host, port))
+#     try: 
+#         clientSocket.connect((stbchat_host, stbchat_port))
         
-    except: 
-        print("server not reachable")
-        exit(1)
+#     except: 
+#         print("server not reachable")
+#         exit(1)
         
-    sendingThread = threading.Thread(target=discord_to_stbchat, args=(clientSocket,))
-    receivingThread = threading.Thread(target=stbchat_to_discord, args=(clientSocket,))
-    
-    stbchat_login(clientSocket)
-    
-    receivingThread.start()
-    sendingThread.start()
-    
-    discord_login("s")
+#     # def stbchat_to_discord():
+#     #     threadFlag = True
+#     #     while threadFlag: 
+#     #         try:
+#     #             message = str
+#     #             message = clientSocket.recv(2048).decode()
+                
+#     #             if message:
+#     #                 print(message + "\n")
+#     #                 return message
 
-    try:
-        while receivingThread.is_alive() and sendingThread.is_alive():
-            continue
+#     #             else:
+#     #                 break
+                
+#     #         except Exception as e:
+#     #             print(e)
+#     #             break
         
-    except KeyboardInterrupt:
-        print(f"\nAborted")
-        threadFlag = False
-        exit(1)
+#     sendingThread = threading.Thread(target=discord_to_stbchat, args=(clientSocket,))
+#     # receivingThread = threading.Thread(target=receive, args=(clientSocket,))
+        
+#     # receivingThread.start()
+#     sendingThread.start()
     
-    threadFlag = False
+#     discord_login(token=token)
+
+#     try:
+#         # while receivingThread.is_alive() and sendingThread.is_alive():
+#         while sendingThread.is_alive():
+#             continue
+        
+#     except KeyboardInterrupt:
+#         print(f"\nAborted")
+#         threadFlag = False
+#         exit(1)
     
-    clientSocket.close()
-    print(f"\nClosed application")
+#     threadFlag = False
+    
+#     clientSocket.close()
+#     print(f"\nClosed application")
     
 
-threadFlag = True
+# threadFlag = True
 
-if __name__ == "__main__":
-    main()
-    pass
+# if __name__ == "__main__":
+#     main()
+#     pass
 
+scapi_bot.run()
+bot.run(token)
+CommandThread = threading.Thread(target=Commands)
+CommandThread.start()
