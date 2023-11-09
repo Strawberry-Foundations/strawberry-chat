@@ -1,8 +1,9 @@
 # [Strawberry Chat](https://github.com/orgs/Strawberry-Foundations/projects/1)
+The universal chatting platform for your terminal!<br><br>
 ![Latest Stable Release](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2FStrawberry-Foundations%2Fstrawberry-chat%2Fmain%2Fapi%2Fjson%2Fversions.json&query=%24.stbchat.server.stable&label=Latest%20Stable%20Release&color=success) ![Latest Development Release](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2FStrawberry-Foundations%2Fstrawberry-chat%2Fmain%2Fapi%2Fjson%2Fversions.json&query=%24.stbchat.server.dev&label=Latest%20Development%20Release&color=success) ![Codename](https://img.shields.io/badge/Codename-Vanilla_Cake-darkred)<br>
 ![Code Size](https://img.shields.io/github/languages/code-size/Strawberry-Foundations/strawberry-chat) ![Commit activity](https://img.shields.io/github/commit-activity/w/Strawberry-Foundations/strawberry-chat) ![License](https://img.shields.io/github/license/Strawberry-Foundations/strawberry-chat)<br> [![CodeQL](https://github.com/Strawberry-Foundations/strawberry-chat/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/Strawberry-Foundations/strawberry-chat/actions/workflows/github-code-scanning/codeql) [![Python Application](https://github.com/Strawberry-Foundations/strawberry-chat/actions/workflows/python.yml/badge.svg)](https://github.com/Strawberry-Foundations/strawberry-chat/actions/workflows/python.yml) <br>
-![Commit](https://img.shields.io/badge/100_Commits_in_5_days-success?style=for-the-badge) ![Commit](https://img.shields.io/badge/200_Commits_in_7_days-gold?style=for-the-badge) ![Commit](https://img.shields.io/badge/300_Commits_in_10_days-darkblue?style=for-the-badge) ![Commit](https://img.shields.io/badge/400_Commits_in_18_Days-yellow?style=for-the-badge) ![Commit](https://img.shields.io/badge/500_Commits_in_19_Days-cyan?style=for-the-badge)<br>
-The universal chatting platform for your terminal!
+<!-- ![Commit](https://img.shields.io/badge/100_Commits_in_5_days-success?style=for-the-badge) ![Commit](https://img.shields.io/badge/200_Commits_in_7_days-gold?style=for-the-badge) ![Commit](https://img.shields.io/badge/300_Commits_in_10_days-darkblue?style=for-the-badge) ![Commit](https://img.shields.io/badge/400_Commits_in_18_Days-yellow?style=for-the-badge) ![Commit](https://img.shields.io/badge/500_Commits_in_19_Days-cyan?style=for-the-badge)<br> -->
+
 
 ## What is Strawberry Chat?
 Strawberry Chat is a simple chat platform based on Python TCP sockets. It allows you to chat with other people in a simple and minimal way - without annoying tracking and spying. 
@@ -14,8 +15,8 @@ In addition, Strawberry Chat is open source. This means that everyone can contri
 <!-- ## Current state ![State](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2FStrawberry-Foundations%2Fstrawberry-chat%2Fmain%2Fapi%2Fjson%2Fversions.json&query=%24.stbchat.server.stable&label=%20&color=success) ![State](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2FStrawberry-Foundations%2Fstrawberry-chat%2Fmain%2Fapi%2Fjson%2Fversions.json&query=%24.stbchat.server.dev&label=%20&color=success)
 Currently, Strawberry Chat is being developed a lot, even almost daily. Currently we are in a end **beta** stage. The big part already exists and Strawberry Chat is very well usable, but there are still some things missing, ***including some commands, complete porting of all commands to the new command system and important bug fixes*** -->
 
-## Password Hashing
-Yes! Finally! Password encryption/hashing is here! With the release of v1.8.0pre1 the team has officially added password hashing. If security issues should arise, or bugs should occur, please open an issue! The system has already been tested, but not completely. Thanks :)
+## Security
+Strawberry Chat has now officially received password hashing with the release of version 1.8.0. We're using a secure hashing algorithm for the stored passwords. On weaker devices without cryptographic extensions (e.g. Raspberry Pi 4) you will notice that there is a slight delay when logging in. This is due to the hashing algorithm we use. Due to the high security, the system needs more time.  
 
 ## FaQ
 **Q:** Can I create my own client?<br>
