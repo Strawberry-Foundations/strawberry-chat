@@ -175,5 +175,7 @@ discord/config.yml
 deprecated/server/log.txt
 deprecated/server/messages.txt
 client/client.java
+client/client.go
+client/client
 tokens.json
 server/CHANGELOG_GITHUB.txt
