@@ -1398,9 +1398,7 @@ def broadcast(message, sentBy=""):
         if sentBy == "":
             for user in users:
                 try: user.send(message.encode("utf8"))
-                except BrokenPipeError:
-                    user.close()
-                    pass
+                except BrokenPipeError: pass
 
         else:
             for user in users:
