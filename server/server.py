@@ -284,12 +284,13 @@ def clientThread(client):
         try:
             try:
                 if user_logged_in[user]:
-                    message = client.recv(2048).decode("utf8")
+                    message = client.recv(2048).decode("utf8")                    
                     
+                    if len(message) == 0:
+                        return
                 else:
                     return
-                    
-            
+
             except OSError: 
                 return
             
@@ -1396,7 +1397,10 @@ def broadcast(message, sentBy=""):
     try:
         if sentBy == "":
             for user in users:
-                user.send(message.encode("utf8"))
+                try: user.send(message.encode("utf8"))
+                except BrokenPipeError:
+                    user.close()
+                    pass
 
         else:
             for user in users:
@@ -1427,9 +1431,11 @@ def broadcast(message, sentBy=""):
                     if f"@{u}" in message.split():
                         message = message.replace(f"@{u}", f"{BACKMAGENTA + Colors.BOLD}@{userNickname(u)}{BACKRESET + Colors.RESET}")
                 
+                
                 if hasNickname(sentBy) == True:
                     if message != "":
-                        user.send(f"{userRoleColor(sentBy)}{userNickname(sentBy)} (@{sentBy.lower()}){badge}{RESET + Colors.RESET}: {message}{RESET + Colors.RESET}".encode("utf8"))
+                        try: user.send(f"{userRoleColor(sentBy)}{userNickname(sentBy)} (@{sentBy.lower()}){badge}{RESET + Colors.RESET}: {message}{RESET + Colors.RESET}".encode("utf8"))
+                        except BrokenPipeError: pass
                     else:
                         pass
                     
@@ -1445,12 +1451,12 @@ def broadcast(message, sentBy=""):
         if e.errno == errno.EPIPE:
             log.critical(f"Broken Pipe Error. You may need to restart your server!! DO NOT EXIT THE CHAT CLIENT WITH ^C!!!")
             debugLogger(e, "122")
-            exit(1)
+            sys.exit(1)
   
     except Exception as e:
         log.error(f"A broadcasting error occurred.")
         debugLogger(e, "003")
-        exit(1)
+        sys.exit(1)
 
 
 
