@@ -16,7 +16,7 @@ sid_api                 = "https://id.strawberryfoundations.xyz/v1"
 # SQL table query
 table_query = """
     CREATE TABLE "users" (
-	"user_id"	TEXT,
+	"user_id"	INTEGER,
 	"username"	TEXT,
 	"password"	TEXT,
 	"nickname"	INTEGER,
@@ -31,7 +31,8 @@ table_query = """
 	"muted"	TEXT,
 	"strawberry_id"	TEXT,
 	"discord_name"	TEXT,
-	"msg_count"	INTEGER)"""
+	"msg_count"	INTEGER,
+    "creation_date"	INTEGER)"""
  
 # Help Sections 
 default_help_section    = f"""{GREEN +  Colors.UNDERLINE + Colors.BOLD}Default commands{RESET + Colors.RESET}
