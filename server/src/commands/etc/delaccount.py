@@ -22,11 +22,11 @@ def delete_account_command(socket: socket.socket, username: str, args: list):
             socket.send(f"{YELLOW + Colors.BOLD}Enter your username to confirm the deletion of your account:{RESET + Colors.RESET}".encode("utf8"))
             confirm_username_delete = socket.recv(2048).decode("utf8")
             
-            if confirm_username_delete == user:
+            if confirm_username_delete == username:
                 socket.send(f"{YELLOW + Colors.BOLD}Deleting your user account...{RESET + Colors.RESET}".encode("utf8"))
                 
                 try:
-                    cmd_db.execute("DELETE FROM users WHERE username = ?", (user,))
+                    cmd_db.execute("DELETE FROM users WHERE username = ?", (username,))
                     cmd_db.commit()
                     socket.send(f"{GREEN + Colors.BOLD}Deleted{RESET + Colors.RESET}".encode("utf8"))
                     socket.close()
