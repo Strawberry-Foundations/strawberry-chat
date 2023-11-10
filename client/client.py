@@ -195,15 +195,18 @@ else:
 
 
     try:
-        server_selection = input(f"{Fore.LIGHTCYAN_EX}{Str[lang]['SelChatServer']}{Fore.RESET}")
+        server_selection = int(input(f"{Fore.LIGHTCYAN_EX}{Str[lang]['SelChatServer']}{Fore.RESET}"))
         
     except KeyboardInterrupt:
         print(f"\n{Fore.YELLOW}{Str[lang]['Aborted']}{Fore.RESET}")
         sys.exit(1)
+    
+    except ValueError:
+        print(f"{Fore.RED + BOLD}{Str[lang]['InvalidInput']}{Fore.RESET + CRESET}")
+        sys.exit(1)
 
     server_count = len(data['server'])
     custom_server_sel = server_count + 1
-    custom_server_sel = str(custom_server_sel)
     
     if server_selection == custom_server_sel:
         host = input(f"{Fore.LIGHTBLUE_EX + BOLD}{Str[lang]['Ipaddr']}{Fore.RESET + CRESET}")
