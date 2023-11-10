@@ -31,9 +31,11 @@ jobs:
     
     - name: Move to build directory
       run: |
+        ls
         mkdir build
         mv server.bin build/
         cp config.yml.example build/
+        ls build/
     
     - uses: actions/upload-artifact@v3
       with:
