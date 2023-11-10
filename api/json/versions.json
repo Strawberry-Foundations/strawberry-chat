@@ -2,7 +2,7 @@
     "stbchat": {
         "server": {
             "stable": "v1.8.0",
-            "dev": "v1.8.1b2"
+            "dev": "v1.8.1pre1"
         },
     
         "client": {
