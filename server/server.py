@@ -1397,7 +1397,7 @@ def broadcast_command(message, sentBy=""):
         if sentBy == "":
             for user in users:
                 try: user.send(message.encode("utf8"))
-                except BrokenPipeError: pass
+                except BrokenPipeError: log.error(f"Broken Pipe Error while sending message")
 
         else:
             for user in users:
@@ -1433,11 +1433,14 @@ def broadcast_command(message, sentBy=""):
                     if message != "":
                         if hasNickname(sentBy) == True:
                             try: user.send(f"{userRoleColor(sentBy)}{userNickname(sentBy)} (@{sentBy.lower()}){badge}{RESET + Colors.RESET}: {message}{RESET + Colors.RESET}".encode("utf8"))
-                            except BrokenPipeError: pass
+                            except BrokenPipeError:
+                                log.error(f"Broken Pipe Error while sending message")
                             
                         else: 
                             try: user.send(f"{userRoleColor(sentBy)}{sentBy}{badge}{RESET + Colors.RESET}: {message}{RESET + Colors.RESET}".encode("utf8"))
-                            except BrokenPipeError: pass
+                            except BrokenPipeError:
+                                log.error(f"Broken Pipe Error while sending message")
+                                
                     else: pass
                 else: pass
                     
@@ -1449,10 +1452,10 @@ def broadcast_command(message, sentBy=""):
             debugLogger(e, "122")
             sys.exit(1)
   
-    except Exception as e:
-        log.error(f"A broadcasting error occurred.")
-        debugLogger(e, "003")
-        sys.exit(1)
+    # except Exception as e:
+    #     log.error(f"A broadcasting error occurred.")
+    #     debugLogger(e, "003")
+    #     sys.exit(1)
 
 
 
