@@ -31,7 +31,7 @@ from src.commands import PermissionLevel, execute_command, list_commands
 
 from src.commands.default import help, server_info, news, changelog, about, dm, exit
 from src.commands.etc import test_command
-from src.commands.admin import broadcast, mute, unmute
+from src.commands.admin import broadcast_command, mute, unmute
 from src.commands.user import online, afklist, afk, unafk, msgcount, members, description, memberlist, discord, user_settings
 
 
@@ -278,7 +278,7 @@ def clientThread(client):
         return
     
     time.sleep(0.1)
-    broadcast(f"{Colors.GRAY + Colors.BOLD}-->{Colors.RESET} {userRoleColor(user)}{user}{GREEN + Colors.BOLD} has joined the chat room!{RESET + Colors.RESET}")
+    broadcast_command(f"{Colors.GRAY + Colors.BOLD}-->{Colors.RESET} {userRoleColor(user)}{user}{GREEN + Colors.BOLD} has joined the chat room!{RESET + Colors.RESET}")
 
     while True:
         try:
@@ -1085,17 +1085,17 @@ def clientThread(client):
                 
                 # Shrug Command
                 case "/shrug":
-                    broadcast("¯\_(ツ)_/¯", user)
+                    broadcast_command("¯\_(ツ)_/¯", user)
                 
                 
                 # Tableflip Command
                 case "/tableflip":
-                    broadcast("(╯°□°)╯︵ ┻━┻", user)
+                    broadcast_command("(╯°□°)╯︵ ┻━┻", user)
                 
                 
                 # Unflip Command
                 case "/unflip":
-                    broadcast("┬─┬ノ( º _ ºノ)", user)
+                    broadcast_command("┬─┬ノ( º _ ºノ)", user)
                 
                     
                 # Clientinfo Command
@@ -1155,7 +1155,7 @@ def clientThread(client):
                                                                 
                                 log.info(f"{user} ({address}): {log_msg}")
                                     
-                            broadcast(message, user)
+                            broadcast_command(message, user)
                             
                             try:
                                 c.execute("SELECT msg_count FROM users WHERE username = ?", (user,))
@@ -1184,7 +1184,7 @@ def clientThread(client):
                 log.warning("A socket-to-client exception occured")
                 debugLogger(e, "005", type="warning")
             
-            broadcast(f"{Colors.GRAY + Colors.BOLD}<--{Colors.RESET} {userRoleColor(user)}{user}{YELLOW + Colors.BOLD} has left the chat room!{RESET + Colors.RESET}")
+            broadcast_command(f"{Colors.GRAY + Colors.BOLD}<--{Colors.RESET} {userRoleColor(user)}{user}{YELLOW + Colors.BOLD} has left the chat room!{RESET + Colors.RESET}")
             break
 
 def clientRegister(client):
@@ -1391,7 +1391,7 @@ def clientLogin(client):
             client.send(f"{RED + Colors.BOLD}User not found.\n{RESET + Colors.RESET}".encode("utf8"))
 
 
-def broadcast(message, sentBy=""):
+def broadcast_command(message, sentBy=""):
     c = db.cursor()
     try:
         if sentBy == "":
