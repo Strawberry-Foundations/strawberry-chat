@@ -22,7 +22,7 @@ def mute_command(socket: socket.socket, username: str, args: list):
         cmd_db.commit()
 
         socket.send(f"{LIGHTGREEN_EX + Colors.BOLD}Muted {uname}{RESET + Colors.RESET}".encode("utf8"))
-        log.info(f"{uname} has been muted")
+        log.info(f"{uname} has been muted by {username}")
 
 @register_command("unmute", arg_count=1, required_permissions=PermissionLevel.ADMIN)
 def unmute_command(socket: socket.socket, username: str, args: list):
@@ -38,4 +38,4 @@ def unmute_command(socket: socket.socket, username: str, args: list):
         cmd_db.commit()
 
         socket.send(f"{LIGHTGREEN_EX + Colors.BOLD}Unmuted {uname}{RESET + Colors.RESET}".encode("utf8"))
-        log.info(f"{uname} has been unmuted")
+        log.info(f"{uname} has been unmuted by {username}")
