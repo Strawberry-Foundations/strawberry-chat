@@ -1171,7 +1171,7 @@ def main():
             if online_mode == False:
                 print(f"{RED + Colors.BOLD}>>> {YELLOW}WARNING:{RED} Online mode is disabled and your server might be in danger! Consider using the online mode!{RESET + Colors.RESET}")
             
-            print(f"{GREEN + Colors.BOLD}>>> {RESET}Server is running on {ipaddr}:{port}")
+            print(f"{GREEN + Colors.BOLD}>>> {RESET}Server is running on {ipaddr}:{port}\n")
             
             _connection = threading.Thread(target=connectionThread, args=(server_socket,))
             _connection.start()
