@@ -50,6 +50,7 @@ LIGHTWHITE_EX   = Fore.LIGHTWHITE_EX
 # Path of client.py
 client_dir = os.path.dirname(os.path.realpath(__file__))
 
+# Check if config exists
 if os.path.exists(client_dir + "/config.yml"):
     # Open Configuration
     with open(client_dir + "/config.yml") as config:
@@ -65,17 +66,17 @@ autoserver      = data['autoserver']['enabled']
 autoserver_id   = data['autoserver']['server_id']
 
 langs           = ["de_DE", "en_US"]
+verified_list   = []
 
-api             = "http://api.strawberryfoundations.xyz/v1/"
+api             = "https://api.strawberryfoundations.xyz/v1/"
 ver             = "2.3.2"
 author          = "Juliandev02"
-use_sys_argv      = False
+use_sys_argv    = False
 
 
 # Open language strings
 with open(client_dir + "/lang.yml", encoding="utf-8") as langStrings:
         Str = yaml.load(langStrings, Loader=SafeLoader)
-
 
 # Try requesting our api server
 if online_mode == True:
@@ -85,7 +86,23 @@ if online_mode == True:
     except: 
         print(f"{RED + Colors.UNDERLINE}Connection Error{RESET + Colors.RESET}")
         print(f"{YELLOW}The server did not give a valid answer.\nEither the Strawberry API servers are overloaded, or offline. Please try again later{RESET}")
- 
+
+try:
+    if online_mode == True:
+        for i in range(len(data["server"])):
+            verified = requests.get(api + "server/verified?addr=" + data['server'][i]['address'])
+            
+            if verified.text == "True":
+                verified_list.append(data['server'][i]['address'])
+            else:
+                pass  
+    else:
+        pass
+    
+except Exception as e: 
+    print(e)
+
+
 
 # check if language is available
 if lang not in langs:
