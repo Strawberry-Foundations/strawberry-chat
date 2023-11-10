@@ -6,7 +6,6 @@ import threading
 import os
 import sys
 
-import logging
 import traceback
 import errno
 
@@ -33,46 +32,7 @@ from src.commands.etc import test_command, news, delaccount
 from src.commands.admin import broadcast_cmd, mute, ban, kick, debug
 from src.commands.user import online, afklist, afk, unafk, msgcount, members, description, memberlist, discord, user_settings, user
 
-# Init logger
-class LogFormatter(logging.Formatter):
-    class Fmt:
-        info     = f"{RESET}[{datetime.datetime.now().strftime('%H:%M')}] {BLUE}[%(levelname)s]{RESET + Colors.RESET}    %(message)s"
-        error    = f"{RESET}[{datetime.datetime.now().strftime('%H:%M')}] {RED}[%(levelname)s]{RESET + Colors.BOLD}   %(message)s"
-        default  = f"{RESET}[{datetime.datetime.now().strftime('%H:%M')}] {BLUE}[%(levelname)s]{RESET + Colors.RESET + Colors.BOLD}   %(message)s"
-        warning  = f"{RESET}[{datetime.datetime.now().strftime('%H:%M')}] {YELLOW}[%(levelname)s]{RESET + Colors.RESET + Colors.BOLD} %(message)s"
-        critical = f"{RESET}[{datetime.datetime.now().strftime('%H:%M')}] {RED}[%(levelname)s]{RESET + Colors.RESET + Colors.BOLD} %(message)s"
 
-    FORMATS = {
-        logging.DEBUG:    Colors.BOLD + Fmt.default,
-        logging.INFO:     Colors.BOLD + Fmt.info,
-        logging.WARNING:  Colors.BOLD + Fmt.warning,
-        logging.ERROR:    Colors.BOLD + Fmt.error,
-        logging.CRITICAL: Colors.BOLD + Fmt.critical
-    }
-
-    def format(self, record):
-        log_fmt = Style.RESET_ALL + self.FORMATS.get(record.levelno) + Style.RESET_ALL
-        formatter = logging.Formatter(log_fmt)
-        return formatter.format(record)
-
-
-log = logging.getLogger("LOG")
-
-if os.environ.get("LOG_LEVEL") is not None:
-    log.setLevel(os.environ.get("LOG_LEVEL").upper())
-    
-else:
-    log.setLevel("INFO")
-    
-log_fh  = logging.FileHandler(server_dir + '/log.txt')
-log_fmt = logging.Formatter(f"(%(asctime)s) [%(levelname)s]  %(message)s")
-log_fh.setFormatter(log_fmt)
-
-log_ch = logging.StreamHandler()
-log_ch.setFormatter(LogFormatter())
-
-log.addHandler(log_ch)
-log.addHandler(log_fh)
 
 # Check if database file exists
 if os.path.exists(server_dir + "/users.db"):
