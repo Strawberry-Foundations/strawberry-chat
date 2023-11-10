@@ -112,9 +112,9 @@ def check_for_updates():
     online_ver = fetch_update_data()
     
     if not online_ver == ver:
-        print(f"{BOLD + GREEN}An update for Strawberry Client is available.{RESET +RESET}")
+        print(f"{BOLD + GREEN}{Str[lang]['UpdateAvailable']}{RESET +RESET}")
         print(f"{BOLD + CYAN}strawberry-chat{GREEN}@{MAGENTA}stable {RESET}{online_ver}{RESET}")
-        print(f"↳ Upgrading from {CYAN + BOLD}strawberry-chat{GREEN}@{MAGENTA}stable {RESET}{ver}{RESET}\n")
+        print(f"↳ {Str[lang]['UpgradingFrom']} {CYAN + BOLD}strawberry-chat{GREEN}@{MAGENTA}stable {RESET}{ver}{RESET}\n")
 
 # Try requesting our api server
 if online_mode:
@@ -184,7 +184,7 @@ elif autoserver == True:
 
 # If no arguments passed, start client without any special functions
 else:
-    print(f"{Fore.CYAN + BOLD + UNDERLINE}Strawberry Chat Client (stbchat) (v{ver}){CRESET}")
+    print(f"{Fore.CYAN + BOLD + UNDERLINE}Strawberry Chat Client (v{ver}){CRESET}")
     print(f"{Fore.LIGHTGREEN_EX}{Str[lang]['Welcome']}{Fore.RESET}\n")
     print(f"{Fore.GREEN + BOLD + UNDERLINE}{Str[lang]['AvailableServers']}:{Fore.RESET + CRESET}")
 
