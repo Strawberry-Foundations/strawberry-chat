@@ -205,7 +205,7 @@ with open(server_dir + "/news.yml") as news_file:
     news_data = yaml.load(news_file, Loader=SafeLoader)
     
 # News
-news = f"""{GREEN +  Colors.UNDERLINE + Colors.BOLD}{chat_name} News - {short_ver}{RESET + Colors.RESET}{CYAN + Colors.BOLD}
+news_text = f"""{GREEN +  Colors.UNDERLINE + Colors.BOLD}{chat_name} News - {short_ver}{RESET + Colors.RESET}{CYAN + Colors.BOLD}
 {news_data['news'][base_ver]['text']}{RESET + Colors.RESET}"""
 
 
@@ -263,7 +263,7 @@ def clientThread(client):
             onlineUsersStr = f"are {onlineUsersLen} users"
             
         time.sleep(0.05)
-        client.send(f"""{CYAN + Colors.BOLD}Currently there {onlineUsersStr} online. For help use /help{RESET + Colors.RESET}\n{news}""".encode("utf8"))
+        client.send(f"""{CYAN + Colors.BOLD}Currently there {onlineUsersStr} online. For help use /help{RESET + Colors.RESET}\n{news_text}""".encode("utf8"))
         
 
     except Exception as e:
