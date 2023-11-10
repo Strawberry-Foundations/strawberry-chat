@@ -161,8 +161,8 @@ def debug_logger(error_message, error_code, type: StbTypes = StbTypes.ERROR):
         None
 
 # SQL error message logger
-def sqlError(errorMessage):
-    log.error(f"e096: An SQL Error occured: {errorMessage}")
+def sql_error(error_message):
+    log.error(f"stbexceptions::s096 -> An SQL Error occured: {error_message}")
 
 
 with open(server_dir + "/news.yml") as news_file:
@@ -316,7 +316,7 @@ def clientThread(client):
                     c.execute('SELECT role FROM users WHERE username = ?', (user,))
 
                 except Exception as e:
-                    sqlError(e)
+                    sql_error(e)
                     
                 user_role = c.fetchone()[0]
                 role = None
@@ -352,7 +352,7 @@ def clientThread(client):
                     c.execute('SELECT role FROM users WHERE username = ?', (user,))
                     
                 except Exception as e:
-                    sqlError(e)
+                    sql_error(e)
                     
                 res = c.fetchone()
                 
@@ -403,7 +403,7 @@ def clientThread(client):
                     c.execute('SELECT role FROM users WHERE username = ?', (user,))
                     
                 except Exception as e: 
-                    sqlError(e)
+                    sql_error(e)
                     
                 res = c.fetchone()
                 
@@ -474,7 +474,7 @@ def clientThread(client):
                     c.execute('SELECT role FROM users WHERE username = ?', (user,))
                     
                 except Exception as e:
-                    sqlError(e)
+                    sql_error(e)
                     
                 res = c.fetchone()
                 
@@ -561,7 +561,7 @@ def clientThread(client):
                             c.execute('SELECT role FROM users WHERE username = ?', (user,))
                             
                         except Exception as e:
-                            sqlError(e)
+                            sql_error(e)
                             
                         res = c.fetchone()
                         
@@ -591,7 +591,7 @@ def clientThread(client):
                     c.execute('SELECT role FROM users WHERE username = ?', (user,))
                     
                 except Exception as e:
-                    sqlError(e)
+                    sql_error(e)
                     
                 res = c.fetchone()
                 
@@ -770,7 +770,7 @@ def clientThread(client):
                         db.commit()
                         
                     except Exception as e:
-                        sqlError(e)
+                        sql_error(e)
             c.close()            
                 
         except Exception as e:
@@ -902,7 +902,7 @@ def clientRegister(client):
             client.close()
             
         except Exception as e:
-            sqlError(e)
+            sql_error(e)
         
     else:
         client.send(f"{RED + Colors.BOLD}Registration has been canceled. Start from the beginning...{RESET + Colors.RESET}".encode("utf8"))
