@@ -11,5 +11,5 @@
 * 096 = SQL Error (S)
 * 100 = General error
 * 122 = BrokenPipe error, you may need to restart your server. Syncronization between server and client got interrupted
-* 242 = Side-by-Side error
+* 242 = message transmission error
 * 999 = Banned from the server (C)
