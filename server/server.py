@@ -30,7 +30,7 @@ from src.commands import PermissionLevel, execute_command, list_commands
 
 from src.commands.default import help, server_info, news, changelog, about, dm, exit_cmd
 from src.commands.etc import test_command
-from src.commands.admin import broadcast_cmd, mute, unmute, kick, debug
+from src.commands.admin import broadcast_cmd, mute, ban, kick, debug
 from src.commands.user import online, afklist, afk, unafk, msgcount, members, description, memberlist, discord, user_settings, user
 
 
@@ -432,60 +432,6 @@ def clientThread(client):
                     
                     client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Changed nickname to {RESET + userRoleColor(user)}{nick}{RESET + Colors.RESET}".encode("utf8"))
                     continue
-            
-            # /ban Command
-            elif message.startswith("/ban "):
-                try: 
-                    c.execute('SELECT role FROM users WHERE username = ?', (user,))
-                    
-                except Exception as e:
-                    sqlError(e)
-                    
-                res = c.fetchone()
-                
-                if res[0] == "admin":
-                    uname = message.replace("/ban ", "")
-                    
-                    if doesUserExist(uname) == False:
-                        client.send(f"{RED + Colors.BOLD}Sorry, this user does not exist!{RESET + Colors.RESET}".encode("utf8"))
-                        continue
-                    
-                    c.execute("UPDATE users SET account_enabled = 'false' WHERE username = ?", (uname,))
-                    db.commit()
-                    
-                    client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Banned {uname}{RESET + Colors.RESET}".encode("utf8"))
-                    continue
-                    
-                else:
-                    client.send(f"{RED}Sorry, you do not have permissons for that.{RESET}".encode("utf8"))
-            
-            
-            # /unban Command
-            elif message.startswith("/unban "):
-                try: 
-                    c.execute('SELECT role FROM users WHERE username = ?', (user,))
-                    
-                except Exception as e:
-                    sqlError(e)
-                    
-                res = c.fetchone()
-                
-                if res[0] == "admin":
-                    uname = message.replace("/unban ", "")
-                    
-                    if doesUserExist(uname) == False:
-                        client.send(f"{RED + Colors.BOLD}Sorry, this user does not exist!{RESET + Colors.RESET}".encode("utf8"))
-                        continue
-                    
-                    c.execute("UPDATE users SET account_enabled = 'true' WHERE username = ?", (uname,))
-                    db.commit()
-                    
-                    client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Unbanned {uname}{RESET + Colors.RESET}".encode("utf8"))
-                    continue
-                    
-                else:
-                    client.send(f"{RED}Sorry, you do not have permissons for that.{RESET}".encode("utf8"))
-            
             
             # /role Command
             elif message.startswith("/role "):
