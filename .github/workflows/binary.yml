@@ -29,9 +29,9 @@ jobs:
         cd server
         python3 -m nuitka ./server.py --follow-imports --onefile
     
-    - name: Move to build directory
-      run: |
-        mv server.bin build/
+    # - name: Move to build directory
+    #   run: |
+    #     mv server.bin build/
     
     - uses: actions/upload-artifact@v3
       with:
