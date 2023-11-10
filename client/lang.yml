@@ -23,6 +23,7 @@ de_DE:
   ConnectionErrorDesc: "Der Server hat keine gültige Antwort gegeben.\nEntweder sind die Strawberry-API-Server überlastet oder offline. Bitte versuche es später erneut.\nDeaktiviere den Online-Mode, um den Strawberry Chat Client weiterhin verwenden zu können"
   UpdateAvailable: "Ein Update für den Strawberry Chat Client ist verfügbar."
   UpgradingFrom: "Aktualisiere von"
+  InvalidInput: "Ungültige Eingabe!"
 
 # Language Strings for en_US (English)
 en_US:
@@ -49,3 +50,4 @@ en_US:
   ConnectionErrorDesc: "The server did not give a valid answer.\nEither the Strawberry API servers are overloaded, or offline. Please try again later\nDeactivate the online mode to continue using the Strawberry Chat Client"
   UpdateAvailable: "An update for Strawberry Chat Client is available."
   UpgradingFrom: "Upgrading from"
+  InvalidInput: "Invalid input!"
