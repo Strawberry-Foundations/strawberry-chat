@@ -22,7 +22,7 @@ def ban_command(socket: socket.socket, username: str, args: list):
         cmd_db.commit()
 
         socket.send(f"{LIGHTGREEN_EX + Colors.BOLD}Banned {uname}{RESET + Colors.RESET}".encode("utf8"))
-        log.info(f"{uname} has been banned")
+        log.info(f"{uname} has been banned by {username}")
 
 @register_command("unban", arg_count=1, required_permissions=PermissionLevel.ADMIN)
 def unban_command(socket: socket.socket, username: str, args: list):
@@ -38,4 +38,4 @@ def unban_command(socket: socket.socket, username: str, args: list):
         cmd_db.commit()
 
         socket.send(f"{LIGHTGREEN_EX + Colors.BOLD}Unbanned {uname}{RESET + Colors.RESET}".encode("utf8"))
-        log.info(f"{uname} has been unbanned")
+        log.info(f"{uname} has been unbanned by {username}")
