@@ -35,14 +35,19 @@ from src.commands.user import online, afklist, afk, unafk, msgcount, members, de
 
 # Init logger
 class LogFormatter(logging.Formatter):
-    format = f"[{datetime.datetime.now().strftime('%H:%M')}] [%(levelname)s]{RESET + Colors.RESET + Colors.BOLD} %(message)s"
+    class Fmt:
+        info     = f"{RESET}[{datetime.datetime.now().strftime('%H:%M')}] {BLUE}[%(levelname)s]{RESET + Colors.RESET}    %(message)s"
+        error    = f"{RESET}[{datetime.datetime.now().strftime('%H:%M')}] {RED}[%(levelname)s]{RESET + Colors.BOLD}   %(message)s"
+        default  = f"{RESET}[{datetime.datetime.now().strftime('%H:%M')}] {BLUE}[%(levelname)s]{RESET + Colors.RESET + Colors.BOLD}   %(message)s"
+        warning  = f"{RESET}[{datetime.datetime.now().strftime('%H:%M')}] {YELLOW}[%(levelname)s]{RESET + Colors.RESET + Colors.BOLD} %(message)s"
+        critical = f"{RESET}[{datetime.datetime.now().strftime('%H:%M')}] {RED}[%(levelname)s]{RESET + Colors.RESET + Colors.BOLD} %(message)s"
 
     FORMATS = {
-        logging.DEBUG:    WHITE  + Style.DIM    + format,
-        logging.INFO:     BLUE   + format,
-        logging.WARNING:  YELLOW + format,
-        logging.ERROR:    RED    + Style.BRIGHT + format,
-        logging.CRITICAL: RED    + format
+        logging.DEBUG:    Colors.BOLD + Fmt.default,
+        logging.INFO:     Colors.BOLD + Fmt.info,
+        logging.WARNING:  Colors.BOLD + Fmt.warning,
+        logging.ERROR:    Colors.BOLD + Fmt.error,
+        logging.CRITICAL: Colors.BOLD + Fmt.critical
     }
 
     def format(self, record):
@@ -1109,7 +1114,8 @@ def cleanup(info_msg=True):
     
 def server_commands(socket):
     while True:
-        command = input(f"{RESET + Colors.RESET}> ")
+        # command = input(f"{RESET + Colors.RESET}> ")
+        command = input(f"")
         if command == "help":
             print(server_help_section)
             
