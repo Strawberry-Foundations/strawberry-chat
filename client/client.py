@@ -300,11 +300,11 @@ def main():
     global threadFlag
     colorama.init()
     
-    clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     
     try: 
         print(f"{Fore.YELLOW + BOLD}{Str[lang]['TryConnection']}{Fore.RESET + CRESET}")
-        clientSocket.connect((host, port))
+        client_socket.connect((host, port))
     
     except KeyboardInterrupt:
         print(f"\n{Fore.YELLOW}{Str[lang]['Aborted']}{Fore.RESET}")
@@ -323,14 +323,14 @@ def main():
     else:
         print(f"{Fore.GREEN + BOLD}{Str[lang]['ConnectedToServer'] % data['server'][(int(server_selection) - 1)]['name']}{Fore.RESET + CRESET}")
         
-    sendingThread = threading.Thread(target=send, args=(clientSocket,))
-    receivingThread = threading.Thread(target=receive, args=(clientSocket,))
+    _sending = threading.Thread(target=send, args=(client_socket,))
+    _receiving = threading.Thread(target=receive, args=(client_socket,))
 
-    receivingThread.start()
-    sendingThread.start()
+    _receiving.start()
+    _sending.start()
 
     try:
-        while receivingThread.is_alive() and sendingThread.is_alive():
+        while _receiving.is_alive() and _sending.is_alive():
             continue
         
     except KeyboardInterrupt:
@@ -340,8 +340,8 @@ def main():
         
     threadFlag = False
 
-    clientSocket.close()
-    print(f"\n{Str[lang]['CloseApplication']}")
+    client_socket.close()
+    print(f"\n{Fore.YELLOW}{Str[lang]['CloseApplication']}{Fore.RESET}")
     
 
 threadFlag = True
