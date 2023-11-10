@@ -1149,24 +1149,25 @@ def clientThread(client):
                         client.send(f"{RED + Colors.BOLD}Your account was disabled by an administrator.{RESET + Colors.RESET}".encode("utf8"))
                         
                     else:
-                        if enable_messages:
-                            log_msg = escape_ansi(message)
-                            log_msg = escape_htpf(message)
-                            # log_msg = message.strip("\n")
-                            
-                            log.info(f"{user} ({address}): {log_msg}")
+                        if not is_empty_or_whitespace(message):
+                            if enable_messages:
+                                log_msg = escape_ansi(message)
+                                log_msg = escape_htpf(message)
+                                # log_msg = message.strip("\n")
                                 
-                        broadcast(message, user)
-                        
-                        try:
-                            c.execute("SELECT msg_count FROM users WHERE username = ?", (user,))
-                            msg_count = c.fetchone()
-                            msg_count = msg_count[0] + 1
-                            c.execute("UPDATE users SET msg_count = ? WHERE username = ?", (msg_count, user))
-                            db.commit()
+                                log.info(f"{user} ({address}): {log_msg}")
+                                    
+                            broadcast(message, user)
                             
-                        except Exception as e:
-                            sqlError(e)
+                            try:
+                                c.execute("SELECT msg_count FROM users WHERE username = ?", (user,))
+                                msg_count = c.fetchone()
+                                msg_count = msg_count[0] + 1
+                                c.execute("UPDATE users SET msg_count = ? WHERE username = ?", (msg_count, user))
+                                db.commit()
+                                
+                            except Exception as e:
+                                sqlError(e)
             c.close()            
                 
         except Exception as e:
@@ -1428,7 +1429,6 @@ def broadcast(message, sentBy=""):
                 for u in users.values():
                     if f"@{u}" in message.split():
                         message = message.replace(f"@{u}", f"{BACKMAGENTA + Colors.BOLD}@{userNickname(u)}{BACKRESET + Colors.RESET}")
-                
                 
                 
                 if not is_empty_or_whitespace(message):
