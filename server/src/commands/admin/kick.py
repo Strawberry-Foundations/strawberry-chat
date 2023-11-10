@@ -6,7 +6,7 @@ from src.colors import *
 from src.functions import doesUserExist, broadcast_all, userRoleColor
 from src.db import Database
 
-from init import server_dir, users, addresses
+from init import server_dir, users, addresses, log
 
 @register_command("kick", arg_count=1, required_permissions=PermissionLevel.ADMIN)
 def kick_command(socket: socket.socket, username: str, args: list):
@@ -37,9 +37,12 @@ def kick_command(socket: socket.socket, username: str, args: list):
                 del addresses[to_kick]
                 del users[to_kick]
                 
-                socket.send(f"{YELLOW + Colors.BOLD}Kicked {uname} for following reason: {reason}{RESET + Colors.RESET}".encode("utf8"))
+                socket.send(f"{YELLOW + Colors.BOLD}Kicked {uname} for following reason: {reason}{RESET + Colors.RESET}".encode("utf8"))                
                 to_kick.send(f"{YELLOW + Colors.BOLD}You have been kicked out of the chat for the following reason: {reason}{RESET + Colors.RESET}".encode("utf8"))
+                
+                log.info(f"{uname} has been kicked out of the chat")
                 broadcast_all(f"{Colors.GRAY + Colors.BOLD}<--{Colors.RESET} {userRoleColor(uname)}{uname}{YELLOW + Colors.BOLD} has left the chat room!{RESET + Colors.RESET}")
+                
                 
                 try: to_kick.close()
                 except Exception as e:
