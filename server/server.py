@@ -1152,7 +1152,7 @@ def clientThread(client):
                         if enable_messages:
                             log_msg = escape_ansi(message)
                             log_msg = escape_htpf(message)
-                            log_msg = message.strip("\n")
+                            # log_msg = message.strip("\n")
                             
                             log.info(f"{user} ({address}): {log_msg}")
                                 
@@ -1418,8 +1418,8 @@ def broadcast(message, sentBy=""):
                 
                 c.execute('SELECT role FROM users WHERE username = ?', (sentBy,))
                 res = c.fetchone()
+                
                 if res[0] != "bot":
-                    
                     message = message.strip("\n")
                 
                 message = escape_ansi(message)
@@ -1430,18 +1430,18 @@ def broadcast(message, sentBy=""):
                         message = message.replace(f"@{u}", f"{BACKMAGENTA + Colors.BOLD}@{userNickname(u)}{BACKRESET + Colors.RESET}")
                 
                 
-                if hasNickname(sentBy) == True:
+                
+                if not is_empty_or_whitespace(message):
                     if message != "":
-                        try: user.send(f"{userRoleColor(sentBy)}{userNickname(sentBy)} (@{sentBy.lower()}){badge}{RESET + Colors.RESET}: {message}{RESET + Colors.RESET}".encode("utf8"))
-                        except BrokenPipeError: pass
-                    else:
-                        pass
-                    
-                else: 
-                    if message != "":
-                        user.send(f"{userRoleColor(sentBy)}{sentBy}{badge}{RESET + Colors.RESET}: {message}{RESET + Colors.RESET}".encode("utf8"))
-                    else:
-                        pass
+                        if hasNickname(sentBy) == True:
+                            try: user.send(f"{userRoleColor(sentBy)}{userNickname(sentBy)} (@{sentBy.lower()}){badge}{RESET + Colors.RESET}: {message}{RESET + Colors.RESET}".encode("utf8"))
+                            except BrokenPipeError: pass
+                            
+                        else: 
+                            try: user.send(f"{userRoleColor(sentBy)}{sentBy}{badge}{RESET + Colors.RESET}: {message}{RESET + Colors.RESET}".encode("utf8"))
+                            except BrokenPipeError: pass
+                    else: pass
+                else: pass
                     
         c.close()
                 
