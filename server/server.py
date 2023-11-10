@@ -965,67 +965,7 @@ def clientThread(client):
                     elif len(args) < 2 or len(args) > 3:
                         client.send(f"{RED + Colors.BOLD}Invalid command usage.{RESET + Colors.RESET}".encode("utf8"))
                         continue
-            
-            
-            
-                
-            
-            elif message.startswith("/kick "):
-                try: 
-                    c.execute('SELECT role FROM users WHERE username = ?', (user,))
-                    
-                except Exception as e:
-                    sqlError(e)
-                    
-                res = c.fetchone()
-                
-                if res[0] == "admin":
-                    arg = message.replace("/kick ", "")
-                    args = arg.split(" ")
-
-                    uname   = args[0]
-                    reason  = ' '.join(args[1:])
-                    
-                    if reason == "":
-                        reason = "No reason provided"
-                    
-                    search_val = uname
-                    found_keys = []
-                    
-                    for key, value in users.items():
-                        if value == search_val:
-                            global to_kick
-                            to_kick = key
-                            found_keys.append(key)
-                            
-                    if uname == user:
-                        client.send(f"{YELLOW}You shouldn't kick yourself...{RESET}".encode("utf8"))
-                        continue
-                    
-                    else:
-                        if found_keys:
-                            client.send(f"{YELLOW + Colors.BOLD}Kicked {uname} for following reason: {reason}{RESET + Colors.RESET}".encode("utf8"))
-                            to_kick.send(f"{YELLOW + Colors.BOLD}You have been kicked out of the chat for the following reason: {reason}{RESET + Colors.RESET}".encode("utf8"))
-                            
-                            try:
-                                del addresses[to_kick]
-                                del users[to_kick]
-                                to_kick.close()
-                                
-                            except Exception as e: 
-                                log.warning("A socket-to-client exception occured")
-                                debugLogger(e, "005", type="warning")
-                            
-                        else:
-                            client.send(f"{RED + Colors.BOLD}User not found or user is offline.{RESET + Colors.RESET}".encode("utf8"))
-                            
-                        continue
-                
-                else:
-                    client.send(f"{RED}Sorry, you do not have permissons for that.{RESET}".encode("utf8"))
-                    continue
-                    "".encode
-            
+             
             elif message.startswith("/news "):
                 arg = message.replace("/news ", "")
                 args = arg.split(" ")
@@ -1061,26 +1001,6 @@ def clientThread(client):
 
             # Match-Case-Pattern Commands
             match message: 
-                # Debug Command
-                case "/debug":
-                    try: 
-                        c.execute('SELECT role FROM users WHERE username = ?', (user,))
-                        
-                    except Exception as e:
-                        sqlError(e)
-                        
-                    res = c.fetchone()
-                    
-                    if res[0] == "admin":
-                        client.send(f"""Client Object: {client}
-        IP Object: {addresses[client]}
-        User Object: {users[client]}
-        Addresses: {addresses}
-        Users: {users}""".encode("utf8"))
-                        
-                    else:
-                        client.send(f"{RED}Sorry, you do not have permissons for that.{RESET}".encode("utf8"))
-                
                 # Shrug Command
                 case "/shrug":
                     broadcast("¯\_(ツ)_/¯", user)
@@ -1094,15 +1014,6 @@ def clientThread(client):
                 # Unflip Command
                 case "/unflip":
                     broadcast("┬─┬ノ( º _ ºノ)", user)
-                
-                    
-                # Clientinfo Command
-                case "/clientinfo":
-                    client.send(f"{addresses[client]}".encode("utf8"))
-                    time.sleep(0.1)
-                    client.send(f"{users[client]}".encode("utf8"))
-                    time.sleep(0.1)
-                    client.send(f"{client}".encode("utf8"))
                 
                 # Delete Account Command
                 case "/deleteaccount":
