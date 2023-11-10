@@ -17,8 +17,9 @@ def about_command(socket: socket.socket, username: str, args: list):
         
     news = f"""{GREEN +  Colors.UNDERLINE + Colors.BOLD}{chat_name} News - {short_ver}{RESET + Colors.RESET}{CYAN + Colors.BOLD}
 {news_data['news'][base_ver]['text']}{RESET + Colors.RESET}"""
-            
-    cmd = args[0]
+    
+    try: cmd = args[0]
+    except: cmd = ""
     
     if cmd == "list":
         version_list = ", ".join(news_data['versions'])
