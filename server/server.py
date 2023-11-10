@@ -5,6 +5,7 @@ import threading
 
 import os
 import sys
+import enum
 
 import logging
 import traceback
@@ -32,7 +33,6 @@ from src.commands.default import help, server_info, changelog, about, dm, exit_c
 from src.commands.etc import test_command, news, delaccount
 from src.commands.admin import broadcast_cmd, mute, ban, kick, debug
 from src.commands.user import online, afklist, afk, unafk, msgcount, members, description, memberlist, discord, user_settings, user
-
 
 # Init logger
 class LogFormatter(logging.Formatter):
@@ -187,11 +187,11 @@ def isAccountEnabled(uname):
         return False
 
 # Print debug error codes
-def debugLogger(errorMessage, errorCode, type="error"):
+def debugLogger(error_message, error_code, type: StbTypes = StbTypes.ERROR):
     if debug_mode:
-        if type == "error":
+        if type == StbTypes.ERROR:
             log.error(f"ErrCode {errorCode}: {errorMessage}")
-        elif type == "warning":
+        elif type == StbTypes.WARNING:
             log.warning(f"ErrCode {errorCode}: {errorMessage}")
     else:
         None
@@ -294,7 +294,7 @@ def clientThread(client):
             
             except Exception as e:
                 log.warning(f"A side-by-side error occurred.")
-                debugLogger(e, "242", type="warning")
+                debugLogger(e, "242", type=StbTypes.WARNING)
                 return
             
             message_length = len(message)
@@ -823,7 +823,7 @@ def clientThread(client):
                 
             except Exception as e:
                 log.warning("A socket-to-client exception occured")
-                debugLogger(e, "005", type="warning")
+                debugLogger(e, "005", type=StbTypes.WARNING)
             
             broadcast(f"{Colors.GRAY + Colors.BOLD}<--{Colors.RESET} {userRoleColor(user)}{user}{YELLOW + Colors.BOLD} has left the chat room!{RESET + Colors.RESET}")
             break
