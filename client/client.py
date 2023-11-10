@@ -47,10 +47,15 @@ client_dir = os.path.dirname(os.path.realpath(__file__))
 # Check if config exists
 if os.path.exists(client_dir + "/config.yml"):
     # Open Configuration
-    with open(client_dir + "/config.yml") as config:
-            data = yaml.load(config, Loader=SafeLoader)
+    try:
+        with open(client_dir + "/config.yml") as config:
+                data = yaml.load(config, Loader=SafeLoader)
+    except: 
+        print(f"{RED}Error: Your configuration is invalid. Please check your config file. {RESET}")
+        exit()
 else:
     print(f"{RED}Error: Your configuration is not available. Please check if there is a config.yml in the client.py folder. {RESET}")
+    exit()
 
 
 # Variables
@@ -63,7 +68,7 @@ langs           = ["de_DE", "en_US"]
 verified_list   = []
 
 api             = "https://api.strawberryfoundations.xyz/v1/"
-ver             = "2.3.2"
+ver             = "2.4.0"
 author          = "Juliandev02"
 use_sys_argv    = False
 
