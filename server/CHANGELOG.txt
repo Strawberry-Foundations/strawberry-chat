@@ -25,6 +25,8 @@
 - SCAPI: Replaced long if-clause with match-case pattern, fixing #44
 - SCAPI: Added optional ready_func function passing
 
+- OPTIMIZATION: Better formatting for logger
+
 - UPDATE: Updated Discord Bridge
 - UPDATE: Renamed src.commands.admin.broadcast to src.commands.admin.broadcast_cmd to get not confused by the broadcast function
 - UPDATE: Renamed src.commands.default.exit to src.commands.default.exit to get not confused by python's exit function
