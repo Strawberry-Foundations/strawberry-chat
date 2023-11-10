@@ -1454,10 +1454,10 @@ def broadcast_command(message, sentBy=""):
             debugLogger(e, "122")
             sys.exit(1)
   
-    # except Exception as e:
-    #     log.error(f"A broadcasting error occurred.")
-    #     debugLogger(e, "003")
-    #     sys.exit(1)
+    except Exception as e:
+        log.error(f"A broadcasting error occurred.")
+        debugLogger(e, "003")
+        sys.exit(1)
 
 
 
