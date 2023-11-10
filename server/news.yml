@@ -46,12 +46,12 @@ news:
 
   1.8.1:
     text: "
-    - NEW: Improved kick command with leave message
-    - NEW: Improved Discord Bridge
-    - FIX: Fixed Bad File Descriptor when logging out (#49)
-    - FIX: Fixed 'Sometimes logs get spammed with empty messages after a user connected/disconnected' (#39)
-    - FIX: Completly (hopefully) fixed broken formatting of log messages in console (#45)
-    - FIX: Fixed showing 'None' as main badge in Memberlist when no main badge is set (#47)
+    - NEW: Improved kick command with leave message\n
+    - NEW: Improved Discord Bridge\n
+    - FIX: Fixed Bad File Descriptor when logging out (#49)\n
+    - FIX: Fixed 'Sometimes logs get spammed with empty messages after a user connected/disconnected' (#39)\n
+    - FIX: Completly (hopefully) fixed broken formatting of log messages in console (#45)\n
+    - FIX: Fixed showing 'None' as main badge in Memberlist when no main badge is set (#47)\n
     - UPDATE: Scapi has been updated to v0.11.0 with some improvements"
 
 versions: [1.6.0, 1.7.0, 1.8.0, 1.8.1]
