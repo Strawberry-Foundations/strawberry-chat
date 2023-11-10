@@ -1,6 +1,8 @@
 import os
 import yaml
 import requests
+
+from enum import Enum
 from yaml import SafeLoader
 
 from src.colors import YELLOW, Colors, RESET, GREEN, CYAN
