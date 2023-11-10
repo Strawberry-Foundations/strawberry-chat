@@ -189,9 +189,9 @@ def isAccountEnabled(uname):
 def debugLogger(error_message, error_code, type: StbTypes = StbTypes.ERROR):
     if debug_mode:
         if type == StbTypes.ERROR:
-            log.error(f"ErrCode {error_code}: {error_message}")
+            log.error(f"stbexceptions::{error_code} -> {error_message}")
         elif type == StbTypes.WARNING:
-            log.warning(f"ErrCode {error_code}: {error_message}")
+            log.warning(f"stbexceptions::{error_code} -> {error_message}")
     else:
         None
 
