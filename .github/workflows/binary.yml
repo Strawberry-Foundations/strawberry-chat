@@ -31,6 +31,7 @@ jobs:
     
     - name: Move to build directory
       run: |
+        cd server
         ls
         mkdir build
         mv server.bin build/
@@ -40,4 +41,4 @@ jobs:
     - uses: actions/upload-artifact@v3
       with:
         name: strawberry-chat
-        path: builds/
+        path: server/builds/
