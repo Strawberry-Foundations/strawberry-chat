@@ -181,7 +181,7 @@ def connectionThread(sock):
 
         except Exception as e:
             log.error("A connection error occured!")
-            debug_logger(e, "001")
+            debug_logger(e, "001")  
             
             break
         
