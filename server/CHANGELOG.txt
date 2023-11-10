@@ -7,6 +7,7 @@
 - NEW: Added prevention of sending messages with just whitespaces, fixing #50
 - NEW: Removed escape_htpf for loggin
 - NEW: Removed unused code
+- NEW: Removed chat text commands (/shrug, /tableflip, ...)
 
 - MODULARITY: Ported /kick command to new command system + added leave message when kicking someone
 - MODULARITY: Ported /debug and /clientinfo to new command system
