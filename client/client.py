@@ -209,9 +209,17 @@ else:
     custom_server_sel = server_count + 1
     
     if server_selection == custom_server_sel:
-        host = input(f"{Fore.LIGHTBLUE_EX + BOLD}{Str[lang]['Ipaddr']}{Fore.RESET + CRESET}")
-        port = input(f"{Fore.LIGHTBLUE_EX + BOLD}{Str[lang]['Port']}{Fore.RESET + CRESET}")
-        port = int(port)
+        try:
+            host = input(f"{Fore.LIGHTBLUE_EX + BOLD}{Str[lang]['Ipaddr']}{Fore.RESET + CRESET}")
+            port = int(input(f"{Fore.LIGHTBLUE_EX + BOLD}{Str[lang]['Port']}{Fore.RESET + CRESET}"))
+            
+        except KeyboardInterrupt:
+            print(f"\n{Fore.YELLOW}{Str[lang]['Aborted']}{Fore.RESET}")
+            sys.exit(1)
+        
+        except ValueError:
+            print(f"{Fore.RED + BOLD}{Str[lang]['InvalidInput']}{Fore.RESET + CRESET}")
+            sys.exit(1)
 
     elif server_selection > custom_server_sel:
         print(f"{Fore.RED + BOLD}{Str[lang]['InvalidServerSelection']}{Fore.RESET + CRESET}")
@@ -297,7 +305,11 @@ def main():
     try: 
         print(f"{Fore.YELLOW + BOLD}{Str[lang]['TryConnection']}{Fore.RESET + CRESET}")
         clientSocket.connect((host, port))
-        
+    
+    except KeyboardInterrupt:
+        print(f"\n{Fore.YELLOW}{Str[lang]['Aborted']}{Fore.RESET}")
+        sys.exit(1)
+            
     except: 
         print(f"{Fore.RED + BOLD}{Str[lang]['ErrNotReachable']}{Fore.RESET + CRESET}")
         sys.exit(1)
