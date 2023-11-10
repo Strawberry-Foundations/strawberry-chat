@@ -153,10 +153,25 @@ def isAccountEnabled(uname):
 # Print debug error codes
 def debug_logger(error_message, error_code, type: StbTypes = StbTypes.ERROR):
     if debug_mode:
+        match error_code:
+            case stbexceptions.connection_error:        error = "connection_error"
+            case stbexceptions.login_error:             error = "login_error"
+            case stbexceptions.communication_error:     error = "communication_error"
+            case stbexceptions.client_error:            error = "client_error"
+            case stbexceptions.stc_error:               error = "stc_error"
+            case stbexceptions.reg_error:               error = "reg_error"
+            case stbexceptions.sql_error:               error = "sql_error"
+            case stbexceptions.general_error:           error = "general_error"
+            case stbexceptions.broken_pipe_error:       error = "broken_pipe_error"
+            case stbexceptions.transmition_error:       error = "transmition_error"
+            case stbexceptions.server_banned_error:     error = "server_banned_error"
+            case _:                                     error = "undefined_error"
+            
         if type == StbTypes.ERROR:
-            log.error(f"stbexceptions::{error_code} -> {error_message}")
+            log.error(f"stbexceptions::{error} ({error_code}) -> {error_message}")
+
         elif type == StbTypes.WARNING:
-            log.warning(f"stbexceptions::{error_code} -> {error_message}")
+            log.warning(f"stbexceptions::{error} ({error_code}) -> {error_message}")
     else:
         None
 
@@ -181,7 +196,7 @@ def connectionThread(sock):
 
         except Exception as e:
             log.error("A connection error occured!")
-            debug_logger(e, "001")  
+            debug_logger(e, stbexceptions.connection_error)  
             
             break
         
@@ -208,7 +223,7 @@ def clientThread(client):
             
     except Exception as e:
         log.error(f"A login error with {address} occured!")
-        debug_logger(e, "002")
+        debug_logger(e, stbexceptions.login_error)
         
         del addresses[client]
         return
@@ -232,7 +247,7 @@ def clientThread(client):
 
     except Exception as e:
         log.error(f"A Communication error with {address} ({user}) occurred.")
-        debug_logger(e, "003")
+        debug_logger(e, stbexceptions.communication_error)
         
         del addresses[client]
         del users[client]
@@ -257,8 +272,8 @@ def clientThread(client):
                 return
             
             except Exception as e:
-                log.warning(f"A side-by-side error occurred.")
-                debug_logger(e, "242", type=StbTypes.WARNING)
+                log.warning(f"A message transmission error occurred.")
+                debug_logger(e, stbexceptions.transmition_error, type=StbTypes.WARNING)
                 return
             
             message_length = len(message)
@@ -776,7 +791,7 @@ def clientThread(client):
         except Exception as e:
             log.error("A client-side error occurred.")
             
-            debug_logger(e, "004")
+            debug_logger(e, stbexceptions.client_error)
             traceback.print_exc()
             log.info(f"{user} ({address}) has left")
             
@@ -787,7 +802,7 @@ def clientThread(client):
                 
             except Exception as e:
                 log.warning("A socket-to-client exception occured")
-                debug_logger(e, "005", type=StbTypes.WARNING)
+                debug_logger(e, stbexceptions.stc_error, type=StbTypes.WARNING)
             
             broadcast(f"{Colors.GRAY + Colors.BOLD}<--{Colors.RESET} {userRoleColor(user)}{user}{YELLOW + Colors.BOLD} has left the chat room!{RESET + Colors.RESET}")
             break
@@ -839,7 +854,7 @@ def clientRegister(client):
         
     except Exception as e:
         log.error("A registration exception occured")
-        debug_logger(e, "021")
+        debug_logger(e, stbexceptions.reg_error)
 
     # Ask and receive password
     client.send(f"{GREEN + Colors.BOLD}Password: {RESET + Colors.RESET}".encode("utf8"))
@@ -1002,7 +1017,7 @@ def broadcast(message, sentBy=""):
         if sentBy == "":
             for user in users:
                 try: user.send(message.encode("utf8"))
-                except BrokenPipeError: log.error(f"Broken Pipe Error while sending message")
+                except BrokenPipeError as e: debug_logger(e, stbexceptions.broken_pipe_error)
 
         else:
             for user in users:
@@ -1054,12 +1069,12 @@ def broadcast(message, sentBy=""):
     except IOError as e:
         if e.errno == errno.EPIPE:
             log.critical(f"Broken Pipe Error. You may need to restart your server!! DO NOT EXIT THE CHAT CLIENT WITH ^C!!!")
-            debug_logger(e, "122")
+            debug_logger(e, stbexceptions.broken_pipe_error)
             exit(1)
   
     except Exception as e:
         log.error(f"A broadcasting error occurred.")
-        debug_logger(e, "003")
+        debug_logger(e, stbexceptions.communication_error)
         exit(1)
 
 
