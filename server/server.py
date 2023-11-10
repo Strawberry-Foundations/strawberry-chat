@@ -1153,8 +1153,7 @@ def clientThread(client):
                             if enable_messages:
                                 log_msg = escape_ansi(message)
                                 log_msg = escape_htpf(message)
-                                # log_msg = message.strip("\n")
-                                
+                                                                
                                 log.info(f"{user} ({address}): {log_msg}")
                                     
                             broadcast(message, user)
