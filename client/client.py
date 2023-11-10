@@ -82,7 +82,7 @@ with open(client_dir + "/lang.yml", encoding="utf-8") as langStrings:
 def is_verified(addr):
     try:
         if online_mode:
-            if addr in verified_list: return f"[{Str[lang]['Verified']}] "
+            if addr in verified_list: return f"[{Str[lang]['Verified']}]"
             else: return ""            
         else:
             return ""
