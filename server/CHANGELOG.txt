@@ -6,7 +6,6 @@
 - NEW: Added escape_htpf function
 - NEW: Added prevention of sending messages with just whitespaces, fixing #50
 - NEW: Removed escape_htpf for loggin
-- NEW: Removed custom db wrapper
 - NEW: Removed unused code
 
 - FIX: Fixed showing "None" as main badge in Memberlist when no main badge is set (#47)
