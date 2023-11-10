@@ -1187,10 +1187,6 @@ def main():
         exit()
     
 
-# users = {}
-# addresses = {}
-
 if __name__ == "__main__":
     main()
-    # db.close()
     pass
