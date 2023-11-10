@@ -29,7 +29,7 @@ from src.db import *
 from src.online import *
 from src.commands import PermissionLevel, execute_command, list_commands
 
-from src.commands.default import help, server_info, news, changelog, about, dm, exit
+from src.commands.default import help, server_info, news, changelog, about, dm, exit_cmd
 from src.commands.etc import test_command
 from src.commands.admin import broadcast_command, mute, unmute
 from src.commands.user import online, afklist, afk, unafk, msgcount, members, description, memberlist, discord, user_settings
@@ -1205,7 +1205,7 @@ def clientRegister(client):
     # If username is exit, exit the registration process 
     if registered_username.lower() == "exit":
         client.close()
-        sys.exit()
+        exit()
     
     # Check if the username is allowed
     for uname in registered_username.split():
@@ -1342,7 +1342,7 @@ def clientLogin(client):
         # Check if the "username" is exit, if yes, exit the login process
         elif username.lower() == "exit":
             client.close()
-            sys.exit()
+            exit()
         
         elif username.lower() == "sid":
             strawberryIdLogin(client)
@@ -1450,12 +1450,12 @@ def broadcast_command(message, sentBy=""):
         if e.errno == errno.EPIPE:
             log.critical(f"Broken Pipe Error. You may need to restart your server!! DO NOT EXIT THE CHAT CLIENT WITH ^C!!!")
             debugLogger(e, "122")
-            sys.exit(1)
+            exit(1)
   
     except Exception as e:
         log.error(f"A broadcasting error occurred.")
         debugLogger(e, "003")
-        sys.exit(1)
+        exit(1)
 
 
 
@@ -1482,7 +1482,7 @@ def server_commands(socket):
         elif command == "exit":
             cleanup(info_msg=False)
             socket.close()
-            sys.exit(1)
+            exit(1)
         
         elif command.startswith("update"):
             args = command.replace("update", "").replace(" ", "")
