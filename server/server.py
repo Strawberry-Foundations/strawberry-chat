@@ -1505,15 +1505,15 @@ def main():
             
         atexit.register(cleanup)
         
-        serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        serverSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        serverSocket.bind((ipaddr, port))
-        serverSocket.listen()
+        server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        server_socket.bind((ipaddr, port))
+        server_socket.listen()
         
         if test_mode:
             print(f"{YELLOW + Colors.BOLD}>>> Enabled test mode{RESET + Colors.RESET}")
             print(f"{GREEN + Colors.BOLD}>>> {RESET}Server is running on {ipaddr}:{port}{RESET + Colors.RESET}")
-            mainThread = threading.Thread(target=connectionThread, args=(serverSocket,), daemon=True)
+            mainThread = threading.Thread(target=connectionThread, args=(server_socket,), daemon=True)
             mainThread.start()
             time.sleep(10)
         
@@ -1529,12 +1529,12 @@ def main():
             
             print(f"{GREEN + Colors.BOLD}>>> {RESET}Server is running on {ipaddr}:{port}")
             
-            connThread = threading.Thread(target=connectionThread, args=(serverSocket,))
+            connThread = threading.Thread(target=connectionThread, args=(server_socket,))
             connThread.start()
             # connThread.join()
             
             try:
-                cmdThread = threading.Thread(target=server_commands, args=(serverSocket,))
+                cmdThread = threading.Thread(target=server_commands, args=(server_socket,))
                 cmdThread.start()
                 cmdThread.join()
                 
@@ -1542,7 +1542,7 @@ def main():
                 pass
 
             cleanup()
-            serverSocket.close()
+            server_socket.close()
             log.info("Server stopped")
             
     except KeyboardInterrupt: 
