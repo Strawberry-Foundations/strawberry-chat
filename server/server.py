@@ -164,7 +164,7 @@ def debug_logger(error_message, error_code, type: StbTypes = StbTypes.ERROR):
 def sql_error(error_message):
     log.error(f"stbexceptions::096 -> An SQL Error occured: {error_message}")
 
-
+# Open news file
 with open(server_dir + "/news.yml") as news_file:
     news_data = yaml.load(news_file, Loader=SafeLoader)
     
