@@ -29,7 +29,7 @@ from src.online import *
 from src.commands import PermissionLevel, execute_command, list_commands
 
 from src.commands.default import help, server_info, changelog, about, dm, exit_cmd
-from src.commands.etc import test_command, news
+from src.commands.etc import test_command, news, delaccount
 from src.commands.admin import broadcast_cmd, mute, ban, kick, debug
 from src.commands.user import online, afklist, afk, unafk, msgcount, members, description, memberlist, discord, user_settings, user
 
@@ -781,52 +781,6 @@ def clientThread(client):
 
             # Match-Case-Pattern Commands
             match message: 
-                # Shrug Command
-                case "/shrug":
-                    broadcast("¯\_(ツ)_/¯", user)
-                
-                
-                # Tableflip Command
-                case "/tableflip":
-                    broadcast("(╯°□°)╯︵ ┻━┻", user)
-                
-                
-                # Unflip Command
-                case "/unflip":
-                    broadcast("┬─┬ノ( º _ ºノ)", user)
-                
-                # Delete Account Command
-                case "/deleteaccount":
-                    client.send(f"{YELLOW + Colors.BOLD}Are you sure you want to delete your user account? This action is irreversible!!{RESET + Colors.RESET}".encode("utf8"))
-                    confirmDelete1 = client.recv(2048).decode("utf8")
-                    
-                    if confirmDelete1.lower() == "yes":
-                        client.send(f"{RED + Colors.BOLD}THIS IS YOUR VERY LAST WARNING! This action is irreversible!! ARE YOU SURE?{RESET + Colors.RESET}".encode("utf8"))
-                        confirmDelete2 = client.recv(2048).decode("utf8")
-                        
-                        if confirmDelete2.lower() == "yes":
-                            client.send(f"{YELLOW + Colors.BOLD}Enter your username to confirm the deletion of your account:{RESET + Colors.RESET}".encode("utf8"))
-                            confirmUsernameDelete = client.recv(2048).decode("utf8")
-                            
-                            if confirmUsernameDelete == user:
-                                client.send(f"{YELLOW + Colors.BOLD}Deleting your user account...{RESET + Colors.RESET}".encode("utf8"))
-                                
-                                try:
-                                    c.execute("DELETE FROM users WHERE username = ?", (user,))
-                                    db.commit()
-                                    client.send(f"{GREEN + Colors.BOLD}Deleted{RESET + Colors.RESET}".encode("utf8"))
-                                    client.close()
-                                    
-                                except Exception as e:
-                                    log.error(e)
-                                    
-                            else: 
-                                client.send(f"{YELLOW + Colors.BOLD}Deletion of your account has been canceled...{RESET + Colors.RESET}".encode("utf8"))
-                        else:
-                            client.send(f"{YELLOW + Colors.BOLD}Deletion of your account has been canceled...{RESET + Colors.RESET}".encode("utf8"))
-                    else:
-                        client.send(f"{YELLOW + Colors.BOLD}Deletion of your account has been canceled...{RESET + Colors.RESET}".encode("utf8"))
-                
                 case _:
                     if isMuted(user):
                         client.send(f"{RED + Colors.BOLD}Sorry, but you were muted by an administrator. Please contact him/her if you have done nothing wrong, or wait until you are unmuted.{RESET + Colors.RESET}".encode("utf8"))
