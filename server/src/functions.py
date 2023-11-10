@@ -83,19 +83,16 @@ def broadcast_all(message):
     try:
         for user in users:
             user.send(message.encode("utf8"))
-                
+    
+    except BrokenPipeError as e:
+        pass
+    
     except IOError as e:
         if e.errno == errno.EPIPE:
-            # log.critical(f"Broken Pipe Error. You may need to restart your server!! DO NOT EXIT THE CHAT CLIENT WITH ^C!!!")
-            # debugLogger(e, "122")
-            print(e)
-            exit(1)
+            pass
   
     except Exception as e:
-        # log.error(f"A broadcasting error occurred.")
-        # debugLogger(e, "003")
-        print(e)
-        exit(1)
+        pass
         
 # Check if user has a nickname
 def hasNickname(uname):
