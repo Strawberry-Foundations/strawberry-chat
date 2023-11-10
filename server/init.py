@@ -18,7 +18,21 @@ class StbTypes(Enum):
     INFO = 0
     WARNING = 2
     ERROR = 1
-
+    
+class stbexceptions:
+    connection_error        = "001"
+    login_error             = "002"
+    communication_error     = "003"
+    client_error            = "004"
+    stc_error               = "005"
+    reg_error               = "021"
+    sql_error               = "096"
+    general_error           = "100"
+    broken_pipe_error       = "122"
+    transmition_error       = "242"
+    server_banned_error     = "999"
+    
+    
 afks = list([])
 users = {}
 addresses = {}
