@@ -1511,8 +1511,8 @@ def main():
         if test_mode:
             print(f"{YELLOW + Colors.BOLD}>>> Enabled test mode{RESET + Colors.RESET}")
             print(f"{GREEN + Colors.BOLD}>>> {RESET}Server is running on {ipaddr}:{port}{RESET + Colors.RESET}")
-            mainThread = threading.Thread(target=connectionThread, args=(server_socket,), daemon=True)
-            mainThread.start()
+            _main = threading.Thread(target=connectionThread, args=(server_socket,), daemon=True)
+            _main.start()
             time.sleep(10)
         
         else:
@@ -1527,14 +1527,13 @@ def main():
             
             print(f"{GREEN + Colors.BOLD}>>> {RESET}Server is running on {ipaddr}:{port}")
             
-            connThread = threading.Thread(target=connectionThread, args=(server_socket,))
-            connThread.start()
-            # connThread.join()
+            _connection = threading.Thread(target=connectionThread, args=(server_socket,))
+            _connection.start()
             
             try:
-                cmdThread = threading.Thread(target=server_commands, args=(server_socket,))
-                cmdThread.start()
-                cmdThread.join()
+                _cmd = threading.Thread(target=server_commands, args=(server_socket,))
+                _cmd.start()
+                _cmd.join()
                 
             except KeyboardInterrupt:
                 pass
