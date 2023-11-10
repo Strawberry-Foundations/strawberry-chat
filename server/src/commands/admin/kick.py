@@ -3,7 +3,7 @@ from .. import register_command, PermissionLevel
 import socket
 
 from src.colors import *
-from src.functions import doesUserExist
+from src.functions import doesUserExist, broadcast_all
 from src.db import Database
 
 from init import server_dir, users, addresses
