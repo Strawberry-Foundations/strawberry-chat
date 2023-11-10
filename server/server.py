@@ -101,7 +101,6 @@ debug_mode              = config['flags']['debug_mode']
 online_mode             = config['flags']['online_mode']
 
 # Lists & Sets
-# afks = list([])
 blacklist = set()
 
 # Blacklisted word functions
