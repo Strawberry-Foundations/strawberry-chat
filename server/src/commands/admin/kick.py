@@ -40,12 +40,10 @@ def kick_command(socket: socket.socket, username: str, args: list):
             
                 del addresses[to_kick]
                 del users[to_kick]
-                                
+                to_kick.close()
+                
             except Exception as e: 
                 pass
-            
-            try: to_kick.close()
-            except: pass
             
         else:
             socket.send(f"{RED + Colors.BOLD}User not found or user is offline.{RESET + Colors.RESET}".encode("utf8"))
