@@ -1152,7 +1152,6 @@ def clientThread(client):
                         if not is_empty_or_whitespace(message):
                             if enable_messages:
                                 log_msg = escape_ansi(message)
-                                log_msg = escape_htpf(message)
                                                                 
                                 log.info(f"{user} ({address}): {log_msg}")
                                     
