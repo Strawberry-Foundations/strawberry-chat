@@ -20,14 +20,7 @@ elif sys.platform == "win32":
 #     import readline
 
 
-# Color Variables
-class Colors:
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
-    RESET = '\033[0m'
-    GRAY = "\033[90m"
-
-# Alias for colorama colors
+# Colors
 BLACK           = Fore.BLACK
 RED             = Fore.RED
 GREEN           = Fore.GREEN
@@ -46,6 +39,11 @@ LIGHTBLUE_EX    = Fore.LIGHTBLUE_EX
 LIGHTMAGENTA_EX = Fore.LIGHTMAGENTA_EX
 LIGHTCYAN_EX    = Fore.LIGHTCYAN_EX
 LIGHTWHITE_EX   = Fore.LIGHTWHITE_EX
+
+BOLD            = '\033[1m'
+UNDERLINE       = '\033[4m'
+CRESET          = '\033[0m'
+GRAY            = "\033[90m"
 
 # Path of client.py
 client_dir = os.path.dirname(os.path.realpath(__file__))
@@ -84,7 +82,7 @@ if online_mode == True:
         requests.get(api)
         
     except: 
-        print(f"{RED + Colors.UNDERLINE}Connection Error{RESET + Colors.RESET}")
+        print(f"{RED + UNDERLINE}Connection Error{RESET + CRESET}")
         print(f"{YELLOW}The server did not give a valid answer.\nEither the Strawberry API servers are overloaded, or offline. Please try again later{RESET}")
 
 try:
@@ -106,8 +104,8 @@ except Exception as e:
 
 # check if language is available
 if lang not in langs:
-    print(f"{Fore.RED + Colors.BOLD}Error loading language: Selected language is not available.{Fore.RESET}")
-    print(f"{Fore.YELLOW + Colors.BOLD}Falling back to en_US\n{Fore.RESET}")
+    print(f"{Fore.RED + BOLD}Error loading language: Selected language is not available.{Fore.RESET}")
+    print(f"{Fore.YELLOW + BOLD}Falling back to en_US\n{Fore.RESET}")
     time.sleep(1)
     lang = "en_US"
     
@@ -159,7 +157,7 @@ if len(sys.argv) >= 2:
         except KeyError:
             enableAutologin = False
     else:
-        print(f"{Fore.RED + Colors.BOLD}{Str[lang]['InvalidArgument']}{Fore.RESET + Colors.RESET}")
+        print(f"{Fore.RED + BOLD}{Str[lang]['InvalidArgument']}{Fore.RESET + CRESET}")
         sys.exit(1)
 
 # If autoserver is active, skip server selection input 
@@ -181,14 +179,14 @@ elif autoserver == True:
 
 # If no arguments passed, start client without any special functions
 else:
-    print(f"{Fore.CYAN + Colors.BOLD + Colors.UNDERLINE}Strawberry Chat Client (stbchat) (v{ver}){Colors.RESET}")
+    print(f"{Fore.CYAN + BOLD + UNDERLINE}Strawberry Chat Client (stbchat) (v{ver}){CRESET}")
     print(f"{Fore.LIGHTGREEN_EX}{Str[lang]['Welcome']}{Fore.RESET}\n")
-    print(f"{Fore.GREEN + Colors.BOLD + Colors.UNDERLINE}{Str[lang]['AvailableServers']}:{Fore.RESET + Colors.RESET}")
+    print(f"{Fore.GREEN + BOLD + UNDERLINE}{Str[lang]['AvailableServers']}:{Fore.RESET + CRESET}")
 
     for i in range(len(data["server"])):
-        print(f"{Fore.LIGHTBLUE_EX}[{i + 1}]{Fore.RESET} {Colors.BOLD}{data['server'][i]['name']}{Colors.RESET} {Fore.LIGHTCYAN_EX}{isVerified(data['server'][i]['address'])}{Fore.RESET}{Fore.LIGHTYELLOW_EX}({data['server'][i]['type']})")
+        print(f"{Fore.LIGHTBLUE_EX}[{i + 1}]{Fore.RESET} {BOLD}{data['server'][i]['name']}{CRESET} {Fore.LIGHTCYAN_EX}{isVerified(data['server'][i]['address'])}{Fore.RESET}{Fore.LIGHTYELLOW_EX}({data['server'][i]['type']})")
 
-    print(f"{Fore.LIGHTBLUE_EX}[{len(data['server']) + 1}]{Fore.RESET} {Colors.BOLD}{Str[lang]['Custom']}{Colors.RESET}\n")
+    print(f"{Fore.LIGHTBLUE_EX}[{len(data['server']) + 1}]{Fore.RESET} {BOLD}{Str[lang]['Custom']}{CRESET}\n")
 
 
     try:
@@ -203,16 +201,16 @@ else:
     custom_server_sel = str(custom_server_sel)
     
     if server_selection == custom_server_sel:
-        host = input(f"{Fore.LIGHTBLUE_EX + Colors.BOLD}{Str[lang]['Ipaddr']}{Fore.RESET + Colors.RESET}")
-        port = input(f"{Fore.LIGHTBLUE_EX + Colors.BOLD}{Str[lang]['Port']}{Fore.RESET + Colors.RESET}")
+        host = input(f"{Fore.LIGHTBLUE_EX + BOLD}{Str[lang]['Ipaddr']}{Fore.RESET + CRESET}")
+        port = input(f"{Fore.LIGHTBLUE_EX + BOLD}{Str[lang]['Port']}{Fore.RESET + CRESET}")
         port = int(port)
 
     elif server_selection > custom_server_sel:
-        print(f"{Fore.RED + Colors.BOLD}{Str[lang]['InvalidServerSelection']}{Fore.RESET + Colors.RESET}")
+        print(f"{Fore.RED + BOLD}{Str[lang]['InvalidServerSelection']}{Fore.RESET + CRESET}")
         sys.exit(1)
         
     elif server_selection == "":
-        print(f"{Fore.RED + Colors.BOLD}{Str[lang]['InvalidServerSelection']}{Fore.RESET + Colors.RESET}")
+        print(f"{Fore.RED + BOLD}{Str[lang]['InvalidServerSelection']}{Fore.RESET + CRESET}")
         sys.exit(1)
         
     else:
@@ -234,26 +232,26 @@ else:
 def send(sock):
     if use_sys_argv == True:
         if enableAutologin == True:
-            print(f"{Fore.GREEN + Colors.BOLD}{Str[lang]['AutologinActive']}{Fore.RESET + Colors.RESET}\n")
+            print(f"{Fore.GREEN + BOLD}{Str[lang]['AutologinActive']}{Fore.RESET + CRESET}\n")
             sock.send(f"{data['server'][(int(server_selection) - 1)]['credentials']['username']}".encode("utf8"))
             time.sleep(0.1)
             sock.send(f"{data['server'][(int(server_selection) - 1)]['credentials']['password']}".encode("utf8"))
         
         else:
-            print(f"{Fore.GREEN + Colors.BOLD}{Str[lang]['AutologinNotActive']}{Fore.RESET + Colors.RESET}\n")
+            print(f"{Fore.GREEN + BOLD}{Str[lang]['AutologinNotActive']}{Fore.RESET + CRESET}\n")
             
     elif server_selection == custom_server_sel:
-        print(f"{Fore.YELLOW + Colors.BOLD}{Str[lang]['Warning']}: {Str[lang]['AutologinNotAvailable']}{Fore.RESET + Colors.RESET}\n")
+        print(f"{Fore.YELLOW + BOLD}{Str[lang]['Warning']}: {Str[lang]['AutologinNotAvailable']}{Fore.RESET + CRESET}\n")
         
     else:
         if enableAutologin == True:
-            print(f"{Fore.GREEN + Colors.BOLD}{Str[lang]['AutologinActive']}{Fore.RESET + Colors.RESET}\n")
+            print(f"{Fore.GREEN + BOLD}{Str[lang]['AutologinActive']}{Fore.RESET + CRESET}\n")
             sock.send(f"{data['server'][(int(server_selection) - 1)]['credentials']['username']}".encode("utf8"))
             time.sleep(0.1)
             sock.send(f"{data['server'][(int(server_selection) - 1)]['credentials']['password']}".encode("utf8"))
         
         else:
-            print(f"{Fore.GREEN + Colors.BOLD}{Str[lang]['AutologinNotActive']}{Fore.RESET + Colors.RESET}\n")
+            print(f"{Fore.GREEN + BOLD}{Str[lang]['AutologinNotActive']}{Fore.RESET + CRESET}\n")
     
     while threadFlag:
         try:
@@ -265,7 +263,7 @@ def send(sock):
             if threadFlag == False:
                 pass
             else:
-                print(f"{Fore.RED + Colors.BOLD}{Str[lang]['ErrCouldNotSendMessage']}{Fore.RESET + Colors.RESET}")
+                print(f"{Fore.RED + BOLD}{Str[lang]['ErrCouldNotSendMessage']}{Fore.RESET + CRESET}")
                 break
 
 def receive(sock):
@@ -279,7 +277,7 @@ def receive(sock):
                 break
             
         except:
-            print(f"{Fore.RED + Colors.BOLD}{Str[lang]['ErrNotReachable']}{Fore.RESET + Colors.RESET}")
+            print(f"{Fore.RED + BOLD}{Str[lang]['ErrNotReachable']}{Fore.RESET + CRESET}")
             break
 
 def main():
@@ -289,21 +287,21 @@ def main():
     clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     
     try: 
-        print(f"{Fore.YELLOW + Colors.BOLD}{Str[lang]['TryConnection']}{Fore.RESET + Colors.RESET}")
+        print(f"{Fore.YELLOW + BOLD}{Str[lang]['TryConnection']}{Fore.RESET + CRESET}")
         clientSocket.connect((host, port))
         
     except: 
-        print(f"{Fore.RED + Colors.BOLD}{Str[lang]['ErrNotReachable']}{Fore.RESET + Colors.RESET}")
+        print(f"{Fore.RED + BOLD}{Str[lang]['ErrNotReachable']}{Fore.RESET + CRESET}")
         sys.exit(1)
     
     if use_sys_argv == True:
         pass
     
     elif server_selection == custom_server_sel:
-        print(f"{Fore.GREEN + Colors.BOLD}{Str[lang]['ConnectedToServer'] % host}{Fore.RESET + Colors.RESET}")
+        print(f"{Fore.GREEN + BOLD}{Str[lang]['ConnectedToServer'] % host}{Fore.RESET + CRESET}")
         
     else:
-        print(f"{Fore.GREEN + Colors.BOLD}{Str[lang]['ConnectedToServer'] % data['server'][(int(server_selection) - 1)]['name']}{Fore.RESET + Colors.RESET}")
+        print(f"{Fore.GREEN + BOLD}{Str[lang]['ConnectedToServer'] % data['server'][(int(server_selection) - 1)]['name']}{Fore.RESET + CRESET}")
         
     sendingThread = threading.Thread(target=send, args=(clientSocket,))
     receivingThread = threading.Thread(target=receive, args=(clientSocket,))
