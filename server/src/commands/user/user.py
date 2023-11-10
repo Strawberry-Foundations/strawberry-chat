@@ -141,5 +141,5 @@ def members_command(socket: socket.socket, username: str, args: list):
 {GREEN + Colors.BOLD}Role:{RESET + Colors.BOLD} {role}{RESET + Colors.RESET}
 {GREEN + Colors.BOLD}Role Color:{RESET + Colors.BOLD} {userRoleColor(row[0])}{role_color}{RESET + Colors.RESET}
 {GREEN + Colors.BOLD}Strawberry Network:{RESET + Colors.BOLD} {strawberry_id_name}{RESET + Colors.RESET}
-{GREEN + Colors.BOLD}Discord:{RESET + Colors.BOLD} {discord}{RESET + Colors.RESET}"""
+{GREEN + Colors.BOLD}Discord:{RESET + Colors.BOLD} {discord}{RESET + Colors.RESET}\n"""
             .encode("utf8"))
