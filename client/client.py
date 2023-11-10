@@ -81,13 +81,14 @@ with open(client_dir + "/lang.yml", encoding="utf-8") as langStrings:
 if online_mode:
     try:
         requests.get(api)
-        
+    
+    # If api is not available, print an error message
     except (socket.gaierror, urllib3.exceptions.NewConnectionError, urllib3.exceptions.MaxRetryError, requests.exceptions.ConnectionError): 
         print(f"{RED + UNDERLINE}{Str[lang]['ConnectionError']}{RESET + CRESET}")
         print(f"{YELLOW}{Str[lang]['ConnectionErrorDesc']}{RESET}")
         exit()
 
-
+# Verify your server's in your config
 try:
     if online_mode == True:
         for i in range(len(data["server"])):
@@ -104,8 +105,7 @@ except Exception as e:
     print(e)
 
 
-
-# check if language is available
+# Check if language is available
 if lang not in langs:
     print(f"{Fore.RED + BOLD}Error loading language: Selected language is not available.{Fore.RESET}")
     print(f"{Fore.YELLOW + BOLD}Falling back to en_US\n{Fore.RESET}")
@@ -126,17 +126,15 @@ def is_verified(addr):
         print(e)
 
 # Return current time
-def currentTime():
+def current_time():
     now = datetime.datetime.now()
     formattedTime = now.strftime("%H:%M")
     return formattedTime
 
 # Delete last line to now show the written message
-def deleteLastLine():
-    cursorUp = "\x1b[1A"
-    eraseLine = "\x1b[2K"
-    sys.stdout.write(cursorUp)
-    sys.stdout.write(eraseLine)
+def delete_last_line():
+    sys.stdout.write("\x1b[1A")
+    sys.stdout.write("\x1b[2K")
 
 
 # If --server is in the arguments, skip server selection input
@@ -149,7 +147,6 @@ if len(sys.argv) >= 2:
         port = int(port)
         
         try:
-            global enableAutologin
             enableAutologin = data["server"][(int(server_selection) - 1)]["autologin"]
             
         except KeyError:
@@ -254,7 +251,7 @@ def send(sock):
     while threadFlag:
         try:
             message = input("")
-            deleteLastLine()
+            delete_last_line()
             sock.send(message.encode("utf8"))
 
         except:
@@ -270,7 +267,7 @@ def receive(sock):
             message = sock.recv(2048).decode()
             
             if message:
-                print("[{}] {}".format(currentTime(), message))
+                print("[{}] {}".format(current_time(), message))
             else:
                 break
             
