@@ -5,7 +5,6 @@ import threading
 
 import os
 import sys
-import enum
 
 import logging
 import traceback
