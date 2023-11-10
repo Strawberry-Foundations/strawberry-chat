@@ -41,7 +41,10 @@ def kick_command(socket: socket.socket, username: str, args: list):
                 to_kick.send(f"{YELLOW + Colors.BOLD}You have been kicked out of the chat for the following reason: {reason}{RESET + Colors.RESET}".encode("utf8"))
                 broadcast_all(f"{Colors.GRAY + Colors.BOLD}<--{Colors.RESET} {userRoleColor(uname)}{uname}{YELLOW + Colors.BOLD} has left the chat room!{RESET + Colors.RESET}")
                 
-                to_kick.close()
+                try: to_kick.close()
+                except Exception as e:
+                    print(f"Could not kick {uname} ({to_kick}): {e}")
+                    pass
                 
             except Exception as e: 
                 pass
