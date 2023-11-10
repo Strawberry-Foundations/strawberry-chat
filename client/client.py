@@ -11,14 +11,10 @@ import yaml
 from yaml import SafeLoader
 import time
 import requests
+import urllib3
 
-if sys.platform == "linux":
-    import readline
-elif sys.platform == "win32":
-    pass
-# elif sys.platform == "darwin":
-#     import readline
-
+if sys.platform == "linux": import readline
+else: pass
 
 # Colors
 BLACK           = Fore.BLACK
@@ -77,13 +73,15 @@ with open(client_dir + "/lang.yml", encoding="utf-8") as langStrings:
         Str = yaml.load(langStrings, Loader=SafeLoader)
 
 # Try requesting our api server
-if online_mode == True:
+if online_mode:
     try:
         requests.get(api)
         
-    except: 
-        print(f"{RED + UNDERLINE}Connection Error{RESET + CRESET}")
-        print(f"{YELLOW}The server did not give a valid answer.\nEither the Strawberry API servers are overloaded, or offline. Please try again later{RESET}")
+    except (socket.gaierror, urllib3.exceptions.NewConnectionError, urllib3.exceptions.MaxRetryError, requests.exceptions.ConnectionError): 
+        print(f"{RED + UNDERLINE}{Str[lang]['ConnectionError']}{RESET + CRESET}")
+        print(f"{YELLOW}{Str[lang]['ConnectionErrorDesc']}{RESET}")
+        exit()
+
 
 try:
     if online_mode == True:
@@ -111,16 +109,11 @@ if lang not in langs:
     
 
 # Check verification of a server
-def isVerified(addr):
+def is_verified(addr):
     try:
-        if online_mode == True:
-            verified = requests.get(api + "server/verified?addr=" + addr)
-        
-            if verified.text == "True":
-                return f"[{Str[lang]['Verified']}] "
-            else:
-                return ""
-            
+        if online_mode:
+            if addr in verified_list: return f"[{Str[lang]['Verified']}] "
+            else: return ""            
         else:
             return ""
         
@@ -184,7 +177,7 @@ else:
     print(f"{Fore.GREEN + BOLD + UNDERLINE}{Str[lang]['AvailableServers']}:{Fore.RESET + CRESET}")
 
     for i in range(len(data["server"])):
-        print(f"{Fore.LIGHTBLUE_EX}[{i + 1}]{Fore.RESET} {BOLD}{data['server'][i]['name']}{CRESET} {Fore.LIGHTCYAN_EX}{isVerified(data['server'][i]['address'])}{Fore.RESET}{Fore.LIGHTYELLOW_EX}({data['server'][i]['type']})")
+        print(f"{Fore.LIGHTBLUE_EX}[{i + 1}]{Fore.RESET} {BOLD}{data['server'][i]['name']}{CRESET} {Fore.LIGHTCYAN_EX}{is_verified(data['server'][i]['address'])}{Fore.RESET}{Fore.LIGHTYELLOW_EX}({data['server'][i]['type']})")
 
     print(f"{Fore.LIGHTBLUE_EX}[{len(data['server']) + 1}]{Fore.RESET} {BOLD}{Str[lang]['Custom']}{CRESET}\n")
 
