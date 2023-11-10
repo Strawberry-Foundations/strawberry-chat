@@ -19,6 +19,8 @@ de_DE:
   CloseApplication: "Der Strawberry Client wurde beendet."
   Aborted:  "Der Strawberry Chat Client wurde abgebrochen!"
   ConnectedToServer: "Verbindung mit dem Server %s war erfolgreich. Viel Spaß!"
+  ConnectionError: "Verbinungsfehler"
+  ConnectionErrorDesc: "Der Server hat keine gültige Antwort gegeben.\nEntweder sind die Strawberry-API-Server überlastet oder offline. Bitte versuche es später erneut"
 
 # Language Strings for en_US (English)
 en_US:
@@ -41,3 +43,5 @@ en_US:
   CloseApplication: "The Strawberry client has been closed."
   Aborted: "The Strawberry chat client has been cancelled!"
   ConnectedToServer: "Connection with the server %s was successful. Have fun!"
+  ConnectionError: "Connection Error"
+  ConnectionErrorDesc: "The server did not give a valid answer.\nEither the Strawberry API servers are overloaded, or offline. Please try again later"
