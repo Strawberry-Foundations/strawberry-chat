@@ -265,3 +265,6 @@ def verify_password(stored_password, entered_password):
     
     except argon2.exceptions.VerifyMismatchError:
         return False
+
+def is_empty_or_whitespace(string):
+    return all(char.isspace() for char in string)
