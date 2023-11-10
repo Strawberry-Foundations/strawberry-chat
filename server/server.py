@@ -1434,13 +1434,11 @@ def broadcast_command(message, sentBy=""):
                         if hasNickname(sentBy) == True:
                             try: user.send(f"{userRoleColor(sentBy)}{userNickname(sentBy)} (@{sentBy.lower()}){badge}{RESET + Colors.RESET}: {message}{RESET + Colors.RESET}".encode("utf8"))
                             except BrokenPipeError:
-                                # log.error(f"Broken Pipe Error while sending message")
                                 pass
                             
                         else: 
                             try: user.send(f"{userRoleColor(sentBy)}{sentBy}{badge}{RESET + Colors.RESET}: {message}{RESET + Colors.RESET}".encode("utf8"))
                             except BrokenPipeError:
-                                # log.error(f"Broken Pipe Error while sending message")
                                 pass
                                 
                     else: pass
