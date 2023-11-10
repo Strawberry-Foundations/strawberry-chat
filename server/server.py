@@ -777,38 +777,6 @@ def clientThread(client):
                     elif len(args) < 2 or len(args) > 3:
                         client.send(f"{RED + Colors.BOLD}Invalid command usage.{RESET + Colors.RESET}".encode("utf8"))
                         continue
-             
-            elif message.startswith("/news "):
-                arg = message.replace("/news ", "")
-                args = arg.split(" ")
-
-                cmd = args[0]
-                
-                # Open News YML file
-                with open(server_dir + "/news.yml") as news_file:
-                    news_data = yaml.load(news_file, Loader=SafeLoader)
-                        
-                if cmd == "list":
-                    version_list = ", ".join(news_data['versions'])
-                    client.send(f"{CYAN + Colors.BOLD}{chat_name} Versions:{RESET + Colors.RESET} {GREEN}{version_list}{RESET}".encode("utf8"))
-                    continue
-                    
-                elif cmd == "show":
-                    try:
-                        i_ver = args[1] 
-                        client.send(f"{GREEN + Colors.BOLD + Colors.UNDERLINE}{chat_name} News - v{i_ver}{RESET + Colors.RESET + CYAN + Colors.BOLD}\n{news_data['news'][i_ver]['text']}{RESET + Colors.RESET}".encode("utf8"))
-                        
-                    except:
-                        client.send(f"{RED + Colors.BOLD}This version of {chat_name} does not exist.{RESET + Colors.RESET}".encode("utf8"))
-                        
-                    continue
-                
-                else:
-                    client.send(f"{RED + Colors.BOLD}Invalid command usage.{RESET + Colors.RESET}".encode("utf8"))
-                    
-                    continue
-                    
-                                
 
 
             # Match-Case-Pattern Commands
