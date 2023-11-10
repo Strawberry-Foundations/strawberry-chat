@@ -6,6 +6,11 @@ from yaml import SafeLoader
 from src.colors import YELLOW, Colors, RESET, GREEN, CYAN
 from src.vars import chat_name, short_ver, codename, server_edition
 
+class StbTypes(Enum):
+    INFO = 0
+    WARNING = 2
+    ERROR = 1
+
 # Startup title
 print(f"{CYAN + Colors.BOLD}* -- {chat_name} v{short_ver} {codename} ({server_edition}) -- *{RESET + Colors.RESET}")
 
