@@ -52,10 +52,10 @@ if os.path.exists(client_dir + "/config.yml"):
                 data = yaml.load(config, Loader=SafeLoader)
     except: 
         print(f"{RED}Error: Your configuration is invalid. Please check your config file. {RESET}")
-        exit()
+        sys.exit(1)
 else:
     print(f"{RED}Error: Your configuration is not available. Please check if there is a config.yml in the client.py folder. {RESET}")
-    exit()
+    sys.exit(1)
 
 
 # Variables
@@ -77,16 +77,56 @@ use_sys_argv    = False
 with open(client_dir + "/lang.yml", encoding="utf-8") as langStrings:
         Str = yaml.load(langStrings, Loader=SafeLoader)
 
+
+# Check verification of a server
+def is_verified(addr):
+    try:
+        if online_mode:
+            if addr in verified_list: return f"[{Str[lang]['Verified']}] "
+            else: return ""            
+        else:
+            return ""
+        
+    except Exception as e: 
+        print(f"{RED}{e}{RESET}")
+
+# Return current time
+def current_time():
+    return datetime.datetime.now().strftime("%H:%M")
+
+# Delete last line to now show the written message
+def delete_last_line():
+    sys.stdout.write("\x1b[1A")
+    sys.stdout.write("\x1b[2K")
+
+# Fetch update data from the strawberry api server
+def fetch_update_data():
+    response = requests.get(api + 'versions')
+    data = response.json()
+    update_data = data['stbchat']['client']['stable']
+    
+    return update_data
+
+# Check for updates
+def check_for_updates():
+    online_ver = fetch_update_data()
+    
+    if not online_ver == ver:
+        print(f"{BOLD + GREEN}An update for Strawberry Client is available.{RESET +RESET}")
+        print(f"{BOLD + CYAN}strawberry-chat{GREEN}@{MAGENTA}stable {RESET}{online_ver}{RESET}")
+        print(f"↳ Upgrading from {CYAN + BOLD}strawberry-chat{GREEN}@{MAGENTA}stable {RESET}{ver}{RESET}\n")
+
 # Try requesting our api server
 if online_mode:
     try:
         requests.get(api)
+        check_for_updates()
     
     # If api is not available, print an error message
     except (socket.gaierror, urllib3.exceptions.NewConnectionError, urllib3.exceptions.MaxRetryError, requests.exceptions.ConnectionError): 
         print(f"{RED + UNDERLINE}{Str[lang]['ConnectionError']}{RESET + CRESET}")
         print(f"{YELLOW}{Str[lang]['ConnectionErrorDesc']}{RESET}")
-        exit()
+        sys.exit(1)
 
 # Verify your server's in your config
 try:
@@ -102,8 +142,7 @@ try:
         pass
     
 except Exception as e: 
-    print(e)
-
+    print(f"{RED}{e}{RESET}")
 
 # Check if language is available
 if lang not in langs:
@@ -112,45 +151,20 @@ if lang not in langs:
     time.sleep(1)
     lang = "en_US"
     
-
-# Check verification of a server
-def is_verified(addr):
-    try:
-        if online_mode:
-            if addr in verified_list: return f"[{Str[lang]['Verified']}] "
-            else: return ""            
-        else:
-            return ""
-        
-    except Exception as e: 
-        print(e)
-
-# Return current time
-def current_time():
-    now = datetime.datetime.now()
-    formattedTime = now.strftime("%H:%M")
-    return formattedTime
-
-# Delete last line to now show the written message
-def delete_last_line():
-    sys.stdout.write("\x1b[1A")
-    sys.stdout.write("\x1b[2K")
-
+    
 
 # If --server is in the arguments, skip server selection input
 if len(sys.argv) >= 2:
     if sys.argv[1] == "--server":
         use_sys_argv = True
         server_selection = sys.argv[2]
-        host = data["server"][(int(server_selection) - 1)]["address"]
-        port = data["server"][(int(server_selection) - 1)]["port"]
-        port = int(port)
         
-        try:
-            enableAutologin = data["server"][(int(server_selection) - 1)]["autologin"]
-            
-        except KeyError:
-            enableAutologin = False
+        host = data["server"][(int(server_selection) - 1)]["address"]
+        port = int(data["server"][(int(server_selection) - 1)]["port"])
+        
+        try: enableAutologin = data["server"][(int(server_selection) - 1)]["autologin"]     
+        except KeyError: enableAutologin = False
+        
     else:
         print(f"{Fore.RED + BOLD}{Str[lang]['InvalidArgument']}{Fore.RESET + CRESET}")
         sys.exit(1)
@@ -163,14 +177,10 @@ elif autoserver == True:
     custom_server_sel = 0
     
     host = data["server"][(int(server_id))]["address"]
-    port = data["server"][(int(server_id))]["port"]
-    port = int(port)
+    port = int(data["server"][(int(server_id))]["port"])
     
-    try:
-        enableAutologin = data["server"][(int(server_id))]["autologin"]
-        
-    except KeyError:
-        enableAutologin = False
+    try: enableAutologin = data["server"][(int(server_id))]["autologin"]
+    except KeyError: enableAutologin = False
 
 # If no arguments passed, start client without any special functions
 else:
