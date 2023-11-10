@@ -12,6 +12,7 @@
 - MODULARITY: Ported /debug and /clientinfo to new command system
 - MODULARITY: Ported /user command to new command system 
 - MODULARITY: Ported /ban command to new command system 
+- MODULARITY: Ported /deleteaccount command 
 
 - FIX: Fixed showing "None" as main badge in Memberlist when no main badge is set (#47)
 - FIX: Fixed Bad File Descriptor when logging out (#49)
