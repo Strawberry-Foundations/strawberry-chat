@@ -25,7 +25,6 @@ from init import *
 from src.colors import *
 from src.functions import *
 from src.vars import *
-from src.db import * 
 from src.online import *
 from src.commands import PermissionLevel, execute_command, list_commands
 
@@ -75,12 +74,10 @@ log.addHandler(log_fh)
 if os.path.exists(server_dir + "/users.db"):
     # Connect to database
     db = sql.connect(server_dir + "/users.db", check_same_thread=False)
-    # db = Database(server_dir + "/users.db", check_same_thread=False)
     print(f"{GREEN + Colors.BOLD}>>> {RESET}Connected to database")
     
 else:
     # Connect/Create database
-    # db = sql.connect(server_dir + "/users.db", check_same_thread=False)
     db = Database(server_dir + "/users.db", check_same_thread=False)
     print(f"{GREEN + Colors.BOLD}>>> {RESET}Created database")
     
