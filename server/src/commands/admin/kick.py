@@ -9,7 +9,7 @@ from src.db import Database
 from init import server_dir, users, addresses, log
 
 @register_command("kick", arg_count=1, required_permissions=PermissionLevel.ADMIN)
-def kick_command(socket: socket.socket, username: str, args: list):
+def kick_command(socket: socket.socket, username: str, args: list, send):
     cmd_db  = Database(server_dir + "/users.db", check_same_thread=False)
     
     uname   = args[0]
