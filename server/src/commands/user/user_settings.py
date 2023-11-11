@@ -11,7 +11,7 @@ from init import server_dir, users, addresses
 
 
 @register_command("settings", arg_count=1)
-def user_settings_command(socket: socket.socket, username: str, args: list):
+def user_settings_command(socket: socket.socket, username: str, args: list, send):
     cmd_db = Database(server_dir + "/users.db", check_same_thread=False)
     try:
         match args[0]:
@@ -133,7 +133,7 @@ def user_settings_command(socket: socket.socket, username: str, args: list):
         
             
 @register_command("admin", arg_count=1)
-def admin_settings_command(socket: socket.socket, username: str, args: list):
+def admin_settings_command(socket: socket.socket, username: str, args: list, send):
     cmd_db = Database(server_dir + "/users.db", check_same_thread=False)
     match args[0]:
         case "help":
