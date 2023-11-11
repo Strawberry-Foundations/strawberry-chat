@@ -488,6 +488,81 @@ def strawberryIdLogin(client):
 The client login function for logging into the chat.
 This piece of code is well commented so that you understand what almost every line does.
 """
+# def clientLogin(client):
+#     global db
+#     global logcur
+#     logged_in = False
+#     logcur = db.cursor()
+
+#     # Send a welcome message
+#     client.send(f"{Colors.BOLD}Welcome to Strawberry Chat!{Colors.RESET}".encode("utf8"))
+#     client.send(f"{Colors.BOLD}New here? Type '{MAGENTA}Register{RESET}' to register! You want to leave? Type '{MAGENTA}Exit{RESET}' {Colors.RESET}".encode("utf8"))
+    
+#     time.sleep(0.1)
+    
+#     while not logged_in:
+#         # Ask for the username
+#         client.send(f"{GREEN + Colors.BOLD}Username: {RESET + Colors.RESET}".encode("utf8"))
+        
+#         # Receive the ansi-escaped username and strip all new lines in case
+#         username = escape_ansi(client.recv(2048).decode("utf8"))
+#         username = username.strip("\n")
+        
+#         # Check if the "username" is register, if yes, go to the register form
+#         if username.lower() == "register":
+#             clientRegister(client)
+        
+#         # Check if the "username" is exit, if yes, exit the login process
+#         elif username.lower() == "exit":
+#             client.close()
+#             exit()
+        
+#         elif username.lower() == "sid":
+#             strawberryIdLogin(client)
+            
+#         time.sleep(0.01)
+        
+#         # Ask for the password
+#         client.send(f"{GREEN + Colors.BOLD}Password: {RESET + Colors.RESET}".encode("utf8"))
+        
+#         # Receive the ansi-escaped password and strip all new lines in case
+#         password = escape_ansi(client.recv(2048).decode("utf8"))
+#         password = password.strip("\n")
+        
+#         # Select the password from the database and fetch it 
+#         logcur.execute("SELECT password, account_enabled FROM users WHERE username = ?", (username,))
+#         result = logcur.fetchone()
+
+#         # If the result is not none, fetch some things from the database [...].
+#         if result is not None:
+#             stored_password = result[0]
+#             account_enabled = result[1]
+            
+#             # If account is not enabled, return error message and close connection between server and client
+#             if account_enabled == "false":
+#                 client.send(f"{RED + Colors.BOLD}Your account was disabled by an administrator.{RESET + Colors.RESET}".encode("utf8"))
+#                 client.close()
+#                 return "CltExit"
+            
+#             # If the stored password from the database matches with the entered password, fetch the username and login the user
+#             if verify_password(stored_password, password):
+#                 logcur.execute('SELECT username FROM users WHERE username = ?', (username,))
+#                 result = logcur.fetchone()
+                
+#                 # If username exists, login the user
+#                 if result is not None:
+#                     username = result[0]
+#                     logged_in = True    
+#                     return username
+            
+#             # If passwords does not match, return an error message and start from the beginning
+#             else:
+#                 client.send(f"{RED + Colors.BOLD}Wrong username or password.{RESET + Colors.RESET}\n".encode("utf8"))
+        
+#         # If the password could not be fetched from the database, return an error message and start from the beginning
+#         else:
+#             client.send(f"{RED + Colors.BOLD}User not found.\n{RESET + Colors.RESET}".encode("utf8"))
+
 def clientLogin(client):
     global db
     global logcur
@@ -495,14 +570,11 @@ def clientLogin(client):
     logcur = db.cursor()
 
     # Send a welcome message
-    client.send(f"{Colors.BOLD}Welcome to Strawberry Chat!{Colors.RESET}".encode("utf8"))
-    client.send(f"{Colors.BOLD}New here? Type '{MAGENTA}Register{RESET}' to register! You want to leave? Type '{MAGENTA}Exit{RESET}' {Colors.RESET}".encode("utf8"))
     
     time.sleep(0.1)
     
     while not logged_in:
         # Ask for the username
-        client.send(f"{GREEN + Colors.BOLD}Username: {RESET + Colors.RESET}".encode("utf8"))
         
         # Receive the ansi-escaped username and strip all new lines in case
         username = escape_ansi(client.recv(2048).decode("utf8"))
@@ -523,7 +595,6 @@ def clientLogin(client):
         time.sleep(0.01)
         
         # Ask for the password
-        client.send(f"{GREEN + Colors.BOLD}Password: {RESET + Colors.RESET}".encode("utf8"))
         
         # Receive the ansi-escaped password and strip all new lines in case
         password = escape_ansi(client.recv(2048).decode("utf8"))
@@ -540,7 +611,6 @@ def clientLogin(client):
             
             # If account is not enabled, return error message and close connection between server and client
             if account_enabled == "false":
-                client.send(f"{RED + Colors.BOLD}Your account was disabled by an administrator.{RESET + Colors.RESET}".encode("utf8"))
                 client.close()
                 return "CltExit"
             
@@ -557,20 +627,32 @@ def clientLogin(client):
             
             # If passwords does not match, return an error message and start from the beginning
             else:
-                client.send(f"{RED + Colors.BOLD}Wrong username or password.{RESET + Colors.RESET}\n".encode("utf8"))
+                pass
         
         # If the password could not be fetched from the database, return an error message and start from the beginning
         else:
-            client.send(f"{RED + Colors.BOLD}User not found.\n{RESET + Colors.RESET}".encode("utf8"))
+            pass
 
-
-def broadcast(message, sentBy=""):
+def broadcast(message, sentBy="", format: StbCom = StbCom.PLAIN):
+    import json
+    def send_json(data):
+        return json.dumps(data)
+        
     c = db.cursor()
     try:
         if sentBy == "":
             for user in users:
-                try: user.send(message.encode("utf8"))
-                except BrokenPipeError as e: debug_logger(e, stbexceptions.broken_pipe_error)
+                try:
+                    json_builder = {
+                        "message_type": "system_message",
+                        "message": {
+                            "content": message
+                        }
+                    }
+                    user.send(send_json(json_builder).encode("utf8"))
+                    
+                except BrokenPipeError as e:
+                    debug_logger(e, stbexceptions.broken_pipe_error)
 
         else:
             for user in users:
@@ -604,16 +686,24 @@ def broadcast(message, sentBy=""):
                 
                 if not is_empty_or_whitespace(message):
                     if message != "":
-                        if hasNickname(sentBy) == True:
-                            try: user.send(f"{userRoleColor(sentBy)}{userNickname(sentBy)} (@{sentBy.lower()}){badge}{RESET + Colors.RESET}: {message}{RESET + Colors.RESET}".encode("utf8"))
-                            except BrokenPipeError:
-                                pass
+                        try: 
+                            json_builder = {
+                                "message_type": "user_message",
+                                "username": sentBy,
+                                "nickname": userNickname(sentBy),
+                                "badge": badge,
+                                "role_color": "red",
+                                "message": {
+                                    "content": message
+                                }
+                            }
                             
-                        else: 
-                            try: user.send(f"{userRoleColor(sentBy)}{sentBy}{badge}{RESET + Colors.RESET}: {message}{RESET + Colors.RESET}".encode("utf8"))
-                            except BrokenPipeError:
-                                pass
-                                
+                            
+                            user.send(send_json(json_builder).encode("utf8"))
+                        except BrokenPipeError:
+                            pass
+                        
+                        
                     else: pass
                 else: pass
                     
