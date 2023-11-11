@@ -9,7 +9,7 @@ from src.vars import role_colors
 from init import server_dir
 
 @register_command("role", arg_count=1, required_permissions=PermissionLevel.ADMIN)
-def role_command(socket: socket.socket, username: str, args: list):
+def role_command(socket: socket.socket, username: str, args: list, send):
     cmd_db = Database(server_dir + "/users.db", check_same_thread=False)
 
     cmd = args[0]
