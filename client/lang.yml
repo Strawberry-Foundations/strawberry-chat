@@ -24,6 +24,7 @@ de_DE:
   UpdateAvailable: "Ein Update für den Strawberry Chat Client ist verfügbar."
   UpgradingFrom: "Aktualisiere von"
   InvalidInput: "Ungültige Eingabe!"
+  ConnectionInterrupt: "Fehler beim Empfangen von Server-Daten: Ist die Verbindung unterbrochen worden?"
 
 # Language Strings for en_US (English)
 en_US:
@@ -51,3 +52,4 @@ en_US:
   UpdateAvailable: "An update for Strawberry Chat Client is available."
   UpgradingFrom: "Upgrading from"
   InvalidInput: "Invalid input!"
+  ConnectionInterrupt: "Error while receiving server data: Has the connection been interrupted?"
