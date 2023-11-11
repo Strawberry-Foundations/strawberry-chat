@@ -69,6 +69,17 @@ def repl_htpf(string):
                 
     return to_ret
 
+def input_regen_database():
+    input = input(f"{YELLOW + Colors.BOLD}>>> {RESET}WARNING: This will delete your database! Are you sure?: ")
+    
+    if input.lower() == "yes":
+        regen_database()
+        
+        print(f"{GREEN + Colors.BOLD}>>> {RESET}Created table")
+        
+    else:
+        print(f"{Colors.GRAY + Colors.BOLD}>>> {RESET + Colors.RESET + Colors.BOLD}Cancelled database regeneration process")
+
 def regen_database():
     os.remove(server_dir + "/users.db")
     db = sql.connect(server_dir + "/users.db", check_same_thread=False)
