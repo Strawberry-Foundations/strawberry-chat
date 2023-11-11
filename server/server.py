@@ -42,15 +42,17 @@ if os.path.exists(server_dir + "/users.db"):
     
 else:
     # Connect/Create database
-    db = sql.connect(server_dir + "/users.db", check_same_thread=False)
-    cquery = db.cursor()
+    query_db = sql.connect(server_dir + "/users.db", check_same_thread=False)
+    query_c = query_db.cursor()
     print(f"{GREEN + Colors.BOLD}>>> {RESET}Created database")
     
-    cquery.execute(table_query)
-    db.commit()
-    cquery.close()
+    query_c.execute(table_query)
+    query_db.commit()
+    query_c.close()
     
     print(f"{GREEN + Colors.BOLD}>>> {RESET}Created table")
+    print(f"{YELLOW + Colors.BOLD}>>> {RESET}Restart your server to connect to your new database.")
+    exit()
 
 
 # Open Configuration
