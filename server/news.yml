@@ -40,7 +40,7 @@ news:
     - NEW: Working Kick command \n
     - NEW: Added account creation date to user profile\n
     - NEW: User settings command to manage user flags\n
-    - NEW: Reworked command system
+    - NEW: Reworked command system\n
     - FIX: Fixed duplicated code which led to formatting errors\n
     -> For more information visit https://github.com/orgs/Strawberry-Foundations/projects/1/views/1"
 
