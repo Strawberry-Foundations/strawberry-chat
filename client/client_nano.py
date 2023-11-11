@@ -105,6 +105,7 @@ def main():
     try: 
         print(f"Trying to connect to the server...")
         client_socket.connect((host, port)) 
+        
     except: 
         print(f"Connection refused: The server is not available!")
         sys.exit(1)
@@ -119,6 +120,7 @@ def main():
 
     try: 
         while _receiving.is_alive() and _sending.is_alive(): continue
+        
     except KeyboardInterrupt:
         print(f"\nAborted")
         threadFlag = False
