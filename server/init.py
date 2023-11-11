@@ -24,6 +24,8 @@ class StbTypes(Enum):
 class StbCom(Enum):
     PLAIN = 0
     JSON = 1
+    USER_MSG = "user_message"
+    SYS_MSG = "system_message"
 
 # stbexceptions class for better error handling  
 class stbexceptions:
