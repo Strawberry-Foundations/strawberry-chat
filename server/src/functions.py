@@ -83,27 +83,12 @@ def create_empty_file(filename):
 def send_json(data):
     return json.dumps(data)
 
-# def broadcast_all(message):
-#     try:
-#         for user in users:
-#             user.send(message.encode("utf8"))
-    
-#     except BrokenPipeError as e:
-#         pass
-    
-#     except IOError as e:
-#         if e.errno == errno.EPIPE:
-#             pass
-  
-#     except Exception as e:
-#         pass
-
 def broadcast_all(message, format: StbCom = StbCom.PLAIN):
     try:
         for user in users:
             try:
                 json_builder = {
-                    "message_type": "system_message",
+                    "message_type": StbCom.SYS_MSG,
                     "message": {
                         "content": message
                     }
@@ -114,7 +99,8 @@ def broadcast_all(message, format: StbCom = StbCom.PLAIN):
                 debug_logger(e, stbexceptions.broken_pipe_error)
 
     except Exception as e:
-        print(e)
+        log.error(f"A broadcasting error occurred.")
+        debug_logger(e, stbexceptions.communication_error)
 
 # Check if user has a nickname
 def hasNickname(uname):
