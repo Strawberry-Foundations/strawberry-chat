@@ -9,7 +9,7 @@ from src.db import Database
 from init import server_dir, log
 
 @register_command("mute", arg_count=1, required_permissions=PermissionLevel.ADMIN)
-def mute_command(socket: socket.socket, username: str, args: list):
+def mute_command(socket: socket.socket, username: str, args: list, send):
     cmd_db = Database(server_dir + "/users.db", check_same_thread=False)
 
     uname = args[0]
@@ -25,7 +25,7 @@ def mute_command(socket: socket.socket, username: str, args: list):
         log.info(f"{uname} has been muted by {username}")
 
 @register_command("unmute", arg_count=1, required_permissions=PermissionLevel.ADMIN)
-def unmute_command(socket: socket.socket, username: str, args: list):
+def unmute_command(socket: socket.socket, username: str, args: list, send):
     cmd_db = Database(server_dir + "/users.db", check_same_thread=False)
 
     uname = args[0]
