@@ -37,7 +37,7 @@ CYAN = '\033[36m'
 WHITE = '\033[37m'
 
 # Version-specified Variables & important variables
-base_version    = "0.11.0"
+base_version    = "0.12.0"
 ext_version     = base_version + "b1"
 version         = "v" + ext_version
 full_version    = ext_version + "-vacakes"
