@@ -21,6 +21,10 @@ class StbTypes(Enum):
     WARNING = 2
     ERROR = 1
 
+class StbCom(Enum):
+    PLAIN = 0
+    JSON = 1
+
 # stbexceptions class for better error handling  
 class stbexceptions:
     connection_error        = "001"
