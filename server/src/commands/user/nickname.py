@@ -52,6 +52,8 @@ def nickname_command(socket: socket.socket, username: str, args: list):
             else:
                 socket.send(f"{RED}Sorry, you do not have permissons for that.{RESET}".encode("utf8"))
                 return
+        else: 
+            socket.send(f"{RED + Colors.BOLD}Please pass a valid argument!{RESET + Colors.RESET}".encode("utf8"))
         
     else: 
         nick = cmd
