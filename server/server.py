@@ -111,7 +111,7 @@ def clientThread(client):
             }
         }
         
-        client.send(send_json(json_builder).encode("utf8"))
+        client.send(send_json(json_builder).encode('utf8'))
         
     # Define db variable global
     global db
@@ -308,16 +308,25 @@ def clientThread(client):
             break
 
 def clientRegister(client):
+    def send(message):
+        json_builder = {
+            "message_type": StbCom.SYS_MSG,
+            "message": {
+                "content": message
+            }
+        }
+        
+        client.send(send_json(json_builder))
     global db
     global logcur
     
     # Send a welcome message
-    client.send(f"{MAGENTA + Colors.BOLD + Colors.UNDERLINE}Welcome!{RESET + Colors.RESET}\n        {Colors.BOLD}Register, to chat with us!{Colors.RESET}".encode("utf8"))
+    client.send(f"{MAGENTA + Colors.BOLD + Colors.UNDERLINE}Welcome!{RESET + Colors.RESET}\n        {Colors.BOLD}Register, to chat with us!{Colors.RESET}")
 
     time.sleep(0.05)
     
     # Ask for a username that the user wants
-    client.send(f"{GREEN + Colors.BOLD}Username: {RESET + Colors.RESET}".encode("utf8"))
+    client.send(f"{GREEN + Colors.BOLD}Username: {RESET + Colors.RESET}")
     
     # Receive username
     registered_username = client.recv(2048).decode("utf8")
@@ -333,12 +342,12 @@ def clientRegister(client):
         
         # If username is in blacklisted words, return an error message and start from the beginning
         if uname in blacklist:
-            client.send(f"{YELLOW + Colors.BOLD}This username is not allowed{RESET + Colors.RESET}\n".encode("utf8"))    
+            client.send(f"{YELLOW + Colors.BOLD}This username is not allowed{RESET + Colors.RESET}\n")    
             clientRegister(client)
             
         # If username is in this set of blacklisted words, return an error message and start from the beginning
         elif uname in ["exit", "register", "login"]:
-            client.send(f"{YELLOW + Colors.BOLD}This username is not allowed{RESET + Colors.RESET}\n".encode("utf8"))    
+            client.send(f"{YELLOW + Colors.BOLD}This username is not allowed{RESET + Colors.RESET}\n")    
             clientRegister(client)
     
     # Check if the username is already in use
@@ -349,7 +358,7 @@ def clientRegister(client):
         usedUsernames = "".join(usedUsernames)
         
         if usedUsernames == usedUsernames:
-            client.send(f"{YELLOW + Colors.BOLD}This username is already in use!{RESET + Colors.RESET}\n".encode("utf8"))    
+            client.send(f"{YELLOW + Colors.BOLD}This username is already in use!{RESET + Colors.RESET}\n")    
             clientRegister(client)
         
     except Exception as e:
@@ -357,32 +366,32 @@ def clientRegister(client):
         debug_logger(e, stbexceptions.reg_error)
 
     # Ask and receive password
-    client.send(f"{GREEN + Colors.BOLD}Password: {RESET + Colors.RESET}".encode("utf8"))
+    client.send(f"{GREEN + Colors.BOLD}Password: {RESET + Colors.RESET}")
     registered_password = client.recv(2048).decode("utf8")
     
     # Confirm the new password
-    client.send(f"{GREEN + Colors.BOLD}Confirm Password: {RESET + Colors.RESET}".encode("utf8"))
+    client.send(f"{GREEN + Colors.BOLD}Confirm Password: {RESET + Colors.RESET}")
     confirm_password = client.recv(2048).decode("utf8")
     
     # If passwords does not match, return an error message
     if registered_password != confirm_password:
-        client.send(f"{RED + Colors.BOLD}Passwords do not match{RESET + Colors.RESET}".encode("utf8"))
+        client.send(f"{RED + Colors.BOLD}Passwords do not match{RESET + Colors.RESET}")
         clientRegister(client)
     
     # Ask and receive role color
-    client.send(f"{GREEN + Colors.BOLD}Role Color (Red, Green, Cyan, Blue, Yellow, Magenta): {RESET + Colors.RESET}".encode("utf8"))
+    client.send(f"{GREEN + Colors.BOLD}Role Color (Red, Green, Cyan, Blue, Yellow, Magenta): {RESET + Colors.RESET}")
     registered_role_color = client.recv(2048).decode("utf8")
 
     # Ask if everything is correct
-    client.send(f"{YELLOW + Colors.BOLD}Is everything correct? (You can change your username, role color and password at any time){RESET + Colors.RESET}".encode("utf8"))
+    client.send(f"{YELLOW + Colors.BOLD}Is everything correct? (You can change your username, role color and password at any time){RESET + Colors.RESET}")
     confirm_account_creation = client.recv(2048).decode("utf8")
     
     # If confirm_account_creation is yes, create the new account
     if confirm_account_creation.lower() == "yes":
-        client.send(f"{YELLOW + Colors.BOLD}Processing... {RESET + Colors.RESET}".encode("utf8"))
+        client.send(f"{YELLOW + Colors.BOLD}Processing... {RESET + Colors.RESET}")
         
         try:
-            client.send(f"{GREEN + Colors.BOLD}Creating your User account... {RESET + Colors.RESET}".encode("utf8"))
+            client.send(f"{GREEN + Colors.BOLD}Creating your User account... {RESET + Colors.RESET}")
         
             logcur.execute("SELECT user_id FROM users")
         
@@ -413,7 +422,7 @@ def clientRegister(client):
                             (registered_username, registered_password, registered_role_color.lower(), user_id, 0, creation_date))
             db.commit()
             
-            client.send(f"{GREEN + Colors.BOLD}Created!{RESET + Colors.RESET}".encode("utf8"))
+            client.send(f"{GREEN + Colors.BOLD}Created!{RESET + Colors.RESET}")
             client.close()
             
         except Exception as e:
@@ -421,13 +430,13 @@ def clientRegister(client):
             debug_logger(e, stbexceptions.sql_error)
         
     else:
-        client.send(f"{RED + Colors.BOLD}Registration has been canceled. Start from the beginning...{RESET + Colors.RESET}".encode("utf8"))
+        client.send(f"{RED + Colors.BOLD}Registration has been canceled. Start from the beginning...{RESET + Colors.RESET}")
         time.sleep(0.5)
         clientRegister()
 
 
 def strawberryIdLogin(client):
-    client.send(f"{GREEN + Colors.BOLD}Visit https://id.strawberryfoundations.xyz/v1/de?redirect=https://api.strawberryfoundations.xyz/stbchat&hl=de to login!{RESET + Colors.RESET}".encode("utf8"))
+    client.send(f"{GREEN + Colors.BOLD}Visit https://id.strawberryfoundations.xyz/v1/de?redirect=https://api.strawberryfoundations.xyz/stbchat&hl=de to login!{RESET + Colors.RESET}")
     
 
 
@@ -445,7 +454,7 @@ def clientLogin(client):
             }
         }
         
-        client.send(send_json(json_builder).encode("utf8"))
+        client.send(send_json(json_builder).encode('utf8'))
     
     global db
     global logcur
@@ -453,7 +462,6 @@ def clientLogin(client):
     logcur = db.cursor()
 
     # Send a welcome message
-    # client.send(f"{Colors.BOLD}Welcome to Strawberry Chat!{Colors.RESET}".encode("utf8"))
     send(f"{Colors.BOLD}Welcome to Strawberry Chat!{Colors.RESET}")
     send(f"{Colors.BOLD}New here? Type '{MAGENTA}Register{RESET}' to register! You want to leave? Type '{MAGENTA}Exit{RESET}' {Colors.RESET}")
     
@@ -537,7 +545,7 @@ def broadcast(message, sent_by="", format: StbCom = StbCom.PLAIN):
                         }
                     }
                     
-                    user.send(send_json(json_builder).encode("utf8"))
+                    user.send(send_json(json_builder).encode("utf-8"))
                     
                 except BrokenPipeError as e:
                     debug_logger(e, stbexceptions.broken_pipe_error)
@@ -583,7 +591,7 @@ def broadcast(message, sent_by="", format: StbCom = StbCom.PLAIN):
                                 }
                             }
                             
-                            user.send(send_json(json_builder).encode("utf8"))
+                            user.send(send_json(json_builder).encode('utf8'))
                             
                         except BrokenPipeError:
                             pass
