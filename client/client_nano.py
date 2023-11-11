@@ -61,15 +61,45 @@ def send(sock):
 def receive(sock):
     while threadFlag:
         try:
-            message = sock.recv(2048).decode()
+            message = sock.recv(2048).decode('utf-8')
+
+            try: message = conv_json_data(message)
+            except: message = message
             
             if message:
-                print("[{}] {}".format(current_time(), message))
+                try:
+                    try: message_type = message["message_type"]
+                    except: message_type = "unknown"
+                    
+                    if message_type == "user_message":
+                        username    = message["username"]
+                        nickname    = message["nickname"]
+                        badge       = badge_handler(message["badge"])
+                        role_color  = message["role_color"]
+                        message     = message["message"]["content"]
+                        
+                        if nickname == username:
+                            fmt = f"[{current_time()}] {role_color}{username}{badge}:\033[0m {message}"
+                        else:
+                            fmt = f"[{current_time()}] {role_color}{nickname} (@{username.lower()}){badge}:\033[0m {message}"
+                            
+                        print(fmt)
+                        
+                    else:
+                        message     = message["message"]["content"]
+                        print(f"[{current_time()}] {message}")
+                
+                except Exception as e:
+                    time.sleep(0.05)
+                    message         = message["message"]["content"]
+                    print(f"[{current_time()}] {message}")
+                        
             else:
                 break
-        except:
-            print(f"Trying to connect to the server...")
-            break
+            
+        except Exception as e: 
+            if experimental_debug_mode: print(f"Error while receiving server data: Has the connection been interrupted?")
+            pass
 
 def main():
     global threadFlag
