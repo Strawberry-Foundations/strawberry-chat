@@ -79,6 +79,8 @@ with open(client_dir + "/lang.yml", encoding="utf-8") as langStrings:
         Str = yaml.load(langStrings, Loader=SafeLoader)
 
 
+# Client-important functions
+
 # Check verification of a server
 def is_verified(addr):
     try:
@@ -116,6 +118,10 @@ def check_for_updates():
         print(f"{BOLD + GREEN}{Str[lang]['UpdateAvailable']}{RESET +RESET}")
         print(f"{BOLD + CYAN}strawberry-chat{GREEN}@{MAGENTA}stable {RESET}{online_ver}{RESET}")
         print(f"↳ {Str[lang]['UpgradingFrom']} {CYAN + BOLD}strawberry-chat{GREEN}@{MAGENTA}stable {RESET}{ver}{RESET}\n")
+
+def conv_json_data(data):
+    return json.loads(data)
+
 
 # Try requesting our api server
 if online_mode:
@@ -284,33 +290,11 @@ def send(sock):
                 break
 
 def receive(sock):
-    def receive_json_data(client_socket):
-        data = client_socket.recv(1024).decode('utf-8')
-        return json.loads(data)
-    
     while threadFlag:
-        # try:
-        #     message = receive_json_data(sock)
-            
-        #     if message:
-        #         try:
-        #             key_to_extract = 'message_type'
-        #             extracted_value = message[key_to_extract]
-        #             print(f"{key_to_extract}: {extracted_value}")
-        #         except:
-        #             print("[{}] {}".format(current_time(), message))
-        #     else:
-        #         break
-            
-        # except Exception as e:
-        #     print(f"{Fore.RED + BOLD}{Str[lang]['ErrNotReachable']}{Fore.RESET + CRESET}")
-        #     print(e)
-        #     break
-        
-        try:
-            message = receive_json_data(sock)
-        except: 
-            message = sock.recv(1024).decode('utf-8')
+        message = sock.recv(2048).decode('utf-8')
+
+        try: message = conv_json_data(message)
+        except: message = message
         
         if message:
             try:
