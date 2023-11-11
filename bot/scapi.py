@@ -22,6 +22,7 @@ import datetime
 import sys
 import re
 from enum import Enum
+import json
 
 BOLD = '\033[1m'
 UNDERLINE = '\033[4m'
@@ -112,6 +113,15 @@ class Scapi:
         def flag_handler(self, enable_user_input: bool = False, print_recv_msg: bool = False):
             self.enable_user_input  = enable_user_input
             self.print_recv_msg     = print_recv_msg
+        
+        def badge_handler(self, badge):
+            if not badge == "":
+                return " [" + badge + "]"
+            else:
+                return ""
+        
+        def conv_json_data(self, data):
+            return json.loads(data)
             
         def permission_handler(self, trusted_list: list = [], admin_list: list = [], owner: str = None, custom_list: list = []):
             self.trusted_list       = trusted_list
@@ -125,6 +135,9 @@ class Scapi:
         def escape_ansi(self, line):
             ansi_escape = re.compile(r'(?:\x1B[@-_]|[\x80-\x9F])[0-?]*[ -/]*[@-~]')
             return ansi_escape.sub('', line)
+        
+        def get_username(self, json_data):
+            return json_data
         
         def get_username_by_msg(self, message):
             username = message.split(":")[0]
@@ -184,11 +197,32 @@ class Scapi:
                     global message
                     message = self.socket.recv(2048).decode()
                     
+                    try: message = self.conv_json_data(message)
+                    except: message = message
+                    
                     if message:
                         self.count = self.count + 1
-                
+                        try: message_type = message["message_type"]
+                        except: message_type = "unknown"                        
+                            
+                        if message_type == "user_message":
+                            username    = message["username"]
+                            nickname    = message["nickname"]
+                            badge       = self.badge_handler(message["badge"])
+                            role_color  = message["role_color"]
+                            message     = message["message"]["content"]
+                            
+                            if nickname == username:
+                                fmt = f"{role_color}{username}{badge}:\033[0m {message}"
+                            else:
+                                fmt = f"{role_color}{nickname} (@{username.lower()}){badge}:\033[0m {message}"
+                            
+                        else:
+                            try: fmt     = message["message"]["content"]
+                            except: fmt = message
+                        
                         if self.count > 3:
-                            self.logger(message, type=Scapi.LogLevel.INFO)
+                            self.logger(fmt, type=Scapi.LogLevel.INFO)
                         
                         if raw == False:
                             if ansi == True:
