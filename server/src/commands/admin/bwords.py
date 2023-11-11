@@ -23,26 +23,26 @@ def bwords_command(socket: socket.socket, username: str, args: list, send):
             value = args[2]
             
             if not doesUserExist(uname):
-                socket.send(f"{RED + Colors.BOLD}Sorry, this user does not exist!{RESET + Colors.RESET}".encode("utf8"))
+                send(f"{RED + Colors.BOLD}Sorry, this user does not exist!{RESET + Colors.RESET}")
                 return
         
             cmd_db.execute("UPDATE users SET enable_blacklisted_words = ? WHERE username = ?", (value, uname))
             cmd_db.commit()
         
             if value == "true":
-                socket.send(f"{LIGHTGREEN_EX + Colors.BOLD}Enabled Blacklisted Words for {uname}{RESET + Colors.RESET}".encode("utf8"))
+                send(f"{LIGHTGREEN_EX + Colors.BOLD}Enabled Blacklisted Words for {uname}{RESET + Colors.RESET}")
                 return
             
             elif value == "false":
-                socket.send(f"{LIGHTGREEN_EX + Colors.BOLD}Disabled Blacklisted Words for {uname}{RESET + Colors.RESET}".encode("utf8"))
+                send(f"{LIGHTGREEN_EX + Colors.BOLD}Disabled Blacklisted Words for {uname}{RESET + Colors.RESET}")
                 return
             
             else:
-                socket.send(f"{RED + Colors.BOLD}Invalid value!{RESET + Colors.RESET}".encode("utf8"))
+                send(f"{RED + Colors.BOLD}Invalid value!{RESET + Colors.RESET}")
                 return
 
         except:
-            socket.send(f"{RED + Colors.BOLD}Invalid username and/or value!{RESET + Colors.RESET}".encode("utf8"))
+            send(f"{RED + Colors.BOLD}Invalid username and/or value!{RESET + Colors.RESET}")
             return
 
     elif cmd == "get":
@@ -53,36 +53,36 @@ def bwords_command(socket: socket.socket, username: str, args: list, send):
             value = cmd_db.fetchone()[0]
             
             if value == "true":
-                socket.send(f"{LIGHTGREEN_EX + Colors.BOLD}Blacklisted Words for {uname} are enabled{RESET + Colors.RESET}".encode("utf8"))
+                send(f"{LIGHTGREEN_EX + Colors.BOLD}Blacklisted Words for {uname} are enabled{RESET + Colors.RESET}")
                 return
             
             elif value == "false":
-                socket.send(f"{LIGHTGREEN_EX + Colors.BOLD}Blacklisted Words for {uname} are disabled{RESET + Colors.RESET}".encode("utf8"))
+                send(f"{LIGHTGREEN_EX + Colors.BOLD}Blacklisted Words for {uname} are disabled{RESET + Colors.RESET}")
                 return
             
             else:
-                socket.send(f"{RED + Colors.BOLD}Whoa! This should not happen...{RESET + Colors.RESET}".encode("utf8"))
+                send(f"{RED + Colors.BOLD}Whoa! This should not happen...{RESET + Colors.RESET}")
                 return
         except:
-            socket.send(f"{RED + Colors.BOLD}Invalid username{RESET + Colors.RESET}".encode("utf8"))
+            send(f"{RED + Colors.BOLD}Invalid username{RESET + Colors.RESET}")
             return
 
     elif cmd == "add":
         try:
             word = args[1]
         except:
-            socket.send(f"{RED + Colors.BOLD}Cant add an empty word!{RESET + Colors.RESET}".encode("utf8"))
+            send(f"{RED + Colors.BOLD}Cant add an empty word!{RESET + Colors.RESET}")
             return
         
         if word == "":
-            socket.send(f"{RED + Colors.BOLD}Cant add an empty word!{RESET + Colors.RESET}".encode("utf8"))
+            send(f"{RED + Colors.BOLD}Cant add an empty word!{RESET + Colors.RESET}")
             return
         
         with open("blacklist.txt", "a") as f:
             f.write("\n" + word)
             f.close()
         
-        socket.send(f"{LIGHTGREEN_EX + Colors.BOLD}Added '{word}' to the blacklist{RESET + Colors.RESET}".encode("utf8"))
+        send(f"{LIGHTGREEN_EX + Colors.BOLD}Added '{word}' to the blacklist{RESET + Colors.RESET}")
         return
 
     elif cmd == "reload":
@@ -91,9 +91,9 @@ def bwords_command(socket: socket.socket, username: str, args: list, send):
                 word = word.strip().lower()
                 blacklist.add(word)
                 
-        socket.send(f"{GREEN + Colors.BOLD}Reloaded blacklisted words.{RESET + Colors.RESET}".encode("utf8"))
+        send(f"{GREEN + Colors.BOLD}Reloaded blacklisted words.{RESET + Colors.RESET}")
         return
             
     else:
-        socket.send(f"{RED + Colors.BOLD}Invalid command usage.{RESET + Colors.RESET}".encode("utf8"))
+        send(f"{RED + Colors.BOLD}Invalid command usage.{RESET + Colors.RESET}")
         return
