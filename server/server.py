@@ -29,8 +29,8 @@ from src.commands import PermissionLevel, execute_command, list_commands
 
 from src.commands.default import help, server_info, changelog, about, dm, exit_cmd
 from src.commands.etc import test_command, news, delaccount
-from src.commands.admin import broadcast_cmd, mute, ban, kick, debug
-from src.commands.user import online, afklist, afk, unafk, msgcount, members, description, memberlist, discord, user_settings, user
+from src.commands.admin import broadcast_cmd, mute, ban, kick, debug, role, bwords
+from src.commands.user import online, afklist, afk, unafk, msgcount, members, description, memberlist, discord, user_settings, user, nickname, badge
 
 
 
@@ -42,32 +42,19 @@ if os.path.exists(server_dir + "/users.db"):
     
 else:
     # Connect/Create database
-    db = sql.connect(server_dir + "/users.db", check_same_thread=False)
-    cquery = db.cursor()
+    query_db = sql.connect(server_dir + "/users.db", check_same_thread=False)
+    query_c = query_db.cursor()
     print(f"{GREEN + Colors.BOLD}>>> {RESET}Created database")
     
-    cquery.execute(table_query)
-    db.commit()
-    cquery.close()
+    query_c.execute(table_query)
+    query_db.commit()
+    
+    query_c.close()
+    query_db.close()
     
     print(f"{GREEN + Colors.BOLD}>>> {RESET}Created table")
-
-
-# Open Configuration
-with open(server_dir + "/config.yml") as config_data:
-        config = yaml.load(config_data, Loader=SafeLoader)
-
-# Configuration
-ipaddr                  = config['server']['address']
-port                    = config['server']['port']
-
-enable_messages         = config['flags']['enable_messages']
-max_message_length      = config['flags']['max_message_length']
-debug_mode              = config['flags']['debug_mode']
-online_mode             = config['flags']['online_mode']
-
-# Lists & Sets
-blacklist = set()
+    print(f"{YELLOW + Colors.BOLD}>>> {RESET}Restart your server to connect to your new database.")
+    exit()
 
 # Blacklisted word functions
 def open_blacklist():
@@ -149,35 +136,6 @@ def isAccountEnabled(uname):
         return True
     else: 
         return False
-
-# Print debug error codes
-def debug_logger(error_message, error_code, type: StbTypes = StbTypes.ERROR):
-    if debug_mode:
-        match error_code:
-            case stbexceptions.connection_error:        error = "connection_error"
-            case stbexceptions.login_error:             error = "login_error"
-            case stbexceptions.communication_error:     error = "communication_error"
-            case stbexceptions.client_error:            error = "client_error"
-            case stbexceptions.stc_error:               error = "stc_error"
-            case stbexceptions.reg_error:               error = "reg_error"
-            case stbexceptions.sql_error:               error = "sql_error"
-            case stbexceptions.general_error:           error = "general_error"
-            case stbexceptions.broken_pipe_error:       error = "broken_pipe_error"
-            case stbexceptions.transmition_error:       error = "transmition_error"
-            case stbexceptions.server_banned_error:     error = "server_banned_error"
-            case _:                                     error = "undefined_error"
-            
-        if type == StbTypes.ERROR:
-            log.error(f"stbexceptions::{error} ({error_code}) -> {error_message}")
-
-        elif type == StbTypes.WARNING:
-            log.warning(f"stbexceptions::{error} ({error_code}) -> {error_message}")
-    else:
-        None
-
-# SQL error message logger
-def sql_error(error_message):
-    log.error(f"stbexceptions::096 -> An SQL Error occured: {error_message}")
 
 # Open news file
 with open(server_dir + "/news.yml") as news_file:
@@ -331,7 +289,8 @@ def clientThread(client):
                     c.execute('SELECT role FROM users WHERE username = ?', (user,))
 
                 except Exception as e:
-                    sql_error(e)
+                    log.error("An SQL error occured!")
+                    debug_logger(e, stbexceptions.sql_error)
                     
                 user_role = c.fetchone()[0]
                 role = None
@@ -349,414 +308,6 @@ def clientThread(client):
                 execute_command(cmd, client, user, role, args)
                 continue
             
-    
-            # /nick Command
-            elif message.startswith("/nick ") or message.startswith("/nickname "):
-                if message.startswith("/nick "):
-                    arg = message.replace("/nick ", "")
-                    
-                elif message.startswith("/nickname ") :
-                    arg = message.replace("/nickname ", "")
-                    
-            
-                args = arg.split(" ")
-                cmd = args[0]
-                
-                # /nick set                        
-                try: 
-                    c.execute('SELECT role FROM users WHERE username = ?', (user,))
-                    
-                except Exception as e:
-                    sql_error(e)
-                    
-                res = c.fetchone()
-                
-                if cmd == "set":       
-                    if res[0] == "admin":              
-                        if len(args) == 3:
-                            try:
-                                nick = args[2]
-                                uname = args[1]
-                                
-                            except:
-                                client.send(f"{RED + Colors.BOLD}Please pass a valid argument!{RESET + Colors.RESET}".encode("utf8"))
-                                continue
-                                
-                        
-                            c.execute("UPDATE users SET nickname = ? WHERE username = ?", (nick, uname))
-                            db.commit()
-                            
-                            client.send(f"{GREEN + Colors.BOLD}The nickname of {uname} has been updated to '{nick}'{RESET + Colors.RESET}".encode("utf8"))
-                            continue
-                        
-                        else:
-                            client.send(f"{RED + Colors.BOLD}Please pass a valid argument!{RESET + Colors.RESET}".encode("utf8"))
-                            continue                     
-                
-                    else:
-                        client.send(f"{RED}Sorry, you do not have permissons for that.{RESET}".encode("utf8"))
-                        continue
-                    
-                else:
-                    nick = cmd
-                    
-                    if nick.lower() == "remove":
-                        c.execute("UPDATE users SET nickname = NULL WHERE username = ?", (user,))
-                        db.commit()
-                        
-                        client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Removed nickname{RESET + Colors.RESET}".encode("utf8"))
-                        continue
-                    c.execute("UPDATE users SET nickname = ? WHERE username = ?", (nick, user))
-                    db.commit()
-                    
-                    client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Changed nickname to {RESET + userRoleColor(user)}{nick}{RESET + Colors.RESET}".encode("utf8"))
-                    continue
-            
-            # /role Command
-            elif message.startswith("/role "):
-                try: 
-                    c.execute('SELECT role FROM users WHERE username = ?', (user,))
-                    
-                except Exception as e: 
-                    sql_error(e)
-                    
-                res = c.fetchone()
-                
-                if res[0] == "admin":
-                    arg = message.replace("/role ", "")
-                    args = arg.split(" ")
-
-                    cmd = args[0]
-                    
-                    # /role set Command
-                    if cmd == "set":
-                        try:
-                            uname = args[1]
-                            role = args[2]
-                        
-                            c.execute("UPDATE users SET role = ? WHERE username = ?", (role, uname))
-                            db.commit()
-                            
-                            client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Role of {uname} was set to {role}{RESET + Colors.RESET}".encode("utf8"))
-                            continue
-                        
-                        except:
-                            client.send(f"{RED + Colors.BOLD}Invalid username and/or role!{RESET + Colors.RESET}".encode("utf8"))
-                            continue
-                    
-                    # /role get Command
-                    elif cmd == "get":
-                        try:
-                            uname = args[1]
-                      
-                            c.execute("SELECT role FROM users WHERE username = ?", (uname,))
-                            role = c.fetchone()[0]
-                            
-                            client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Role of {uname}: {MAGENTA}{role}{RESET + Colors.RESET}".encode("utf8"))
-                            continue
-                        
-                        except:
-                            client.send(f"{RED + Colors.BOLD}Invalid username!{RESET + Colors.RESET}".encode("utf8"))
-                            continue
-                    
-                    # /role color Command
-                    elif cmd == "color":
-                        try:
-                            uname = args[1]
-                            color = args[2]
-                        
-                            c.execute("UPDATE users SET role_color = ? WHERE username = ?", (color, uname))
-                            db.commit()
-                            
-                            client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Role Color of {uname} was set to {color}{RESET + Colors.RESET}".encode("utf8"))
-                            continue
-                    
-                        except:
-                            client.send(f"{RED + Colors.BOLD}Invalid username and/or color!{RESET + Colors.RESET}".encode("utf8"))
-                            continue
-                        
-                    else:
-                        client.send(f"{RED + Colors.BOLD}Invalid command usage.{RESET + Colors.RESET}".encode("utf8"))
-                        continue
-                    
-                else:
-                    client.send(f"{RED}Sorry, you do not have permissons for that.{RESET}".encode("utf8"))
-            
-            
-            # /bwords Command
-            elif message.startswith("/bwords "):
-                try: 
-                    c.execute('SELECT role FROM users WHERE username = ?', (user,))
-                    
-                except Exception as e:
-                    sql_error(e)
-                    
-                res = c.fetchone()
-                
-                if res[0] == "admin":
-                    arg = message.replace("/bwords ", "")
-                    args = arg.split(" ")
-
-                    cmd = args[0]
-                    
-                    # /bwords set
-                    if cmd == "set":
-                        try:
-                            uname = args[1]
-                            value = args[2]
-                            
-                            if doesUserExist(uname) == False:
-                                client.send(f"{RED + Colors.BOLD}Sorry, this user does not exist!{RESET + Colors.RESET}".encode("utf8"))
-                                continue
-                         
-                            c.execute("UPDATE users SET enable_blacklisted_words = ? WHERE username = ?", (value, uname))
-                            db.commit()
-                        
-                            if value == "true":
-                                client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Enabled Blacklisted Words for {uname}{RESET + Colors.RESET}".encode("utf8"))
-                                continue
-                            
-                            elif value == "false":
-                                client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Disabled Blacklisted Words for {uname}{RESET + Colors.RESET}".encode("utf8"))
-                                continue
-                            
-                            else:
-                                client.send(f"{RED + Colors.BOLD}Invalid value!{RESET + Colors.RESET}".encode("utf8"))
-                                continue
-                    
-                        except:
-                            client.send(f"{RED + Colors.BOLD}Invalid username and/or value!{RESET + Colors.RESET}".encode("utf8"))
-                            continue
-                        
-                    # /bwords get
-                    elif cmd == "get":
-                        try:
-                            uname = args[1]
-                                
-                            c.execute("SELECT enable_blacklisted_words FROM users WHERE username = ?", (uname,))
-                            value = c.fetchone()[0]
-                            
-                            if value == "true":
-                                client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Blacklisted Words for {uname} are enabled{RESET + Colors.RESET}".encode("utf8"))
-                                continue
-                            
-                            elif value == "false":
-                                client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Blacklisted Words for {uname} are disabled{RESET + Colors.RESET}".encode("utf8"))
-                                continue
-                            
-                            else:
-                                client.send(f"{RED + Colors.BOLD}Whoa! This should not happen...{RESET + Colors.RESET}".encode("utf8"))
-                                continue
-                        except:
-                            client.send(f"{RED + Colors.BOLD}Invalid username{RESET + Colors.RESET}".encode("utf8"))
-                            continue
-                           
-                    # /bwords add 
-                    elif cmd == "add":
-                        try:
-                            word = args[1]
-                        except:
-                            client.send(f"{RED + Colors.BOLD}Cant add an empty word!{RESET + Colors.RESET}".encode("utf8"))
-                            continue
-                        
-                        if word == "":
-                            client.send(f"{RED + Colors.BOLD}Cant add an empty word!{RESET + Colors.RESET}".encode("utf8"))
-                            continue
-                        
-                        with open("blacklist.txt", "a") as f:
-                            f.write("\n" + word)
-                            f.close()
-                        
-                        client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Added '{word}' to the blacklist{RESET + Colors.RESET}".encode("utf8"))
-                        continue
-                    
-                    # /bwords reload
-                    elif cmd == "reload":
-                        try: 
-                            c.execute('SELECT role FROM users WHERE username = ?', (user,))
-                            
-                        except Exception as e:
-                            sql_error(e)
-                            
-                        res = c.fetchone()
-                        
-                        if res[0] == "admin":
-                            with open("blacklist.txt", "r") as f:
-                                for word in f:
-                                    word = word.strip().lower()
-                                    blacklist.add(word)
-                                    
-                            client.send(f"{GREEN + Colors.BOLD}Reloaded blacklisted words.{RESET + Colors.RESET}".encode("utf8"))
-                            continue
-                            
-                        else:
-                            client.send(f"{RED}Sorry, you do not have permissons for that.{RESET}".encode("utf8"))
-                            
-                    else:
-                        client.send(f"{RED + Colors.BOLD}Invalid command usage.{RESET + Colors.RESET}".encode("utf8"))
-                        continue
-                    
-                else:
-                    client.send(f"{RED}Sorry, you do not have permissons for that.{RESET}".encode("utf8"))
-            
-            
-            # /badge Command
-            elif message.startswith("/badge "):
-                try: 
-                    c.execute('SELECT role FROM users WHERE username = ?', (user,))
-                    
-                except Exception as e:
-                    sql_error(e)
-                    
-                res = c.fetchone()
-                
-                if res[0] == "admin":
-                    arg = message.replace("/badge ", "")
-                    args = arg.split(" ")
-
-                    cmd = args[0]
-                    
-                    
-                    # /badge add
-                    if cmd == "add":
-                        # If no username is provided
-                        if len(args) == 2:
-                            try:
-                                badge_to_add = args[1]
-                                
-                            except:
-                                client.send(f"{RED + Colors.BOLD}Please pass a valid argument!{RESET + Colors.RESET}".encode("utf8"))
-                                continue
-                                
-                            c.execute("SELECT badges FROM users WHERE username = ?", (user,))
-                            
-                            user_badges = c.fetchone()[0]
-                            
-                            # Does the user already have this badge?
-                            if badge_to_add in user_badges:
-                                client.send(f"{RED + Colors.BOLD}This badge is already assigned to your profile!{RESET + Colors.RESET}".encode("utf8"))
-                                continue
-                            
-                            new_user_badges = user_badges + badge_to_add
-                            
-                            c.execute("UPDATE users SET badges = ? WHERE username = ?", (new_user_badges, user))
-                            db.commit()
-                            
-                            client.send(f"{GREEN + Colors.BOLD}Added badge '{badge_to_add}' to your user profile{RESET + Colors.RESET}".encode("utf8"))
-                            continue
-                        
-                        # If username is provided
-                        elif len(args) == 3:
-                            try:
-                                badge_to_add = args[1]
-                                uname = args[2]
-                                
-                            except:
-                                client.send(f"{RED + Colors.BOLD}Please pass a valid argument!{RESET + Colors.RESET}".encode("utf8"))
-                                continue
-                                
-                            if doesUserExist(uname) == False:
-                                client.send(f"{RED + Colors.BOLD}Sorry, this user does not exist!{RESET + Colors.RESET}".encode("utf8"))
-                                continue
-                            
-                            else: 
-                                c.execute("SELECT badges FROM users WHERE username = ?", (uname,))
-                            
-                                user_badges = c.fetchone()[0]
-                                
-                                # Does the user already have this badge?
-                                if badge_to_add in user_badges:
-                                    client.send(f"{RED + Colors.BOLD}This badge is already assigned to {uname}'s profile!{RESET + Colors.RESET}".encode("utf8"))
-                                    continue
-                                
-                                new_user_badges = user_badges + badge_to_add
-                                
-                                c.execute("UPDATE users SET badges = ? WHERE username = ?", (new_user_badges, uname))
-                                db.commit()
-                                
-                                client.send(f"{GREEN + Colors.BOLD}Added badge '{badge_to_add}' to {uname}'s profile{RESET + Colors.RESET}".encode("utf8"))
-                                continue
-                            
-                        elif len(args) < 2 or len(args) > 3:
-                            client.send(f"{RED + Colors.BOLD}Invalid command usage.{RESET + Colors.RESET}".encode("utf8"))
-                            continue
-                                            
-                else:
-                    client.send(f"{RED}Sorry, you do not have permissons for that.{RESET}".encode("utf8"))
-                    continue
-
-                # /badge set
-                if cmd == "set":
-                    # If no username is provided
-                    if len(args) == 2:
-                        try:
-                            badge_to_set = args[1]
-                            
-                        except:
-                            client.send(f"{RED + Colors.BOLD}Please pass a valid argument!{RESET + Colors.RESET}".encode("utf8"))
-                            continue
-                            
-                        c.execute("SELECT badges FROM users WHERE username = ?", (user,))
-                        
-                        user_badges = c.fetchone()[0]
-                        
-                        # Does the user have this badge?
-                        if badge_to_set in user_badges:
-                        
-                            c.execute("UPDATE users SET badge = ? WHERE username = ?", (badge_to_set, user))
-                            db.commit()
-                            
-                            client.send(f"{GREEN + Colors.BOLD}The main badge of you has been updated to '{badge_to_set}'{RESET + Colors.RESET}".encode("utf8"))
-                            continue
-                        
-                        else:
-                            client.send(f"{RED + Colors.BOLD}You do not own this badge!{RESET + Colors.RESET}".encode("utf8"))
-                            continue
-                        
-                    # If username is provided
-                    elif len(args) == 3:
-                        if res[0] == "admin":
-                            try:
-                                badge_to_set = args[1]
-                                uname = args[2]
-                                
-                                if uname == "":
-                                    client.send(f"{RED + Colors.BOLD}Please provide a valid username! If you try to change your own main badge, please do not add a space after the badge!{RESET + Colors.RESET}".encode("utf8"))
-                                    continue
-                                
-                            except:
-                                client.send(f"{RED + Colors.BOLD}Please pass a valid argument!{RESET + Colors.RESET}".encode("utf8"))
-                                continue
-                                
-                            if doesUserExist(uname) == False:
-                                client.send(f"{RED + Colors.BOLD}Sorry, this user does not exist!{RESET + Colors.RESET}".encode("utf8"))
-                                continue
-                            
-                            else: 
-                                c.execute("SELECT badges FROM users WHERE username = ?", (uname,))
-                            
-                                user_badges = c.fetchone()[0]
-                                
-                                # Does the user have this badge?
-                                if badge_to_set in user_badges:
-                                        
-                                    c.execute("UPDATE users SET badge = ? WHERE username = ?", (badge_to_set, uname))
-                                    db.commit()
-                                    
-                                    client.send(f"{GREEN + Colors.BOLD}The main badge of {uname} has been updated to '{badge_to_set}'{RESET + Colors.RESET}".encode("utf8"))
-                                    continue
-                                
-                                else:
-                                    client.send(f"{RED + Colors.BOLD}This user does not own this badge!{RESET + Colors.RESET}".encode("utf8"))
-                                    continue
-                        else:
-                            client.send(f"{RED}Sorry, you do not have permissons for that.{RESET}".encode("utf8"))
-                            continue
-                        
-                    elif len(args) < 2 or len(args) > 3:
-                        client.send(f"{RED + Colors.BOLD}Invalid command usage.{RESET + Colors.RESET}".encode("utf8"))
-                        continue
-
 
             # Message handling
             if isMuted(user):
@@ -785,7 +336,8 @@ def clientThread(client):
                         db.commit()
                         
                     except Exception as e:
-                        sql_error(e)
+                        log.error("An SQL error occured!")
+                        debug_logger(e, stbexceptions.sql_error)
             c.close()            
                 
         except Exception as e:
@@ -917,7 +469,8 @@ def clientRegister(client):
             client.close()
             
         except Exception as e:
-            sql_error(e)
+            log.error("An SQL error occured!")
+            debug_logger(e, stbexceptions.sql_error)
         
     else:
         client.send(f"{RED + Colors.BOLD}Registration has been canceled. Start from the beginning...{RESET + Colors.RESET}".encode("utf8"))
@@ -1132,8 +685,8 @@ def main():
         if test_mode:
             print(f"{YELLOW + Colors.BOLD}>>> Enabled test mode{RESET + Colors.RESET}")
             print(f"{GREEN + Colors.BOLD}>>> {RESET}Server is running on {ipaddr}:{port}{RESET + Colors.RESET}")
-            _main = threading.Thread(target=connectionThread, args=(server_socket,), daemon=True)
-            _main.start()
+            _connection_debug = threading.Thread(target=connectionThread, args=(server_socket,), daemon=True)
+            _connection_debug.start()
             time.sleep(10)
         
         else:

@@ -2,7 +2,7 @@ from .colors import *
 
 # Version-specified Variables & important variables
 base_ver                = "1.8.1"
-short_ver               = "1.8.1pre2"
+short_ver               = "1.8.1pre3"
 full_ver                = "v" + short_ver
 update_channel          = "stable"
 ver                     = short_ver + "-vacakes"
@@ -34,6 +34,10 @@ table_query = """
 	"msg_count"	INTEGER,
     "creation_date"	INTEGER)"""
  
+role_colors = ["red", "green", "cyan", "blue", "yellow", "magenta",
+               "lightred", "lightgreen", "lightcyan", "lightblue", "lightyellow", "lightmagenta",
+               "boldred", "boldgreen", "boldcyan", "boldblue", "boldyellow", "boldmagenta"]
+
 # Help Sections 
 default_help_section    = f"""{GREEN +  Colors.UNDERLINE + Colors.BOLD}Default commands{RESET + Colors.RESET}
         {BLUE + Colors.BOLD}/help: {RESET}Help Command
