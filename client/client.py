@@ -333,8 +333,9 @@ def receive(sock):
                     print(f"[{current_time()}] {message}")
             
             except Exception as e:
-                print(e)
-                print("[{}] {}".format(current_time(), message))
+                time.sleep(0.05)
+                message         = message["message"]["content"]
+                print(f"[{current_time()}] {message}")
                     
         else:
             break
