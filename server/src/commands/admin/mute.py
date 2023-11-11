@@ -15,13 +15,13 @@ def mute_command(socket: socket.socket, username: str, args: list, send):
     uname = args[0]
 
     if doesUserExist(uname) == False:
-        socket.send(f"{RED + Colors.BOLD}Sorry, this user does not exist!{RESET + Colors.RESET}".encode("utf8"))
+        send(f"{RED + Colors.BOLD}Sorry, this user does not exist!{RESET + Colors.RESET}")
     
     else:
         cmd_db.execute("UPDATE users SET muted = 'true' WHERE username = ?", (uname,))
         cmd_db.commit()
 
-        socket.send(f"{LIGHTGREEN_EX + Colors.BOLD}Muted {uname}{RESET + Colors.RESET}".encode("utf8"))
+        send(f"{LIGHTGREEN_EX + Colors.BOLD}Muted {uname}{RESET + Colors.RESET}")
         log.info(f"{uname} has been muted by {username}")
 
 @register_command("unmute", arg_count=1, required_permissions=PermissionLevel.ADMIN)
@@ -31,11 +31,11 @@ def unmute_command(socket: socket.socket, username: str, args: list, send):
     uname = args[0]
 
     if doesUserExist(uname) == False:
-        socket.send(f"{RED + Colors.BOLD}Sorry, this user does not exist!{RESET + Colors.RESET}".encode("utf8"))
+        send(f"{RED + Colors.BOLD}Sorry, this user does not exist!{RESET + Colors.RESET}")
     
     else:
         cmd_db.execute("UPDATE users SET muted = 'false' WHERE username = ?", (uname,))
         cmd_db.commit()
 
-        socket.send(f"{LIGHTGREEN_EX + Colors.BOLD}Unmuted {uname}{RESET + Colors.RESET}".encode("utf8"))
+        send(f"{LIGHTGREEN_EX + Colors.BOLD}Unmuted {uname}{RESET + Colors.RESET}")
         log.info(f"{uname} has been unmuted by {username}")
