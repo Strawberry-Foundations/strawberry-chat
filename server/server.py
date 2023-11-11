@@ -307,71 +307,7 @@ def clientThread(client):
                         
                 execute_command(cmd, client, user, role, args)
                 continue
-            
-    
-            # /nick Command
-            elif message.startswith("/nick ") or message.startswith("/nickname "):
-                if message.startswith("/nick "):
-                    arg = message.replace("/nick ", "")
-                    
-                elif message.startswith("/nickname ") :
-                    arg = message.replace("/nickname ", "")
-                    
-            
-                args = arg.split(" ")
-                cmd = args[0]
-                
-                # /nick set                        
-                try: 
-                    c.execute('SELECT role FROM users WHERE username = ?', (user,))
-                    
-                except Exception as e:
-                    log.error("An SQL error occured!")
-                    debug_logger(e, stbexceptions.sql_error)
-                    
-                res = c.fetchone()
-                
-                if cmd == "set":       
-                    if res[0] == "admin":              
-                        if len(args) == 3:
-                            try:
-                                nick = args[2]
-                                uname = args[1]
-                                
-                            except:
-                                client.send(f"{RED + Colors.BOLD}Please pass a valid argument!{RESET + Colors.RESET}".encode("utf8"))
-                                continue
-                                
-                        
-                            c.execute("UPDATE users SET nickname = ? WHERE username = ?", (nick, uname))
-                            db.commit()
-                            
-                            client.send(f"{GREEN + Colors.BOLD}The nickname of {uname} has been updated to '{nick}'{RESET + Colors.RESET}".encode("utf8"))
-                            continue
-                        
-                        else:
-                            client.send(f"{RED + Colors.BOLD}Please pass a valid argument!{RESET + Colors.RESET}".encode("utf8"))
-                            continue                     
-                
-                    else:
-                        client.send(f"{RED}Sorry, you do not have permissons for that.{RESET}".encode("utf8"))
-                        continue
-                    
-                else:
-                    nick = cmd
-                    
-                    if nick.lower() == "remove":
-                        c.execute("UPDATE users SET nickname = NULL WHERE username = ?", (user,))
-                        db.commit()
-                        
-                        client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Removed nickname{RESET + Colors.RESET}".encode("utf8"))
-                        continue
-                    c.execute("UPDATE users SET nickname = ? WHERE username = ?", (nick, user))
-                    db.commit()
-                    
-                    client.send(f"{LIGHTGREEN_EX + Colors.BOLD}Changed nickname to {RESET + userRoleColor(user)}{nick}{RESET + Colors.RESET}".encode("utf8"))
-                    continue
-            
+
             # /role Command
             elif message.startswith("/role "):
                 try: 
