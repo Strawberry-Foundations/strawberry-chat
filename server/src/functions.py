@@ -24,6 +24,9 @@ from .colors import *
 from init import *
 from .vars import table_query
 
+
+func_db = sql.connect(server_dir + "/users.db", check_same_thread=False)
+
 # Removed ansi characters
 def escape_ansi(string):
     ansi_escape = re.compile(r'(?:\x1B[@-_]|[\x80-\x9F])[0-?]*[ -/]*[@-~]')
@@ -273,3 +276,42 @@ def verify_password(stored_password, entered_password):
 
 def is_empty_or_whitespace(string):
     return all(char.isspace() for char in string)
+
+# Get user's nickname
+def userNickname(uname):
+    db = sql.connect(server_dir + "/users.db", check_same_thread=False)
+    c = db.cursor()
+    c.execute('SELECT nickname FROM users WHERE username = ?', (uname,))
+    unick = c.fetchone()
+    c.close()
+    
+    if unick[0] is not None: 
+        unick = unick[0]
+        return unick
+    
+    else:
+        return uname
+
+# Check if user is muted
+def isMuted(uname):
+    c = func_db.cursor()
+    c.execute('SELECT muted FROM users WHERE username = ?', (uname,))
+    mutedStatus = c.fetchone()
+    c.close()
+    
+    if mutedStatus[0] == "true":
+        return True
+    else: 
+        return False
+    
+# Check if user's account is enabled
+def isAccountEnabled(uname):
+    c = func_db.cursor()
+    c.execute('SELECT account_enabled FROM users WHERE username = ?', (uname,))
+    accountEnabledStatus = c.fetchone()
+    c.close()
+    
+    if accountEnabledStatus[0] == "true":
+        return True
+    else: 
+        return False
