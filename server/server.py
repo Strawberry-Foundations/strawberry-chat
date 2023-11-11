@@ -29,7 +29,7 @@ from src.commands import PermissionLevel, execute_command, list_commands
 
 from src.commands.default import help, server_info, changelog, about, dm, exit_cmd
 from src.commands.etc import test_command, news, delaccount
-from src.commands.admin import broadcast_cmd, mute, ban, kick, debug, role
+from src.commands.admin import broadcast_cmd, mute, ban, kick, debug, role, bwords
 from src.commands.user import online, afklist, afk, unafk, msgcount, members, description, memberlist, discord, user_settings, user, nickname, badge
 
 
