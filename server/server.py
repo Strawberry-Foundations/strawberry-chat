@@ -467,7 +467,7 @@ def clientLogin(client):
     
     while not logged_in:
         # Ask for the username
-        time.sleep(0.2)
+        time.sleep(0.1)
         send(f"{GREEN + Colors.BOLD}Username: {RESET + Colors.RESET}")
         
         # Receive the ansi-escaped username and strip all new lines in case
@@ -486,7 +486,7 @@ def clientLogin(client):
         elif username.lower() == "sid":
             strawberryIdLogin(client)
             
-        time.sleep(0.2)
+        time.sleep(0.01)
         
         # Ask for the password
         send(f"{GREEN + Colors.BOLD}Password: {RESET + Colors.RESET}")
