@@ -106,6 +106,8 @@ debug_mode              = config['flags']['debug_mode']
 online_mode             = config['flags']['online_mode']
 update_channel          = config['server']['update_channel']
 
+test_mode               = False
+
 # Log configuration
 log             = logging.getLogger("LOG")
 log_fh          = logging.FileHandler(server_dir + '/log.txt')
