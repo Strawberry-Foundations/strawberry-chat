@@ -6,15 +6,16 @@ import colorama
 import datetime
 import threading
 
-ver             = "1.0.1"
+ver             = "1.1.0"
 author          = "Juliandev02"
 use_sys_argv    = False
+experimental_debug_mode = False
 
-def currentTime():
+def current_time():
     now = datetime.datetime.now().strftime("%H:%M")
     return now
 
-def deleteLastLine():
+def delete_last_line():
     cursorUp = "\x1b[1A"
     eraseLine = "\x1b[2K"
     sys.stdout.write(cursorUp)
@@ -40,7 +41,7 @@ def send(sock):
     while threadFlag:
         try:
             message = input("")
-            deleteLastLine()
+            delete_last_line()
             sock.send(message.encode("utf8"))
         except:
             if threadFlag == False:
@@ -55,7 +56,7 @@ def receive(sock):
             message = sock.recv(2048).decode()
             
             if message:
-                print("[{}] {}".format(currentTime(), message))
+                print("[{}] {}".format(current_time(), message))
             else:
                 break
         except:
