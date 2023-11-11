@@ -72,6 +72,7 @@ api             = "https://api.strawberryfoundations.xyz/v1/"
 ver             = "2.4.0"
 author          = "Juliandev02"
 use_sys_argv    = False
+experimental_debug_mode = False
 
 
 # Open language strings
@@ -336,8 +337,8 @@ def receive(sock):
             else:
                 break
             
-        except Exception as e: 
-            print(f"{Fore.RED + BOLD}{Str[lang]['ConnectionInterrupt']}{Fore.RESET + CRESET}")
+        except Exception as e:
+            if experimental_debug_mode: print(f"{Fore.RED + BOLD}{Str[lang]['ConnectionInterrupt']}{Fore.RESET + CRESET}")
             pass
             
 
