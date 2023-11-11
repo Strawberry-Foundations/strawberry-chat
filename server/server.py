@@ -99,44 +99,6 @@ else:
 
 # General Functions
 
-# Get user's nickname
-def userNickname(uname):
-    c = db.cursor()
-    c.execute('SELECT nickname FROM users WHERE username = ?', (uname,))
-    unick = c.fetchone()
-    c.close()
-    
-    if unick[0] is not None: 
-        unick = unick[0]
-        return unick
-    
-    else:
-        return uname
-
-# Check if user is muted
-def isMuted(uname):
-    c = db.cursor()
-    c.execute('SELECT muted FROM users WHERE username = ?', (uname,))
-    mutedStatus = c.fetchone()
-    c.close()
-    
-    if mutedStatus[0] == "true":
-        return True
-    else: 
-        return False
-
-# Check if user's account is enabled
-def isAccountEnabled(uname):
-    c = db.cursor()
-    c.execute('SELECT account_enabled FROM users WHERE username = ?', (uname,))
-    accountEnabledStatus = c.fetchone()
-    c.close()
-    
-    if accountEnabledStatus[0] == "true":
-        return True
-    else: 
-        return False
-
 # Open news file
 with open(server_dir + "/news.yml") as news_file:
     news_data = yaml.load(news_file, Loader=SafeLoader)
