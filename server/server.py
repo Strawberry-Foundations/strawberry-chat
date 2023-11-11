@@ -1123,8 +1123,8 @@ def main():
         if test_mode:
             print(f"{YELLOW + Colors.BOLD}>>> Enabled test mode{RESET + Colors.RESET}")
             print(f"{GREEN + Colors.BOLD}>>> {RESET}Server is running on {ipaddr}:{port}{RESET + Colors.RESET}")
-            _main = threading.Thread(target=connectionThread, args=(server_socket,), daemon=True)
-            _main.start()
+            _connection_debug = threading.Thread(target=connectionThread, args=(server_socket,), daemon=True)
+            _connection_debug.start()
             time.sleep(10)
         
         else:
