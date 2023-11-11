@@ -20,6 +20,7 @@
 - MODULARITY: Ported /deleteaccount command 
 - MODULARITY: Moved Logging System to init.py
 - MODULARITY: Moved some more variables to init.py
+- MODULARITY: Moved debug_logger to init.py
 
 - FIX: Fixed showing "None" as main badge in Memberlist when no main badge is set (#47)
 - FIX: Fixed Bad File Descriptor when logging out (#49)
