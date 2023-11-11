@@ -564,10 +564,11 @@ def clientLogin(client):
             client.send(f"{RED + Colors.BOLD}User not found.\n{RESET + Colors.RESET}".encode("utf8"))
 
 
-def broadcast(message, sentBy="", format: StbCom = StbCom.PLAIN):    
+def broadcast(message, sent_by="", format: StbCom = StbCom.PLAIN):    
     c = db.cursor()
+    
     try:
-        if sentBy == "":
+        if sent_by == "":
             for user in users:
                 try:
                     json_builder = {
@@ -584,7 +585,7 @@ def broadcast(message, sentBy="", format: StbCom = StbCom.PLAIN):
         else:
             for user in users:
                 try: 
-                    c.execute('SELECT badge FROM users WHERE username = ?', (sentBy,))
+                    c.execute('SELECT badge FROM users WHERE username = ?', (sent_by,))
                     res = c.fetchone()
                
                     if res[0] is not None:
@@ -597,7 +598,7 @@ def broadcast(message, sentBy="", format: StbCom = StbCom.PLAIN):
                     log.error("Something went wrong while... doing something with the badges?: " + e)
                 
                 
-                c.execute('SELECT role FROM users WHERE username = ?', (sentBy,))
+                c.execute('SELECT role FROM users WHERE username = ?', (sent_by,))
                 res = c.fetchone()
                 
                 if res[0] != "bot":
@@ -616,10 +617,10 @@ def broadcast(message, sentBy="", format: StbCom = StbCom.PLAIN):
                         try: 
                             json_builder = {
                                 "message_type": "user_message",
-                                "username": sentBy,
-                                "nickname": userNickname(sentBy),
+                                "username": sent_by,
+                                "nickname": userNickname(sent_by),
                                 "badge": badge,
-                                "role_color": userRoleColor(sentBy),
+                                "role_color": userRoleColor(sent_by),
                                 "message": {
                                     "content": message
                                 }
