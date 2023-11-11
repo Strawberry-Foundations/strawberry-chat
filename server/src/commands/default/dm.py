@@ -9,7 +9,7 @@ from init import server_dir, users, afks
 from src.functions import escape_ansi, userRoleColor
 
 @register_command("dm", arg_count=2)
-def dm_command(socket: socket.socket, username: str, args: list):
+def dm_command(socket: socket.socket, username: str, args: list, send):
     cmd_db = Database(server_dir + "/users.db", check_same_thread=False)
 
     uname   = args[0]
