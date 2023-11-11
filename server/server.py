@@ -38,6 +38,7 @@ if "--debug-mode" in sys.argv: debug_mode = True
 if "--test-mode" in sys.argv: test_mode = True
 if "--regen-database" in sys.argv: input_regen_database()
 
+
 # Check if database file exists
 if os.path.exists(server_dir + "/users.db"):
     # Connect to database
