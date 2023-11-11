@@ -11,7 +11,7 @@ from init import server_dir, blacklist
 
 
 @register_command("bwords", arg_count=1, required_permissions=PermissionLevel.ADMIN)
-def bwords_command(socket: socket.socket, username: str, args: list):
+def bwords_command(socket: socket.socket, username: str, args: list, send):
     cmd_db = Database(server_dir + "/users.db", check_same_thread=False)
 
     cmd = args[0]
