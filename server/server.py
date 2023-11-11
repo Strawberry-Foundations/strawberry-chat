@@ -70,9 +70,6 @@ max_message_length      = config['flags']['max_message_length']
 debug_mode              = config['flags']['debug_mode']
 online_mode             = config['flags']['online_mode']
 
-# Lists & Sets
-blacklist = set()
-
 # Blacklisted word functions
 def open_blacklist():
     with open(server_dir + "/blacklist.txt", "r") as f:
