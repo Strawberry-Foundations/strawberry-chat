@@ -69,7 +69,7 @@ langs           = ["de_DE", "en_US"]
 verified_list   = []
 
 api             = "https://api.strawberryfoundations.xyz/v1/"
-ver             = "2.4.0"
+ver             = "2.5.0"
 author          = "Juliandev02"
 use_sys_argv    = False
 experimental_debug_mode = False
