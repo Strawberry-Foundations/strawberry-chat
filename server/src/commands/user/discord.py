@@ -8,7 +8,7 @@ from src.db import Database
 from init import server_dir
 
 @register_command("discord", arg_count=1)
-def discord_command(socket: socket.socket, username: str, args: list):
+def discord_command(socket: socket.socket, username: str, args: list, send):
     cmd_db = Database(server_dir + "/users.db", check_same_thread=False)
     
     discord_name = args[0]
