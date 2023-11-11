@@ -564,11 +564,7 @@ def clientLogin(client):
             client.send(f"{RED + Colors.BOLD}User not found.\n{RESET + Colors.RESET}".encode("utf8"))
 
 
-def broadcast(message, sentBy="", format: StbCom = StbCom.PLAIN):
-    import json
-    def send_json(data):
-        return json.dumps(data)
-        
+def broadcast(message, sentBy="", format: StbCom = StbCom.PLAIN):    
     c = db.cursor()
     try:
         if sentBy == "":
