@@ -10,7 +10,7 @@ from init import server_dir
 
 
 @register_command("news")
-def about_command(socket: socket.socket, username: str, args: list):
+def about_command(socket: socket.socket, username: str, args: list, send):
     # Open Configuration
     with open(server_dir + "/news.yml") as config_data:
             news_data = yaml.load(config_data, Loader=SafeLoader)
