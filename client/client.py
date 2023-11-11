@@ -12,6 +12,7 @@ from yaml import SafeLoader
 import time
 import requests
 import urllib3
+import json
 
 if sys.platform == "linux": import readline
 else: pass
@@ -283,18 +284,51 @@ def send(sock):
                 break
 
 def receive(sock):
+    def receive_json_data(client_socket):
+        data = client_socket.recv(1024).decode('utf-8')
+        return json.loads(data)
+    
     while threadFlag:
+        # try:
+        #     message = receive_json_data(sock)
+            
+        #     if message:
+        #         try:
+        #             key_to_extract = 'message_type'
+        #             extracted_value = message[key_to_extract]
+        #             print(f"{key_to_extract}: {extracted_value}")
+        #         except:
+        #             print("[{}] {}".format(current_time(), message))
+        #     else:
+        #         break
+            
+        # except Exception as e:
+        #     print(f"{Fore.RED + BOLD}{Str[lang]['ErrNotReachable']}{Fore.RESET + CRESET}")
+        #     print(e)
+        #     break
+        
         try:
-            message = sock.recv(2048).decode()
-            
-            if message:
+            message = receive_json_data(sock)
+        except: 
+            message = sock.recv(1024).decode('utf-8')
+        
+        if message:
+            try:
+                message_type = message["message_type"]
+                
+                if message_type == "user_message":
+                    username = message["username"]
+                    nickname = message["nickname"]
+                else:
+                    message = message["message"]["content"]
+                
+                print(f"[{current_time()}] {username} ({nickname})")
+                
+            except:
                 print("[{}] {}".format(current_time(), message))
-            else:
-                break
-            
-        except:
-            print(f"{Fore.RED + BOLD}{Str[lang]['ErrNotReachable']}{Fore.RESET + CRESET}")
+        else:
             break
+            
 
 def main():
     global threadFlag
