@@ -5,6 +5,8 @@ import sys
 import colorama
 import datetime
 import threading
+import json
+import time 
 
 ver             = "1.1.0"
 author          = "Juliandev02"
@@ -12,14 +14,20 @@ use_sys_argv    = False
 experimental_debug_mode = False
 
 def current_time():
-    now = datetime.datetime.now().strftime("%H:%M")
-    return now
+    return datetime.datetime.now().strftime("%H:%M")
 
 def delete_last_line():
-    cursorUp = "\x1b[1A"
-    eraseLine = "\x1b[2K"
-    sys.stdout.write(cursorUp)
-    sys.stdout.write(eraseLine)
+    sys.stdout.write("\x1b[1A")
+    sys.stdout.write("\x1b[2K")
+
+def conv_json_data(data):
+    return json.loads(data)
+
+def badge_handler(badge):
+    if not badge == "":
+        return " [" + badge + "]"
+    else:
+        return ""
 
 if len(sys.argv) >= 1:
     use_sys_argv = True
