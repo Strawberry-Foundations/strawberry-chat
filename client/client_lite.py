@@ -42,16 +42,12 @@ experimental_debug_mode = False
 
 # Return current time
 def current_time():
-    now = datetime.datetime.now()
-    formattedTime = now.strftime("%H:%M")
-    return formattedTime
+    return datetime.datetime.now().strftime("%H:%M")
 
 # Delete last line to now show the written message
 def delete_last_line():
-    cursorUp = "\x1b[1A"
-    eraseLine = "\x1b[2K"
-    sys.stdout.write(cursorUp)
-    sys.stdout.write(eraseLine)
+    sys.stdout.write("\x1b[1A")
+    sys.stdout.write("\x1b[2K")
 
 # Convert raw input to json data
 def conv_json_data(data):
