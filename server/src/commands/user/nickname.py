@@ -10,7 +10,7 @@ from src.functions import userRoleColor
 
 @register_command("nick", arg_count=1)
 @register_command("nickname", arg_count=1)
-def nickname_command(socket: socket.socket, username: str, args: list):
+def nickname_command(socket: socket.socket, username: str, args: list, send):
     cmd_db = Database(server_dir + "/users.db", check_same_thread=False)
     
     cmd = args[0]
