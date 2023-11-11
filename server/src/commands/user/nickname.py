@@ -33,7 +33,7 @@ def nickname_command(socket: socket.socket, username: str, args: list, send):
                     nick = args[2]
                     
                 except:
-                    socket.send(f"{RED + Colors.BOLD}Please pass a valid argument!{RESET + Colors.RESET}".encode("utf8"))
+                    send(f"{RED + Colors.BOLD}Please pass a valid argument!{RESET + Colors.RESET}")
                     return
 
                 cmd_db.execute("UPDATE users SET nickname = ? WHERE username = ?", (nick, uname))
@@ -43,17 +43,17 @@ def nickname_command(socket: socket.socket, username: str, args: list, send):
                     cmd_db.execute("UPDATE users SET nickname = NULL WHERE username = ?", (uname,))
                     cmd_db.commit()
                     
-                    socket.send(f"{GREEN + Colors.BOLD}The nickname of {uname} has been removed{RESET + Colors.RESET}".encode("utf8"))
+                    send(f"{GREEN + Colors.BOLD}The nickname of {uname} has been removed{RESET + Colors.RESET}")
                     return 
                 
-                socket.send(f"{GREEN + Colors.BOLD}The nickname of {uname} has been updated to '{nick}'{RESET + Colors.RESET}".encode("utf8"))
+                send(f"{GREEN + Colors.BOLD}The nickname of {uname} has been updated to '{nick}'{RESET + Colors.RESET}")
                 return
             
             else:
-                socket.send(f"{RED}Sorry, you do not have permissons for that.{RESET}".encode("utf8"))
+                send(f"{RED}Sorry, you do not have permissons for that.{RESET}")
                 return
         else: 
-            socket.send(f"{RED + Colors.BOLD}Please pass a valid argument!{RESET + Colors.RESET}".encode("utf8"))
+            send(f"{RED + Colors.BOLD}Please pass a valid argument!{RESET + Colors.RESET}")
         
     else: 
         nick = cmd
@@ -62,10 +62,10 @@ def nickname_command(socket: socket.socket, username: str, args: list, send):
             cmd_db.execute("UPDATE users SET nickname = NULL WHERE username = ?", (username,))
             cmd_db.commit()
             
-            socket.send(f"{LIGHTGREEN_EX + Colors.BOLD}Removed nickname{RESET + Colors.RESET}".encode("utf8"))
+            send(f"{LIGHTGREEN_EX + Colors.BOLD}Removed nickname{RESET + Colors.RESET}")
             return 
         
         cmd_db.execute("UPDATE users SET nickname = ? WHERE username = ?", (nick, username))
         cmd_db.commit()
         
-        socket.send(f"{LIGHTGREEN_EX + Colors.BOLD}Changed nickname to {RESET + userRoleColor(username)}{nick}{RESET + Colors.RESET}".encode("utf8"))
+        send(f"{LIGHTGREEN_EX + Colors.BOLD}Changed nickname to {RESET + userRoleColor(username)}{nick}{RESET + Colors.RESET}")

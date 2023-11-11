@@ -16,5 +16,5 @@ def members_command(socket: socket.socket, username: str, args: list, send):
     membersLen = len([raw_members for raw_members in sorted(raw_members)])
     members = ", ".join([result[0] for result in raw_members])
 
-    socket.send(f"""{CYAN +  Colors.UNDERLINE + Colors.BOLD}Members on this server ({membersLen}){RESET + Colors.RESET}
-        {Colors.BOLD}->{Colors.RESET} {CYAN}{members}{RESET}""".encode("utf8"))
+    send(f"""{CYAN +  Colors.UNDERLINE + Colors.BOLD}Members on this server ({membersLen}){RESET + Colors.RESET}
+        {Colors.BOLD}->{Colors.RESET} {CYAN}{members}{RESET}""")

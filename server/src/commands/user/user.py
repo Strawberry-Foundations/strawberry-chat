@@ -29,14 +29,14 @@ def members_command(socket: socket.socket, username: str, args: list, send):
         uname = username
         
     if not doesUserExist(uname):
-        socket.send(f"{RED + Colors.BOLD}Sorry, this user does not exist!{RESET + Colors.RESET}".encode("utf8"))
+        send(f"{RED + Colors.BOLD}Sorry, this user does not exist!{RESET + Colors.RESET}")
         return
     
     try:
         cmd_c.execute("SELECT username, nickname, badge, role, role_color, description, badges, discord_name, user_id, strawberry_id, creation_date FROM users WHERE LOWER(username) = ?", (uname.lower(),))
         
     except:
-        socket.send(f"{RED + Colors.BOLD}Sorry, this user does not exist!{RESET + Colors.RESET}".encode("utf8"))
+        send(f"{RED + Colors.BOLD}Sorry, this user does not exist!{RESET + Colors.RESET}")
         return
     
     for row in cmd_c:
@@ -129,7 +129,7 @@ def members_command(socket: socket.socket, username: str, args: list, send):
                 all_badges = all_badges + "\n        " + stbchat_plus_user
             
             
-        socket.send(
+        send(
             f"""{CYAN + Colors.BOLD + Colors.UNDERLINE}User profile of {row[0]}{RESET + Colors.RESET} {isOnline(row[0])}
         {GREEN + Colors.BOLD}Username:{RESET + userRoleColor(row[0])} @{row[0].lower()}{RESET + Colors.RESET}
         {GREEN + Colors.BOLD}User-ID:{RESET + LIGHTBLUE_EX} {row[8]}{RESET + Colors.RESET}
@@ -142,4 +142,4 @@ def members_command(socket: socket.socket, username: str, args: list, send):
         {GREEN + Colors.BOLD}Role Color:{RESET + Colors.BOLD} {userRoleColor(row[0])}{role_color}{RESET + Colors.RESET}
         {GREEN + Colors.BOLD}Strawberry Network:{RESET + Colors.BOLD} {strawberry_id_name}{RESET + Colors.RESET}
         {GREEN + Colors.BOLD}Discord:{RESET + Colors.BOLD} {discord}{RESET + Colors.RESET}\n"""
-            .encode("utf8"))
+            )

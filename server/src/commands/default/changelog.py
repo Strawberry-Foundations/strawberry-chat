@@ -10,5 +10,5 @@ from init import server_dir
 def changelog_command(socket: socket.socket, username: str, args: list, send):
     with open(server_dir + "/CHANGELOG.txt") as f:
         changelog = f.read()
-        socket.send(f"{GREEN + Colors.BOLD + Colors.UNDERLINE}{chat_name} Changelog{RESET + Colors.RESET}".encode("utf8"))
-        socket.send((Colors.BOLD + changelog + Colors.RESET).encode("utf8"))
+        send(f"{GREEN + Colors.BOLD + Colors.UNDERLINE}{chat_name} Changelog{RESET + Colors.RESET}")
+        send((Colors.BOLD + changelog + Colors.RESET))

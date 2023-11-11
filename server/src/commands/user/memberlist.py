@@ -58,7 +58,7 @@ def memberlist_command(socket: socket.socket, username: str, args: list, send):
     
     onlineUsersLen2 = len([user for user in sorted(users.values())])
                 
-    socket.send(f"""{CYAN +  Colors.UNDERLINE + Colors.BOLD}{verified_txt}{config['server']['name'].upper()} ({membersLen} Members, {onlineUsersLen2} Online){RESET + Colors.RESET}
+    send(f"""{CYAN +  Colors.UNDERLINE + Colors.BOLD}{verified_txt}{config['server']['name'].upper()} ({membersLen} Members, {onlineUsersLen2} Online){RESET + Colors.RESET}
         {Colors.BOLD}->{Colors.RESET} {RED}Administrators ({admins_len}){RESET}
            {LIGHTRED_EX}{admins}{RESET}
         
@@ -69,4 +69,4 @@ def memberlist_command(socket: socket.socket, username: str, args: list, send):
            {LIGHTYELLOW_EX}{members}{RESET}
     """
     
-    .encode("utf8"))
+    )

@@ -31,22 +31,22 @@ def dm_command(socket: socket.socket, username: str, args: list, send):
         has_dm_enabled = cmd_db.fetchone()[0]
         
     except:
-        socket.send(f"{RED + Colors.BOLD}User not found{RESET + Colors.RESET}".encode("utf8"))
+        send(f"{RED + Colors.BOLD}User not found{RESET + Colors.RESET}")
     
     if uname == username:
-        socket.send(f"{YELLOW}You shouldn't send messages to yourself...{RESET}".encode("utf8"))
+        send(f"{YELLOW}You shouldn't send messages to yourself...{RESET}")
     
     elif uname in afks:
-        socket.send(f"{YELLOW}This user is currently afk...{RESET}".encode("utf8"))
+        send(f"{YELLOW}This user is currently afk...{RESET}")
     
     elif has_dm_enabled == "false":
-        socket.send(f"{YELLOW}This user has deactivated his/her DM's{RESET}".encode("utf8"))
+        send(f"{YELLOW}This user has deactivated his/her DM's{RESET}")
     
     else:
         if found_keys:
-            socket.send(f"{userRoleColor(username)}You{RESET} {Colors.GRAY}-->{Colors.RESET} {userRoleColor(uname)}{uname}{RESET + Colors.RESET}: {msg}".encode("utf8"))
-            to_sent.send(f"{Colors.RESET + userRoleColor(username)}{username} {Colors.GRAY}-->{RESET + Colors.RESET}{userRoleColor(uname)} You{Colors.RESET + RESET}: {msg}".encode("utf8"))
+            send(f"{userRoleColor(username)}You{RESET} {Colors.GRAY}-->{Colors.RESET} {userRoleColor(uname)}{uname}{RESET + Colors.RESET}: {msg}")
+            to_sent.send(f"{Colors.RESET + userRoleColor(username)}{username} {Colors.GRAY}-->{RESET + Colors.RESET}{userRoleColor(uname)} You{Colors.RESET + RESET}: {msg}")
             
         else:
-            socket.send(f"{RED + Colors.BOLD}User is offline.{RESET + Colors.RESET}".encode("utf8"))
+            send(f"{RED + Colors.BOLD}User is offline.{RESET + Colors.RESET}")
             
