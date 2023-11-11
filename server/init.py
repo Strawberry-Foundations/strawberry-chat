@@ -104,14 +104,14 @@ log.addHandler(log_fh)
 
 # Receive your global ip address for verification
 def get_global_ip():
-    response = requests.get('https://api.ipify.org?format=json')
-    data = response.json()
+    response    = requests.get('https://api.ipify.org?format=json')
+    data        = response.json()
     return data['ip']
 
 if online_mode:
     print(f"{YELLOW + Colors.BOLD}>>> Connecting to the Strawberry API ...{RESET + Colors.RESET}")
-    global_ip           = get_global_ip()
+    global_ip   = get_global_ip()
     print(f"{GREEN + Colors.BOLD}>>> Connected{RESET + Colors.RESET}")
     
 else:
-    global_ip = ""
+    global_ip   = ""
