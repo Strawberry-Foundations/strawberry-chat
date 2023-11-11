@@ -37,6 +37,7 @@ afks = list([])
 users = {}
 addresses = {}
 user_logged_in = {}
+blacklist = set()
 
 # Init logger
 class LogFormatter(logging.Formatter):
