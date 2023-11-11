@@ -572,7 +572,7 @@ def broadcast(message, sent_by="", format: StbCom = StbCom.PLAIN):
             for user in users:
                 try:
                     json_builder = {
-                        "message_type": "system_message",
+                        "message_type": StbCom.SYS_MSG,
                         "message": {
                             "content": message
                         }
@@ -586,22 +586,19 @@ def broadcast(message, sent_by="", format: StbCom = StbCom.PLAIN):
             for user in users:
                 try: 
                     c.execute('SELECT badge FROM users WHERE username = ?', (sent_by,))
-                    res = c.fetchone()
+                    user_badge = c.fetchone()
                
-                    if res[0] is not None:
-                        badge = " [" + res[0] + "]"
-                        
-                    else:
-                        badge = ""
+                    if user_badge[0] is not None: badge = user_badge[0]    
+                    else: badge = ""
                         
                 except Exception as e:
                     log.error("Something went wrong while... doing something with the badges?: " + e)
                 
                 
                 c.execute('SELECT role FROM users WHERE username = ?', (sent_by,))
-                res = c.fetchone()
+                user_role = c.fetchone()
                 
-                if res[0] != "bot":
+                if user_role[0] != "bot":
                     message = message.strip("\n")
                 
                 message = escape_ansi(message)
@@ -616,7 +613,7 @@ def broadcast(message, sent_by="", format: StbCom = StbCom.PLAIN):
                     if message != "":
                         try: 
                             json_builder = {
-                                "message_type": "user_message",
+                                "message_type": StbCom.USER_MSG,
                                 "username": sent_by,
                                 "nickname": userNickname(sent_by),
                                 "badge": badge,
@@ -626,8 +623,8 @@ def broadcast(message, sent_by="", format: StbCom = StbCom.PLAIN):
                                 }
                             }
                             
-                            
                             user.send(send_json(json_builder).encode("utf8"))
+                            
                         except BrokenPipeError:
                             pass
                         
