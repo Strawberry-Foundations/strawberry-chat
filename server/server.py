@@ -56,20 +56,6 @@ else:
     print(f"{YELLOW + Colors.BOLD}>>> {RESET}Restart your server to connect to your new database.")
     exit()
 
-
-# Open Configuration
-with open(server_dir + "/config.yml") as config_data:
-        config = yaml.load(config_data, Loader=SafeLoader)
-
-# Configuration
-ipaddr                  = config['server']['address']
-port                    = config['server']['port']
-
-enable_messages         = config['flags']['enable_messages']
-max_message_length      = config['flags']['max_message_length']
-debug_mode              = config['flags']['debug_mode']
-online_mode             = config['flags']['online_mode']
-
 # Blacklisted word functions
 def open_blacklist():
     with open(server_dir + "/blacklist.txt", "r") as f:
