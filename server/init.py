@@ -21,7 +21,7 @@ class StbTypes(Enum):
     WARNING = 2
     ERROR = 1
 
-class StbCom(Enum):
+class StbCom:
     PLAIN = 0
     JSON = 1
     USER_MSG = "user_message"
