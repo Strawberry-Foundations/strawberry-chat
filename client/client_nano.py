@@ -13,15 +13,12 @@ author          = "Juliandev02"
 use_sys_argv    = False
 experimental_debug_mode = False
 
-def current_time():
-    return datetime.datetime.now().strftime("%H:%M")
+def current_time(): return datetime.datetime.now().strftime("%H:%M")
+def conv_json_data(data): return json.loads(data)
 
 def delete_last_line():
     sys.stdout.write("\x1b[1A")
     sys.stdout.write("\x1b[2K")
-
-def conv_json_data(data):
-    return json.loads(data)
 
 def badge_handler(badge):
     if not badge == "":
@@ -52,8 +49,7 @@ def send(sock):
             delete_last_line()
             sock.send(message.encode("utf8"))
         except:
-            if threadFlag == False:
-                pass
+            if threadFlag == False: pass
             else:
                 print(f"Could not send the message!")
                 break
@@ -94,8 +90,7 @@ def receive(sock):
                     message         = message["message"]["content"]
                     print(f"[{current_time()}] {message}")
                         
-            else:
-                break
+            else: break
             
         except Exception as e: 
             if experimental_debug_mode: print(f"Error while receiving server data: Has the connection been interrupted?")
@@ -114,8 +109,7 @@ def main():
         print(f"Connection refused: The server is not available!")
         sys.exit(1)
     
-    if use_sys_argv == True:
-        pass
+    if use_sys_argv == True: pass
         
     _sending  = threading.Thread(target=send, args=(client_socket,))
     _receiving     = threading.Thread(target=receive, args=(client_socket,))
@@ -123,9 +117,8 @@ def main():
     _receiving.start()
     _sending.start()
 
-    try:
-        while _receiving.is_alive() and _sending.is_alive():
-            continue
+    try: 
+        while _receiving.is_alive() and _sending.is_alive(): continue
     except KeyboardInterrupt:
         print(f"\nAborted")
         threadFlag = False
@@ -135,7 +128,6 @@ def main():
 
     client_socket.close()
     print(f"\nThe Strawberry chat client has been closed.")
-    
 
 threadFlag = True
 
