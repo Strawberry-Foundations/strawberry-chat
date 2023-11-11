@@ -33,6 +33,10 @@ from src.commands.admin import broadcast_cmd, mute, ban, kick, debug, role, bwor
 from src.commands.user import online, afklist, afk, unafk, msgcount, members, description, memberlist, discord, user_settings, user, nickname, badge
 
 
+if "--enable-messages" in sys.argv: enable_messages = True
+if "--debug-mode" in sys.argv: debug_mode = True
+if "--test-mode" in sys.argv: test_mode = True
+if "--regen-database" in sys.argv: input_regen_database()
 
 # Check if database file exists
 if os.path.exists(server_dir + "/users.db"):
@@ -71,34 +75,6 @@ else:
     create_empty_file("blacklist.txt")
     open_blacklist()
 
-
-if "--enable-messages" in sys.argv:
-    enable_messages = True
-
-if "--debug-mode" in sys.argv:
-    debug_mode = True
-    
-if "--regen-database" in sys.argv:
-    ays_input = input(f"{YELLOW + Colors.BOLD}>>> {RESET}WARNING: This will delete your database! Are you sure?: ")
-    
-    if ays_input.lower() == "yes":
-        db.close()
-        regen_database()
-        
-        print(f"{GREEN + Colors.BOLD}>>> {RESET}Created table")
-        
-    else:
-        print(f"{Colors.GRAY + Colors.BOLD}>>> {RESET + Colors.RESET + Colors.BOLD}Cancelled database regeneration process")
-
-if "--test-mode" in sys.argv:
-    test_mode = True
-    
-else:
-    test_mode = False
-
-
-# General Functions
-
 # Open news file
 with open(server_dir + "/news.yml") as news_file:
     news_data = yaml.load(news_file, Loader=SafeLoader)
@@ -106,7 +82,6 @@ with open(server_dir + "/news.yml") as news_file:
 # News
 news_text = f"""{GREEN +  Colors.UNDERLINE + Colors.BOLD}{chat_name} News - {short_ver}{RESET + Colors.RESET}{CYAN + Colors.BOLD}
 {news_data['news'][base_ver]['text']}{RESET + Colors.RESET}"""
-
 
 
 def connectionThread(sock):
