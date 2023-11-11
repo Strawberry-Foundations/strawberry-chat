@@ -19,6 +19,7 @@
 - MODULARITY: Ported /ban command to new command system 
 - MODULARITY: Ported /deleteaccount command 
 - MODULARITY: Ported /nickname command + added function to remove other's nickname as an admin
+- MODULARITY: Ported /role command + added role and color checking if role/color exists
 - MODULARITY: Moved Logging System to init.py
 - MODULARITY: Moved some more variables to init.py
 - MODULARITY: Moved debug_logger to init.py
