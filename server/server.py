@@ -465,10 +465,9 @@ def clientLogin(client):
     send(f"{Colors.BOLD}Welcome to Strawberry Chat!{Colors.RESET}")
     send(f"{Colors.BOLD}New here? Type '{MAGENTA}Register{RESET}' to register! You want to leave? Type '{MAGENTA}Exit{RESET}' {Colors.RESET}")
     
-    time.sleep(0.1)
-    
     while not logged_in:
         # Ask for the username
+        time.sleep(0.1)
         send(f"{GREEN + Colors.BOLD}Username: {RESET + Colors.RESET}")
         
         # Receive the ansi-escaped username and strip all new lines in case
