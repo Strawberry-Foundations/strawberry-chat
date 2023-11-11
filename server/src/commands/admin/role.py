@@ -4,6 +4,7 @@ import socket
 
 from src.colors import *
 from src.db import Database
+from src.vars import role_colors
 
 from init import server_dir
 
@@ -18,6 +19,10 @@ def role_command(socket: socket.socket, username: str, args: list):
         try:
             uname = args[1]
             role = args[2]
+            
+            if role not in ["member", "bot", "admin"]:
+                socket.send(f"{RED + Colors.BOLD}Invalid role!{RESET + Colors.RESET}".encode("utf8"))
+                return
         
             cmd_db.execute("UPDATE users SET role = ? WHERE username = ?", (role, uname))
             cmd_db.commit()
@@ -45,8 +50,12 @@ def role_command(socket: socket.socket, username: str, args: list):
         try:
             uname = args[1]
             color = args[2]
+            
+            if color.lower() not in role_colors:
+                socket.send(f"{RED + Colors.BOLD}Invalid color!{RESET + Colors.RESET}".encode("utf8"))
+                return
         
-            cmd_db.execute("UPDATE users SET role_color = ? WHERE username = ?", (color, uname))
+            cmd_db.execute("UPDATE users SET role_color = ? WHERE username = ?", (color.lower(), uname))
             cmd_db.commit()
             
             socket.send(f"{LIGHTGREEN_EX + Colors.BOLD}Role Color of {uname} was set to {color}{RESET + Colors.RESET}".encode("utf8"))
