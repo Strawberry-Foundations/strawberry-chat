@@ -324,8 +324,10 @@ def receive(sock):
                     role_color  = message["role_color"]
                     message     = message["message"]["content"]
                     
-                    if nickname:
-                        fmt = f"[{current_time()}] {role_color}{nickname} (@{username.lower()}) {badge}:{CRESET} {message}"
+                    if nickname == username:
+                        fmt = f"[{current_time()}] {role_color}{username}{badge}:{CRESET} {message}"
+                    else:
+                        fmt = f"[{current_time()}] {role_color}{nickname} (@{username.lower()}){badge}:{CRESET} {message}"
                         
                     print(fmt)
                     
