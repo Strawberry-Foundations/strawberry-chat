@@ -130,11 +130,6 @@ def badge_handler(badge):
     else:
         return ""
 
-# Handle username & nickname
-# def username_handler(username, nickname):
-#     if username == nickname:
-#         return 
-
 # Try requesting our api server
 if online_mode:
     try:
