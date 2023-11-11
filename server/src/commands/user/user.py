@@ -12,7 +12,7 @@ from init import server_dir
 
 @register_command("user")
 @register_command("member")
-def members_command(socket: socket.socket, username: str, args: list):
+def members_command(socket: socket.socket, username: str, args: list, send):
     cmd_db = sql.connect(server_dir + "/users.db", check_same_thread=False)
     cmd_c  = cmd_db.cursor()
     
