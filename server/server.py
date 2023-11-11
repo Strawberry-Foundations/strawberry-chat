@@ -137,31 +137,6 @@ def isAccountEnabled(uname):
     else: 
         return False
 
-# Print debug error codes
-def debug_logger(error_message, error_code, type: StbTypes = StbTypes.ERROR):
-    if debug_mode:
-        match error_code:
-            case stbexceptions.connection_error:        error = "connection_error"
-            case stbexceptions.login_error:             error = "login_error"
-            case stbexceptions.communication_error:     error = "communication_error"
-            case stbexceptions.client_error:            error = "client_error"
-            case stbexceptions.stc_error:               error = "stc_error"
-            case stbexceptions.reg_error:               error = "reg_error"
-            case stbexceptions.sql_error:               error = "sql_error"
-            case stbexceptions.general_error:           error = "general_error"
-            case stbexceptions.broken_pipe_error:       error = "broken_pipe_error"
-            case stbexceptions.transmition_error:       error = "transmition_error"
-            case stbexceptions.server_banned_error:     error = "server_banned_error"
-            case _:                                     error = "undefined_error"
-            
-        if type == StbTypes.ERROR:
-            log.error(f"stbexceptions::{error} ({error_code}) -> {error_message}")
-
-        elif type == StbTypes.WARNING:
-            log.warning(f"stbexceptions::{error} ({error_code}) -> {error_message}")
-    else:
-        None
-
 # Open news file
 with open(server_dir + "/news.yml") as news_file:
     news_data = yaml.load(news_file, Loader=SafeLoader)
