@@ -14,11 +14,14 @@ from src.vars import chat_name, short_ver, codename, server_edition
 # Path of init.py
 server_dir = os.path.dirname(os.path.realpath(__file__))
 
+
+# StbTypes, required for the debug_logger
 class StbTypes(Enum):
     INFO = 0
     WARNING = 2
     ERROR = 1
-    
+
+# stbexceptions class for better error handling  
 class stbexceptions:
     connection_error        = "001"
     login_error             = "002"
@@ -31,13 +34,6 @@ class stbexceptions:
     broken_pipe_error       = "122"
     transmition_error       = "242"
     server_banned_error     = "999"
-    
-    
-afks = list([])
-users = {}
-addresses = {}
-user_logged_in = {}
-blacklist = set()
 
 # Init logger
 class LogFormatter(logging.Formatter):
@@ -61,31 +57,23 @@ class LogFormatter(logging.Formatter):
         formatter = logging.Formatter(log_fmt)
         return formatter.format(record)
 
-
-log = logging.getLogger("LOG")
-
-if os.environ.get("LOG_LEVEL") is not None:
-    log.setLevel(os.environ.get("LOG_LEVEL").upper())
-    
-else:
-    log.setLevel("INFO")
-    
-log_fh  = logging.FileHandler(server_dir + '/log.txt')
-log_fmt = logging.Formatter(f"(%(asctime)s) [%(levelname)s]  %(message)s")
-log_fh.setFormatter(log_fmt)
-
-log_ch = logging.StreamHandler()
-log_ch.setFormatter(LogFormatter())
-
-log.addHandler(log_ch)
-log.addHandler(log_fh)
-
 # Startup title
 print(f"{CYAN + Colors.BOLD}* -- {chat_name} v{short_ver} {codename} ({server_edition}) -- *{RESET + Colors.RESET}")
 
 # Open Configuration
 with open(server_dir + "/config.yml") as config_data:
-        config = yaml.load(config_data, Loader=SafeLoader)
+    config = yaml.load(config_data, Loader=SafeLoader)
+
+log             = logging.getLogger("LOG")
+log_fh          = logging.FileHandler(server_dir + '/log.txt')
+log_fmt         = logging.Formatter(f"(%(asctime)s) [%(levelname)s]  %(message)s")
+log_ch          = logging.StreamHandler()
+
+afks            = list([])
+users           = {}
+addresses       = {}
+user_logged_in  = {}
+blacklist       = set()
 
 # Configuration
 ipaddr                  = config['server']['address']
@@ -96,6 +84,19 @@ max_message_length      = config['flags']['max_message_length']
 debug_mode              = config['flags']['debug_mode']
 online_mode             = config['flags']['online_mode']
 update_channel          = config['server']['update_channel']
+
+if os.environ.get("LOG_LEVEL") is not None:
+    log.setLevel(os.environ.get("LOG_LEVEL").upper())
+    
+else:
+    log.setLevel("INFO")
+    
+
+log_fh.setFormatter(log_fmt)
+log_ch.setFormatter(LogFormatter())
+log.addHandler(log_ch)
+log.addHandler(log_fh)
+
 
 # Receive your global ip address for verification
 def get_global_ip():
