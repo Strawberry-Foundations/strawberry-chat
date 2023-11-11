@@ -338,7 +338,7 @@ def receive(sock):
             
         except Exception as e: 
             print(f"{Fore.RED + BOLD}{Str[lang]['ConnectionInterrupt']}{Fore.RESET + CRESET}")
-            sys.exit(1)
+            pass
             
 
 def main():
