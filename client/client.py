@@ -299,41 +299,46 @@ def send(sock):
 
 def receive(sock):
     while threadFlag:
-        message = sock.recv(2048).decode('utf-8')
+        try:
+            message = sock.recv(2048).decode('utf-8')
 
-        try: message = conv_json_data(message)
-        except: message = message
-        
-        if message:
-            try:
-                try: message_type = message["message_type"]
-                except: message_type = "unknown"
-                
-                if message_type == "user_message":
-                    username    = message["username"]
-                    nickname    = message["nickname"]
-                    badge       = badge_handler(message["badge"])
-                    role_color  = message["role_color"]
-                    message     = message["message"]["content"]
-                    
-                    if nickname == username:
-                        fmt = f"[{current_time()}] {role_color}{username}{badge}:{CRESET} {message}"
-                    else:
-                        fmt = f"[{current_time()}] {role_color}{nickname} (@{username.lower()}){badge}:{CRESET} {message}"
-                        
-                    print(fmt)
-                    
-                else:
-                    message     = message["message"]["content"]
-                    print(f"[{current_time()}] {message}")
+            try: message = conv_json_data(message)
+            except: message = message
             
-            except Exception as e:
-                time.sleep(0.05)
-                message         = message["message"]["content"]
-                print(f"[{current_time()}] {message}")
+            if message:
+                try:
+                    try: message_type = message["message_type"]
+                    except: message_type = "unknown"
                     
-        else:
-            break
+                    if message_type == "user_message":
+                        username    = message["username"]
+                        nickname    = message["nickname"]
+                        badge       = badge_handler(message["badge"])
+                        role_color  = message["role_color"]
+                        message     = message["message"]["content"]
+                        
+                        if nickname == username:
+                            fmt = f"[{current_time()}] {role_color}{username}{badge}:{CRESET} {message}"
+                        else:
+                            fmt = f"[{current_time()}] {role_color}{nickname} (@{username.lower()}){badge}:{CRESET} {message}"
+                            
+                        print(fmt)
+                        
+                    else:
+                        message     = message["message"]["content"]
+                        print(f"[{current_time()}] {message}")
+                
+                except Exception as e:
+                    time.sleep(0.05)
+                    message         = message["message"]["content"]
+                    print(f"[{current_time()}] {message}")
+                        
+            else:
+                break
+            
+        except Exception as e: 
+            print(f"{Fore.RED + BOLD}{Str[lang]['ConnectionInterrupt']}{Fore.RESET + CRESET}")
+            sys.exit(1)
             
 
 def main():
