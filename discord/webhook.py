@@ -114,7 +114,7 @@ def receive(sock):
                             "username" : f"{raw_username}",
                             "embeds": [{
                                 "title": f"{username} {badge}",
-                                "description": f"{message}",
+                                "description": f"```{message}```",
                                 "color": 16711680,
                                 "timestamp":timestamp,
                                 "author": {
