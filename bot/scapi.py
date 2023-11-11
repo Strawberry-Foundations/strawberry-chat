@@ -322,7 +322,6 @@ class Scapi:
                         _this_works = False
                     
                     if _this_works:
-                        print(raw_data["username"])
                         raw_message = raw_data["message"]["content"]
                     
                         if raw_message.startswith("!"):
