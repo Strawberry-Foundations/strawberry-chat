@@ -18,8 +18,17 @@ Strawberry Chat is a simple chat platform based on Python TCP sockets. It allows
 My goal was to develop a chat app for the terminal, which is not only minimal, but also useful. Strawberry Chat is actively developing and getting more and more features - and the best thing is, everything is free and stays free! 
 In addition, Strawberry Chat is open source. This means that everyone can contribute to the project. Also, every user can create his own server if he/she wants to chat privately with his/her friends - we are happy about every single user and accept everyone with a warm heart! 
 
-<!-- ## Current state ![State](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2FStrawberry-Foundations%2Fstrawberry-chat%2Fmain%2Fapi%2Fjson%2Fversions.json&query=%24.stbchat.server.stable&label=%20&color=success) ![State](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2FStrawberry-Foundations%2Fstrawberry-chat%2Fmain%2Fapi%2Fjson%2Fversions.json&query=%24.stbchat.server.dev&label=%20&color=success)
-Currently, Strawberry Chat is being developed a lot, even almost daily. Currently we are in a end **beta** stage. The big part already exists and Strawberry Chat is very well usable, but there are still some things missing, ***including some commands, complete porting of all commands to the new command system and important bug fixes*** -->
+## [JSON Communication](https://github.com/Strawberry-Foundations/strawberry-chat/tree/json-communication)
+Strawberry Chat is currently being rewritten so that we use JSON as the communication format. There are therefore compatibility problems between the server and client.
+|  | v1.7.0 ![](https://img.shields.io/badge/Deprecated-red) | v1.8.0 ![](https://img.shields.io/badge/Stable-success) | v1.8.1 ![](https://img.shields.io/badge/Dev-cyan) | v1.9.0 ![](https://img.shields.io/badge/Canary-yellow) |
+| -------------------------------------------------------------- | ------ | ------ | ------ | ------ |
+| ![](https://img.shields.io/badge/Standard-<=v2.4.0-success)    | ✅    | ✅     | ✅    | ❌     |
+| ![](https://img.shields.io/badge/Standard->=v2.5.0-success)    | ❌    | ❌     | ❌    | ✅     |
+| ![](https://img.shields.io/badge/Lite-<=v1.0.1-success)        | ✅    | ✅     | ✅    | ❌     |
+| ![](https://img.shields.io/badge/Lite->=v1.1.0-success)        | ❌    | ❌     | ❌    | ✅     |
+| ![](https://img.shields.io/badge/Nano-<=v1.0.1-success)        | ✅    | ✅     | ✅    | ❌     |
+| ![](https://img.shields.io/badge/Nano->=v1.1.0-success)        | ❌    | ❌     | ❌    | ✅     |
+| ![](https://img.shields.io/badge/Berryjuice--pico-success)     | ✅    | ✅     | ✅    | ❌     |
 
 ## Security
 Strawberry Chat has now officially received password hashing with the release of version 1.8.0. We're using a secure hashing algorithm for the stored passwords. On weaker devices without cryptographic extensions (e.g. Raspberry Pi 4) you will notice that there is a slight delay when logging in. This is due to the hashing algorithm we use. Due to the high security, the system needs more time.  
