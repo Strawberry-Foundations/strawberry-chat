@@ -315,15 +315,13 @@ class Scapi:
                     
                     try:
                         raw_data = json.loads(recv_message)
-                        print("This did work")
-                        this_works = True
+                        _this_works = True
                         
                     except:
-                        print("This didnt work")
                         raw_data = recv_message
-                        this_works = False
+                        _this_works = False
                     
-                    if this_works:
+                    if _this_works:
                         print(raw_data["username"])
                         raw_message = raw_data["message"]["content"]
                     
