@@ -64,16 +64,6 @@ print(f"{CYAN + Colors.BOLD}* -- {chat_name} v{short_ver} {codename} ({server_ed
 with open(server_dir + "/config.yml") as config_data:
     config = yaml.load(config_data, Loader=SafeLoader)
 
-log             = logging.getLogger("LOG")
-log_fh          = logging.FileHandler(server_dir + '/log.txt')
-log_fmt         = logging.Formatter(f"(%(asctime)s) [%(levelname)s]  %(message)s")
-log_ch          = logging.StreamHandler()
-
-afks            = list([])
-users           = {}
-addresses       = {}
-user_logged_in  = {}
-blacklist       = set()
 
 # Configuration
 ipaddr                  = config['server']['address']
@@ -84,6 +74,20 @@ max_message_length      = config['flags']['max_message_length']
 debug_mode              = config['flags']['debug_mode']
 online_mode             = config['flags']['online_mode']
 update_channel          = config['server']['update_channel']
+
+# Log configuration
+log             = logging.getLogger("LOG")
+log_fh          = logging.FileHandler(server_dir + '/log.txt')
+log_fmt         = logging.Formatter(f"(%(asctime)s) [%(levelname)s]  %(message)s")
+log_ch          = logging.StreamHandler()
+
+# Lists, Dicts and Sets
+afks            = list([])
+users           = {}
+addresses       = {}
+user_logged_in  = {}
+blacklist       = set()
+
 
 if os.environ.get("LOG_LEVEL") is not None:
     log.setLevel(os.environ.get("LOG_LEVEL").upper())
