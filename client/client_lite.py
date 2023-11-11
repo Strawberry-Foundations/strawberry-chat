@@ -38,6 +38,7 @@ GRAY            = "\033[90m"
 ver             = "1.1.0"
 author          = "Juliandev02"
 use_sys_argv      = False
+experimental_debug_mode = False
 
 # Return current time
 def current_time():
@@ -147,7 +148,7 @@ def receive(sock):
                 break
             
         except Exception as e: 
-            print(f"{Fore.RED + BOLD}Error while receiving server data: Has the connection been interrupted?{Fore.RESET + CRESET}")
+            if experimental_debug_mode: print(f"{Fore.RED + BOLD}Error while receiving server data: Has the connection been interrupted?{Fore.RESET + CRESET}")
             pass
 
 def main():
