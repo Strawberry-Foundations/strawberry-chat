@@ -17,6 +17,7 @@ import errno
 import random
 import requests
 import re
+import json
 
 from colorama import Fore, Style
 from .colors import *
@@ -79,21 +80,42 @@ def create_empty_file(filename):
     with open(server_dir + "/" + filename, "w") as ef:
         pass
     
-def broadcast_all(message):
+def send_json(data):
+    return json.dumps(data)
+
+# def broadcast_all(message):
+#     try:
+#         for user in users:
+#             user.send(message.encode("utf8"))
+    
+#     except BrokenPipeError as e:
+#         pass
+    
+#     except IOError as e:
+#         if e.errno == errno.EPIPE:
+#             pass
+  
+#     except Exception as e:
+#         pass
+
+def broadcast_all(message, format: StbCom = StbCom.PLAIN):
     try:
         for user in users:
-            user.send(message.encode("utf8"))
-    
-    except BrokenPipeError as e:
-        pass
-    
-    except IOError as e:
-        if e.errno == errno.EPIPE:
-            pass
-  
+            try:
+                json_builder = {
+                    "message_type": "system_message",
+                    "message": {
+                        "content": message
+                    }
+                }
+                user.send(send_json(json_builder).encode("utf8"))
+                
+            except BrokenPipeError as e:
+                debug_logger(e, stbexceptions.broken_pipe_error)
+
     except Exception as e:
-        pass
-        
+        print(e)
+
 # Check if user has a nickname
 def hasNickname(uname):
     db = sql.connect(server_dir + "/users.db", check_same_thread=False)
