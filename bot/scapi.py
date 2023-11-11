@@ -120,8 +120,13 @@ class Scapi:
             else:
                 return ""
         
-        def conv_json_data(self, data):
-            return json.loads(data)
+        def conv_json_data(self, data): return json.loads(data)
+        
+        def get_username(self, json_data): return json_data["username"]
+        
+        def get_nickname(self, json_data): return json_data["nickname"]
+        
+        def get_badge(self, json_data): return json_data["badge"]
             
         def permission_handler(self, trusted_list: list = [], admin_list: list = [], owner: str = None, custom_list: list = []):
             self.trusted_list       = trusted_list
@@ -136,9 +141,7 @@ class Scapi:
             ansi_escape = re.compile(r'(?:\x1B[@-_]|[\x80-\x9F])[0-?]*[ -/]*[@-~]')
             return ansi_escape.sub('', line)
         
-        def get_username(self, json_data):
-            return json_data
-        
+        # Deprecated
         def get_username_by_msg(self, message):
             username = message.split(":")[0]
             username = username.replace("[", "") \
@@ -189,18 +192,18 @@ class Scapi:
                             self.logger(f"{RED}Message could not be sent", type=Scapi.LogLevel.ERROR)
                             break
         
-        def recv_message(self, raw=False, ansi=False):
+        def recv_message(self, json=False, ansi=False):
             global threadFlag
             threadFlag = True
             try:
                 while threadFlag:
                     global message
-                    message = self.socket.recv(2048).decode()
+                    recv_message = self.socket.recv(2048).decode()
                     
-                    try: message = self.conv_json_data(message)
-                    except: message = message
+                    try: message = self.conv_json_data(recv_message)
+                    except: message = recv_message
                     
-                    if message:
+                    if recv_message:
                         self.count = self.count + 1
                         try: message_type = message["message_type"]
                         except: message_type = "unknown"                        
@@ -221,23 +224,12 @@ class Scapi:
                             try: fmt     = message["message"]["content"]
                             except: fmt = message
                         
-                        if self.count > 3:
+                        if self.count > 1:
                             self.logger(fmt, type=Scapi.LogLevel.INFO)
                         
-                        if raw == False:
-                            if ansi == True:
-                                return message
-                            
-                            elif ansi == False:
-                                return self.escape_ansi(message)
-                            
-                            else: 
-                                return message
+                        if json:
+                            return recv_message
                         
-                        elif raw == True:
-                            index = message.find(":")
-                            msg_splitted = message[index + 2:]
-                            return self.escape_ansi(msg_splitted)
                     else:
                         break
                         
@@ -319,25 +311,39 @@ class Scapi:
         def command_runner(self):
             while True:
                 try:
-                    recv_message = self.recv_message(raw=False, ansi=False)
-                    index       = recv_message.find(":")
-                    raw_message = recv_message[index + 2:]
+                    recv_message = self.recv_message(json=True)
                     
-                    if raw_message.startswith("!"):
-                        message = raw_message[1:]
-                        args = message.split()
-                        cmd = args[0]
-                        args = args[1:]
+                    try:
+                        raw_data = json.loads(recv_message)
+                        print("This did work")
+                        this_works = True
                         
-                        self.execute_command(cmd, self.get_username_by_msg(recv_message), args)
-                        continue
+                    except:
+                        print("This didnt work")
+                        raw_data = recv_message
+                        this_works = False
+                    
+                    if this_works:
+                        print(raw_data["username"])
+                        raw_message = raw_data["message"]["content"]
+                    
+                        if raw_message.startswith("!"):
+                            message = raw_message[1:]
+                            args = message.split()
+                            cmd = args[0]
+                            args = args[1:]
+                            
+                            self.execute_command(cmd, self.get_username(raw_data), args)
+                            continue
 
+                except TypeError: pass
+                except AttributeError: pass
+                
                 except Exception as e: 
                     self.logger(f"{RED}An unknown exception occured{RESET}", type=Scapi.LogLevel.ERROR)
                     self.logger(f"{RED}{e}{RESET}", type=Scapi.LogLevel.ERROR)
                     break
-            
-            
+  
         def run(self, ready_func = None):
             if self.enable_user_input is True:
                 self.logger(f"{YELLOW}Flag {GREEN + BOLD}'enableUserInput'{RESET + YELLOW} is enabled", type=Scapi.LogLevel.INFO)
@@ -349,10 +355,10 @@ class Scapi:
             if not ready_func is None:
                 ready_func()
             
-            recv_thread = threading.Thread(target=self.recv_message)
+            # recv_thread = threading.Thread(target=self.recv_message)
             send_thread = threading.Thread(target=self.send)
             cmd_thread  = threading.Thread(target=self.command_runner)
             
-            recv_thread.start()
+            # recv_thread.start()
             send_thread.start()
             cmd_thread.start()
