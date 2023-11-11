@@ -5,9 +5,10 @@ import socket
 from src.colors import *
 from src.db import Database
 from src.vars import role_colors
+from src.functions import doesUserExist
 
 from init import server_dir, log, debug_logger, stbexceptions
-from src.functions import doesUserExist
+
 
 @register_command("badge", arg_count=1)
 def badge_command(socket: socket.socket, username: str, args: list):
