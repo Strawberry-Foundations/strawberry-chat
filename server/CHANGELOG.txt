@@ -10,6 +10,8 @@
 - NEW: Removed unused code
 - NEW: Removed chat text commands (/shrug, /tableflip, ...)
 - NEW: Removed sql_error() + replaced it with normal log.error & debug_logger
+- NEW: Removed opening the config in main file
+- NEW: Removed unnessecary init variables, e.g. address in main file 
 
 - MODULARITY: Ported /kick command to new command system + added leave message when kicking someone
 - MODULARITY: Ported /debug and /clientinfo to new command system
