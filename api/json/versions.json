@@ -6,9 +6,9 @@
         },
     
         "client": {
-            "stable": "v2.4.0",
-            "lite": "v1.0.1",
-            "nano": "v1.0.1"
+            "stable": "v2.5.0",
+            "lite": "v1.1.0",
+            "nano": "v1.1.0"
         },
 
         "scapi": {
