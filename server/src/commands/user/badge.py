@@ -11,7 +11,7 @@ from init import server_dir, log, debug_logger, stbexceptions
 
 
 @register_command("badge", arg_count=1)
-def badge_command(socket: socket.socket, username: str, args: list):
+def badge_command(socket: socket.socket, username: str, args: list, send):
     cmd_db = Database(server_dir + "/users.db", check_same_thread=False)
 
     cmd = args[0]
