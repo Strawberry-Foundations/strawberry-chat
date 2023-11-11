@@ -577,6 +577,7 @@ def broadcast(message, sent_by="", format: StbCom = StbCom.PLAIN):
                             "content": message
                         }
                     }
+                    
                     user.send(send_json(json_builder).encode("utf8"))
                     
                 except BrokenPipeError as e:
