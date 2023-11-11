@@ -5,6 +5,7 @@
 - NEW: Added memberListBadge and hasBadge function, fixing #47
 - NEW: Added escape_htpf function
 - NEW: Added prevention of sending messages with just whitespaces, fixing #50
+- NEW: Added stbexceptions class for better exception handling
 - NEW: Removed escape_htpf for loggin
 - NEW: Removed unused code
 - NEW: Removed chat text commands (/shrug, /tableflip, ...)
@@ -16,6 +17,7 @@
 - MODULARITY: Ported /ban command to new command system 
 - MODULARITY: Ported /deleteaccount command 
 - MODULARITY: Moved Logging System to init.py
+- MODULARITY: Moved some more variables to init.py
 
 - FIX: Fixed showing "None" as main badge in Memberlist when no main badge is set (#47)
 - FIX: Fixed Bad File Descriptor when logging out (#49)
