@@ -16,7 +16,7 @@ from yaml import SafeLoader
 
 @register_command("memberlist")
 @register_command("userlist")
-def memberlist_command(socket: socket.socket, username: str, args: list):
+def memberlist_command(socket: socket.socket, username: str, args: list, send):
     badge = {}
     
     cmd_db = Database(server_dir + "/users.db", check_same_thread=False)
