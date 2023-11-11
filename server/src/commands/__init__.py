@@ -21,7 +21,7 @@ def register_command(name, arg_count=0, required_permissions=PermissionLevel.MEM
     return decorator
 
 
-def execute_command(command_str, socket: socket.socket, user: str, user_perms: PermissionLevel, args: list):
+def execute_command(command_str, socket: socket.socket, user: str, user_perms: PermissionLevel, args: list, command_sender = None):
     command_name = command_str
     if command_name in command_registry:
         cmd = command_registry[command_name]
@@ -39,7 +39,7 @@ def execute_command(command_str, socket: socket.socket, user: str, user_perms: P
             socket.send(f"{RED}Not enough arguments! The command requires {cmd[1]} {argumentsString} but {args.__len__()} were given.{RESET}".encode("utf8"))
             return
         
-        cmd[0](socket, user, args)
+        cmd[0](socket, user, args, command_sender)
         
     else:
         socket.send(f"{RED}Command '{command_name}' not found.{RESET}".encode("utf8"))
