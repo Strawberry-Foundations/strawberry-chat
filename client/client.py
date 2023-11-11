@@ -339,6 +339,7 @@ def receive(sock):
             
         except Exception as e:
             if experimental_debug_mode: print(f"{Fore.RED + BOLD}{Str[lang]['ConnectionInterrupt']}{Fore.RESET + CRESET}")
+            time.sleep(2.5)
             pass
             
 
