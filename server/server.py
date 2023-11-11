@@ -592,7 +592,7 @@ def broadcast(message, sentBy="", format: StbCom = StbCom.PLAIN):
                     res = c.fetchone()
                
                     if res[0] is not None:
-                        badge = "[" + res[0] + "]"
+                        badge = " [" + res[0] + "]"
                         
                     else:
                         badge = ""
