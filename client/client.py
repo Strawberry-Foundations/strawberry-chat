@@ -118,10 +118,22 @@ def check_for_updates():
         print(f"{BOLD + GREEN}{Str[lang]['UpdateAvailable']}{RESET +RESET}")
         print(f"{BOLD + CYAN}strawberry-chat{GREEN}@{MAGENTA}stable {RESET}{online_ver}{RESET}")
         print(f"↳ {Str[lang]['UpgradingFrom']} {CYAN + BOLD}strawberry-chat{GREEN}@{MAGENTA}stable {RESET}{ver}{RESET}\n")
-
+        
+# Convert raw input to json data
 def conv_json_data(data):
     return json.loads(data)
 
+# Handle user badges
+def badge_handler(badge):
+    if not badge == "":
+        return " [" + badge + "]"
+    else:
+        return ""
+
+# Handle username & nickname
+# def username_handler(username, nickname):
+#     if username == nickname:
+#         return 
 
 # Try requesting our api server
 if online_mode:
@@ -289,6 +301,7 @@ def send(sock):
                 print(f"{Fore.RED + BOLD}{Str[lang]['ErrCouldNotSendMessage']}{Fore.RESET + CRESET}")
                 break
 
+
 def receive(sock):
     while threadFlag:
         message = sock.recv(2048).decode('utf-8')
@@ -304,7 +317,7 @@ def receive(sock):
                 if message_type == "user_message":
                     username    = message["username"]
                     nickname    = message["nickname"]
-                    badge       = message["badge"]
+                    badge       = badge_handler(message["badge"])
                     role_color  = message["role_color"]
                     message     = message["message"]["content"]
                     
