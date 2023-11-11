@@ -48,7 +48,9 @@ else:
     
     query_c.execute(table_query)
     query_db.commit()
+    
     query_c.close()
+    query_db.close()
     
     print(f"{GREEN + Colors.BOLD}>>> {RESET}Created table")
     print(f"{YELLOW + Colors.BOLD}>>> {RESET}Restart your server to connect to your new database.")
