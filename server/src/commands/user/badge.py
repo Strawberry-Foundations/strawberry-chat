@@ -105,8 +105,9 @@ def badge_command(socket: socket.socket, username: str, args: list):
             
             elif len(args) == 3:
                 try:
-                    badge_to_add = args[1]
-                    uname = args[2]
+                    uname = args[1]
+                    badge_to_add = args[2]
+                    
                     
                 except:
                     socket.send(f"{RED + Colors.BOLD}Please pass a valid argument!{RESET + Colors.RESET}".encode("utf8"))
