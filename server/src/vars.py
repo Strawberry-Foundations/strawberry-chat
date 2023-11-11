@@ -34,6 +34,10 @@ table_query = """
 	"msg_count"	INTEGER,
     "creation_date"	INTEGER)"""
  
+role_colors = ["red", "green", "cyan", "blue", "yellow", "magenta",
+               "lightred", "lightgreen", "lightcyan", "lightblue", "lightyellow", "lightmagenta",
+               "boldred", "boldgreen", "boldcyan", "boldblue", "boldyellow", "boldmagenta"]
+
 # Help Sections 
 default_help_section    = f"""{GREEN +  Colors.UNDERLINE + Colors.BOLD}Default commands{RESET + Colors.RESET}
         {BLUE + Colors.BOLD}/help: {RESET}Help Command
