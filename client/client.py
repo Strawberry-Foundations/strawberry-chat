@@ -314,18 +314,29 @@ def receive(sock):
         
         if message:
             try:
-                message_type = message["message_type"]
+                try: message_type = message["message_type"]
+                except: message_type = "unknown"
                 
                 if message_type == "user_message":
-                    username = message["username"]
-                    nickname = message["nickname"]
+                    username    = message["username"]
+                    nickname    = message["nickname"]
+                    badge       = message["badge"]
+                    role_color  = message["role_color"]
+                    message     = message["message"]["content"]
+                    
+                    if nickname:
+                        fmt = f"[{current_time()}] {role_color}{nickname} (@{username.lower()}) {badge}:{CRESET} {message}"
+                        
+                    print(fmt)
+                    
                 else:
-                    message = message["message"]["content"]
-                
-                print(f"[{current_time()}] {username} ({nickname})")
-                
-            except:
+                    message     = message["message"]["content"]
+                    print(f"[{current_time()}] {message}")
+            
+            except Exception as e:
+                print(e)
                 print("[{}] {}".format(current_time(), message))
+                    
         else:
             break
             
