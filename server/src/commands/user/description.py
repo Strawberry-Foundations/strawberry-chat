@@ -8,7 +8,7 @@ from src.db import Database
 from init import server_dir
 
 @register_command("description", arg_count=0)
-def description_command(socket: socket.socket, username: str, args: list):
+def description_command(socket: socket.socket, username: str, args: list, send):
     cmd_db = Database(server_dir + "/users.db", check_same_thread=False)
     
     desc = " ".join(args)
@@ -33,7 +33,7 @@ def description_command(socket: socket.socket, username: str, args: list):
         
 
 @register_command("desc")
-def desc_command(socket: socket.socket, username: str, args: list):
+def desc_command(socket: socket.socket, username: str, args: list, send):
     cmd_db = Database(server_dir + "/users.db", check_same_thread=False)
     cmd_db.execute("SELECT description FROM users WHERE username = ?", (username,))
     desc = cmd_db.fetchone()[0]
