@@ -14,7 +14,7 @@ with open(server_dir + "/config.yml") as config_data:
 
 @register_command("exit")
 @register_command("quit")
-def exit_command(socket: socket.socket, username: str, args: list):
+def exit_command(socket: socket.socket, username: str, args: list, send):
     socket.send(f"{YELLOW + Colors.BOLD}You left the chat!{RESET + Colors.RESET}".encode("utf8"))
     del addresses[socket]
     del users[socket]
