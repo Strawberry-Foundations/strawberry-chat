@@ -9,16 +9,16 @@ from init import addresses, users
 
 @register_command("debug", arg_count=0, required_permissions=PermissionLevel.ADMIN)
 def debug_command(socket: socket.socket, username: str, args: list, send):
-    socket.send(f"""Client Object: {socket}
+    send(f"""Client Object: {socket}
         IP Object: {addresses[socket]}
         User Object: {users[socket]}
         Addresses: {addresses}
-        Users: {users}""".encode("utf8"))
+        Users: {users}""")
     
 @register_command("clientinfo", arg_count=0, required_permissions=PermissionLevel.MEMBER)
 def clientinfo_command(socket: socket.socket, username: str, args: list, send):
-    socket.send(f"{addresses[socket]}".encode("utf8"))
+    send(f"{addresses[socket]}")
     time.sleep(0.1)
-    socket.send(f"{users[socket]}".encode("utf8"))
+    send(f"{users[socket]}")
     time.sleep(0.1)
-    socket.send(f"{socket}".encode("utf8"))
+    send(f"{socket}")
