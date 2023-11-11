@@ -117,14 +117,14 @@ def main():
     if use_sys_argv == True:
         pass
         
-    sending_thread  = threading.Thread(target=send, args=(client_socket,))
-    recv_thread     = threading.Thread(target=receive, args=(client_socket,))
+    _sending  = threading.Thread(target=send, args=(client_socket,))
+    _receiving     = threading.Thread(target=receive, args=(client_socket,))
 
-    recv_thread.start()
-    sending_thread.start()
+    _receiving.start()
+    _sending.start()
 
     try:
-        while recv_thread.is_alive() and sending_thread.is_alive():
+        while _receiving.is_alive() and _sending.is_alive():
             continue
     except KeyboardInterrupt:
         print(f"\nAborted")
