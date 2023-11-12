@@ -69,7 +69,7 @@ langs           = ["de_DE", "en_US"]
 verified_list   = []
 
 api             = "https://api.strawberryfoundations.xyz/v1/"
-ver             = "2.5.0"
+ver             = "2.5.1"
 author          = "Juliandev02"
 use_sys_argv    = False
 experimental_debug_mode = False
@@ -131,74 +131,8 @@ def badge_handler(badge):
     else:
         return ""
 
-# Try requesting our api server
-if online_mode:
-    try:
-        requests.get(api)
-        check_for_updates()
-    
-    # If api is not available, print an error message
-    except (socket.gaierror, urllib3.exceptions.NewConnectionError, urllib3.exceptions.MaxRetryError, requests.exceptions.ConnectionError): 
-        print(f"{RED + UNDERLINE}{Str[lang]['ConnectionError']}{RESET + CRESET}")
-        print(f"{YELLOW}{Str[lang]['ConnectionErrorDesc']}{RESET}")
-        sys.exit(1)
-
-# Verify your server's in your config
-try:
-    if online_mode == True:
-        for i in range(len(data["server"])):
-            verified = requests.get(api + "server/verified?addr=" + data['server'][i]['address'])
-            
-            if verified.text == "True":
-                verified_list.append(data['server'][i]['address'])
-            else:
-                pass  
-    else:
-        pass
-    
-except Exception as e: 
-    print(f"{RED}{e}{RESET}")
-
-# Check if language is available
-if lang not in langs:
-    print(f"{Fore.RED + BOLD}Error loading language: Selected language is not available.{Fore.RESET}")
-    print(f"{Fore.YELLOW + BOLD}Falling back to en_US\n{Fore.RESET}")
-    time.sleep(1)
-    lang = "en_US"
-    
-    
-
-# If --server is in the arguments, skip server selection input
-if len(sys.argv) >= 2:
-    if sys.argv[1] == "--server":
-        use_sys_argv = True
-        server_selection = sys.argv[2]
-        
-        host = data["server"][(int(server_selection) - 1)]["address"]
-        port = int(data["server"][(int(server_selection) - 1)]["port"])
-        
-        try: enableAutologin = data["server"][(int(server_selection) - 1)]["autologin"]     
-        except KeyError: enableAutologin = False
-        
-    else:
-        print(f"{Fore.RED + BOLD}{Str[lang]['InvalidArgument']}{Fore.RESET + CRESET}")
-        sys.exit(1)
-
-# If autoserver is active, skip server selection input 
-elif autoserver == True:
-    server_id = data["autoserver"]["server_id"]
-    
-    server_selection = int(server_id + 1)
-    custom_server_sel = 0
-    
-    host = data["server"][(int(server_id))]["address"]
-    port = int(data["server"][(int(server_id))]["port"])
-    
-    try: enableAutologin = data["server"][(int(server_id))]["autologin"]
-    except KeyError: enableAutologin = False
-
-# If no arguments passed, start client without any special functions
-else:
+# Select server
+def server_selector():
     print(f"{Fore.CYAN + BOLD + UNDERLINE}Strawberry Chat Client (v{ver}){CRESET}")
     print(f"{Fore.LIGHTGREEN_EX}{Str[lang]['Welcome']}{Fore.RESET}\n")
     print(f"{Fore.GREEN + BOLD + UNDERLINE}{Str[lang]['AvailableServers']}:{Fore.RESET + CRESET}")
@@ -256,8 +190,85 @@ else:
             port = data["server"][(int(server_selection) - 1)]["port"]
             port = int(port)
             
+            
         except KeyError:
             pass
+    
+    return host, port, enableAutologin, server_selection, custom_server_sel
+
+# Try requesting our api server
+if online_mode:
+    try:
+        requests.get(api)
+        check_for_updates()
+    
+    # If api is not available, print an error message
+    except (socket.gaierror, urllib3.exceptions.NewConnectionError, urllib3.exceptions.MaxRetryError, requests.exceptions.ConnectionError): 
+        print(f"{RED + UNDERLINE}{Str[lang]['ConnectionError']}{RESET + CRESET}")
+        print(f"{YELLOW}{Str[lang]['ConnectionErrorDesc']}{RESET}")
+        sys.exit(1)
+
+# Verify your server's in your config
+try:
+    if online_mode == True:
+        for i in range(len(data["server"])):
+            verified = requests.get(api + "server/verified?addr=" + data['server'][i]['address'])
+            
+            if verified.text == "True":
+                verified_list.append(data['server'][i]['address'])
+            else:
+                pass  
+    else:
+        pass
+    
+except Exception as e: 
+    print(f"{RED}{e}{RESET}")
+
+# Check if language is available
+if lang not in langs:
+    print(f"{Fore.RED + BOLD}Error loading language: Selected language is not available.{Fore.RESET}")
+    print(f"{Fore.YELLOW + BOLD}Falling back to en_US\n{Fore.RESET}")
+    time.sleep(1)
+    lang = "en_US"
+    
+    
+
+# If --server is in the arguments, skip server selection input
+if len(sys.argv) >= 2:
+    if "--compatiblity-mode" in sys.argv:
+        use_sys_argv = False
+        host, port, enableAutologin, server_selection, custom_server_sel = server_selector()
+    
+    elif sys.argv[1] == "--server":
+        use_sys_argv = True
+        server_selection = sys.argv[2]
+        
+        host = data["server"][(int(server_selection) - 1)]["address"]
+        port = int(data["server"][(int(server_selection) - 1)]["port"])
+        
+        try: enableAutologin = data["server"][(int(server_selection) - 1)]["autologin"]     
+        except KeyError: enableAutologin = False
+ 
+    else:
+        print(f"{Fore.RED + BOLD}{Str[lang]['InvalidArgument']}{Fore.RESET + CRESET}")
+        sys.exit(1)
+
+# If autoserver is active, skip server selection input 
+elif autoserver == True:
+    server_id = data["autoserver"]["server_id"]
+    
+    server_selection = int(server_id + 1)
+    custom_server_sel = 0
+    
+    host = data["server"][(int(server_id))]["address"]
+    port = int(data["server"][(int(server_id))]["port"])
+    
+    try: enableAutologin = data["server"][(int(server_id))]["autologin"]
+    except KeyError: enableAutologin = False
+
+# If no arguments passed, start client without any special functions
+else:
+    host, port, enableAutologin, server_selection, custom_server_sel = server_selector()
     
 
 def send(sock):
@@ -302,7 +313,10 @@ def receive(sock):
     try: compatibility_mode = data['server'][(int(server_selection) - 1)]['compatiblity_mode']
     except: compatibility_mode = False
     
+    if "--compatiblity-mode" in sys.argv: compatibility_mode = True
+    
     interrupt_counter = 0
+    retry_limit = 4
     
     if compatibility_mode: 
             while threadFlag:
@@ -315,6 +329,7 @@ def receive(sock):
                         break
                     
                 except:
+                    print(host, port)
                     print(f"{Fore.RED + BOLD}{Str[lang]['ErrNotReachable']}{Fore.RESET + CRESET}")
                     break
                 
@@ -361,7 +376,11 @@ def receive(sock):
                 interrupt_counter += 1 
                 
                 if experimental_debug_mode: print(f"{Fore.RED + BOLD}{Str[lang]['ConnectionInterrupt']}{Fore.RESET + CRESET}")
-                if interrupt_counter > 4: print(f"{Fore.RED + BOLD}{Str[lang]['CheckCompatibilityMode']}{Fore.RESET + CRESET}")
+                
+                if interrupt_counter > retry_limit: 
+                    print(f"{Fore.RED + BOLD}{Str[lang]['CheckCompatibilityMode']}{Fore.RESET + CRESET}")
+                    # print(retry_limit)
+                    retry_limit += 4
                     
                 time.sleep(0.5)
                 pass
