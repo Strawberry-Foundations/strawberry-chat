@@ -25,7 +25,7 @@ de_DE:
   UpgradingFrom: "Aktualisiere von"
   InvalidInput: "Ungültige Eingabe!"
   ConnectionInterrupt: "Fehler beim Empfangen von Server-Daten: Ist die Verbindung unterbrochen worden?"
-  CheckCompatibilityMode: "Es konnte keine Nachricht korrekt empfangen werden und entschlüsselt werden. Bitte versuche den Kompatiblitätsmodus zu aktivieren.\nZum aktivieren füge zu deinem Server-Eintrag folgendes hinzu: compatiblity_mode: true"
+  CheckCompatibilityMode: "Es konnte keine Nachricht korrekt empfangen werden und entschlüsselt werden.\nBitte versuche den Kompatiblitätsmodus zu aktivieren.\nZum aktivieren füge zu deinem Server-Eintrag folgendes hinzu: compatiblity_mode: true"
 
 # Language Strings for en_US (English)
 en_US:
@@ -54,4 +54,4 @@ en_US:
   UpgradingFrom: "Upgrading from"
   InvalidInput: "Invalid input!"
   ConnectionInterrupt: "Error while receiving server data: Has the connection been interrupted?"
-  CheckCompatibilityMode: "No message could be received and decrypted correctly. Please try to activate the compatibility mode.\nTo activate, add the following to your server entry: compatiblity_mode: true"
+  CheckCompatibilityMode: "No message could be received and decrypted correctly.\nPlease try to activate the compatibility mode.\nTo activate, add the following to your server entry: compatiblity_mode: true"
