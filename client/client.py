@@ -342,6 +342,8 @@ def receive(sock):
                 try: message = conv_json_data(message)
                 except: message = message
                 
+                time_fmt = f"{GRAY}{current_time()}{RESET}"
+                
                 if message:
                     try:
                         try: message_type = message["message_type"]
@@ -355,20 +357,22 @@ def receive(sock):
                             message     = message["message"]["content"]
                             
                             if nickname == username:
-                                fmt = f"[{current_time()}] {role_color}{username}{badge}:{CRESET} {message}"
+                                # fmt = f"[{current_time()}] {role_color}{username}{badge}:{CRESET} {message}"
+                                fmt = f"{time_fmt} {role_color}{username}{badge}:{CRESET} {message}"
                             else:
-                                fmt = f"[{current_time()}] {role_color}{nickname} (@{username.lower()}){badge}:{CRESET} {message}"
+                                # fmt = f"[{current_time()}] {role_color}{nickname} (@{username.lower()}){badge}:{CRESET} {message}"
+                                fmt = f"{time_fmt} {role_color}{nickname} (@{username.lower()}){badge}:{CRESET} {message}"
                                 
                             print(fmt)
                             
                         else:
                             message     = message["message"]["content"]
-                            print(f"[{current_time()}] {message}")
+                            print(f"{time_fmt} {message}")
                     
                     except Exception as e:
                         time.sleep(0.05)
                         message         = message["message"]["content"]
-                        print(f"[{current_time()}] {message}")
+                        print(f"{time_fmt} {message}")
                             
                 else:
                     break
