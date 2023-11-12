@@ -110,7 +110,8 @@ def broadcast_all(message, format: StbCom = StbCom.PLAIN):
                 user.send(send_json(json_builder).encode("utf8"))
                 
             except BrokenPipeError as e:
-                debug_logger(e, stbexceptions.broken_pipe_error)
+                debug_logger(e, stbexceptions.broken_pipe_warning, type=StbTypes.WARNING)
+                log.warning("You should kick some invalid sessions.")
 
     except Exception as e:
         log.error(f"A broadcasting error occurred.")
