@@ -236,7 +236,7 @@ if lang not in langs:
 
 # If --server is in the arguments, skip server selection input
 if len(sys.argv) >= 2:
-    if "--compatiblity-mode" in sys.argv:
+    if "--compatibility-mode" in sys.argv:
         use_sys_argv = False
         host, port, enableAutologin, server_selection, custom_server_sel = server_selector()
     
@@ -311,10 +311,10 @@ def send(sock):
 
 
 def receive(sock):
-    try: compatibility_mode = data['server'][(int(server_selection) - 1)]['compatiblity_mode']
+    try: compatibility_mode = data['server'][(int(server_selection) - 1)]['compatibility_mode']
     except: compatibility_mode = False
     
-    if "--compatiblity-mode" in sys.argv: compatibility_mode = True
+    if "--compatibility-mode" in sys.argv: compatibility_mode = True
     
     interrupt_counter = 0
     retry_limit = 4
