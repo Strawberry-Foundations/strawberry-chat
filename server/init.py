@@ -38,6 +38,7 @@ class stbexceptions:
     sql_error               = "096"
     general_error           = "100"
     broken_pipe_error       = "122"
+    broken_pipe_warning     = "123"
     transmition_error       = "242"
     server_banned_error     = "999"
 
@@ -76,6 +77,7 @@ def debug_logger(error_message, error_code, type: StbTypes = StbTypes.ERROR):
             case stbexceptions.sql_error:               error = "sql_error"
             case stbexceptions.general_error:           error = "general_error"
             case stbexceptions.broken_pipe_error:       error = "broken_pipe_error"
+            case stbexceptions.broken_pipe_warning:     error = "broken_pipe_warning"
             case stbexceptions.transmition_error:       error = "transmition_error"
             case stbexceptions.server_banned_error:     error = "server_banned_error"
             case _:                                     error = "undefined_error"
