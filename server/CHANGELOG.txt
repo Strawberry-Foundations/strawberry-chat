@@ -1,6 +1,7 @@
 # 1.8.1
 
 - IMPORTANT: Bug #1 has been partially fixed. (BrokenPipe)
+- IMPORTANT: All commands has been ported to the new command system
 
 - NEW: Added memberListBadge and hasBadge function, fixing #47
 - NEW: Added escape_htpf function
