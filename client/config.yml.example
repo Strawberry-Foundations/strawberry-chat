@@ -11,6 +11,7 @@ server:
     port: 49200
     type: Main
     autologin: false
+    compatiblity_mode: false # Change to true if you want to connect to servers with v1.8.1 or below
     credentials:
       username: yourname
       password: yourpassword # Warning: This is very insecure
