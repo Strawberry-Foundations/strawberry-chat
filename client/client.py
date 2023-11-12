@@ -161,6 +161,7 @@ def server_selector():
         try:
             host = input(f"{Fore.LIGHTBLUE_EX + BOLD}{Str[lang]['Ipaddr']}{Fore.RESET + CRESET}")
             port = int(input(f"{Fore.LIGHTBLUE_EX + BOLD}{Str[lang]['Port']}{Fore.RESET + CRESET}"))
+            enableAutologin = False 
             
         except KeyboardInterrupt:
             print(f"\n{Fore.YELLOW}{Str[lang]['Aborted']}{Fore.RESET}")
