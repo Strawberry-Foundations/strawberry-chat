@@ -21,12 +21,22 @@ Strawberry Chat is currently being rewritten so that we use JSON as the communic
 |  | v1.7.0 ![](https://img.shields.io/badge/Deprecated-red) | v1.8.0 ![](https://img.shields.io/badge/Stable-success) | v1.8.1 ![](https://img.shields.io/badge/Dev-cyan) | v1.9.0 ![](https://img.shields.io/badge/Canary-yellow) |
 | -------------------------------------------------------------- | ------ | ------ | ------ | ------ |
 | ![](https://img.shields.io/badge/Standard-<=v2.4.0-success)    | ✅    | ✅     | ✅    | ❌     |
-| ![](https://img.shields.io/badge/Standard->=v2.5.0-success)    | ❌    | ❌     | ❌    | ✅     |
+| ![](https://img.shields.io/badge/Standard-v2.5.0-success)      | ❌    | ❌     | ❌    | ✅     |
+| ![](https://img.shields.io/badge/Standard->=v2.5.1-success)    |✅ (CM)| ✅ (CM)|✅ (CM)| ✅     |
 | ![](https://img.shields.io/badge/Lite-<=v1.0.1-success)        | ✅    | ✅     | ✅    | ❌     |
 | ![](https://img.shields.io/badge/Lite->=v1.1.0-success)        | ❌    | ❌     | ❌    | ✅     |
 | ![](https://img.shields.io/badge/Nano-<=v1.0.1-success)        | ✅    | ✅     | ✅    | ❌     |
 | ![](https://img.shields.io/badge/Nano->=v1.1.0-success)        | ❌    | ❌     | ❌    | ✅     |
 | ![](https://img.shields.io/badge/Berryjuice--pico-success)     | ✅    | ✅     | ✅    | ❌     |
+
+
+<!-- > [!IMPORTANT]  
+> As of Client Canary v2.5.1, we have added a feature that allows users to connect to old servers. This is called Compatiblity Mode. To activate it you either have to add `compatiblity_mode: true` to the respective legacy server entry or start the client with the `--compatiblity-mode` flag! -->
+
+| CM (Compatiblity Mode)    | As of Client Canary v2.5.1, we have added a feature that allows users to connect to old servers. This is called Compatiblity Mode. To activate it you either have to add `compatiblity_mode: true` to the respective legacy server entry or start the client with the `--compatiblity-mode` flag! |
+|---------------|:------------------------|
+
+
 
 ## Security
 Strawberry Chat has now officially received password hashing with the release of version 1.8.0. We're using a secure hashing algorithm for the stored passwords. On weaker devices without cryptographic extensions (e.g. Raspberry Pi 4) you will notice that there is a slight delay when logging in. This is due to the hashing algorithm we use. Due to the high security, the system needs more time.  
