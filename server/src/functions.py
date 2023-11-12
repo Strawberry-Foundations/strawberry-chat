@@ -86,6 +86,7 @@ def broadcast_all(message):
     
     except BrokenPipeError as e:
         debug_logger(e, stbexceptions.broken_pipe_warning, type=StbTypes.WARNING)
+        log.warning("You should kick some invalid sessions.")
     
     except IOError as e:
         if e.errno == errno.EPIPE:
