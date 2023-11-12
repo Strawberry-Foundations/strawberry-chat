@@ -299,49 +299,73 @@ def send(sock):
 
 
 def receive(sock):
-    while threadFlag:
-        try:
-            message = sock.recv(2048).decode('utf-8')
-
-            try: message = conv_json_data(message)
-            except: message = message
-            
-            if message:
+    try: compatibility_mode = data['server'][(int(server_selection) - 1)]['compatiblity_mode']
+    except: compatibility_mode = False
+    
+    interrupt_counter = 0
+    
+    if compatibility_mode: 
+            while threadFlag:
                 try:
-                    try: message_type = message["message_type"]
-                    except: message_type = "unknown"
+                    message = sock.recv(2048).decode()
                     
-                    if message_type == "user_message":
-                        username    = message["username"]
-                        nickname    = message["nickname"]
-                        badge       = badge_handler(message["badge"])
-                        role_color  = message["role_color"]
-                        message     = message["message"]["content"]
-                        
-                        if nickname == username:
-                            fmt = f"[{current_time()}] {role_color}{username}{badge}:{CRESET} {message}"
-                        else:
-                            fmt = f"[{current_time()}] {role_color}{nickname} (@{username.lower()}){badge}:{CRESET} {message}"
-                            
-                        print(fmt)
-                        
+                    if message:
+                        print("[{}] {}".format(current_time(), message))
                     else:
-                        message     = message["message"]["content"]
-                        print(f"[{current_time()}] {message}")
+                        break
+                    
+                except:
+                    print(f"{Fore.RED + BOLD}{Str[lang]['ErrNotReachable']}{Fore.RESET + CRESET}")
+                    break
                 
-                except Exception as e:
-                    time.sleep(0.05)
-                    message         = message["message"]["content"]
-                    print(f"[{current_time()}] {message}")
+    elif compatibility_mode == False: 
+        while threadFlag:
+            try:
+                message = sock.recv(2048).decode('utf-8')
+
+                try: message = conv_json_data(message)
+                except: message = message
+                
+                if message:
+                    try:
+                        try: message_type = message["message_type"]
+                        except: message_type = "unknown"
                         
-            else:
-                break
-            
-        except Exception as e:
-            if experimental_debug_mode: print(f"{Fore.RED + BOLD}{Str[lang]['ConnectionInterrupt']}{Fore.RESET + CRESET}")
-            time.sleep(2.5)
-            pass
-            
+                        if message_type == "user_message":
+                            username    = message["username"]
+                            nickname    = message["nickname"]
+                            badge       = badge_handler(message["badge"])
+                            role_color  = message["role_color"]
+                            message     = message["message"]["content"]
+                            
+                            if nickname == username:
+                                fmt = f"[{current_time()}] {role_color}{username}{badge}:{CRESET} {message}"
+                            else:
+                                fmt = f"[{current_time()}] {role_color}{nickname} (@{username.lower()}){badge}:{CRESET} {message}"
+                                
+                            print(fmt)
+                            
+                        else:
+                            message     = message["message"]["content"]
+                            print(f"[{current_time()}] {message}")
+                    
+                    except Exception as e:
+                        time.sleep(0.05)
+                        message         = message["message"]["content"]
+                        print(f"[{current_time()}] {message}")
+                            
+                else:
+                    break
+                
+            except Exception as e:
+                interrupt_counter += 1 
+                
+                if experimental_debug_mode: print(f"{Fore.RED + BOLD}{Str[lang]['ConnectionInterrupt']}{Fore.RESET + CRESET}")
+                if interrupt_counter > 4: print(f"{Fore.RED + BOLD}{Str[lang]['CheckCompatibilityMode']}{Fore.RESET + CRESET}")
+                    
+                time.sleep(0.5)
+                pass
+                
 
 def main():
     global threadFlag
