@@ -85,7 +85,7 @@ def broadcast_all(message):
             user.send(message.encode("utf8"))
     
     except BrokenPipeError as e:
-        pass
+        debug_logger(e, stbexceptions.broken_pipe_warning, type=StbTypes.WARNING)
     
     except IOError as e:
         if e.errno == errno.EPIPE:
