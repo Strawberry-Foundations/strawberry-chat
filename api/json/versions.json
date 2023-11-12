@@ -1,8 +1,8 @@
 {
     "stbchat": {
         "server": {
-            "stable": "v1.8.0",
-            "dev": "v1.8.1pre3",
+            "stable": "v1.8.1",
+            "dev": "v1.8.1",
             "canary": "v1.9.0a2"
         },
     
