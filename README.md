@@ -29,9 +29,7 @@ Strawberry Chat is currently being rewritten so that we use JSON as the communic
 | ![](https://img.shields.io/badge/Nano->=v1.1.0-success)        | ❌    | ❌     | ❌    | ✅     |
 | ![](https://img.shields.io/badge/Berryjuice--pico-success)     | ✅    | ✅     | ✅    | ❌     |
 
-
-<!-- > [!IMPORTANT]  
-> As of Client Canary v2.5.1, we have added a feature that allows users to connect to old servers. This is called Compatiblity Mode. To activate it you either have to add `compatiblity_mode: true` to the respective legacy server entry or start the client with the `--compatiblity-mode` flag! -->
+<br>
 
 | CM (Compatiblity Mode)    | As of Client Canary v2.5.1, we have added a feature that allows users to connect to old servers. This is called Compatiblity Mode. To activate it you either have to add `compatiblity_mode: true` to the respective legacy server entry or start the client with the `--compatiblity-mode` flag! |
 |---------------|:------------------------|
