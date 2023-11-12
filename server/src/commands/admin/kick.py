@@ -34,13 +34,15 @@ def kick_command(socket: socket.socket, username: str, args: list, send):
     else:
         if found_keys:
             try:
+                log.info(f"{uname} ({addresses[socket][0]}) has been kicked out of the chat by {username} for following reason: {reason}")
+                
                 del addresses[to_kick]
                 del users[to_kick]
                 
                 send(f"{YELLOW + Colors.BOLD}Kicked {uname} for following reason: {reason}{RESET + Colors.RESET}")                
                 to_kick.send(f"{YELLOW + Colors.BOLD}You have been kicked out of the chat for the following reason: {reason}{RESET + Colors.RESET}")
                 
-                log.info(f"{uname} has been kicked out of the chat by {username} for following reason: {reason}")
+                
                 broadcast_all(f"{Colors.GRAY + Colors.BOLD}<--{Colors.RESET} {userRoleColor(uname)}{uname}{YELLOW + Colors.BOLD} has left the chat room!{RESET + Colors.RESET}")
                 
                 
