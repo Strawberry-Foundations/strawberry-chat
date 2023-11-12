@@ -570,7 +570,9 @@ def broadcast(message, sentBy=""):
         if sentBy == "":
             for user in users:
                 try: user.send(message.encode("utf8"))
-                except BrokenPipeError as e: debug_logger(e, stbexceptions.broken_pipe_error)
+                except BrokenPipeError as e:
+                    debug_logger(e, stbexceptions.broken_pipe_warning, type=StbTypes.WARNING)
+                    log.warning("You should kick some invalid sessions.")
 
         else:
             for user in users:
