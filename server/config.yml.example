@@ -11,5 +11,7 @@ flags:
   max_message_length: 256
   debug_mode: true
   online_mode: true
+  require_signing: false
+  signing_key: none
 
 config_ver: 2
