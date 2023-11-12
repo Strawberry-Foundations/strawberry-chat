@@ -31,6 +31,7 @@
 - FIX: Fixed Bad File Descriptor when logging out (#49)
 - FIX: Fixed "Sometimes logs get spammed with empty messages after a user connected/disconnected" (#39)
 - FIX: Completly (hopefully) fixed broken formatting of log messages in console (#45)
+- FIX: Fixed kick and exit command, will now log when user leaves the chat
 
 - SCAPI: Updated Logger
 - SCAPI: Fixed message class
