@@ -203,9 +203,9 @@ class Scapi:
         def recv_message(self, json=False):
             global threadFlag
             threadFlag = True
+            
             try:
                 while threadFlag:
-                    global message
                     recv_message = self.socket.recv(2048).decode()
                     
                     try: message = self.conv_json_data(recv_message)
@@ -213,6 +213,7 @@ class Scapi:
                     
                     if recv_message:
                         self.count = self.count + 1
+                        
                         try: message_type = message["message_type"]
                         except: message_type = "unknown"                        
                             
@@ -223,23 +224,18 @@ class Scapi:
                             role_color  = message["role_color"]
                             message     = message["message"]["content"]
                             
-                            if nickname == username:
-                                fmt = f"{role_color}{username}{badge}:\033[0m {message}"
-                            else:
-                                fmt = f"{role_color}{nickname} (@{username.lower()}){badge}:\033[0m {message}"
+                            if nickname == username: fmt = f"{role_color}{username}{badge}:\033[0m {message}"
+                            else: fmt = f"{role_color}{nickname} (@{username.lower()}){badge}:\033[0m {message}"
                             
                         else:
                             try: fmt     = message["message"]["content"]
-                            except: fmt = message
+                            except: fmt  = message
                         
-                        if self.count > 1:
-                            self.logger(fmt, type=Scapi.LogLevel.INFO)
+                        if self.count > 1: self.logger(fmt, type=Scapi.LogLevel.INFO)
                         
-                        if json:
-                            return recv_message
+                        if json: return recv_message
                         
-                    else:
-                        break
+                    else: break
                         
                     
             except (KeyboardInterrupt, SystemExit):
@@ -252,9 +248,7 @@ class Scapi:
             time.sleep(1)
             self.socket.send(self.token.encode("utf8"))
         
-            
-        def disconnect(self):
-            self.socket.close()
+        def disconnect(self): self.socket.close()
             
         def event(self, func):
             setattr(self, func.__name__, func)
