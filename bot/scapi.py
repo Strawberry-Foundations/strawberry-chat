@@ -200,7 +200,7 @@ class Scapi:
                             self.logger(f"{RED}Message could not be sent", type=Scapi.LogLevel.ERROR)
                             break
         
-        def recv_message(self, json=False, ansi=False):
+        def recv_message(self, json=False):
             global threadFlag
             threadFlag = True
             try:
