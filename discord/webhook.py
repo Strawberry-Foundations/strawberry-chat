@@ -78,17 +78,22 @@ def receive(sock):
                     except: message_type = "unknown"
                     
                     if message_type == "user_message":
+                        print(message)
                         username    = message["username"]
-                        nickname    = message["nickname"]
+                        avatar_url  = message["avatar_url"]
+                        nickname    = message["nickname"] 
                         badge       = badge_handler(message["badge"])
                         role_color  = message["role_color"]
                         message     = message["message"]["content"]
+                        
                         
                         if nickname == username:
                             fmt = f"[{current_time()}] {role_color}{username}{badge}:\033[0m {message}"
                         else:
                             fmt = f"[{current_time()}] {role_color}{nickname} (@{username.lower()}){badge}:\033[0m {message}"
-                            
+                        
+                        if avatar_url == "": avatar_url = "https://cdn.discordapp.com/avatars/1140708630803525723/88767de1e4e9e6f6c29a2e306c85e960.png"
+                        
                         print(fmt)
                         
                     else:
@@ -109,9 +114,10 @@ def receive(sock):
                         timestamp = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
 
                         print(timestamp)
-                        
+                        print(avatar_url)
                         data = {
                             "username" : f"{raw_username}",
+                            "avatar_url": f"{avatar_url}",
                             "embeds": [{
                                 "title": f"{username} {badge}",
                                 "description": f"```{message}```",
@@ -134,7 +140,7 @@ def receive(sock):
             else: break
             
         except Exception as e: 
-            pass
+            print(e)
 
                         
                         
