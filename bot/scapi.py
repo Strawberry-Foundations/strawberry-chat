@@ -274,8 +274,7 @@ class Scapi:
                 cmd = command_registry[self.escape_ansi(command_name)]
                 
                 match self.req_permissions:
-                    case self.PermissionLevel.ALL:
-                        pass
+                    case self.PermissionLevel.ALL: pass
                     
                     case self.PermissionLevel.TRUSTED:
                         if user not in self.trusted_list:
@@ -307,8 +306,7 @@ class Scapi:
                 
                 cmd[0](user, args)
                 
-            else:
-                self.send_message(command_not_found_msg % command_name)
+            else: self.send_message(command_not_found_msg % command_name)
         
         def command_runner(self):
             while True:
