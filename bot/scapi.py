@@ -67,7 +67,7 @@ class Scapi:
             ADMIN   = 2
             OWNER   = 3
             
-        def __init__(self, username: str, token: str, host: str, port: int, enable_user_input: bool = False, print_recv_msg: bool = False):
+        def __init__(self, username: str, token: str, host: str, port: int, enable_user_input: bool = False, print_recv_msg: bool = False, json: bool = True):
             self.socket             = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.username           = username
             self.token              = token
@@ -75,6 +75,7 @@ class Scapi:
             self.port               = port
             self.enable_user_input  = enable_user_input
             self.print_recv_msg     = print_recv_msg
+            self.v2_communication   = json
             
             self.trusted_list       = []
             self.admin_list         = []
