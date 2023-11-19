@@ -41,7 +41,7 @@ base_version    = "0.12.1"
 ext_version     = base_version + "b1"
 version         = "v" + ext_version
 full_version    = ext_version + "-vacakes"
-update_channel  = "dev"
+update_channel  = "canary"
 codename        = "Vanilla Cake"
 authors         = ["Juliandev02"]
 api             = "http://api.strawberryfoundations.xyz/v1/"
@@ -348,10 +348,8 @@ class Scapi:
             time.sleep(0.5)
             if not ready_func is None: ready_func()
             
-            # recv_thread = threading.Thread(target=self.recv_message)
             send_thread = threading.Thread(target=self.send)
             cmd_thread  = threading.Thread(target=self.command_runner)
             
-            # recv_thread.start()
             send_thread.start()
             cmd_thread.start()
