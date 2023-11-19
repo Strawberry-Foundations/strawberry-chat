@@ -85,13 +85,15 @@ def receive(sock):
                         role_color  = message["role_color"]
                         message     = message["message"]["content"]
                         
+                        print(avatar_url)
+                        
                         
                         if nickname == username:
                             fmt = f"[{current_time()}] {role_color}{username}{badge}:\033[0m {message}"
                         else:
                             fmt = f"[{current_time()}] {role_color}{nickname} (@{username.lower()}){badge}:\033[0m {message}"
                         
-                        if avatar_url == "": avatar_url = "https://cdn.discordapp.com/avatars/1140708630803525723/88767de1e4e9e6f6c29a2e306c85e960.png"
+                        if avatar_url == [None]: avatar_url = "https://cdn.discordapp.com/avatars/1140708630803525723/88767de1e4e9e6f6c29a2e306c85e960.png"
                         
                         print(fmt)
                         
