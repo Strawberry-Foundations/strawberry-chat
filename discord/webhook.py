@@ -133,6 +133,7 @@ def receive(sock):
                 except Exception as e:
                     time.sleep(0.05)
                     message         = message["message"]["content"]
+                    print(e)
                         
             else: break
             
