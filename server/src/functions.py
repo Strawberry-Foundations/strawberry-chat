@@ -304,6 +304,21 @@ def userNickname(uname):
     else:
         return uname
 
+# Get user's nickname
+def userAvatarUrl(uname):
+    db = sql.connect(server_dir + "/users.db", check_same_thread=False)
+    c = db.cursor()
+    c.execute('SELECT avatar_url FROM users WHERE username = ?', (uname,))
+    avatar_url = c.fetchone()
+    c.close()
+    
+    if avatar_url[0] is not None: 
+        avatar_url = avatar_url[0]
+        return avatar_url
+    
+    else:
+        return avatar_url
+
 # Check if user is muted
 def isMuted(uname):
     c = func_db.cursor()
