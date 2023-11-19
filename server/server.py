@@ -586,6 +586,7 @@ def broadcast(message, sent_by="", format: StbCom = StbCom.PLAIN):
                                 "nickname": userNickname(sent_by),
                                 "badge": badge,
                                 "role_color": userRoleColor(sent_by),
+                                "avatar_url": userAvatarUrl(sent_by),
                                 "message": {
                                     "content": message
                                 }
