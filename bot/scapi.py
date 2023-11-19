@@ -37,7 +37,7 @@ CYAN = '\033[36m'
 WHITE = '\033[37m'
 
 # Version-specified Variables & important variables
-base_version    = "0.12.0"
+base_version    = "0.12.1"
 ext_version     = base_version + "b1"
 version         = "v" + ext_version
 full_version    = ext_version + "-vacakes"
@@ -319,7 +319,7 @@ class Scapi:
         def command_runner(self):
             while True:
                 try:
-                    recv_message = self.recv_message(json=True)
+                    recv_message = self.recv_message(json=self.v2_communication)
                     
                     try:
                         raw_data = json.loads(recv_message)
