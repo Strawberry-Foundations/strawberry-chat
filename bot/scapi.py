@@ -67,8 +67,8 @@ class Scapi:
             ADMIN   = 2
             OWNER   = 3
             
-        def __init__(self, username, token, host, port, enable_user_input=False, print_recv_msg=False):
-            self.socket        = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        def __init__(self, username: str, token: str, host: str, port: int, enable_user_input: bool = False, print_recv_msg: bool = False):
+            self.socket             = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.username           = username
             self.token              = token
             self.host               = host
