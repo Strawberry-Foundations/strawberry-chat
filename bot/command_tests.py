@@ -28,6 +28,6 @@ def test_command(username: str, args: list):
 
 @Bot.event
 def on_ready():
-    print(f"{Bot.log_msg}{scapi.BLUE}{Bot.username} started successfully!{scapi.RESET}")
+    Bot.logger(f"{scapi.BLUE}{Bot.username} started successfully!{scapi.RESET}", type=Scapi.LogLevel.INFO)
     
 Bot.run(on_ready)
