@@ -84,9 +84,7 @@ def receive(sock):
                         badge       = badge_handler(message["badge"])
                         role_color  = message["role_color"]
                         message     = message["message"]["content"]
-                        
-                        print(avatar_url)
-                        
+                                                
                         
                         if nickname == username:
                             fmt = f"[{current_time()}] {role_color}{username}{badge}:\033[0m {message}"
