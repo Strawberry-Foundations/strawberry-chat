@@ -78,7 +78,6 @@ def receive(sock):
                     except: message_type = "unknown"
                     
                     if message_type == "user_message":
-                        print(message)
                         username    = message["username"]
                         avatar_url  = message["avatar_url"]
                         nickname    = message["nickname"] 
@@ -97,9 +96,9 @@ def receive(sock):
                         print(fmt)
                         
                     else:
-                        message     = message["message"]["content"]                    
+                        message     = message["message"]["content"]    
+                                        
                     count = count + 1
-                    # print(count)
                     
                     if message_type == "user_message" and count > 7 and not username.lower() == "discord":
                         raw_username = username
@@ -110,11 +109,8 @@ def receive(sock):
                         else:
                             username = f"{nickname} (@{username.lower()})"
                         
-                        # timestamp = datetime.datetime.now()
                         timestamp = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
 
-                        print(timestamp)
-                        print(avatar_url)
                         data = {
                             "username" : f"{raw_username}",
                             "avatar_url": f"{avatar_url}",
@@ -131,6 +127,7 @@ def receive(sock):
                         }     
                         
                         requests.post(webhook_url, json = data)
+                        
                     else: pass
                 
                 except Exception as e:
