@@ -84,8 +84,9 @@ class Scapi:
             self.req_permissions    = None
             self.count              = 0
             
-            self.logger(f"{GREEN}Starting scapi.bot version {version}", Scapi.LogLevel.INFO)
             self.log_msg = f"{CYAN + BOLD}{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}  {BLUE}INFO   scapi  -->  {RESET}"
+            
+            self.logger(f"{GREEN}Starting scapi {version}", Scapi.LogLevel.INFO)
         
             
             try:
@@ -94,7 +95,12 @@ class Scapi:
             except: 
                 self.logger(f"{RED}Could not connect to server", Scapi.LogLevel.ERROR)
                 exit()
-    
+                
+        def flag_handler(self, enable_user_input: bool = False, print_recv_msg: bool = False, log_msg: str = None):
+            self.enable_user_input  = enable_user_input
+            self.print_recv_msg     = print_recv_msg
+            self.log_msg            = log_msg or f"{CYAN + BOLD}{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}  {BLUE}INFO   scapi  -->  {RESET}"
+            
         def connect(self):
             self.logger(f"{YELLOW}Connecting to {PURPLE}{self.host}:{self.port} {RESET + YELLOW}...", type=Scapi.LogLevel.INFO)
             self.socket.connect((self.host, self.port))
@@ -102,18 +108,11 @@ class Scapi:
 
         def logger(self, message, type: Enum):
             match type:
-                case Scapi.LogLevel.INFO:
-                    print(f"{CYAN + BOLD}{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}  {BLUE}INFO{BLUE}   scapi  -->  {RESET}{message}{RESET}")            
-                case Scapi.LogLevel.ERROR:
-                    print(f"{CYAN + BOLD}{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}  {RED}ERROR{BLUE}  scapi  -->  {RESET}{message}{RESET}")            
-                case Scapi.LogLevel.MESSAGE:
-                    print(f"{CYAN + BOLD}{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}  {GREEN}MESSAGE{BLUE}    scapi  -->  {RESET}{message}{RESET}")            
+                case Scapi.LogLevel.INFO:    print(f"{self.log_msg}{message}{RESET}")            
+                case Scapi.LogLevel.ERROR:   print(f"{self.log_msg}{message}{RESET}")            
+                case Scapi.LogLevel.MESSAGE: print(f"{self.log_msg}{message}{RESET}")            
             
-        
-        def flag_handler(self, enable_user_input: bool = False, print_recv_msg: bool = False):
-            self.enable_user_input  = enable_user_input
-            self.print_recv_msg     = print_recv_msg
-        
+
         def badge_handler(self, badge):
             if not badge == "":
                 return " [" + badge + "]"
