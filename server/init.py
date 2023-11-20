@@ -39,11 +39,11 @@ class stbexceptions:
 # Init logger
 class LogFormatter(logging.Formatter):
     class Fmt:
-        info     = f"{RESET}[{datetime.datetime.now().strftime('%H:%M')}] {BLUE}[%(levelname)s]{RESET + Colors.RESET}    %(message)s"
-        error    = f"{RESET}[{datetime.datetime.now().strftime('%H:%M')}] {RED}[%(levelname)s]{RESET + Colors.BOLD}   %(message)s"
-        default  = f"{RESET}[{datetime.datetime.now().strftime('%H:%M')}] {BLUE}[%(levelname)s]{RESET + Colors.RESET + Colors.BOLD}   %(message)s"
-        warning  = f"{RESET}[{datetime.datetime.now().strftime('%H:%M')}] {YELLOW}[%(levelname)s]{RESET + Colors.RESET + Colors.BOLD} %(message)s"
-        critical = f"{RESET}[{datetime.datetime.now().strftime('%H:%M')}] {RED}[%(levelname)s]{RESET + Colors.RESET + Colors.BOLD} %(message)s"
+        info     = f"{RESET}[%(asctime)s] {BLUE}[%(levelname)s]{RESET + Colors.RESET}    %(message)s"
+        error    = f"{RESET}[%(asctime)s] {RED}[%(levelname)s]{RESET + Colors.BOLD}   %(message)s"
+        default  = f"{RESET}[%(asctime)s] {BLUE}[%(levelname)s]{RESET + Colors.RESET + Colors.BOLD}   %(message)s"
+        warning  = f"{RESET}[%(asctime)s] {YELLOW}[%(levelname)s]{RESET + Colors.RESET + Colors.BOLD} %(message)s"
+        critical = f"{RESET}[%(asctime)s] {RED}[%(levelname)s]{RESET + Colors.RESET + Colors.BOLD} %(message)s"
 
     FORMATS = {
         logging.DEBUG:    Colors.BOLD + Fmt.default,
@@ -55,7 +55,7 @@ class LogFormatter(logging.Formatter):
 
     def format(self, record):
         log_fmt = Style.RESET_ALL + self.FORMATS.get(record.levelno) + Style.RESET_ALL
-        formatter = logging.Formatter(log_fmt)
+        formatter = logging.Formatter(log_fmt, datefmt='%H:%M')
         return formatter.format(record)
 
 # Print debug error codes
