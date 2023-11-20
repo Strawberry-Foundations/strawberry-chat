@@ -1,3 +1,5 @@
 # 1.8.2
 
 - FIX: Fixed Console Logger prints static time instead of the real time (#63)"
+
+- SCAPI: Full update of Scapi for the legacy release of Scapi 1.0.0 (stbmv1)
