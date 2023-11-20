@@ -180,3 +180,6 @@ client/client
 tokens.json
 server/CHANGELOG_GITHUB.txt
 /.vs
+
+# Proxy
+proxy/config.yml
