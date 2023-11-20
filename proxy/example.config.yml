@@ -1,0 +1,7 @@
+proxy: stbm
+proxy_version: 2
+proxy_mode: srv-client # Possible values: srv-client, srv-only, client-only
+proxy_port: 4020
+
+debug: True # Warning: TLS will get disabled if you set this to True, used for development purposes only
+debug_port: 4021
