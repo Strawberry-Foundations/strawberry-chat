@@ -18,16 +18,16 @@ In addition, Strawberry Chat is open source. This means that everyone can contri
 
 ## [JSON Communication](https://github.com/Strawberry-Foundations/strawberry-chat/tree/json-communication)
 Strawberry Chat is currently being rewritten so that we use JSON as the communication format. There are therefore compatibility problems between the server and client.
-|  | v1.7.0 ![](https://img.shields.io/badge/Deprecated-red) | v1.8.0 ![](https://img.shields.io/badge/OldStable-green) | v1.8.1 ![](https://img.shields.io/badge/Stable-success) | v1.9.0 ![](https://img.shields.io/badge/Canary-yellow) |
-| -------------------------------------------------------------- | ------ | ------ | ------ | ------ |
-| ![](https://img.shields.io/badge/Standard-<=v2.4.0-success)    | ✅    | ✅     | ✅    | ❌     |
-| ![](https://img.shields.io/badge/Standard-v2.5.0-success)      | ❌    | ❌     | ❌    | ✅     |
-| ![](https://img.shields.io/badge/Standard->=v2.5.1-success)    |✅ (CM)| ✅ (CM)|✅ (CM)| ✅     |
-| ![](https://img.shields.io/badge/Lite-<=v1.0.1-success)        | ✅    | ✅     | ✅    | ❌     |
-| ![](https://img.shields.io/badge/Lite->=v1.1.0-success)        | ❌    | ❌     | ❌    | ✅     |
-| ![](https://img.shields.io/badge/Nano-<=v1.0.1-success)        | ✅    | ✅     | ✅    | ❌     |
-| ![](https://img.shields.io/badge/Nano->=v1.1.0-success)        | ❌    | ❌     | ❌    | ✅     |
-| ![](https://img.shields.io/badge/Berryjuice--pico-success)     | ✅    | ✅     | ✅    | ❌     |
+|                     | v1.8.0 - v1.8.1 ![](https://img.shields.io/badge/Legacy-green) | v1.8.2 ![](https://img.shields.io/badge/Stable-success) | v1.9.0 ![](https://img.shields.io/badge/Canary-yellow) |
+|---------------------|----------------------------------------------------------------|---------------------------------------------------------|--------------------------------------------------------|
+| Standard `<=2.4.0`  | ✅                                                            | ✅                                                      | ✅                                                    | 
+| Standard `v2.5.0`   | ❌                                                            | ❌                                                      | ❌                                                    | 
+| Standard `>=v2.5.1` | ✅ (CM)                                                       | ✅ (CM)                                                 | ✅ (CM)                                               | 
+| Lite `<=v1.0.1`     | ✅                                                            | ✅                                                      | ✅                                                    | 
+| Lite `>=v1.1.0`     | ❌                                                            | ❌                                                      | ❌                                                    | 
+| Nano `<=v1.0.1`     | ✅                                                            | ✅                                                      | ✅                                                    | 
+| Nano `>=v1.1.0`     | ❌                                                            | ❌                                                      | ❌                                                    | 
+| Berryjuice-pico     | ✅                                                            | ✅                                                      | ✅                                                    | 
 
 <br>
 
