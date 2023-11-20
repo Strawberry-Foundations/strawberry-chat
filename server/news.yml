@@ -54,4 +54,8 @@ news:
     - FIX: Fixed showing 'None' as main badge in Memberlist when no main badge is set (#47)\n
     - UPDATE: Scapi has been updated to v0.11.0 with some improvements"
 
-versions: [1.6.0, 1.7.0, 1.8.0, 1.8.1]
+  1.8.2:
+    text: "
+    - FIX: Fixed Console Logger prints static time instead of the real time (#63)"
+
+versions: [1.6.0, 1.7.0, 1.8.0, 1.8.1, 1.8.2]
