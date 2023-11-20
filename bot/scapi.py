@@ -36,8 +36,8 @@ CYAN = '\033[36m'
 WHITE = '\033[37m'
 
 # Version-specified Variables & important variables
-base_version    = "0.11.0"
-ext_version     = base_version + "b1"
+base_version    = "1.0.0"
+ext_version     = base_version + "_stbmv1"
 version         = "v" + ext_version
 full_version    = ext_version + "-vacakes"
 update_channel  = "dev"
@@ -66,7 +66,7 @@ class Scapi:
             ADMIN   = 2
             OWNER   = 3
             
-        def __init__(self, username, token, host, port, enable_user_input=False, print_recv_msg=False):
+        def __init__(self, username: str, token: str, host: str, port: int, enable_user_input: bool = False, print_recv_msg: bool = False):
             self.socket        = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.username           = username
             self.token              = token
@@ -83,8 +83,9 @@ class Scapi:
             self.req_permissions    = None
             self.count              = 0
             
-            self.logger(f"{GREEN}Starting scapi.bot version {version}", Scapi.LogLevel.INFO)
-            self.log_msg = f"{CYAN + BOLD}{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}  {BLUE}INFO   scapi  -->  {RESET}"
+            self.log_msg = f"{CYAN + BOLD}{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}  {BLUE}%s   scapi  -->  {RESET}"
+            
+            self.logger(f"{GREEN}Starting scapi {version}", Scapi.LogLevel.INFO)
         
             
             try:
@@ -93,7 +94,12 @@ class Scapi:
             except: 
                 self.logger(f"{RED}Could not connect to server", Scapi.LogLevel.ERROR)
                 exit()
-    
+                
+        def flag_handler(self, enable_user_input: bool = False, print_recv_msg: bool = False, log_msg: str = None):
+            self.enable_user_input  = enable_user_input
+            self.print_recv_msg     = print_recv_msg
+            self.log_msg            = log_msg or f"{CYAN + BOLD}{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}  {BLUE}%s   scapi  -->  {RESET}"
+            
         def connect(self):
             self.logger(f"{YELLOW}Connecting to {PURPLE}{self.host}:{self.port} {RESET + YELLOW}...", type=Scapi.LogLevel.INFO)
             self.socket.connect((self.host, self.port))
@@ -102,16 +108,16 @@ class Scapi:
         def logger(self, message, type: Enum):
             match type:
                 case Scapi.LogLevel.INFO:
-                    print(f"{CYAN + BOLD}{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}  {BLUE}INFO{BLUE}   scapi  -->  {RESET}{message}{RESET}")            
+                    log_level = "INFO"
+                    print(f"{self.log_msg % log_level}{message}{RESET}")      
+                          
                 case Scapi.LogLevel.ERROR:
-                    print(f"{CYAN + BOLD}{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}  {RED}ERROR{BLUE}  scapi  -->  {RESET}{message}{RESET}")            
+                    log_level = "ERROR"
+                    print(f"{self.log_msg % log_level}{message}{RESET}")     
+                     
                 case Scapi.LogLevel.MESSAGE:
-                    print(f"{CYAN + BOLD}{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}  {GREEN}MESSAGE{BLUE}    scapi  -->  {RESET}{message}{RESET}")            
-            
-        
-        def flag_handler(self, enable_user_input: bool = False, print_recv_msg: bool = False):
-            self.enable_user_input  = enable_user_input
-            self.print_recv_msg     = print_recv_msg
+                    log_level = "MESSAGE"
+                    print(f"{self.log_msg % log_level}{message}{RESET}")   
             
         def permission_handler(self, trusted_list: list = [], admin_list: list = [], owner: str = None, custom_list: list = []):
             self.trusted_list       = trusted_list
@@ -187,25 +193,18 @@ class Scapi:
                     if message:
                         self.count = self.count + 1
                 
-                        if self.count > 3:
-                            self.logger(message, type=Scapi.LogLevel.INFO)
+                        if self.count > 3: self.logger(message, type=Scapi.LogLevel.INFO)
                         
                         if raw == False:
-                            if ansi == True:
-                                return message
-                            
-                            elif ansi == False:
-                                return self.escape_ansi(message)
-                            
-                            else: 
-                                return message
+                            if ansi == True: return message
+                            elif ansi == False: return self.escape_ansi(message)
+                            else: return message
                         
                         elif raw == True:
                             index = message.find(":")
                             msg_splitted = message[index + 2:]
                             return self.escape_ansi(msg_splitted)
-                    else:
-                        break
+                    else: break
                         
                     
             except (KeyboardInterrupt, SystemExit):
@@ -217,7 +216,6 @@ class Scapi:
             self.socket.send(self.username.encode("utf8"))
             time.sleep(1)
             self.socket.send(self.token.encode("utf8"))
-        
             
         def disconnect(self):
             self.socket.close()
@@ -228,13 +226,10 @@ class Scapi:
         
         def command(self, name, arg_count: int = 0, required_permissions=PermissionLevel.ALL, custom_permissions: list = None) -> None:
             def decorator(func):
-                if custom_permissions is None:
-                    self.custom_list = self.custom_list
-                else:
-                    self.custom_list = custom_permissions
+                if custom_permissions is None: self.custom_list = self.custom_list
+                else: self.custom_list = custom_permissions
                     
                 self.req_permissions = required_permissions
-                
                 
                 command_registry[name] = (func, arg_count, required_permissions)
                 return func
@@ -246,8 +241,7 @@ class Scapi:
                 cmd = command_registry[self.escape_ansi(command_name)]
                 
                 match self.req_permissions:
-                    case self.PermissionLevel.ALL:
-                        pass
+                    case self.PermissionLevel.ALL: pass
                     
                     case self.PermissionLevel.TRUSTED:
                         if user not in self.trusted_list:
@@ -279,8 +273,7 @@ class Scapi:
                 
                 cmd[0](user, args)
                 
-            else:
-                self.send_message(command_not_found_msg % command_name)
+            else: self.send_message(command_not_found_msg % command_name)
         
         def command_runner(self):
             while True:
@@ -305,15 +298,11 @@ class Scapi:
             
             
         def run(self, ready_func = None):
-            if self.enable_user_input is True:
-                self.logger(f"{YELLOW}Flag {GREEN + BOLD}'enableUserInput'{RESET + YELLOW} is enabled", type=Scapi.LogLevel.INFO)
-                
-            if self.print_recv_msg is True:
-                self.logger(f"{YELLOW}Flag {GREEN + BOLD}'printReceivedMessagesToTerminal'{RESET + YELLOW} is enabled", type=Scapi.LogLevel.INFO)
+            if self.enable_user_input is True: self.logger(f"{YELLOW}Flag {GREEN + BOLD}'enableUserInput'{RESET + YELLOW} is enabled", type=Scapi.LogLevel.INFO)
+            if self.print_recv_msg is True: self.logger(f"{YELLOW}Flag {GREEN + BOLD}'printReceivedMessagesToTerminal'{RESET + YELLOW} is enabled", type=Scapi.LogLevel.INFO)
                 
             time.sleep(0.5)
-            if not ready_func is None:
-                ready_func()
+            if not ready_func is None: ready_func()
             
             recv_thread = threading.Thread(target=self.recv_message)
             send_thread = threading.Thread(target=self.send)
