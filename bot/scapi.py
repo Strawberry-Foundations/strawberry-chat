@@ -36,7 +36,7 @@ CYAN = '\033[36m'
 WHITE = '\033[37m'
 
 # Version-specified Variables & important variables
-base_version    = "1.0.0"
+base_version    = "1.0.1"
 ext_version     = base_version + "_stbmv1"
 version         = "v" + ext_version
 full_version    = ext_version + "-vacakes"
@@ -83,7 +83,7 @@ class Scapi:
             self.req_permissions    = None
             self.count              = 0
             
-            self.log_msg = f"{CYAN + BOLD}{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}  {BLUE}%s   scapi  -->  {RESET}"
+            self.log_msg = f"{CYAN + BOLD}{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}  %sscapi  -->  {RESET}"
             
             self.logger(f"{GREEN}Starting scapi {version}", Scapi.LogLevel.INFO)
         
@@ -98,7 +98,7 @@ class Scapi:
         def flag_handler(self, enable_user_input: bool = False, print_recv_msg: bool = False, log_msg: str = None):
             self.enable_user_input  = enable_user_input
             self.print_recv_msg     = print_recv_msg
-            self.log_msg            = log_msg or f"{CYAN + BOLD}{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}  {BLUE}%s   scapi  -->  {RESET}"
+            self.log_msg            = log_msg or f"{CYAN + BOLD}{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}  %sscapi  -->  {RESET}"
             
         def connect(self):
             self.logger(f"{YELLOW}Connecting to {PURPLE}{self.host}:{self.port} {RESET + YELLOW}...", type=Scapi.LogLevel.INFO)
@@ -108,15 +108,15 @@ class Scapi:
         def logger(self, message, type: Enum):
             match type:
                 case Scapi.LogLevel.INFO:
-                    log_level = "INFO"
+                    log_level = f"{BLUE}INFO   "
                     print(f"{self.log_msg % log_level}{message}{RESET}")      
                           
                 case Scapi.LogLevel.ERROR:
-                    log_level = "ERROR"
+                    log_level = f"{RED}ERROR  "
                     print(f"{self.log_msg % log_level}{message}{RESET}")     
                      
                 case Scapi.LogLevel.MESSAGE:
-                    log_level = "MESSAGE"
+                    log_level = f"{GREEN}MESSAGE "
                     print(f"{self.log_msg % log_level}{message}{RESET}")   
             
         def permission_handler(self, trusted_list: list = [], admin_list: list = [], owner: str = None, custom_list: list = []):
