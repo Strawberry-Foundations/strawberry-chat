@@ -179,3 +179,4 @@ client/client.go
 client/client
 tokens.json
 server/CHANGELOG_GITHUB.txt
+/.vs
