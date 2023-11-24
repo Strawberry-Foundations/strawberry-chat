@@ -64,6 +64,7 @@ lang            = data['language']
 online_mode     = data['online_mode']
 autoserver      = data['autoserver']['enabled']
 autoserver_id   = data['autoserver']['server_id']
+det_same_sysmsg = data['detect_same_system_messages']
 
 langs           = ["de_DE", "en_US"]
 verified_list   = []
@@ -371,15 +372,15 @@ def receive(sock):
                             message     = message["message"]["content"]
                             print(f"[{current_time()}] {message}")
                             
-                            
-                            _message = str(message)
-                            _message = _message[:20]
-                            
-                            if _message == _prev_message:
-                                delete_last_line()
-                            
-                            _prev_message = _message
-                            _prev_message = _prev_message[:30]
+                            if det_same_sysmsg:
+                                _message = str(message)
+                                _message = _message[:20]
+                                
+                                if _message == _prev_message:
+                                    delete_last_line()
+                                
+                                _prev_message = _message
+                                _prev_message = _prev_message[:30]
                     
                     except Exception as e:
                         time.sleep(0.05)
