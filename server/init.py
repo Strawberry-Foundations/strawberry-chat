@@ -127,6 +127,7 @@ port                    = config['server']['port']
 
 enable_messages         = config['flags']['enable_messages']
 max_message_length      = config['flags']['max_message_length']
+max_users               = config['flags']['max_users']
 debug_mode              = config['flags']['debug_mode']
 online_mode             = config['flags']['online_mode']
 update_channel          = config['server']['update_channel']
