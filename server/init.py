@@ -51,6 +51,10 @@ class Queue:
     def show(self):
         for pos, user in enumerate(self.queue, start=1):
             print(f"#{pos}: {user}")
+            
+    def position_user(self, user):
+        try: return self.queue.index(user) + 1
+        except: return None
 
 # StbTypes, required for the debug_logger
 class StbTypes(Enum):
