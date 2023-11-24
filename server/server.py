@@ -462,11 +462,13 @@ def clientLogin(client):
     logcur = db.cursor()
 
     # Send a welcome message
-    send(f"{Colors.BOLD}Welcome to Strawberry Chat!{Colors.RESET}\n{Colors.BOLD}New here? Type '{MAGENTA}Register{RESET}' to register! You want to leave? Type '{MAGENTA}Exit{RESET}' {Colors.RESET}")
+    send(f"{Colors.BOLD}Welcome to Strawberry Chat!{Colors.RESET}")
+    time.sleep(0.1)
+    send(f"{Colors.BOLD}New here? Type '{MAGENTA}Register{RESET}' to register! You want to leave? Type '{MAGENTA}Exit{RESET}' {Colors.RESET}")
     
     while not logged_in:
         # Ask for the username
-        time.sleep(0.1)
+        time.sleep(0.05)
         send(f"{GREEN + Colors.BOLD}Username: {RESET + Colors.RESET}")
         
         # Receive the ansi-escaped username and strip all new lines in case
@@ -485,7 +487,7 @@ def clientLogin(client):
         elif username.lower() == "sid":
             strawberryIdLogin(client)
             
-        time.sleep(0.01)
+        time.sleep(0.05)
         
         # Ask for the password
         send(f"{GREEN + Colors.BOLD}Password: {RESET + Colors.RESET}")
