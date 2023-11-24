@@ -1,6 +1,6 @@
 # v1.6.0
 - NEW: AFK user list command
-- NEW: Sending messages in Afk status is now not possible
+- NEW: Sending messages in Afk status is no longer possible
 - NEW: AFK status stays even when you leave the chat
 - NEW: Kickall command kicking all online users
 - NEW: Changed Chat Name from Salware Chat to Strawberry Chat
