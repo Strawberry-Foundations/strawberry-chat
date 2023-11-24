@@ -3,6 +3,7 @@
 - IMPORTANT: New communication system (json) (See https://developers.strawberryfoundations.xyz/json-communication/introduction)
 
 - NEW: Added ClientSender Object Class for more Python OOB & better Server message handling
+- NEW: Added StopWatch Class for counting how long you're in the queue
 - NEW: Added maximal user feature (configurable) (#71)
 - NEW: Addeds queue so users can wait until a "slot" is free (#75)
 - NEW: Added some basic maximal user counts for online command, memberlist command, ... (#76)
