@@ -30,6 +30,15 @@ class ClientSender:
         }
         
         self.socket.send(self.send_json(json_builder).encode('utf8'))
+    
+    def close(self, del_addresses: bool = False):
+        self.socket.close()
+        if del_addresses:
+            del addresses[self.socket]
+            
+        exit()
+        
+        
 
 # StbTypes, required for the debug_logger
 class StbTypes(Enum):
