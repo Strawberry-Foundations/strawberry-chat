@@ -126,6 +126,7 @@ ipaddr                  = config['server']['address']
 port                    = config['server']['port']
 
 enable_messages         = config['flags']['enable_messages']
+enable_queue            = config['flags']['enable_queue']
 max_message_length      = config['flags']['max_message_length']
 max_users               = config['flags']['max_users']
 debug_mode              = config['flags']['debug_mode']
