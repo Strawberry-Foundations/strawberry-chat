@@ -228,10 +228,15 @@ def clientThread(client):
         
             # Global Command Executor
             if message.startswith("/"):
-                message = message[1:]
-                args = message.split()
-                cmd = args[0]
-                args = args[1:]
+                try:
+                    message = message[1:]
+                    args = message.split()
+                    cmd = args[0]
+                    args = args[1:]
+                    
+                except: 
+                    send(f"{RED}Not enough arguments! Please pass an valid command!{RESET}")
+                    continue
                 
                 try:
                     c.execute('SELECT role FROM users WHERE username = ?', (user,))
@@ -481,14 +486,30 @@ def clientLogin(client):
                 sender.close(del_address=True, call_exit=False)
                 return "CltExit"
             
-            if len(users) >= max_users:
-                sender.send(f"{YELLOW + Colors.BOLD}Sorry, Server is full!{RESET + Colors.RESET}")
-                sender.close(del_address=True, call_exit=True)
-            
+            if not enable_queue:
+                if len(users) >= max_users:
+                    sender.send(f"{YELLOW + Colors.BOLD}Sorry, Server is full!{RESET + Colors.RESET}")
+                    sender.close(del_address=True, call_exit=True)
+                
             # If the stored password from the database matches with the entered password, fetch the username and login the user
             if verify_password(stored_password, password):
                 login_cur.execute('SELECT username FROM users WHERE username = ?', (username,))
                 result = login_cur.fetchone()
+                
+                if enable_queue:
+                    if len(users) >= max_users:
+                        sender.send(f"{YELLOW + Colors.BOLD}You're in the queue. Please wait until one slot is free...{RESET + Colors.RESET}")
+                    
+                        while True:
+                            if not len(users) >= max_users:
+                                if result is not None:
+                                    username = result[0]
+                                    logged_in = True    
+                                    return username
+                            else:
+                                pass
+                            
+                        
                 
                 # If username exists, login the user
                 if result is not None:
