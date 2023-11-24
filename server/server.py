@@ -148,7 +148,7 @@ def clientThread(client):
             onlineUsersStr = f"are {onlineUsersLen} users"
             
         time.sleep(0.05)
-        send(f"""{CYAN + Colors.BOLD}Currently there {onlineUsersStr}/{max_users} online. For help use /help{RESET + Colors.RESET}\n{news_text}""")
+        send(f"""{CYAN + Colors.BOLD}Currently there {onlineUsersStr} online. For help use /help{RESET + Colors.RESET}\n{news_text}""")
         
 
     except Exception as e:
