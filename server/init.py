@@ -4,6 +4,7 @@ import requests
 import logging
 import datetime
 import json
+import time
 
 from enum import Enum
 from yaml import SafeLoader
@@ -55,6 +56,29 @@ class Queue:
     def position_user(self, user):
         try: return self.queue.index(user) + 1
         except Exception as e: print(e)
+        
+class Stopwatch:
+    def __init__(self):
+        self.start_time = None
+        self.running = False
+
+    def start(self):
+        if not self.running:
+            self.start_time = time.time()
+            self.running = True
+            
+    def elapsed_time(self):
+        elapsed_time = time.time() - self.start_time
+        return int(elapsed_time)
+
+    def stop(self):
+        if self.running:
+            elapsed_time = time.time() - self.start_time
+            self.running = False
+
+    def reset(self):
+        self.start_time = None
+        self.running = False
 
 # StbTypes, required for the debug_logger
 class StbTypes(Enum):
