@@ -6,7 +6,7 @@ import requests
 from src.colors import *
 from src.db import Database
 
-from init import server_dir, users, config, online_mode, global_ip
+from init import server_dir, users, config, online_mode, global_ip, max_users
 from src.vars import api
 from src.functions import memberListNickname, memberListBadge, isOnline
 
@@ -58,7 +58,7 @@ def memberlist_command(socket: socket.socket, username: str, args: list, send):
     
     onlineUsersLen2 = len([user for user in sorted(users.values())])
                 
-    send(f"""{CYAN +  Colors.UNDERLINE + Colors.BOLD}{verified_txt}{config['server']['name'].upper()} ({membersLen} Members, {onlineUsersLen2} Online){RESET + Colors.RESET}
+    send(f"""{CYAN +  Colors.UNDERLINE + Colors.BOLD}{verified_txt}{config['server']['name'].upper()} ({membersLen} Members, {onlineUsersLen2}/{max_users} Online){RESET + Colors.RESET}
         {Colors.BOLD}->{Colors.RESET} {RED}Administrators ({admins_len}){RESET}
            {LIGHTRED_EX}{admins}{RESET}
         
