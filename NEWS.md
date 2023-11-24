@@ -59,3 +59,4 @@
 - NEW: Improved and complete new communication system for a better user experience
 - NEW: We added a new configuration for server admins, to configure the maximal amount of logged in users!
 - NEW: We also added a queue system for users, so when the server is full, you'll join the queue ;)
+Have a look at https://developers.strawberryfoundations.xyz/ for more documentation about Strawberry Chat :)
