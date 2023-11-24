@@ -462,8 +462,7 @@ def clientLogin(client):
     logcur = db.cursor()
 
     # Send a welcome message
-    send(f"{Colors.BOLD}Welcome to Strawberry Chat!{Colors.RESET}")
-    send(f"{Colors.BOLD}New here? Type '{MAGENTA}Register{RESET}' to register! You want to leave? Type '{MAGENTA}Exit{RESET}' {Colors.RESET}")
+    send(f"{Colors.BOLD}Welcome to Strawberry Chat!{Colors.RESET}\n{Colors.BOLD}New here? Type '{MAGENTA}Register{RESET}' to register! You want to leave? Type '{MAGENTA}Exit{RESET}' {Colors.RESET}")
     
     while not logged_in:
         # Ask for the username
