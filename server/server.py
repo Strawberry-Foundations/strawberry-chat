@@ -509,7 +509,7 @@ def clientLogin(client):
                         
                         while True:
                             sender.send(f"{YELLOW + Colors.BOLD}You're currently at position {queue.position_user(_username)} in the queue.. Time past: {stopwatch.elapsed_time()}s Please wait until one slot is free...{RESET + Colors.RESET}")
-                            time.sleep(5)
+                            time.sleep(1)
                             
                             if not len(users) >= max_users:
                                 if queue.position_user(_username) == 1:
