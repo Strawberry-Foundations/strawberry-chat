@@ -1,6 +1,6 @@
 # 1.9.0
 
-- IMPORTANT: New communication system (json) (See https://strawberryfoundations.mintlify.app/json-communication/introduction)
+- IMPORTANT: New communication system (json) (See https://developers.strawberryfoundations.xyz/json-communication/introduction)
 
 - NEW:
 
