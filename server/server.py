@@ -465,15 +465,14 @@ def clientLogin(client):
         # Receive the ansi-escaped username and strip all new lines in case
         username = escape_ansi(client.recv(2048).decode("utf8")).strip().rstrip()
         
-        # Check if the "username" is register, if yes, go to the register form
+        # Check if username is "register", "exit" or "sid" 
         if username.lower() == "register":
             clientRegister(client)
-        
-        # Check if the "username" is exit, if yes, exit the login process
+            
         elif username.lower() == "exit":
             client.close()
             exit()
-        
+            
         elif username.lower() == "sid":
             strawberryIdLogin(client)
             
@@ -483,8 +482,7 @@ def clientLogin(client):
         sender.send(f"{GREEN + Colors.BOLD}Password: {RESET + Colors.RESET}")
         
         # Receive the ansi-escaped password and strip all new lines in case
-        password = escape_ansi(client.recv(2048).decode("utf8"))
-        password = password.strip("\n")
+        password = escape_ansi(client.recv(2048).decode("utf8")).strip("\n").rstrip()
         
         # Select the password from the database and fetch it 
         login_cur.execute("SELECT password, account_enabled FROM users WHERE username = ?", (username,))
