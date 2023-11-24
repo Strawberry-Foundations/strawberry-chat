@@ -41,3 +41,20 @@
 - NEW: Reworked command system
 - FIX: Fixed duplicated code which led to formatting errors
 -> For more information visit https://github.com/orgs/Strawberry-Foundations/projects/1/views/1
+
+# 1.8.1:
+- NEW: Improved kick command with leave message
+- NEW: Improved Discord Bridge
+- FIX: Fixed Bad File Descriptor when logging out (#49)
+- FIX: Fixed 'Sometimes logs get spammed with empty messages after a user connected/disconnected' (#39)
+- FIX: Completly (hopefully) fixed broken formatting of log messages in console (#45)
+- FIX: Fixed showing 'None' as main badge in Memberlist when no main badge is set (#47)
+- UPDATE: Scapi has been updated to v0.11.0 with some improvements
+
+# 1.8.2
+- FIX: Fixed Console Logger prints static time instead of the real time (#63)
+- SCAPI: Full update of Scapi for the legacy release of Scapi 1.0.0 (stbmv1)
+
+# 1.9.0:
+- NEW: New communication system for a better user experience
+- NEW: Added maximal user configuration & configurable queue
