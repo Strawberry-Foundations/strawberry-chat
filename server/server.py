@@ -496,26 +496,28 @@ def clientLogin(client):
                 login_cur.execute('SELECT username FROM users WHERE username = ?', (username,))
                 result = login_cur.fetchone()
                 
+                _username = result[0]
+                
                 if enable_queue:
                     if len(users) >= max_users:
                         
-                        queue.add(result)
-                        log.info(f"{result[0]} ({addresses[client][0]}) is now in the queue")
-                        
-                        # queue.show()
-                        # print(queue.queue[0])
-                        
-                        sender.send(f"{YELLOW + Colors.BOLD}You're currently at position {queue.position_user(result)} in the queue.. Please wait until one slot is free...{RESET + Colors.RESET}")
-                        # _input = escape_ansi(client.recv(2048).decode("utf8")).strip().rstrip()
-                        
+                        queue.add(_username)
+                        log.info(f"{_username} ({addresses[client][0]}) is now in the queue")
+
                         while True:
+                            sender.send(f"{YELLOW + Colors.BOLD}You're currently at position {queue.position_user(_username)} in the queue.. Please wait until one slot is free...{RESET + Colors.RESET}")
+                            time.sleep(5)
+                            
                             if not len(users) >= max_users:
-                                if queue.position_user(result[0]) == 1:
+                                if queue.position_user(_username) == 1:
                                     if result is not None:
-                                        log.info(f"{result[0]} ({addresses[client][0]}) left the queue")
-                                        username = result[0]
-                                        logged_in = True    
+                                        log.info(f"{_username} ({addresses[client][0]}) left the queue")
+                                        queue.remove()
+                                        username = _username
+                                        logged_in = True
+                                        sender.send(f"{GREEN + Colors.BOLD}You've left the queue and are now logged in. Have fun!{RESET + Colors.RESET}")
                                         return username
+                                    
                                 else: pass
                             else: pass
                             
