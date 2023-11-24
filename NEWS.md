@@ -57,4 +57,5 @@
 
 # 1.9.0:
 - NEW: New communication system for a better user experience
-- NEW: Added maximal user configuration & configurable queue
+- NEW: We added a new configuration for server admins, to configure the maximal amount of logged in users!
+- NEW: We also added a queue system for users, so when the server is full, you'll join the queue ;)
