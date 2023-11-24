@@ -61,7 +61,7 @@ news:
 
   1.9.0:
     text: "
-    - NEW: New communication system for a better user experience\n
+    - NEW: Improved and complete new communication system for a better user experience\n
     - NEW: We added a new configuration for server admins, to configure the maximal amount\n        of logged in users!\n
     - NEW: We also added a queue system for users, so when the server is full, you'll join the queue ;)"
 

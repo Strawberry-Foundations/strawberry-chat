@@ -56,6 +56,6 @@
 - SCAPI: Full update of Scapi for the legacy release of Scapi 1.0.0 (stbmv1)
 
 # 1.9.0:
-- NEW: New communication system for a better user experience
+- NEW: Improved and complete new communication system for a better user experience
 - NEW: We added a new configuration for server admins, to configure the maximal amount of logged in users!
 - NEW: We also added a queue system for users, so when the server is full, you'll join the queue ;)
