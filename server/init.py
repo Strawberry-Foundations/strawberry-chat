@@ -41,10 +41,10 @@ class Queue:
     def __init__(self):
         self.queue = []
         
-    def add_user(self, user):
+    def add(self, user):
         self.queue.append(user)
         
-    def remove_user(self):
+    def remove(self):
         if self.queue: return self.queue.pop(0)
         else: return None
         
