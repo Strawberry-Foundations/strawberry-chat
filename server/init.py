@@ -54,7 +54,7 @@ class Queue:
             
     def position_user(self, user):
         try: return self.queue.index(user) + 1
-        except: return None
+        except Exception as e: print(e)
 
 # StbTypes, required for the debug_logger
 class StbTypes(Enum):
