@@ -446,6 +446,7 @@ The client login function for logging into the chat.
 This piece of code is well commented so that you understand what almost every line does.
 """
 def clientLogin(client):
+    sender = ClientSender(client)
     def send(message):
         json_builder = {
             "message_type": StbCom.SYS_MSG,
@@ -456,17 +457,18 @@ def clientLogin(client):
         
         client.send(send_json(json_builder).encode('utf8'))
     
+    
     global db
     global logcur
     logged_in = False
     logcur = db.cursor()
     # Send a welcome message
     
-    welcome_message = f"{Colors.BOLD}Welcome to Strawberry Chat!{Colors.RESET}"
+    welcome_message_base = f"{Colors.BOLD}Welcome to Strawberry Chat!{Colors.RESET}"
+    welcome_message_ext  = f"{Colors.BOLD}New here? Type '{MAGENTA}Register{RESET}' to register! You want to leave? Type '{MAGENTA}Exit{RESET}' {Colors.RESET}"
     
-    send(welcome_message.strip("\n").rstrip())
-    time.sleep(0.1)
-    send(f"{Colors.BOLD}New here? Type '{MAGENTA}Register{RESET}' to register! You want to leave? Type '{MAGENTA}Exit{RESET}' {Colors.RESET}")
+    sender.send(welcome_message_base.strip("\n").rstrip())
+    sender.send(welcome_message_ext.strip("\n").rstrip())
     
     while not logged_in:
         # Ask for the username
