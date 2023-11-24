@@ -61,6 +61,6 @@
 - NEW: We also added a queue system for users, so when the server is full, you'll join the queue ;)
 - NEW: Added experimental user avatars for discord bridge and soon maybe Strawberry Network
 - FIX: Fixed When using Ctrl + C in client, the server will crash (BrokenPipe) (#1)
-- FIX: We have fixed some general bugs that we didn't notice. Read changelog for more information
+- FIX: We have fixed some general bugs that we didn't notice. Read changelog for more information (#63, #72, #70)
 - ADMIN: We added a new command for server admins to configure the server or just show the current configurations!
 Have a look at https://developers.strawberryfoundations.xyz/ for more documentation about Strawberry Chat :)
