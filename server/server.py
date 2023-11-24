@@ -643,7 +643,7 @@ def server_commands(socket):
         elif command == "about":
             print(f"""  {GREEN + Colors.UNDERLINE + Colors.BOLD}About {chat_name}{RESET + Colors.RESET}
   {BLUE + Colors.BOLD}Thank you for using {chat_name}!{RESET}
-  {BLUE + Colors.BOLD}Version: {RESET}{short_ver} {codename} ({server_edition})
+  {BLUE + Colors.BOLD}Version: {RESET}{short_ver} {codename} ({server_edition}) ({ext_ver})
   {BLUE + Colors.BOLD}Author: {RESET}{", ".join(authors)}{RESET + Colors.RESET}""")
             
         elif command == "exit":
