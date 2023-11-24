@@ -69,7 +69,7 @@ langs           = ["de_DE", "en_US"]
 verified_list   = []
 
 api             = "https://api.strawberryfoundations.xyz/v1/"
-ver             = "2.5.1"
+ver             = "2.5.2"
 author          = "Juliandev02"
 use_sys_argv    = False
 experimental_debug_mode = False
@@ -318,6 +318,8 @@ def receive(sock):
     
     interrupt_counter = 0
     retry_limit = 4
+    _prev_message = None
+    experimental_debug_mode = True
     
     if compatibility_mode: 
             while threadFlag:
@@ -362,19 +364,32 @@ def receive(sock):
                             else:
                                 fmt = f"[{current_time()}] {role_color}{nickname} (@{username.lower()}){badge}:{CRESET} {message}"
                                 # fmt = f"{time_fmt} {role_color}{nickname} (@{username.lower()}){badge}:{CRESET} {message}"
-                                
+                            
                             print(fmt)
                             
                         else:
                             message     = message["message"]["content"]
-                            # print(f"{time_fmt} {message}")
                             print(f"[{current_time()}] {message}")
+                            
+                            
+                            _message = str(message)
+                            _message = _message[:20]
+                            
+                            if _message == _prev_message:
+                                delete_last_line()
+                            
+                            _prev_message = _message
+                            _prev_message = _prev_message[:30]
                     
                     except Exception as e:
                         time.sleep(0.05)
                         message         = message["message"]["content"]
-                        # print(f"{time_fmt} {message}")
                         print(f"[{current_time()}] {message}")
+                        
+                        if experimental_debug_mode:
+                            print(f"{Fore.RED + BOLD}{Str[lang]['ConnectionInterrupt']}{Fore.RESET + CRESET}")
+                            print(e)
+                        
                             
                 else:
                     break
@@ -382,11 +397,12 @@ def receive(sock):
             except Exception as e:
                 interrupt_counter += 1 
                 
-                if experimental_debug_mode: print(f"{Fore.RED + BOLD}{Str[lang]['ConnectionInterrupt']}{Fore.RESET + CRESET}")
+                if experimental_debug_mode:
+                    print(f"{Fore.RED + BOLD}{Str[lang]['ConnectionInterrupt']}{Fore.RESET + CRESET}")
+                    print(e)
                 
                 if interrupt_counter > retry_limit: 
                     print(f"{Fore.RED + BOLD}{Str[lang]['CheckCompatibilityMode']}{Fore.RESET + CRESET}")
-                    # print(retry_limit)
                     retry_limit += 4
                     
                 time.sleep(0.5)
