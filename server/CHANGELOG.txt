@@ -8,6 +8,7 @@
 - MODULARITY: 
 
 - FIX: Merged welcome message to one message to fix the extra line bug (Fixed #70)
+- FIX: Fully fixed When using Ctrl + C in client, the server will crash (BrokenPipe) (#1)
 
 - SCAPI: Added function to use the old Strawberry Communication System (stbmv1) 
 
