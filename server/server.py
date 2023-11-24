@@ -460,9 +460,11 @@ def clientLogin(client):
     global logcur
     logged_in = False
     logcur = db.cursor()
-
     # Send a welcome message
-    send(f"{Colors.BOLD}Welcome to Strawberry Chat!{Colors.RESET}")
+    
+    welcome_message = f"{Colors.BOLD}Welcome to Strawberry Chat!{Colors.RESET}"
+    
+    send(welcome_message.strip("\n").rstrip())
     time.sleep(0.1)
     send(f"{Colors.BOLD}New here? Type '{MAGENTA}Register{RESET}' to register! You want to leave? Type '{MAGENTA}Exit{RESET}' {Colors.RESET}")
     
