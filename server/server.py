@@ -583,7 +583,7 @@ def broadcast(message, sent_by="", format: StbCom = StbCom.PLAIN):
                 
     except IOError as e:
         if e.errno == errno.EPIPE:
-            log.critical(f"Broken Pipe Error. You may need to restart your server!! DO NOT EXIT THE CHAT CLIENT WITH ^C!!!")
+            log.critical(f"Broken Pipe Error. You may need to restart your server! Read more at https://developers.strawberryfoundations.xyz/")
             debug_logger(e, stbexceptions.broken_pipe_error)
             exit(1)
   
