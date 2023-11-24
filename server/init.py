@@ -36,7 +36,21 @@ class ClientSender:
         if del_address: del addresses[self.socket]
         if call_exit: exit()
         
+
+class Queue:
+    def __init__(self):
+        self.queue = []
         
+    def add_user(self, user):
+        self.queue.append(user)
+        
+    def remove_user(self):
+        if self.queue: return self.queue.pop(0)
+        else: return None
+        
+    def show(self):
+        for pos, user in enumerate(self.queue, start=1):
+            print(f"#{pos}: {user}")
 
 # StbTypes, required for the debug_logger
 class StbTypes(Enum):
@@ -143,10 +157,12 @@ log_ch          = logging.StreamHandler()
 
 # Lists, Dicts and Sets
 afks            = list([])
+queue           = Queue()
 users           = {}
 addresses       = {}
 user_logged_in  = {}
 blacklist       = set()
+
 
 
 if os.environ.get("LOG_LEVEL") is not None:
