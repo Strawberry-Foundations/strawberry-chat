@@ -447,22 +447,11 @@ This piece of code is well commented so that you understand what almost every li
 """
 def clientLogin(client):
     sender = ClientSender(client)
-    def send(message):
-        json_builder = {
-            "message_type": StbCom.SYS_MSG,
-            "message": {
-                "content": message
-            }
-        }
-        
-        client.send(send_json(json_builder).encode('utf8'))
-    
-    
+
     global db
     global logcur
     logged_in = False
     logcur = db.cursor()
-    # Send a welcome message
     
     welcome_message_base = f"{Colors.BOLD}Welcome to Strawberry Chat!{Colors.RESET}"
     welcome_message_ext  = f"{Colors.BOLD}New here? Type '{MAGENTA}Register{RESET}' to register! You want to leave? Type '{MAGENTA}Exit{RESET}' {Colors.RESET}"
@@ -473,7 +462,7 @@ def clientLogin(client):
     while not logged_in:
         # Ask for the username
         time.sleep(0.05)
-        send(f"{GREEN + Colors.BOLD}Username: {RESET + Colors.RESET}")
+        sender.send(f"{GREEN + Colors.BOLD}Username: {RESET + Colors.RESET}")
         
         # Receive the ansi-escaped username and strip all new lines in case
         username = escape_ansi(client.recv(2048).decode("utf8"))
@@ -494,7 +483,7 @@ def clientLogin(client):
         time.sleep(0.05)
         
         # Ask for the password
-        send(f"{GREEN + Colors.BOLD}Password: {RESET + Colors.RESET}")
+        sender.send(f"{GREEN + Colors.BOLD}Password: {RESET + Colors.RESET}")
         
         # Receive the ansi-escaped password and strip all new lines in case
         password = escape_ansi(client.recv(2048).decode("utf8"))
@@ -511,7 +500,7 @@ def clientLogin(client):
             
             # If account is not enabled, return error message and close connection between server and client
             if account_enabled == "false":
-                send(f"{RED + Colors.BOLD}Your account was disabled by an administrator.{RESET + Colors.RESET}")
+                sender.send(f"{RED + Colors.BOLD}Your account was disabled by an administrator.{RESET + Colors.RESET}")
                 client.close()
                 return "CltExit"
             
@@ -528,11 +517,11 @@ def clientLogin(client):
             
             # If passwords does not match, return an error message and start from the beginning
             else:
-                send(f"{RED + Colors.BOLD}Wrong username or password.{RESET + Colors.RESET}\n")
+                sender.send(f"{RED + Colors.BOLD}Wrong username or password.{RESET + Colors.RESET}\n")
         
         # If the password could not be fetched from the database, return an error message and start from the beginning
         else:
-            send(f"{RED + Colors.BOLD}User not found.\n{RESET + Colors.RESET}")
+            sender.send(f"{RED + Colors.BOLD}User not found.\n{RESET + Colors.RESET}")
 
 
 def broadcast(message, sent_by="", format: StbCom = StbCom.PLAIN):    
