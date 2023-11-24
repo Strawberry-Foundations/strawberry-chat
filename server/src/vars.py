@@ -4,14 +4,21 @@ from .colors import *
 base_ver                = "1.9.0"
 short_ver               = "1.9.0a3"
 full_ver                = "v" + short_ver
-update_channel          = "canary"
+stbm_ver                = "v2"
 ver                     = short_ver + "-vacakes"
-chat_name               = "Strawberry Chat"
+
+codename_short          = "vacakes"
 codename                = "Vanilla Cake"
+
+update_channel          = "canary"
+chat_name               = "Strawberry Chat"
 server_edition          = "Standard Edition"
+
 authors                 = ["Juliandev02", "matteodev8", "Paddyk45"]
 api                     = "http://api.strawberryfoundations.xyz/v1/"
 sid_api                 = "https://id.strawberryfoundations.xyz/v1"
+
+ext_ver                 = f"v{short_ver}_{update_channel}-{codename_short}-std_stmb{stbm_ver}"
 
 # SQL table query
 table_query = """
