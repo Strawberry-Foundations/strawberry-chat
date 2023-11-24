@@ -499,7 +499,8 @@ def clientLogin(client):
                 if enable_queue:
                     if len(users) >= max_users:
                         sender.send(f"{YELLOW + Colors.BOLD}You're in the queue. Please wait until one slot is free...{RESET + Colors.RESET}")
-                    
+                        queue.add(result)
+                        
                         while True:
                             if not len(users) >= max_users:
                                 if result is not None:
