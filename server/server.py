@@ -521,8 +521,6 @@ def clientLogin(client):
                                 else: pass
                             else: pass
                             
-                        
-                
                 # If username exists, login the user
                 if result is not None:
                     username = result[0]
