@@ -515,7 +515,7 @@ def clientLogin(client):
                                         queue.remove()
                                         username = _username
                                         logged_in = True
-                                        sender.send(f"{GREEN + Colors.BOLD}You've left the queue and are now logged in. Have fun!{RESET + Colors.RESET}")
+                                        sender.send(f"{CYAN + Colors.BOLD}You've left the queue and are now logged in. Have fun!{RESET + Colors.RESET}")
                                         return username
                                     
                                 else: pass
