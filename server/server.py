@@ -466,14 +466,9 @@ def clientLogin(client):
         username = escape_ansi(client.recv(2048).decode("utf8")).strip().rstrip()
         
         # Check if username is "register", "exit" or "sid" 
-        if username.lower() == "register":
-            clientRegister(client)
-            
-        elif username.lower() == "exit":
-            sender.close(del_addresses=True)
-            
-        elif username.lower() == "sid":
-            strawberryIdLogin(client)
+        if username.lower() == "register": clientRegister(client)
+        elif username.lower() == "exit": sender.close(del_addresses=True)            
+        elif username.lower() == "sid": strawberryIdLogin(client)
             
         time.sleep(0.05)
         
