@@ -8,8 +8,8 @@
 
 - FIX: Merged welcome message to one message to fix the extra line bug (Fixed #70)
 
-- SCAPI: 
+- SCAPI: Added function to use the old Strawberry Communication System (stbmv1) 
 
-- OPTIMIZATION: 
+- OPTIMIZATION: Many code optimizations
 
 - UPDATE: 
