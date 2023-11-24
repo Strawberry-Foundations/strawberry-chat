@@ -3,6 +3,7 @@
 - IMPORTANT: New communication system (json) (See https://developers.strawberryfoundations.xyz/json-communication/introduction)
 
 - NEW: Added ClientSender Object Class for more Python OOB & better Server message handling
+- NEW: Added Maximal User Configuration & Configurable Queue
 
 - MODULARITY: 
 
