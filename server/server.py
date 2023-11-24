@@ -655,14 +655,9 @@ def main():
             time.sleep(10)
         
         else:
-            if enable_messages:
-                print(f"{YELLOW + Colors.BOLD}>>> Enabled Flag {CYAN}'enable_messages'{RESET + Colors.RESET}")
-            
-            if debug_mode:
-                print(f"{YELLOW + Colors.BOLD}>>> Enabled Flag {CYAN}'debug_mode'{RESET + Colors.RESET}")
-
-            if online_mode == False:
-                print(f"{RED + Colors.BOLD}>>> {YELLOW}WARNING:{RED} Online mode is disabled and your server might be in danger! Consider using the online mode!{RESET + Colors.RESET}")
+            if enable_messages: print(f"{YELLOW + Colors.BOLD}>>> Enabled Flag {CYAN}'enable_messages'{RESET + Colors.RESET}")
+            if debug_mode: print(f"{YELLOW + Colors.BOLD}>>> Enabled Flag {CYAN}'debug_mode'{RESET + Colors.RESET}")
+            if online_mode == False: print(f"{RED + Colors.BOLD}>>> {YELLOW}WARNING:{RED} Online mode is disabled and your server might be in danger! Consider using the online mode!{RESET + Colors.RESET}")
             
             print(f"{GREEN + Colors.BOLD}>>> {RESET}Server is running on {ipaddr}:{port}\n")
             
@@ -674,15 +669,13 @@ def main():
                 _cmd.start()
                 _cmd.join()
                 
-            except KeyboardInterrupt:
-                pass
+            except KeyboardInterrupt: pass
 
             cleanup()
             server_socket.close()
             log.info("Server stopped")
             
-    except KeyboardInterrupt: 
-        exit()
+    except KeyboardInterrupt: exit()
     
 
 if __name__ == "__main__":
