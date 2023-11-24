@@ -1,3 +1,7 @@
+# Strawberry Chat with jcom2strProxy Support
+
+THIS IS NO LONGER MAINTAINED, PLEASE USE [THIS](https://github.com/Strawberry-Foundations/strawlog) INSTEAD!!!
+
 # [Strawberry Chat](https://github.com/orgs/Strawberry-Foundations/projects/1)
 The universal chatting platform for your terminal!<br><br>
 ![Latest Stable Release](https://img.shields.io/badge/dynamic/json?url=https://api.strawberryfoundations.xyz/v1/versions&query=%24.stbchat.server.stable&label=Latest%20Stable%20Release&color=success)
