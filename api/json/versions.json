@@ -1,9 +1,9 @@
 {
     "stbchat": {
         "server": {
-            "stable": "v1.8.1",
-            "dev": "v1.8.2b1",
-            "canary": "v1.9.0a2"
+            "stable": "v1.8.2",
+            "dev": "v1.8.2",
+            "canary": "v1.9.0a3"
         },
     
         "client": {
@@ -15,9 +15,9 @@
 
         "scapi": {
             "bot": {
-                "stable": "-",
-                "dev": "0.11.0",
-                "canary": "0.12.0"
+                "stable": "1.0.0-stbmv1",
+                "dev": "-",
+                "canary": "0.12.1"
             }
         }
     }
