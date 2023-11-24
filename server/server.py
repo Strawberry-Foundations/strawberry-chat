@@ -470,8 +470,7 @@ def clientLogin(client):
             clientRegister(client)
             
         elif username.lower() == "exit":
-            client.close()
-            exit()
+            sender.close(del_addresses=True)
             
         elif username.lower() == "sid":
             strawberryIdLogin(client)
