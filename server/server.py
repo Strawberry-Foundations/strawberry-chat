@@ -446,17 +446,15 @@ The client login function for logging into the chat.
 This piece of code is well commented so that you understand what almost every line does.
 """
 def clientLogin(client):
-    sender = ClientSender(client)
-
-    global db
-    global logcur
-    logged_in = False
-    logcur = db.cursor()
+    sender      = ClientSender(client)
+    logged_in   = False
+    login_cur   = db.cursor()
     
     welcome_message_base = f"{Colors.BOLD}Welcome to Strawberry Chat!"
     welcome_message_ext  = f"{Colors.BOLD}New here? Type '{MAGENTA}Register{RESET}' to register! You want to leave? Type '{MAGENTA}Exit{RESET}' {Colors.RESET}"
     
     sender.send(welcome_message_base.strip("\n").rstrip())
+    time.sleep(0.08)
     sender.send(welcome_message_ext.strip("\n").rstrip())
     
     while not logged_in:
@@ -490,8 +488,8 @@ def clientLogin(client):
         password = password.strip("\n")
         
         # Select the password from the database and fetch it 
-        logcur.execute("SELECT password, account_enabled FROM users WHERE username = ?", (username,))
-        result = logcur.fetchone()
+        login_cur.execute("SELECT password, account_enabled FROM users WHERE username = ?", (username,))
+        result = login_cur.fetchone()
 
         # If the result is not none, fetch some things from the database [...].
         if result is not None:
@@ -506,8 +504,8 @@ def clientLogin(client):
             
             # If the stored password from the database matches with the entered password, fetch the username and login the user
             if verify_password(stored_password, password):
-                logcur.execute('SELECT username FROM users WHERE username = ?', (username,))
-                result = logcur.fetchone()
+                login_cur.execute('SELECT username FROM users WHERE username = ?', (username,))
+                result = login_cur.fetchone()
                 
                 # If username exists, login the user
                 if result is not None:
