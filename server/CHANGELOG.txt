@@ -6,7 +6,7 @@
 
 - MODULARITY: 
 
-- FIX: 
+- FIX: Merged welcome message to one message to fix the extra line bug (Fixed #70)
 
 - SCAPI: 
 
