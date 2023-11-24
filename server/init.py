@@ -3,6 +3,7 @@ import yaml
 import requests
 import logging
 import datetime
+import json
 
 from enum import Enum
 from yaml import SafeLoader
@@ -14,6 +15,21 @@ from src.vars import chat_name, short_ver, codename, server_edition
 # Path of init.py
 server_dir = os.path.dirname(os.path.realpath(__file__))
 
+class ClientSender:
+    def __init__(self, socket):
+        self.socket = socket
+        
+    def send_json(self, data): return json.dumps(data)
+        
+    def send(self, message):
+        json_builder = {
+            "message_type": StbCom.SYS_MSG,
+            "message": {
+                "content": message
+            }
+        }
+        
+        self.socket.send(self.send_json(json_builder).encode('utf8'))
 
 # StbTypes, required for the debug_logger
 class StbTypes(Enum):
