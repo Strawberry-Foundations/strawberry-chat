@@ -61,7 +61,8 @@ news:
 
   1.9.0:
     text: "
-    - NEW: New communication system for a better user experience"
+    - NEW: New communication system for a better user experience\n
+    - NEW: Added maximal user configuration & configurable queue"
 
 
 versions: [1.6.0, 1.7.0, 1.8.0, 1.8.1, 1.8.2, 1.9.0]
