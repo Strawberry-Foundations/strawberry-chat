@@ -126,7 +126,7 @@ admin_settings_help          = f"""{MAGENTA +  Colors.UNDERLINE + Colors.BOLD}Ad
 
 server_settings_help          = f"""{BLUE +  Colors.UNDERLINE + Colors.BOLD}Server Settings{RESET + Colors.RESET}
         {BLUE + Colors.BOLD}/serversettings help: {RESET}Help Command
-        {BLUE + Colors.BOLD}/serversettings show: {RESET}Shows current configurations
+        {BLUE + Colors.BOLD}/serversettings show <debug>: {RESET}Shows current configurations
     """
     
 server_help_section    = f"""  {GREEN +  Colors.UNDERLINE + Colors.BOLD}Server commands{RESET + Colors.RESET}
