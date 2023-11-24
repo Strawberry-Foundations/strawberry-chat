@@ -15,34 +15,39 @@ from helper.strawlog import strawlog
 with open("config.yml", "r") as cfg_file:
     cfg = yaml.load(cfg_file, Loader=SafeLoader)
     
-if cfg['debug']:
-    strawlog("Debug mode enabled", "debug")
+dbg = cfg['debug']
+
+if dbg:
+    strawlog("Debug mode enabled", "DEBUG")
+    strawlog("Config loaded: ", "DEBUG")
+    strawlog(cfg, "DEBUG")
+
+def start(server_ip, server_port):
+    global threadflag
+    clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     
 
-def start(ip, port):
-    if cfg['proxy_mode'] == "srv-only":
-        strawlog("Starting in server-only mode", "info")
-        srv(ip, port)
+    strawlog("Starting jcom2strProxy...", "INFO")
+    strawlog(f"Running on Python {sys.version}", "INFO")
     
-    if cfg['proxy_mode'] == "client-only":
-        strawlog("Starting in client-only mode", "info")
-        client(ip, port)        
-
-    if cfg['proxy_mode'] == "srv-client":
-        strawlog("Starting in dual mode", "info")
-        dual(ip, port)
+    try:
+        strawlog(f"Trying to connect to {server_ip}:{server_port}...", "INFO")
+        clientsocket.connect((server_ip, server_port))
+        strawlog("Connected to server!", "INFO")
+    except socket.error:
+        strawlog("Failed to connect to server!", "ERROR")
+        strawlog("Exiting...", "INFO")
+        sys.exit(1)
         
-        
-
-def srv(ip, port):
-    strawlog(f"Trying to connect to {ip}:{port}", "info")
-
-def client(ip, port):
-    strawlog(f"Trying to connect to {ip}:{port}", "info")
-
-def dual(ip, port):
-    strawlog("Dual mode is experimental! Use at your own risk!", "warning")
-    strawlog(f"Trying to connect to {ip}:{port}", "info")
+    # sendthread = threading.Thread(target=send, args=(clientsocket,))
+    # recvthread = threading.Thread(target=recieve, args=(clientsocket,))
     
-start("69.69.69.69", "42088")
+    # sendthread.start()
+    # recvthread.start()
+    
+
+    
+        
+    
+start(cfg['server_ip'], cfg['server_port'])
     
