@@ -481,6 +481,10 @@ def clientLogin(client):
                 sender.close(del_address=True, call_exit=False)
                 return "CltExit"
             
+            if len(users) >= max_users:
+                sender.send(f"{YELLOW + Colors.BOLD}Sorry, Server is full!{RESET + Colors.RESET}")
+                sender.close(del_address=True, call_exit=True)
+            
             # If the stored password from the database matches with the entered password, fetch the username and login the user
             if verify_password(stored_password, password):
                 login_cur.execute('SELECT username FROM users WHERE username = ?', (username,))
