@@ -467,7 +467,7 @@ def clientLogin(client):
         
         # Check if username is "register", "exit" or "sid" 
         if username.lower() == "register": clientRegister(client)
-        elif username.lower() == "exit": sender.close(del_addresses=True)            
+        elif username.lower() == "exit": sender.close(del_address=True)
         elif username.lower() == "sid": strawberryIdLogin(client)
             
         time.sleep(0.05)
@@ -490,7 +490,7 @@ def clientLogin(client):
             # If account is not enabled, return error message and close connection between server and client
             if account_enabled == "false":
                 sender.send(f"{RED + Colors.BOLD}Your account was disabled by an administrator.{RESET + Colors.RESET}")
-                client.close()
+                sender.close(del_address=True, call_exit=False)
                 return "CltExit"
             
             # If the stored password from the database matches with the entered password, fetch the username and login the user
@@ -505,12 +505,10 @@ def clientLogin(client):
                     return username
             
             # If passwords does not match, return an error message and start from the beginning
-            else:
-                sender.send(f"{RED + Colors.BOLD}Wrong username or password.{RESET + Colors.RESET}\n")
+            else: sender.send(f"{RED + Colors.BOLD}Wrong username or password.{RESET + Colors.RESET}\n")
         
         # If the password could not be fetched from the database, return an error message and start from the beginning
-        else:
-            sender.send(f"{RED + Colors.BOLD}User not found.\n{RESET + Colors.RESET}")
+        else: sender.send(f"{RED + Colors.BOLD}User not found.\n{RESET + Colors.RESET}")
 
 
 def broadcast(message, sent_by="", format: StbCom = StbCom.PLAIN):    
