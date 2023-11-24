@@ -307,26 +307,14 @@ def clientThread(client):
             broadcast(f"{Colors.GRAY + Colors.BOLD}<--{Colors.RESET} {userRoleColor(user)}{user}{YELLOW + Colors.BOLD} has left the chat room!{RESET + Colors.RESET}")
             break
 
-def clientRegister(client):
-    def send(message):
-        json_builder = {
-            "message_type": StbCom.SYS_MSG,
-            "message": {
-                "content": message
-            }
-        }
-        
-        client.send(send_json(json_builder))
-    global db
-    global logcur
-    
+def clientRegister(client, login_cur, sender):
     # Send a welcome message
-    client.send(f"{MAGENTA + Colors.BOLD + Colors.UNDERLINE}Welcome!{RESET + Colors.RESET}\n        {Colors.BOLD}Register, to chat with us!{Colors.RESET}")
+    sender.send(f"{MAGENTA + Colors.BOLD + Colors.UNDERLINE}Welcome!{RESET + Colors.RESET}\n        {Colors.BOLD}Register, to chat with us!{Colors.RESET}")
 
     time.sleep(0.05)
     
     # Ask for a username that the user wants
-    client.send(f"{GREEN + Colors.BOLD}Username: {RESET + Colors.RESET}")
+    sender.send(f"{GREEN + Colors.BOLD}Username: {RESET + Colors.RESET}")
     
     # Receive username
     registered_username = client.recv(2048).decode("utf8")
@@ -342,60 +330,60 @@ def clientRegister(client):
         
         # If username is in blacklisted words, return an error message and start from the beginning
         if uname in blacklist:
-            client.send(f"{YELLOW + Colors.BOLD}This username is not allowed{RESET + Colors.RESET}\n")    
-            clientRegister(client)
+            sender.send(f"{YELLOW + Colors.BOLD}This username is not allowed{RESET + Colors.RESET}\n")    
+            clientRegister(client, login_cur, sender)
             
         # If username is in this set of blacklisted words, return an error message and start from the beginning
         elif uname in ["exit", "register", "login"]:
-            client.send(f"{YELLOW + Colors.BOLD}This username is not allowed{RESET + Colors.RESET}\n")    
-            clientRegister(client)
+            sender.send(f"{YELLOW + Colors.BOLD}This username is not allowed{RESET + Colors.RESET}\n")    
+            clientRegister(client, login_cur, sender)
     
     # Check if the username is already in use
     try:
-        logcur.execute("SELECT username FROM users WHERE username = ? ", (registered_username,))
+        login_cur.execute("SELECT username FROM users WHERE username = ? ", (registered_username,))
         
-        usedUsernames = logcur.fetchall()[0]
+        usedUsernames = login_cur.fetchall()[0]
         usedUsernames = "".join(usedUsernames)
         
         if usedUsernames == usedUsernames:
-            client.send(f"{YELLOW + Colors.BOLD}This username is already in use!{RESET + Colors.RESET}\n")    
-            clientRegister(client)
+            sender.send(f"{YELLOW + Colors.BOLD}This username is already in use!{RESET + Colors.RESET}\n")    
+            clientRegister(client, login_cur, sender)
         
     except Exception as e:
         log.error("A registration exception occured")
         debug_logger(e, stbexceptions.reg_error)
 
     # Ask and receive password
-    client.send(f"{GREEN + Colors.BOLD}Password: {RESET + Colors.RESET}")
+    sender.send(f"{GREEN + Colors.BOLD}Password: {RESET + Colors.RESET}")
     registered_password = client.recv(2048).decode("utf8")
     
     # Confirm the new password
-    client.send(f"{GREEN + Colors.BOLD}Confirm Password: {RESET + Colors.RESET}")
+    sender.send(f"{GREEN + Colors.BOLD}Confirm Password: {RESET + Colors.RESET}")
     confirm_password = client.recv(2048).decode("utf8")
     
     # If passwords does not match, return an error message
     if registered_password != confirm_password:
-        client.send(f"{RED + Colors.BOLD}Passwords do not match{RESET + Colors.RESET}")
-        clientRegister(client)
+        sender.send(f"{RED + Colors.BOLD}Passwords do not match{RESET + Colors.RESET}")
+        clientRegister(client, login_cur, sender)
     
     # Ask and receive role color
-    client.send(f"{GREEN + Colors.BOLD}Role Color (Red, Green, Cyan, Blue, Yellow, Magenta): {RESET + Colors.RESET}")
+    sender.send(f"{GREEN + Colors.BOLD}Role Color (Red, Green, Cyan, Blue, Yellow, Magenta): {RESET + Colors.RESET}")
     registered_role_color = client.recv(2048).decode("utf8")
 
     # Ask if everything is correct
-    client.send(f"{YELLOW + Colors.BOLD}Is everything correct? (You can change your username, role color and password at any time){RESET + Colors.RESET}")
+    sender.send(f"{YELLOW + Colors.BOLD}Is everything correct? (You can change your username, role color and password at any time){RESET + Colors.RESET}")
     confirm_account_creation = client.recv(2048).decode("utf8")
     
     # If confirm_account_creation is yes, create the new account
     if confirm_account_creation.lower() == "yes":
-        client.send(f"{YELLOW + Colors.BOLD}Processing... {RESET + Colors.RESET}")
+        sender.send(f"{YELLOW + Colors.BOLD}Processing... {RESET + Colors.RESET}")
         
         try:
-            client.send(f"{GREEN + Colors.BOLD}Creating your User account... {RESET + Colors.RESET}")
+            sender.send(f"{GREEN + Colors.BOLD}Creating your User account... {RESET + Colors.RESET}")
         
-            logcur.execute("SELECT user_id FROM users")
+            login_cur.execute("SELECT user_id FROM users")
         
-            user_ids = logcur.fetchall()
+            user_ids = login_cur.fetchall()
             user_ids = str(user_ids[-1])
             user_ids = user_ids[1:-2].replace(",", "")
             user_id = int(user_ids) + 1
@@ -405,7 +393,7 @@ def clientRegister(client):
             registered_password = hash_password(registered_password)
 
             # logcur.execute('INSERT INTO users (username, password, role, role_color, enable_blacklisted_words, account_enabled, muted, user_id, msg_count, enable_dms, creation_date) VALUES (?, ?, "member", ?, "true", "true", "false", ?, ?, "true", ?)', (registered_username, registered_password, registered_role_color.lower(), user_ids, 0, creation_date))
-            logcur.execute('''
+            login_cur.execute('''
                            INSERT INTO users (
                                username,
                                password,
@@ -422,7 +410,7 @@ def clientRegister(client):
                             (registered_username, registered_password, registered_role_color.lower(), user_id, 0, creation_date))
             db.commit()
             
-            client.send(f"{GREEN + Colors.BOLD}Created!{RESET + Colors.RESET}")
+            sender.send(f"{GREEN + Colors.BOLD}Created!{RESET + Colors.RESET}")
             client.close()
             
         except Exception as e:
@@ -430,9 +418,9 @@ def clientRegister(client):
             debug_logger(e, stbexceptions.sql_error)
         
     else:
-        client.send(f"{RED + Colors.BOLD}Registration has been canceled. Start from the beginning...{RESET + Colors.RESET}")
+        sender.send(f"{RED + Colors.BOLD}Registration has been canceled. Start from the beginning...{RESET + Colors.RESET}")
         time.sleep(0.5)
-        clientRegister()
+        clientRegister(client, login_cur, sender)
 
 
 def strawberryIdLogin(client):
@@ -466,7 +454,7 @@ def clientLogin(client):
         username = escape_ansi(client.recv(2048).decode("utf8")).strip().rstrip()
         
         # Check if username is "register", "exit" or "sid" 
-        if username.lower() == "register": clientRegister(client)
+        if username.lower() == "register": clientRegister(client, login_cur, sender)
         elif username.lower() == "exit": sender.close(del_address=True)
         elif username.lower() == "sid": strawberryIdLogin(client)
             
