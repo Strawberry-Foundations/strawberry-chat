@@ -498,17 +498,26 @@ def clientLogin(client):
                 
                 if enable_queue:
                     if len(users) >= max_users:
-                        sender.send(f"{YELLOW + Colors.BOLD}You're in the queue. Please wait until one slot is free...{RESET + Colors.RESET}")
+                        
                         queue.add(result)
+                        log.info(f"{result[0]} ({addresses[client][0]}) is now in the queue")
+                        
+                        # queue.show()
+                        # print(queue.queue[0])
+                        
+                        sender.send(f"{YELLOW + Colors.BOLD}You're currently at position {queue.position_user(result)} in the queue.. Please wait until one slot is free...{RESET + Colors.RESET}")
+                        # _input = escape_ansi(client.recv(2048).decode("utf8")).strip().rstrip()
                         
                         while True:
                             if not len(users) >= max_users:
-                                if result is not None:
-                                    username = result[0]
-                                    logged_in = True    
-                                    return username
-                            else:
-                                pass
+                                if queue.position_user(result[0]) == 1:
+                                    if result is not None:
+                                        log.info(f"{result[0]} ({addresses[client][0]}) left the queue")
+                                        username = result[0]
+                                        logged_in = True    
+                                        return username
+                                else: pass
+                            else: pass
                             
                         
                 
