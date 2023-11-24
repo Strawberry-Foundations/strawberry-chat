@@ -463,8 +463,7 @@ def clientLogin(client):
         sender.send(f"{GREEN + Colors.BOLD}Username: {RESET + Colors.RESET}")
         
         # Receive the ansi-escaped username and strip all new lines in case
-        username = escape_ansi(client.recv(2048).decode("utf8"))
-        username = username.strip("\n")
+        username = escape_ansi(client.recv(2048).decode("utf8")).strip().rstrip()
         
         # Check if the "username" is register, if yes, go to the register form
         if username.lower() == "register":
