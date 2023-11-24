@@ -3,13 +3,13 @@
 - IMPORTANT: New communication system (json) (See https://developers.strawberryfoundations.xyz/json-communication/introduction)
 
 - NEW: Added ClientSender Object Class for more Python OOB & better Server message handling
-- NEW: Added StopWatch Class for counting how long you're in the queue
+- NEW: Added Stopwatch Class for counting how long you're in the queue
 - NEW: Added maximal user feature (configurable) (#71)
 - NEW: Addeds queue so users can wait until a "slot" is free (#75)
 - NEW: Added some basic maximal user counts for online command, memberlist command, ... (#76)
 - NEW: Added experimental user avatars for chat to chat bridges (e.g. Discord) & Strawberry ID (#66)
 
-- MODULARITY: 
+- MODULARITY: More Object Oriented Programming (Queue Class, Stopwatch Class, ...)
 
 - FIX: Fixed console logger prints static time instead of the real time (#63)
 - FIX: Fully fixed When using Ctrl + C in client, the server will crash (BrokenPipe) (#1)
