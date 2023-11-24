@@ -8,7 +8,9 @@ server:
   
 flags:
   enable_messages: false
+  enable_queue: false
   max_message_length: 256
+  max_users: 16
   debug_mode: true
   online_mode: true
 
