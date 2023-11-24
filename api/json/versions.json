@@ -3,12 +3,12 @@
         "server": {
             "stable": "v1.8.2",
             "dev": "v1.8.2",
-            "canary": "v1.9.0a3"
+            "canary": "v1.9.0a4"
         },
     
         "client": {
             "stable": "v2.4.0",
-            "canary": "v2.5.1",
+            "canary": "v2.5.2",
             "lite": "v1.0.1",
             "nano": "v1.0.1"
         },
