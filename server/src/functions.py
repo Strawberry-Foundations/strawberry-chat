@@ -47,7 +47,7 @@ def escape_htpf(string):
                 
     return to_ret
 
-def repl_htpf(string):
+def repl_htpf(string, reset_color: bool = False):
     to_ret = string \
             .replace("#red", RED) \
             .replace("#green", GREEN) \
@@ -66,7 +66,10 @@ def repl_htpf(string):
             .replace("#ftoday", datetime.datetime.now().strftime("%A, %d. %h %Y")) \
             .replace("#tomorrow", (datetime.date.today() + datetime.timedelta(days=1)).strftime("%Y-%m-%d")) \
             .replace("#ftomorrow", (datetime.date.today() + datetime.timedelta(days=1)).strftime("%A, %d. %h %Y"))
-                
+    
+    if reset_color:
+        return to_ret + RESET
+    
     return to_ret
 
 def input_regen_database():
