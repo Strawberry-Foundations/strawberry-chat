@@ -47,6 +47,7 @@ authors         = ["Juliandev02"]
 api             = "http://api.strawberryfoundations.xyz/v1/"
 
 command_registry = {}
+event_registry = {}
 
 class Messages:
     permission_error = "#redYou lack the permission to use this command!#reset"
@@ -254,6 +255,21 @@ class Scapi:
             setattr(self, func.__name__, func)
             return func
         
+        def on_message(self, message, ignore_capital_letters: bool = False):
+            def decorator(func):                
+                event_registry[message] = (func, message)
+                return func
+
+            return decorator
+        
+        def execute_event(self, message, user: str):
+            if self.escape_ansi(message) in event_registry:
+                event = event_registry[self.escape_ansi(message)]
+                
+                event[0](user)
+                
+            else: pass
+        
         def command(self, name, arg_count: int = 0, required_permissions=PermissionLevel.ALL, custom_permissions: list = None) -> None:
             def decorator(func):
                 if custom_permissions is None:
@@ -332,6 +348,11 @@ class Scapi:
                             
                             self.execute_command(cmd, self.get_username(raw_data), args)
                             continue
+                        
+                        else:                
+                            if self.escape_ansi(raw_message) in event_registry and raw_data["username"] != self.username:
+                                self.execute_event(self.escape_ansi(raw_message), self.get_username(raw_data))
+                                continue
 
                 except TypeError: pass
                 except AttributeError: pass
