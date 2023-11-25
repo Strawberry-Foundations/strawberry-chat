@@ -98,10 +98,11 @@ class Scapi:
                 self.logger(f"{RED}Could not connect to server", Scapi.LogLevel.ERROR)
                 exit()
                 
-        def flag_handler(self, enable_user_input: bool = False, print_recv_msg: bool = False, log_msg: str = None):
+        def flag_handler(self, enable_user_input: bool = False, print_recv_msg: bool = False, log_msg: str = None, ignore_capitalization: bool = True):
             self.enable_user_input  = enable_user_input
             self.print_recv_msg     = print_recv_msg
             self.log_msg            = log_msg or f"{CYAN + BOLD}{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}  %sscapi  -->  {RESET}"
+            self.event_ignore_cap   = ignore_capitalization
             
         def connect(self):
             self.logger(f"{YELLOW}Connecting to {PURPLE}{self.host}:{self.port} {RESET + YELLOW}...", type=Scapi.LogLevel.INFO)
