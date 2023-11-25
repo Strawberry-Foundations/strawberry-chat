@@ -47,7 +47,7 @@ def escape_htpf(string):
                 
     return to_ret
 
-def repl_htpf(string, reset_color: bool = False):
+def replace_htpf(string, reset_color: bool = False):
     to_ret = string \
             .replace("#red", RED) \
             .replace("#green", GREEN) \
