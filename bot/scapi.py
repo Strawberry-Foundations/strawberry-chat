@@ -257,8 +257,9 @@ class Scapi:
             return func
         
         def on_message(self, message):
-            def decorator(func):            
-                event_registry[message.lower()] = (func, message.lower())
+            def decorator(func):
+                if self.event_ignore_cap: event_registry[message.lower()] = (func, message.lower())
+                else: event_registry[message] = (func, message)
                 return func
 
             return decorator
@@ -350,10 +351,15 @@ class Scapi:
                             self.execute_command(cmd, self.get_username(raw_data), args)
                             continue
                         
-                        else:                
-                            if self.escape_ansi(raw_message).lower() in event_registry and raw_data["username"] != self.username:
-                                self.execute_event(self.escape_ansi(raw_message).lower(), self.get_username(raw_data))
-                                continue
+                        else:
+                            if self.event_ignore_cap:
+                                if self.escape_ansi(raw_message).lower() in event_registry and raw_data["username"] != self.username:
+                                    self.execute_event(self.escape_ansi(raw_message).lower(), self.get_username(raw_data))
+                                    continue
+                            else: 
+                                if self.escape_ansi(raw_message) in event_registry and raw_data["username"] != self.username:
+                                    self.execute_event(self.escape_ansi(raw_message), self.get_username(raw_data))
+                                    continue
 
                 except TypeError: pass
                 except AttributeError: pass
