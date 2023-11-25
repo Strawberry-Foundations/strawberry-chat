@@ -37,10 +37,10 @@ CYAN = '\033[36m'
 WHITE = '\033[37m'
 
 # Version-specified Variables & important variables
-base_version    = "0.12.2"
+base_version    = "0.13.0"
 ext_version     = base_version + "b1"
 version         = "v" + ext_version
-full_version    = ext_version + "-vacakes"
+full_version    = ext_version + "_canary-vacakes-std_stmbv2"
 update_channel  = "canary"
 codename        = "Vanilla Cake"
 authors         = ["Juliandev02"]
@@ -88,7 +88,7 @@ class Scapi:
             
             self.log_msg = f"{CYAN + BOLD}{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}  %sscapi  -->  {RESET}"
             
-            self.logger(f"{GREEN}Starting scapi {version}", Scapi.LogLevel.INFO)
+            self.logger(f"{GREEN}Starting scapi {version} (v{full_version})", Scapi.LogLevel.INFO)
         
             
             try:
