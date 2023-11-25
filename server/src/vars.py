@@ -15,7 +15,7 @@ chat_name               = "Strawberry Chat"
 server_edition          = "Standard Edition"
 
 authors                 = ["Juliandev02", "matteodev8", "Paddyk45"]
-api                     = "http://api.strawberryfoundations.xyz/v1/"
+api                     = "https://api.strawberryfoundations.xyz/v1/"
 sid_api                 = "https://id.strawberryfoundations.xyz/v1"
 
 ext_ver                 = f"v{short_ver}_{update_channel}-{codename_short}-std_stmb{stbm_ver}"
