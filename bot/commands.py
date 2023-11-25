@@ -19,6 +19,10 @@ Bot.flag_handler(print_recv_msg=True, enable_user_input=True)
 
 Bot.permission_handler(custom_list=["julian"], owner="julian")
 
+@Bot.on_message(message="Hello")
+def on_hello_message(username: str):
+    Bot.send_message(f"Hello {username}!")
+
 @Bot.command(name="test", arg_count=1, required_permissions=Scapi.Bot.PermissionLevel.CUSTOM)
 def test_command(username: str, args: list):
     Bot.send_message(f"""
