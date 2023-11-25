@@ -184,11 +184,8 @@ def server_selector():
         sys.exit(1)
         
     else:
-        try:
-            enableAutologin = data["server"][(int(server_selection) - 1)]["autologin"]
-            
-        except KeyError:
-            enableAutologin = False 
+        try: enableAutologin = data["server"][(int(server_selection) - 1)]["autologin"]
+        except KeyError: enableAutologin = False 
             
         try:
             host = data["server"][(int(server_selection) - 1)]["address"]
@@ -196,16 +193,18 @@ def server_selector():
             port = int(port)
             
             
-        except KeyError:
-            pass
+        except KeyError: pass
     
     return host, port, enableAutologin, server_selection, custom_server_sel
 
 # Try requesting our api server
 if online_mode:
     try:
+        print(f"{YELLOW}{Str[lang]['VerifyClient']}{RESET}")
         requests.get(api)
         check_for_updates()
+        delete_last_line()
+        print(f"{YELLOW}{Str[lang]['VerifyClient']} {GREEN}✓{RESET}")
     
     # If api is not available, print an error message
     except (socket.gaierror, urllib3.exceptions.NewConnectionError, urllib3.exceptions.MaxRetryError, requests.exceptions.ConnectionError): 
@@ -216,6 +215,8 @@ if online_mode:
 # Verify your server's in your config
 try:
     if online_mode == True:
+        print(f"{YELLOW}{Str[lang]['VerifyServer']}{RESET}")
+        
         for i in range(len(data["server"])):
             verified = requests.get(api + "server/verified?addr=" + data['server'][i]['address'])
             
@@ -223,11 +224,16 @@ try:
                 verified_list.append(data['server'][i]['address'])
             else:
                 pass  
-    else:
-        pass
+            
+        delete_last_line()
+        print(f"{YELLOW}{Str[lang]['VerifyServer']}{RESET} {GREEN}✓{RESET}")
+        time.sleep(.1)
+        delete_last_line()
+        delete_last_line()
+        
+    else: pass
     
-except Exception as e: 
-    print(f"{RED}{e}{RESET}")
+except Exception as e: print(f"{RED}{e}{RESET}")
 
 # Check if language is available
 if lang not in langs:
