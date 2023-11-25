@@ -65,12 +65,14 @@ online_mode     = data['online_mode']
 autoserver      = data['autoserver']['enabled']
 autoserver_id   = data['autoserver']['server_id']
 det_same_sysmsg = data['detect_same_system_messages']
+update_channel  = data['update_channel']
 
 langs           = ["de_DE", "en_US"]
 verified_list   = []
 
 api             = "https://api.strawberryfoundations.xyz/v1/"
 ver             = "2.5.2"
+
 author          = "Juliandev02"
 use_sys_argv    = False
 experimental_debug_mode = False
