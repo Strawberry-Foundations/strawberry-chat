@@ -255,9 +255,9 @@ class Scapi:
             setattr(self, func.__name__, func)
             return func
         
-        def on_message(self, message, ignore_capital_letters: bool = False):
-            def decorator(func):                
-                event_registry[message] = (func, message)
+        def on_message(self, message):
+            def decorator(func):            
+                event_registry[message.lower()] = (func, message.lower())
                 return func
 
             return decorator
@@ -350,8 +350,8 @@ class Scapi:
                             continue
                         
                         else:                
-                            if self.escape_ansi(raw_message) in event_registry and raw_data["username"] != self.username:
-                                self.execute_event(self.escape_ansi(raw_message), self.get_username(raw_data))
+                            if self.escape_ansi(raw_message).lower() in event_registry and raw_data["username"] != self.username:
+                                self.execute_event(self.escape_ansi(raw_message).lower(), self.get_username(raw_data))
                                 continue
 
                 except TypeError: pass
