@@ -443,7 +443,7 @@ def clientLogin(client):
     logged_in   = False
     login_cur   = db.cursor()
     
-    welcome_message_base = f"{Colors.BOLD}Welcome to Strawberry Chat!"
+    welcome_message_base = f"{Colors.RESET + Colors.BOLD}Welcome to Strawberry Chat!{Colors.RESET}"
     welcome_message_ext  = f"{Colors.BOLD}New here? Type '{MAGENTA}Register{RESET}' to register! You want to leave? Type '{MAGENTA}Exit{RESET}' {Colors.RESET}"
     
     sender.send(welcome_message_base.strip("\n").rstrip())
