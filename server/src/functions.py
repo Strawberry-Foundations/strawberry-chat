@@ -68,7 +68,7 @@ def replace_htpf(string, reset_color: bool = False):
             .replace("#ftomorrow", (datetime.date.today() + datetime.timedelta(days=1)).strftime("%A, %d. %h %Y"))
     
     if reset_color:
-        return to_ret + RESET
+        return to_ret + RESET + Colors.RESET
     
     return to_ret
 
