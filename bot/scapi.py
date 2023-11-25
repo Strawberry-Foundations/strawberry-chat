@@ -46,9 +46,6 @@ codename        = "Vanilla Cake"
 authors         = ["Juliandev02"]
 api             = "http://api.strawberryfoundations.xyz/v1/"
 
-command_registry = {}
-event_registry = {}
-
 class Messages:
     permission_error = "#redYou lack the permission to use this command!#reset"
     command_not_found = "#redCommand '%s' not found.#reset"
@@ -82,6 +79,9 @@ class Scapi:
             self.admin_list         = []
             self.custom_list        = []
             self.owner              = None
+            
+            self.command_registry = {}
+            self.event_registry = {}
             
             self.req_permissions    = None
             self.count              = 0
@@ -258,15 +258,15 @@ class Scapi:
         
         def on_message(self, message):
             def decorator(func):
-                if self.event_ignore_cap: event_registry[message.lower()] = (func, message.lower())
-                else: event_registry[message] = (func, message)
+                if self.event_ignore_cap: self.event_registry[message.lower()] = (func, message.lower())
+                else: self.event_registry[message] = (func, message)
                 return func
 
             return decorator
         
         def execute_event(self, message, user: str):
-            if self.escape_ansi(message) in event_registry:
-                event = event_registry[self.escape_ansi(message)]
+            if self.escape_ansi(message) in self.event_registry:
+                event = self.event_registry[self.escape_ansi(message)]
                 
                 event[0](user)
                 
@@ -282,14 +282,14 @@ class Scapi:
                 self.req_permissions = required_permissions
                 
                 
-                command_registry[name] = (func, arg_count, required_permissions)
+                self.command_registry[name] = (func, arg_count, required_permissions)
                 return func
 
             return decorator
 
         def execute_command(self, command_name, user: str, args: list, permission_error_msg=Messages.permission_error, command_not_found_msg = Messages.command_not_found, not_enough_arguments = Messages.not_enough_arguments):
-            if self.escape_ansi(command_name) in command_registry:
-                cmd = command_registry[self.escape_ansi(command_name)]
+            if self.escape_ansi(command_name) in self.command_registry:
+                cmd = self.command_registry[self.escape_ansi(command_name)]
                 
                 match self.req_permissions:
                     case self.PermissionLevel.ALL: pass
@@ -353,11 +353,11 @@ class Scapi:
                         
                         else:
                             if self.event_ignore_cap:
-                                if self.escape_ansi(raw_message).lower() in event_registry and raw_data["username"] != self.username:
+                                if self.escape_ansi(raw_message).lower() in self.event_registry and raw_data["username"] != self.username:
                                     self.execute_event(self.escape_ansi(raw_message).lower(), self.get_username(raw_data))
                                     continue
                             else: 
-                                if self.escape_ansi(raw_message) in event_registry and raw_data["username"] != self.username:
+                                if self.escape_ansi(raw_message) in self.event_registry and raw_data["username"] != self.username:
                                     self.execute_event(self.escape_ansi(raw_message), self.get_username(raw_data))
                                     continue
 
