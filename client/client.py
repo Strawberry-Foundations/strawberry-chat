@@ -72,7 +72,7 @@ langs           = ["de_DE", "en_US"]
 verified_list   = []
 
 api             = "https://api.strawberryfoundations.xyz/v1/"
-ver             = "2.5.2"
+ver             = "2.5.3"
 
 author          = "Juliandev02"
 use_sys_argv    = False
@@ -90,7 +90,7 @@ with open(client_dir + "/lang.yml", encoding="utf-8") as langStrings:
 def is_verified(addr):
     try:
         if online_mode:
-            if addr in verified_list: return f"[{Str[lang]['Verified']}]"
+            if addr in verified_list: return f"[{Str[lang]['Verified']}] "
             else: return ""            
         else:
             return ""
@@ -108,21 +108,21 @@ def delete_last_line():
     sys.stdout.write("\x1b[2K")
 
 # Fetch update data from the strawberry api server
-def fetch_update_data():
+def fetch_update_data(update_channel: str):
     response = requests.get(api + 'versions')
     data = response.json()
-    update_data = data['stbchat']['client']['stable']
+    update_data = data['stbchat']['client'][update_channel]
     
     return update_data
 
 # Check for updates
 def check_for_updates():
-    online_ver = fetch_update_data()
+    online_ver = fetch_update_data(update_channel=update_channel)
     
-    if not online_ver == ver:
+    if not online_ver == f"v{ver}":
         print(f"{BOLD + GREEN}{Str[lang]['UpdateAvailable']}{RESET +RESET}")
-        print(f"{BOLD + CYAN}strawberry-chat{GREEN}@{MAGENTA}stable {RESET}{online_ver}{RESET}")
-        print(f"↳ {Str[lang]['UpgradingFrom']} {CYAN + BOLD}strawberry-chat{GREEN}@{MAGENTA}stable {RESET}{ver}{RESET}\n")
+        print(f"{BOLD + CYAN}strawberry-chat{GREEN}@{MAGENTA}{update_channel} {RESET}{online_ver}{RESET}")
+        print(f"↳ {Str[lang]['UpgradingFrom']} {CYAN + BOLD}strawberry-chat{GREEN}@{MAGENTA}{update_channel} {RESET}{ver}{RESET}\n")
         
 # Convert raw input to json data
 def conv_json_data(data):
