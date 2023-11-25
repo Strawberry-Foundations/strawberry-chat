@@ -65,7 +65,8 @@ online_mode     = data['online_mode']
 autoserver      = data['autoserver']['enabled']
 autoserver_id   = data['autoserver']['server_id']
 det_same_sysmsg = data['detect_same_system_messages']
-update_channel  = data['update_channel']
+try: update_channel  = data['update_channel']
+except: update_channel = "stable"
 
 langs           = ["de_DE", "en_US"]
 verified_list   = []
