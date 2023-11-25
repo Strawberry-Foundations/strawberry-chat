@@ -4,7 +4,7 @@ import socket
 import time
 
 from src.colors import *
-from src.functions import repl_htpf, broadcast_all
+from src.functions import replace_htpf, broadcast_all
 from init import addresses, users
 
 @register_command("debug", arg_count=0, required_permissions=PermissionLevel.ADMIN)
