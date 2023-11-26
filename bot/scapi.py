@@ -44,7 +44,7 @@ full_version    = ext_version + "_canary-vacakes-std_stmbv2"
 update_channel  = "canary"
 codename        = "Vanilla Cake"
 authors         = ["Juliandev02"]
-api             = "http://api.strawberryfoundations.xyz/v1/"
+api             = "https://api.strawberryfoundations.xyz/v1/"
 
 class Messages:
     permission_error = "#redYou lack the permission to use this command!#reset"
