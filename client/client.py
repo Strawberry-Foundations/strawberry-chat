@@ -13,6 +13,7 @@ import time
 import requests
 import urllib3
 import json
+import re
 
 if sys.platform == "linux": import readline
 else: pass
@@ -99,8 +100,13 @@ def is_verified(addr):
         print(f"{RED}{e}{RESET}")
 
 # Return current time
-def current_time():
-    return datetime.datetime.now().strftime("%H:%M")
+def current_time(): return datetime.datetime.now().strftime("%H:%M")
+
+# Escape ansi from a string
+def escape_ansi(string): return re.compile(r'(?:\x1B[@-_]|[\x80-\x9F])[0-?]*[ -/]*[@-~]').sub('', string)
+
+# Convert raw input to json data
+def conv_json_data(data): return json.loads(data)
 
 # Delete last line to now show the written message
 def delete_last_line():
@@ -124,9 +130,7 @@ def check_for_updates():
         print(f"{BOLD + CYAN}strawberry-chat{GREEN}@{MAGENTA}{update_channel} {RESET}{online_ver}{RESET}")
         print(f"↳ {Str[lang]['UpgradingFrom']} {CYAN + BOLD}strawberry-chat{GREEN}@{MAGENTA}{update_channel} {RESET}{ver}{RESET}\n")
         
-# Convert raw input to json data
-def conv_json_data(data):
-    return json.loads(data)
+
 
 # Handle user badges
 def badge_handler(badge):
@@ -347,7 +351,6 @@ def receive(sock):
                     break
                 
     elif compatibility_mode == False: 
-        count = 0
         while threadFlag:
             try:
                 message = sock.recv(2048).decode('utf-8')
@@ -387,13 +390,12 @@ def receive(sock):
                             if det_same_sysmsg:
                                 
                                 _message = str(message)
-                                _message = _message[:20]
+                                _message = _message[:28]
                                 
                                 if _message == _prev_message:
-                                    count += 1
-                                    if count >= 2:
-                                        count = 0
-                                        delete_last_line()
+                                    if escape_ansi(_prev_message).startswith("You're currently at"):
+                                        print("Messages starts with You're currently at")
+                                        # delete_last_line()
                                 
                                 _prev_message = _message
                                 _prev_message = _prev_message[:30]
