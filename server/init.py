@@ -32,11 +32,15 @@ class ClientSender:
         
         self.socket.send(self.send_json(json_builder).encode('utf8'))
     
-    def close(self, call_exit: bool = True, del_address: bool = False, del_user: bool = False):
+    def close(self, call_exit: bool = True, del_address: bool = False, del_user: bool = False, log_exit: bool = False):
+        if log_exit: log.info(f"{addresses[self.socket][0]} has left")
+        
         self.socket.close()
+        
         if del_address: del addresses[self.socket]
         if del_user: del users[self.socket]
         if call_exit: exit()
+        
         
 
 class Queue:
