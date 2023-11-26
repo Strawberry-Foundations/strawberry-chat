@@ -347,6 +347,7 @@ def receive(sock):
                     break
                 
     elif compatibility_mode == False: 
+        count = 0
         while threadFlag:
             try:
                 message = sock.recv(2048).decode('utf-8')
@@ -381,12 +382,18 @@ def receive(sock):
                             message     = message["message"]["content"]
                             print(f"{CRESET}[{current_time()}] {message}{CRESET}")
                             
+                            
+                            
                             if det_same_sysmsg:
+                                
                                 _message = str(message)
                                 _message = _message[:20]
                                 
                                 if _message == _prev_message:
-                                    delete_last_line()
+                                    count += 1
+                                    if count >= 2:
+                                        count = 0
+                                        delete_last_line()
                                 
                                 _prev_message = _message
                                 _prev_message = _prev_message[:30]
@@ -399,8 +406,7 @@ def receive(sock):
                         if experimental_debug_mode:
                             print(f"{Fore.RED + BOLD}{Str[lang]['ConnectionInterrupt']}{Fore.RESET + CRESET}")
                             print(e)
-                        
-                            
+
                 else:
                     break
                 
