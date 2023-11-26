@@ -382,7 +382,7 @@ def clientRegister(client, login_cur, sender):
             db.commit()
             
             sender.send(f"{GREEN + Colors.BOLD}Created!{RESET + Colors.RESET}")
-            client.close()
+            sender.close(call_exit=False)
             
         except Exception as e:
             log.error("An SQL error occured!")
@@ -396,7 +396,6 @@ def clientRegister(client, login_cur, sender):
 
 def strawberryIdLogin(client):
     client.send(f"{GREEN + Colors.BOLD}Visit https://id.strawberryfoundations.xyz/v1/de?redirect=https://api.strawberryfoundations.xyz/stbchat&hl=de to login!{RESET + Colors.RESET}")
-    
 
 
 """
