@@ -39,6 +39,8 @@ def queue_command(socket: socket.socket, username: str, args: list, send):
                     return
                 
                 
+        case "let" | "admit":
+            pass
         
         case "list" | "show":
             queue_list = ""
