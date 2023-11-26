@@ -486,7 +486,7 @@ def clientLogin(client):
                 sender.close(del_address=True, call_exit=False)
                 return "CltExit"
             
-            if not enable_queue:
+            if not enable_queue and not max_users == -1:
                 if len(users) >= max_users:
                     sender.send(f"{YELLOW + Colors.BOLD}Sorry, Server is full!{RESET + Colors.RESET}")
                     sender.close(del_address=True, call_exit=True)
@@ -498,7 +498,7 @@ def clientLogin(client):
                 
                 _username = result[0]
                 
-                if enable_queue:
+                if enable_queue and not max_users == -1:
                     if len(users) >= max_users:
                         
                         if not admins_wait_queue:
