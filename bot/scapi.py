@@ -216,7 +216,6 @@ class Scapi:
                             message = self.convert_json_data(recv_message)
                             
                         except:
-                            self.logger(f"{RED}Couldn't convert the received message data to json", type=Scapi.LogLevel.ERROR)
                             message = recv_message
                         
                         if recv_message:
