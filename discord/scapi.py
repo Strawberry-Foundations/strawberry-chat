@@ -38,13 +38,13 @@ WHITE = '\033[37m'
 
 # Version-specified Variables & important variables
 base_version    = "0.13.1"
-ext_version     = base_version + "b1"
+ext_version     = base_version + "b2"
 version         = "v" + ext_version
 full_version    = ext_version + "_canary-vacakes-std_stmbv2"
 update_channel  = "canary"
 codename        = "Vanilla Cake"
 authors         = ["Juliandev02"]
-api             = "http://api.strawberryfoundations.xyz/v1/"
+api             = "https://api.strawberryfoundations.xyz/v1/"
 
 class Messages:
     permission_error = "#redYou lack the permission to use this command!#reset"
@@ -65,12 +65,13 @@ class Scapi:
             ADMIN   = 2
             OWNER   = 3
             
-        def __init__(self, username: str, token: str, host: str, port: int, enable_user_input: bool = False, print_recv_msg: bool = False, json: bool = True):
+        def __init__(self, username: str, token: str, host: str, port: int, prefix: str = "!", enable_user_input: bool = False, print_recv_msg: bool = False, json: bool = True):
             self.socket             = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.username           = username
             self.token              = token
             self.host               = host
             self.port               = port
+            self.prefix             = prefix    
             self.enable_user_input  = enable_user_input
             self.log_recv_msg       = print_recv_msg
             self.v2_communication   = json
@@ -394,7 +395,7 @@ class Scapi:
                     if _this_works:
                         raw_message = raw_data["message"]["content"]
                     
-                        if raw_message.startswith("!"):
+                        if raw_message.startswith(self.prefix):
                             message = raw_message[1:]
                             args = message.split()
                             cmd = args[0]
