@@ -10,6 +10,7 @@
 - NEW: Added experimental user avatars for chat to chat bridges (e.g. Discord) & Strawberry ID (#66)
 - NEW: Added server settings command (start with serversettings show command) (#77)
 - NEW: Replaced ipify global ip api with our own global ip api
+- NEW: Added queue command
 
 - MODULARITY: More Object Oriented Programming (Queue Class, Stopwatch Class, ...)
 
@@ -20,6 +21,8 @@
 - FIX: Some fixes to welcome message
 - FIX: Added reset_color argument to replace_htpf to fix not resetting the color correctly  
 - FIX: Fixed a color formatting bug that occurrs when using htpf (client-side fix)
+- FIX: Fixed deleting any kind of system message if it is the same as the message before (client-side fix)
+- FIX: Fixed CRITICAL: Chat Hashtag Placeholder Format Colors wont be sent correctly (for more look issue description) (#81) 
 
 - SCAPI: Added function to use the old Strawberry Communication System (stbmv1)
 - SCAPI: New way for scapi message events (replacement for old legacy "commands" method) (#64)
