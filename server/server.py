@@ -155,8 +155,7 @@ def client_thread(client):
                 if user_logged_in[user]:
                     message = client.recv(2048).decode("utf8")                    
                     
-                    if len(message) == 0:
-                        return
+                    if len(message) == 0: return
                     
                 else: return
 
@@ -192,9 +191,7 @@ def client_thread(client):
             
             if not (result[0] == "admin" or result[0] == "bot" or result[1] == "false"):
                 for word in message.split():
-                    word = word.lower()
-                    
-                    if word in blacklist:
+                    if word.lower() in blacklist:
                         sender.send(f"{YELLOW + Colors.BOLD}Please be friendlier in the chat. Rejoin when you feel ready!{RESET + Colors.RESET}")
                         sender.close(del_address=True, del_user=True)
                         
@@ -207,10 +204,10 @@ def client_thread(client):
             
             if message.startswith("/"):
                 try:
-                    message = message[1:]
-                    args = message.split()
-                    cmd = args[0]
-                    args = args[1:]
+                    message = message[1:].split()
+                    
+                    cmd = message[0]
+                    args = message[1:]
                     
                 except: 
                     sender.send(f"{RED}Not enough arguments! Please pass an valid command!{RESET}")
@@ -255,8 +252,7 @@ def client_thread(client):
                     # Message counter
                     try:
                         c.execute("SELECT msg_count FROM users WHERE username = ?", (user,))
-                        msg_count = c.fetchone()
-                        msg_count = msg_count[0] + 1
+                        msg_count = c.fetchone()[0] + 1
                         c.execute("UPDATE users SET msg_count = ? WHERE username = ?", (msg_count, user))
                         db.commit()
                         
@@ -296,8 +292,7 @@ def clientRegister(client, login_cur, sender):
     
     # If username is exit, exit the registration process 
     if registered_username.lower() == "exit":
-        client.close()
-        exit()
+        sender.close(log_exit=True)
     
     # Check if the username is allowed
     for uname in registered_username.split():
