@@ -162,7 +162,7 @@ def client_thread(client):
             except OSError: return
             
             except Exception as e:
-                log.warning(f"A message transmission error occurred.")
+                log.warning(LogMessages.transmission_error)
                 debug_logger(e, stbexceptions.transmition_error, type=StbTypes.WARNING)
                 return
             
@@ -217,7 +217,7 @@ def client_thread(client):
                     c.execute('SELECT role FROM users WHERE username = ?', (user,))
 
                 except Exception as e:
-                    log.error("An SQL error occured!")
+                    log.error(LogMessages.sql_error)
                     debug_logger(e, stbexceptions.sql_error)
                     
                 user_role = c.fetchone()[0]
@@ -257,12 +257,12 @@ def client_thread(client):
                         db.commit()
                         
                     except Exception as e:
-                        log.error("An SQL error occured!")
+                        log.error(LogMessages.sql_error)
                         debug_logger(e, stbexceptions.sql_error)
             c.close()            
                 
         except Exception as e:
-            log.error("A client-side error occurred.")
+            log.error(LogMessages.client_side_error)
             
             debug_logger(e, stbexceptions.client_error)
             traceback.print_exc()
@@ -272,7 +272,7 @@ def client_thread(client):
                 sender.close(del_address=True, del_user=True)
                 
             except Exception as e:
-                log.warning("A socket-to-client exception occured")
+                log.warning(LogMessages.stc_error)
                 debug_logger(e, stbexceptions.stc_error, type=StbTypes.WARNING)
             
             broadcast(f"{Colors.GRAY + Colors.BOLD}<--{Colors.RESET} {userRoleColor(user)}{user}{YELLOW + Colors.BOLD} has left the chat room!{RESET + Colors.RESET}")
