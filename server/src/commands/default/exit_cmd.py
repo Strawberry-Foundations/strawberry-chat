@@ -5,7 +5,7 @@ import yaml
 
 from src.colors import *
 from yaml import SafeLoader
-from init import server_dir, addresses, users, user_logged_in, log
+from init import server_dir, addresses, users, user_logged_in, log, LogMessages
 from src.functions import broadcast_all, userRoleColor
 
 # Open Configuration
@@ -16,7 +16,7 @@ with open(server_dir + "/config.yml") as config_data:
 @register_command("quit")
 def exit_command(socket: socket.socket, username: str, args: list, send):
     send(f"{YELLOW + Colors.BOLD}You left the chat!{RESET + Colors.RESET}")
-    log.info(f"{username} {addresses[socket][0]} has left.")
+    log.info(LogMessages.user_left % (username, addresses[socket][0]))
     
     del addresses[socket]
     del users[socket]
