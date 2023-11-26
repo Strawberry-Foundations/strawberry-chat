@@ -67,13 +67,6 @@ else:
     print(f"{YELLOW + Colors.BOLD}>>> {RESET}Restart your server to connect to your new database.")
     exit()
 
-# Blacklisted word functions
-def open_blacklist():
-    with open(server_dir + "/blacklist.txt", "r") as f:
-        for word in f:
-            word = word.strip().lower()
-            blacklist.add(word)
-
 # Check if blacklist exists
 if os.path.exists(server_dir + "/blacklist.txt"):
     open_blacklist()
