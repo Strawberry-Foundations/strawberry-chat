@@ -130,7 +130,7 @@ class Scapi:
             else:
                 return ""
         
-        def conv_json_data(self, data): return json.loads(data)
+        def convert_json_data(self, data): return json.loads(data)
         
         def get_username(self, json_data): return json_data["username"]
         
@@ -210,7 +210,7 @@ class Scapi:
                 while threadFlag:
                     recv_message = self.socket.recv(2048).decode()
                     
-                    try: message = self.conv_json_data(recv_message)
+                    try: message = self.convert_json_data(recv_message)
                     except: message = recv_message
                     
                     if recv_message:
