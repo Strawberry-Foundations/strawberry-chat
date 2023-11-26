@@ -17,10 +17,10 @@ from src.vars import chat_name, short_ver, codename, server_edition, api
 server_dir = os.path.dirname(os.path.realpath(__file__))
 
 class LogMessages:
-    address_left = "%s has left"
-    user_left = "%s (%s) has left"
-    queue_kick = "%s got kicked out of the queue"
-    queue_left = "%s (%s) left the queue"
+    address_left    = "%s has left"
+    user_left       = "%s (%s) has left"
+    queue_kick      = "%s got kicked out of the queue"
+    queue_left      = "%s (%s) left the queue"
 
 
 class ClientSender:
