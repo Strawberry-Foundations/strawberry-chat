@@ -145,18 +145,17 @@ class Scapi:
             self.owner              = owner
             self.custom_list        = custom_list
 
-        def send_message(self, message):
-            self.socket.send(message.encode("utf8"))
+        def send_message(self, message): self.socket.send(message.encode("utf8"))
+        
+        def send_direct_message(self, user, message): self.socket.send(f"/dm {user} {message}".encode("utf8"))
             
         def escape_ansi(self, line):
             ansi_escape = re.compile(r'(?:\x1B[@-_]|[\x80-\x9F])[0-?]*[ -/]*[@-~]')
             return ansi_escape.sub('', line)
         
         def delete_last_line(self):
-            cursorUp = "\x1b[1A"
-            eraseLine = "\x1b[2K"
-            sys.stdout.write(cursorUp)
-            sys.stdout.write(eraseLine)
+            sys.stdout.write("\x1b[1A")
+            sys.stdout.write("\x1b[2K")
         
         # Deprecated
         def get_username_by_msg(self, message):
