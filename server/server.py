@@ -103,19 +103,9 @@ def connectionThread(sock):
 
 
 def clientThread(client):
-    def send(message):
-        json_builder = {
-            "message_type": StbCom.SYS_MSG,
-            "message": {
-                "content": message
-            }
-        }
-        
-        client.send(send_json(json_builder).encode('utf8'))
-        
-    # Define db variable global
     global db
     
+    sender  = ClientSender(client)
     address = addresses[client][0]
     
     try:
@@ -139,7 +129,7 @@ def clientThread(client):
     users[client] = user
 
     try:
-        send(f"{CYAN + Colors.BOLD}Welcome back {user}! Nice to see you!{RESET + Colors.RESET}")
+        sender.send(f"{CYAN + Colors.BOLD}Welcome back {user}! Nice to see you!{RESET + Colors.RESET}")
         onlineUsersLen = len([user for user in sorted(users.values())])
         
         if onlineUsersLen == 1:
@@ -148,7 +138,7 @@ def clientThread(client):
             onlineUsersStr = f"are {onlineUsersLen} users"
             
         time.sleep(0.05)
-        send(f"""{CYAN + Colors.BOLD}Currently there {onlineUsersStr} online. For help use /help{RESET + Colors.RESET}\n{news_text}""")
+        sender.send(f"""{CYAN + Colors.BOLD}Currently there {onlineUsersStr} online. For help use /help{RESET + Colors.RESET}\n{news_text}""")
         
 
     except Exception as e:
@@ -200,13 +190,13 @@ def clientThread(client):
             else:
                 if message_length > max_message_length:
                     if rnd == 0:
-                        send(f"{YELLOW + Colors.BOLD}Your message is too long.{RESET + Colors.RESET}")
+                        sender.send(f"{YELLOW + Colors.BOLD}Your message is too long.{RESET + Colors.RESET}")
                         
                     elif rnd == 1:
-                        send(f"{YELLOW + Colors.BOLD}boah digga halbe bibel wer liest sich das durch{RESET + Colors.RESET}")
+                        sender.send(f"{YELLOW + Colors.BOLD}boah digga halbe bibel wer liest sich das durch{RESET + Colors.RESET}")
                         
                     elif rnd == 2:
-                        send(f"{YELLOW + Colors.BOLD}junge niemand will sich hier die herr der ringe trilogie durchlesen{RESET + Colors.RESET}")
+                        sender.send(f"{YELLOW + Colors.BOLD}junge niemand will sich hier die herr der ringe trilogie durchlesen{RESET + Colors.RESET}")
 
             # Blacklisted Word System
             clcur.execute('SELECT role, enable_blacklisted_words FROM users WHERE username = ?', (user,))    
@@ -220,7 +210,7 @@ def clientThread(client):
                     word = word.lower()
                     
                     if word in blacklist:
-                        send(f"{YELLOW + Colors.BOLD}Please be friendlier in the chat. Rejoin when you feel ready!{RESET + Colors.RESET}")
+                        sender.send(f"{YELLOW + Colors.BOLD}Please be friendlier in the chat. Rejoin when you feel ready!{RESET + Colors.RESET}")
                         client.close()
                         
                     else:
@@ -235,7 +225,7 @@ def clientThread(client):
                     args = args[1:]
                     
                 except: 
-                    send(f"{RED}Not enough arguments! Please pass an valid command!{RESET}")
+                    sender.send(f"{RED}Not enough arguments! Please pass an valid command!{RESET}")
                     continue
                 
                 try:
@@ -258,19 +248,19 @@ def clientThread(client):
                     case _:
                         role = PermissionLevel.NONE
                         
-                execute_command(cmd, client, user, role, args, send)
+                execute_command(cmd, client, user, role, args, sender.send)
                 continue
             
 
             # Message handling
             if isMuted(user):
-                send(f"{RED + Colors.BOLD}Sorry, but you were muted by an administrator. Please contact him/her if you have done nothing wrong, or wait until you are unmuted.{RESET + Colors.RESET}")
+                sender.send(f"{RED + Colors.BOLD}Sorry, but you were muted by an administrator. Please contact him/her if you have done nothing wrong, or wait until you are unmuted.{RESET + Colors.RESET}")
             
             elif not isAccountEnabled(user):
-                send(f"{RED + Colors.BOLD}Your account was disabled by an administrator.{RESET + Colors.RESET}")
+                sender.send(f"{RED + Colors.BOLD}Your account was disabled by an administrator.{RESET + Colors.RESET}")
                 
             elif user in afks:
-                send(f"{RED}Sorry, you are AFK.{RESET}")
+                sender.send(f"{RED}Sorry, you are AFK.{RESET}")
                 
             else:
                 if not is_empty_or_whitespace(message):
