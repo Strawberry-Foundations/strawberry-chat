@@ -16,4 +16,9 @@ def queue_command(socket: socket.socket, username: str, args: list, send):
     
     match args[0]:
         case "remove":
+            if not len(queue.queue) >= 2:
+                send(f"{RED}Cannot remove first position in queue: Only one person is currently in queue")
+                return
+            
             queue.remove()
+            send(f"{GREEN}The first position in the queue has been removed")
