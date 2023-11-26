@@ -622,7 +622,6 @@ def broadcast(message, sent_by="", format: StbCom = StbCom.PLAIN):
     except Exception as e:
         log.error(f"A broadcasting error occurred.")
         debug_logger(e, stbexceptions.communication_error)
-        exit(1)
 
 
 
@@ -636,8 +635,8 @@ def cleanup(info_msg=True):
     
 def server_commands(socket):
     while True:
-        # command = input(f"{RESET + Colors.RESET}> ")
         command = input(f"")
+        
         if command == "help":
             print(server_help_section)
             
@@ -650,7 +649,7 @@ def server_commands(socket):
         elif command == "exit":
             cleanup(info_msg=False)
             socket.close()
-            exit(1)
+            exit(0)
         
         elif command.startswith("update"):
             args = command.replace("update", "").replace(" ", "")
