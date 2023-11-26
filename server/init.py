@@ -45,8 +45,8 @@ class Queue:
     def add(self, user):
         self.queue.append(user)
         
-    def remove(self):
-        if self.queue: return self.queue.pop(0)
+    def remove(self, pos: int = 0):
+        if self.queue: return self.queue.pop(pos)
         else: return None
         
     def show(self):
