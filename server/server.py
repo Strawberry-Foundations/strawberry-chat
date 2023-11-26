@@ -660,7 +660,7 @@ def server_commands(socket):
                 check_for_updates(args)
                 
                 
-
+# Main Function
 def main():
     try:
         if test_mode: port = 49200
