@@ -26,7 +26,7 @@ stbchat_host    = config["stbchat"]["server"]["host"]
 stbchat_port    = config["stbchat"]["server"]["port"]
 
 bot = commands.Bot(command_prefix='.', intents=discord.Intents.all())
-scapi_bot = Scapi.Bot(username=stbchat_uname, token=stbchat_token, host=stbchat_host, port=stbchat_port)
+scapi_bot = Scapi.Bot(username=stbchat_uname, token=stbchat_token, host=stbchat_host, port=stbchat_port, json=True)
 
 scapi_bot.login()
 scapi_bot.flag_handler(print_recv_msg=False, enable_user_input=True)
