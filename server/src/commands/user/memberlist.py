@@ -57,8 +57,11 @@ def memberlist_command(socket: socket.socket, username: str, args: list, send):
         print(e)
     
     onlineUsersLen2 = len([user for user in sorted(users.values())])
+    
+    _online_users = f"{onlineUsersLen2}/{max_users}"
+    if max_users == -1: _online_users = f"{onlineUsersLen2}"
                 
-    send(f"""{CYAN +  Colors.UNDERLINE + Colors.BOLD}{verified_txt}{config['server']['name'].upper()} ({membersLen} Members, {onlineUsersLen2}/{max_users} Online){RESET + Colors.RESET}
+    send(f"""{CYAN +  Colors.UNDERLINE + Colors.BOLD}{verified_txt}{config['server']['name'].upper()} ({membersLen} Members, {_online_users} Online){RESET + Colors.RESET}
         {Colors.BOLD}->{Colors.RESET} {RED}Administrators ({admins_len}){RESET}
            {LIGHTRED_EX}{admins}{RESET}
         
