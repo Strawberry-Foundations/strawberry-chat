@@ -54,8 +54,11 @@ class Queue:
             print(f"#{pos}: {user}")
             
     def position_user(self, user):
-        try: return self.queue.index(user) + 1
-        except Exception as e: print(e)
+        try:
+            return self.queue.index(user) + 1
+        
+        except Exception as e:
+            return 0
         
 class Stopwatch:
     def __init__(self):
