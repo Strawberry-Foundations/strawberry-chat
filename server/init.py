@@ -32,9 +32,10 @@ class ClientSender:
         
         self.socket.send(self.send_json(json_builder).encode('utf8'))
     
-    def close(self, call_exit: bool = True, del_address: bool = False, ):
+    def close(self, call_exit: bool = True, del_address: bool = False, del_user: bool = False):
         self.socket.close()
         if del_address: del addresses[self.socket]
+        if del_user: del users[self.socket]
         if call_exit: exit()
         
 
