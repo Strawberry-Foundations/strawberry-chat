@@ -65,12 +65,13 @@ class Scapi:
             ADMIN   = 2
             OWNER   = 3
             
-        def __init__(self, username: str, token: str, host: str, port: int, enable_user_input: bool = False, print_recv_msg: bool = False, json: bool = True):
+        def __init__(self, username: str, token: str, host: str, port: int, prefix: str = "!", enable_user_input: bool = False, print_recv_msg: bool = False, json: bool = True):
             self.socket             = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.username           = username
             self.token              = token
             self.host               = host
             self.port               = port
+            self.prefix             = prefix    
             self.enable_user_input  = enable_user_input
             self.log_recv_msg       = print_recv_msg
             self.v2_communication   = json
@@ -394,7 +395,7 @@ class Scapi:
                     if _this_works:
                         raw_message = raw_data["message"]["content"]
                     
-                        if raw_message.startswith("!"):
+                        if raw_message.startswith(self.prefix):
                             message = raw_message[1:]
                             args = message.split()
                             cmd = args[0]
