@@ -21,6 +21,7 @@ class LogMessages:
     user_left           = "%s (%s) has left"
     queue_kick          = "%s got kicked out of the queue"
     queue_left          = "%s (%s) left the queue"
+    queue_join          = "%s (%s) is now in the queue"
     connected           = "%s has connected"
     login               = "%s (%s) logged in"
     login_error         = "A login error with %s occured!"
@@ -35,6 +36,7 @@ class LogMessages:
     broadcast_error     = "A broadcasting error occurred."
     runtime_stop        = "Runtime has stopped."
     server_stop         = "Server stopped"
+    badge_error         = "Something went wrong while... doing something with the badges?: "
 
 
 class ClientSender:
