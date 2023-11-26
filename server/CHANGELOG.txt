@@ -18,14 +18,19 @@
 - FIX: Fixed IndexError: list index out of range when just typing / into chat (#72)
 - FIX: Merged welcome message to one message to fix the extra line bug (Fixed #70)
 - FIX: Some fixes to welcome message
-- FIX: Added reset_color argument to replace_htpf to fix not resetting the color correctly
+- FIX: Added reset_color argument to replace_htpf to fix not resetting the color correctly  
+- FIX: Fixed a color formatting bug that occurrs when using htpf (client-side fix)
 
 - SCAPI: Added function to use the old Strawberry Communication System (stbmv1)
 - SCAPI: New way for scapi message events (replacement for old legacy "commands" method) (#64)
 - SCAPI: Create a config do enable/disable check on capital letters in message for new on_message method (#78)
 - SCAPI: Moved event_registry and command_registry to __init__
+- SCAPI: Finally added real prefix recognition in scapi (#80)
+- SCAPI: Fixed json & non-json message receiving
+- SCAPI: Improved startup speed of scapi
+- SCAPI: Finally implemented correct logic of logging messages if log_recv_msg is enabled + changed flag names when starting scapi bot
 
 - OPTIMIZATION: Many code optimizations
 
-- UPDATE: Updated api protocol from http to https
+- UPDATE: Updated api protocol from http to https (scapi & server)
 - UPDATE: Some major updates & fixes to news
