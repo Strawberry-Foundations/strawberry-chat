@@ -284,3 +284,10 @@ def isAccountEnabled(uname):
     
     if accountEnabledStatus[0] == "true": return True
     else:  return False
+    
+# Blacklisted word functions
+def open_blacklist():
+    with open(server_dir + "/blacklist.txt", "r") as f:
+        for word in f:
+            word = word.strip().lower()
+            blacklist.add(word)
