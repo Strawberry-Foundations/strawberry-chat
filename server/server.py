@@ -385,7 +385,7 @@ def clientRegister(client, login_cur, sender):
             sender.close(call_exit=False)
             
         except Exception as e:
-            log.error("An SQL error occured!")
+            log.error(LogMessages.sql_error)
             debug_logger(e, stbexceptions.sql_error)
         
     else:
@@ -558,7 +558,7 @@ def broadcast(message, sent_by="", format: StbCom = StbCom.PLAIN):
                     
                 except BrokenPipeError as e:
                     debug_logger(e, stbexceptions.broken_pipe_warning, type=StbTypes.WARNING)
-                    log.warning("You should kick some invalid sessions.")
+                    log.warning(LogMessages.invalid_sessions_w)
 
         else:
             for user in users:
@@ -620,7 +620,7 @@ def broadcast(message, sent_by="", format: StbCom = StbCom.PLAIN):
             exit(1)
   
     except Exception as e:
-        log.error(f"A broadcasting error occurred.")
+        log.error(LogMessages.broadcast_error)
         debug_logger(e, stbexceptions.communication_error)
 
 
@@ -631,7 +631,7 @@ def cleanup(info_msg=True):
             sock.close()
         
     if info_msg:
-        log.info(f"{YELLOW + Colors.BOLD}Runtime has stopped.{RESET + Colors.RESET}")
+        log.info(f"{YELLOW + Colors.BOLD}{LogMessages.runtime_stop}{RESET + Colors.RESET}")
     
 def server_commands(socket):
     while True:
@@ -705,7 +705,7 @@ def main():
 
             cleanup()
             server_socket.close()
-            log.info("Server stopped")
+            log.info(LogMessages.server_stop)
             
     except KeyboardInterrupt: exit()
     
