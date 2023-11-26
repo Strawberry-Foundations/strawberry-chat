@@ -151,6 +151,12 @@ class Scapi:
             ansi_escape = re.compile(r'(?:\x1B[@-_]|[\x80-\x9F])[0-?]*[ -/]*[@-~]')
             return ansi_escape.sub('', line)
         
+        def delete_last_line(self):
+            cursorUp = "\x1b[1A"
+            eraseLine = "\x1b[2K"
+            sys.stdout.write(cursorUp)
+            sys.stdout.write(eraseLine)
+        
         # Deprecated
         def get_username_by_msg(self, message):
             username = message.split(":")[0]
@@ -181,21 +187,16 @@ class Scapi:
         
         def send(self):
             thread_flag = True
-            def delete_last_line():
-                cursorUp = "\x1b[1A"
-                eraseLine = "\x1b[2K"
-                sys.stdout.write(cursorUp)
-                sys.stdout.write(eraseLine)
             
-            if self.enable_user_input is True:
+            if self.enable_user_input:
                 while thread_flag:
                     try:
                         message = input("")
-                        delete_last_line()
+                        self.delete_last_line()
                         self.socket.send(message.encode("utf8"))
 
                     except:
-                        if thread_flag == False:
+                        if not thread_flag:
                             pass
                         
                         else:
