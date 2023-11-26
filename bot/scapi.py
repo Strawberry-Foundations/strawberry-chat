@@ -206,7 +206,7 @@ class Scapi:
         def recv_message(self, json: bool = False, raw: bool = False, escape_ansi: bool = False):
             thread_flag = True
             
-            if json:
+            if json == True:
                 try:
                     while thread_flag:
                         recv_message = self.socket.recv(2048).decode()
@@ -260,7 +260,7 @@ class Scapi:
                         self.disconnect()
                         thread_flag = False
                         
-            elif not json: 
+            elif json == False:
                 try:
                     while thread_flag:
                         recv_message = self.socket.recv(2048).decode()
@@ -290,6 +290,11 @@ class Scapi:
                     while thread_flag:
                         self.disconnect()
                         thread_flag = False
+            
+            else:
+                self.logger(f"{RED}Invalid value of your compatibility_mode flag (json). Available values are: [True, False]", type=Scapi.LogLevel.ERROR)
+                self.disconnect()
+                sys.exit(1)
                 
                 
         def login(self):
