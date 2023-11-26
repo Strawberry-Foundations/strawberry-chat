@@ -28,6 +28,7 @@ class LogMessages:
     connection_error    = "A connection error occured!"
     transmission_error  = "A message transmission error occurred."
     sql_error           = "An SQL error occured!"
+    client_side_error   = "A client-side error occurred."
 
 
 class ClientSender:
