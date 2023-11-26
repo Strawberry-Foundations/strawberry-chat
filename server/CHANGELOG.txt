@@ -25,6 +25,7 @@
 - FIX: Fixed a color formatting bug that occurrs when using htpf (client-side fix)
 - FIX: Fixed deleting any kind of system message if it is the same as the message before (client-side fix)
 - FIX: Fixed CRITICAL: Chat Hashtag Placeholder Format Colors wont be sent correctly (for more look issue description) (#81) 
+- FIX: Fixed TypeError: a bytes-like object is required, not 'str' when using /dm (#83)
 
 - SCAPI: Added function to use the old Strawberry Communication System (stbmv1)
 - SCAPI: New way for scapi message events (replacement for old legacy "commands" method) (#64)
