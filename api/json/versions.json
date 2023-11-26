@@ -17,7 +17,7 @@
             "bot": {
                 "stable": "1.0.0-stbmv1",
                 "dev": "-",
-                "canary": "0.13.1b2"
+                "canary": "0.13.1b3"
             }
         }
     }
