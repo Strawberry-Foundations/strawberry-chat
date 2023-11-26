@@ -17,5 +17,6 @@ flags:
   signing_key: none
   admins_wait_queue: true
   bots_wait_queue: true
+  special_messages: false
 
 config_ver: 2
