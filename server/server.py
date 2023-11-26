@@ -501,6 +501,34 @@ def clientLogin(client):
                 if enable_queue:
                     if len(users) >= max_users:
                         
+                        if not admins_wait_queue:
+                            login_cur.execute('SELECT role FROM users WHERE username = ?', (username,))
+                            _role = login_cur.fetchone()[0]
+                            
+                            if _role == 'admin':
+                                username = _username
+                                logged_in = True
+                                
+                                sender.send(f"{CYAN + Colors.BOLD}You skipped the queue{RESET + Colors.RESET}")
+                                return username
+                            else: pass
+                        else: pass
+                        
+                        if not bots_wait_queue:
+                            login_cur.execute('SELECT role FROM users WHERE username = ?', (username,))
+                            _role = login_cur.fetchone()[0]
+                            
+                            if _role == 'bot':
+                                username = _username
+                                logged_in = True
+                                
+                                sender.send(f"{CYAN + Colors.BOLD}Queue disabled for bots{RESET + Colors.RESET}")
+                                return username
+                            else: pass
+                        else: pass
+                            
+                            
+                        
                         queue.add(_username)
                         log.info(f"{_username} ({addresses[client][0]}) is now in the queue")
                         
