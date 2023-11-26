@@ -180,6 +180,7 @@ online_mode             = config['flags']['online_mode']
 update_channel          = config['server']['update_channel']
 admins_wait_queue       = config['flags']['admins_wait_queue']
 bots_wait_queue         = config['flags']['bots_wait_queue']
+special_messages        = config['flags']['special_messages']
 
 test_mode               = False
 
