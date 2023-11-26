@@ -25,8 +25,6 @@ def dm_command(socket: _socket.socket, username: str, args: list, send):
             to_sent = sock_object
             found_keys.append(sock_object)
             
-            print(to_sent)
-
     
     try:
         cmd_db.execute("SELECT enable_dms FROM users WHERE username = ?", (username,))
