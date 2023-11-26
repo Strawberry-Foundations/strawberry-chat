@@ -26,6 +26,7 @@
 - FIX: Fixed deleting any kind of system message if it is the same as the message before (client-side fix)
 - FIX: Fixed CRITICAL: Chat Hashtag Placeholder Format Colors wont be sent correctly (for more look issue description) (#81) 
 - FIX: Fixed TypeError: a bytes-like object is required, not 'str' when using /dm (#83)
+- FIX: Fixed UnboundLocalError: cannot access local variable 'has_dm_enabled' (#84)
 
 - SCAPI: Added function to use the old Strawberry Communication System (stbmv1)
 - SCAPI: New way for scapi message events (replacement for old legacy "commands" method) (#64)
@@ -35,6 +36,8 @@
 - SCAPI: Fixed json & non-json message receiving
 - SCAPI: Improved startup speed of scapi
 - SCAPI: Finally implemented correct logic of logging messages if log_recv_msg is enabled + changed flag names when starting scapi bot
+- SCAPI: Added direct messages (#79) + exit command
+
 
 - OPTIMIZATION: Many code optimizations
 
