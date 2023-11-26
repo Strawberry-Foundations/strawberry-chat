@@ -328,7 +328,7 @@ class Scapi:
                 
             else: self.send_message(command_not_found_msg % command_name)
         
-        def command_runner(self):
+        def message_handler(self):
             while True:
                 try:
                     recv_message = self.recv_message(json=self.v2_communication)
@@ -379,7 +379,7 @@ class Scapi:
             if not ready_func is None: ready_func()
             
             send_thread = threading.Thread(target=self.send)
-            cmd_thread  = threading.Thread(target=self.command_runner)
+            msg_thread  = threading.Thread(target=self.message_handler)
             
             send_thread.start()
-            cmd_thread.start()
+            msg_thread.start()
