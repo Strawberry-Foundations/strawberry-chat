@@ -27,6 +27,7 @@ class LogMessages:
     communication_error = "A communication error with %s (%s) occured!"
     connection_error    = "A connection error occured!"
     transmission_error  = "A message transmission error occurred."
+    sql_error           = "An SQL error occured!"
 
 
 class ClientSender:
