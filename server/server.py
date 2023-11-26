@@ -582,7 +582,7 @@ def broadcast(message, sent_by="", format: StbCom = StbCom.PLAIN):
                     message = message.strip("\n")
                 
                 message = escape_ansi(message)
-                message = replace_htpf(message, reset_color=True)
+                message = replace_htpf(message, reset_color=False)
                 
                 for u in users.values():
                     if f"@{u}" in message.split():
