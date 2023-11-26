@@ -266,7 +266,7 @@ def client_thread(client):
             
             debug_logger(e, stbexceptions.client_error)
             traceback.print_exc()
-            log.info(f"{user} ({address}) has left")
+            log.info(LogMessages.user_left % (user, address))
             
             try:
                 sender.close(del_address=True, del_user=True)
