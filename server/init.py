@@ -21,6 +21,9 @@ class LogMessages:
     user_left       = "%s (%s) has left"
     queue_kick      = "%s got kicked out of the queue"
     queue_left      = "%s (%s) left the queue"
+    connected       = "%s has connected"
+    login           = "%s (%s) logged in"
+    login_error     = "A login error with %s occured!"
 
 
 class ClientSender:
