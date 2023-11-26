@@ -128,11 +128,8 @@ def hasNickname(uname):
     unick = c.fetchone()
     c.close()
     
-    if unick[0] is not None: 
-        return True
-    
-    else: 
-        return False
+    if unick[0] is not None:  return True
+    else: return False
 
 # Check if user has a (main) badge
 def hasBadge(uname):
@@ -142,11 +139,8 @@ def hasBadge(uname):
     unick = c.fetchone()
     c.close()
     
-    if unick[0] is not None: 
-        return True
-    
-    else: 
-        return False
+    if unick[0] is not None: return True
+    else: return False
     
 # Print a proper user name information for memberlist command
 def memberListNickname(uname):
@@ -156,11 +150,8 @@ def memberListNickname(uname):
     nickname = c.fetchone()
     c.close()
     
-    if hasNickname(uname):
-        return f"{nickname[0]} (@{uname.lower()})"
-    
-    else:
-        return uname
+    if hasNickname(uname): return f"{nickname[0]} (@{uname.lower()})"
+    else: return uname
 
 def memberListBadge(uname):
     db = sql.connect(server_dir + "/users.db", check_same_thread=False)
@@ -169,11 +160,8 @@ def memberListBadge(uname):
     badge = c.fetchone()
     c.close()
     
-    if hasBadge(uname):
-        return f"[{badge[0]}]"
-    
-    else:
-        return ""
+    if hasBadge(uname): return f"[{badge[0]}]"
+    else: return ""
     
 # Get user role color from the user
 def userRoleColor(uname):
@@ -185,75 +173,33 @@ def userRoleColor(uname):
     
     if color[0] is not None: 
         match color[0]:
-            case "red": 
-                return RED + Colors.BOLD
-            
-            case "green": 
-                return GREEN + Colors.BOLD
-                
-            case "cyan": 
-                return CYAN + Colors.BOLD
-            
-            case "blue": 
-                return BLUE
-
-            case "yellow": 
-                return YELLOW
-                
-            case "magenta": 
-                return MAGENTA
-            
-            case "lightred":
-                return LIGHTRED_EX
-            
-            case "lightgreen":
-                return LIGHTGREEN_EX
-            
-            case "lightcyan":
-                return LIGHTCYAN_EX
-            
-            case "lightblue":
-                return LIGHTBLUE_EX
-
-            case "lightyellow":
-                return LIGHTYELLOW_EX
-
-            case "lightmagenta":
-                return LIGHTMAGENTA_EX
-            
-            case "boldred":
-                return Colors.BOLD + RED
-
-            case "boldgreen":
-                return Colors.BOLD + GREEN
-            
-            case "boldcyan":
-                return Colors.BOLD + CYAN
-            
-            case "boldblue":
-                return Colors.BOLD + BLUE
-            
-            case "boldyellow":
-                return Colors.BOLD + YELLOW
-            
-            case "boldmagenta":
-                return Colors.BOLD + MAGENTA
-            
-            case _:
-                return RESET
-    else: 
-        return RESET
+            case "red": return RED + Colors.BOLD
+            case "green": return GREEN + Colors.BOLD
+            case "cyan": return CYAN + Colors.BOLD
+            case "blue": return BLUE
+            case "yellow": return YELLOW
+            case "magenta": return MAGENTA
+            case "lightred": return LIGHTRED_EX
+            case "lightgreen": return LIGHTGREEN_EX
+            case "lightcyan": return LIGHTCYAN_EX
+            case "lightblue": return LIGHTBLUE_EX
+            case "lightyellow": return LIGHTYELLOW_EX
+            case "lightmagenta": return LIGHTMAGENTA_EX
+            case "boldred": return Colors.BOLD + RED
+            case "boldgreen": return Colors.BOLD + GREEN
+            case "boldcyan": return Colors.BOLD + CYAN
+            case "boldblue": return Colors.BOLD + BLUE
+            case "boldyellow": return Colors.BOLD + YELLOW            
+            case "boldmagenta": return Colors.BOLD + MAGENTA
+            case _: return RESET
+    else: return RESET
     
 def isOnline(uname):
     if uname in users.values():
-        if uname in afks:
-            return "🌙"
-        
-        else:
-            return "🟢"
+        if uname in afks: return "🌙"
+        else: return "🟢"
     
-    else:
-        return f"{Colors.GRAY}〇{RESET}"
+    else: return f"{Colors.GRAY}〇{RESET}"
 
 # Check if a user exists
 def doesUserExist(uname):
@@ -275,9 +221,7 @@ def doesUserExist(uname):
 
 def hash_password(password):
     ph = argon2.PasswordHasher()
-    hashed_password = ph.hash(password)
-    
-    return hashed_password
+    return ph.hash(password)
 
 def verify_password(stored_password, entered_password):
     ph = argon2.PasswordHasher()
@@ -289,8 +233,7 @@ def verify_password(stored_password, entered_password):
     except argon2.exceptions.VerifyMismatchError:
         return False
 
-def is_empty_or_whitespace(string):
-    return all(char.isspace() for char in string)
+def is_empty_or_whitespace(string): return all(char.isspace() for char in string)
 
 # Get user's nickname
 def userNickname(uname):
@@ -329,10 +272,8 @@ def isMuted(uname):
     mutedStatus = c.fetchone()
     c.close()
     
-    if mutedStatus[0] == "true":
-        return True
-    else: 
-        return False
+    if mutedStatus[0] == "true": return True
+    else: return False
     
 # Check if user's account is enabled
 def isAccountEnabled(uname):
@@ -341,7 +282,5 @@ def isAccountEnabled(uname):
     accountEnabledStatus = c.fetchone()
     c.close()
     
-    if accountEnabledStatus[0] == "true":
-        return True
-    else: 
-        return False
+    if accountEnabledStatus[0] == "true": return True
+    else:  return False
