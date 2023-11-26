@@ -543,6 +543,7 @@ def clientLogin(client):
 
 
 def broadcast(message, sent_by="", format: StbCom = StbCom.PLAIN):    
+    ansi_reset_count = 0 
     c = db.cursor()
     
     try:
@@ -564,6 +565,8 @@ def broadcast(message, sent_by="", format: StbCom = StbCom.PLAIN):
 
         else:
             for user in users:
+                ansi_reset_count += 1 
+                
                 try: 
                     c.execute('SELECT badge FROM users WHERE username = ?', (sent_by,))
                     user_badge = c.fetchone()
@@ -581,13 +584,14 @@ def broadcast(message, sent_by="", format: StbCom = StbCom.PLAIN):
                 if user_role[0] != "bot":
                     message = message.strip("\n")
                 
-                message = escape_ansi(message)
-                message = replace_htpf(message, reset_color=False)
+                if ansi_reset_count <= 1:
+                    message = escape_ansi(message)
+                    
+                message = replace_htpf(message)
                 
                 for u in users.values():
                     if f"@{u}" in message.split():
                         message = message.replace(f"@{u}", f"{BACKMAGENTA + Colors.BOLD}@{userNickname(u)}{BACKRESET + Colors.RESET}")
-                
                 
                 if not is_empty_or_whitespace(message):
                     if message != "":
