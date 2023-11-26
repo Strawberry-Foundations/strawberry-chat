@@ -42,7 +42,6 @@
 - SCAPI: Finally implemented correct logic of logging messages if log_recv_msg is enabled + changed flag names when starting scapi bot
 - SCAPI: Added direct messages (#79) + exit command
 
-
 - OPTIMIZATION: Many code optimizations
 - OPTIMIZATION: Removed unnecessary imports
 - OPTIMIZATION: Some general formatting fixes for src.functions
