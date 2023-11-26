@@ -16,5 +16,6 @@ flags:
   require_signing: false
   signing_key: none
   admins_wait_queue: true
+  bots_wait_queue: true
 
 config_ver: 2
