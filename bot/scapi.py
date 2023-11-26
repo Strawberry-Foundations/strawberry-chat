@@ -234,10 +234,10 @@ class Scapi:
                                 message     = message["message"]["content"]
                                 
                                 if nickname == username:
-                                    fmt = f"{role_color}{username}{badge}:\033[0m {message}"
+                                    fmt     = f"{role_color}{username}{badge}:\033[0m {message}"
                                     
                                 else:
-                                    fmt = f"{role_color}{nickname} (@{username.lower()}){badge}:\033[0m {message}"
+                                    fmt     = f"{role_color}{nickname} (@{username.lower()}){badge}:\033[0m {message}"
                                 
                             else:
                                 try:
@@ -264,25 +264,24 @@ class Scapi:
                 try:
                     while thread_flag:
                         recv_message = self.socket.recv(2048).decode()
-                        message = recv_message
                         
-                        if message:
+                        if recv_message:
                             self.count = self.count + 1
                             
                             if self.log_recv_msg: 
                                 if self.count > 4:
-                                    self.logger(message, type=Scapi.LogLevel.INFO)
+                                    self.logger(recv_message, type=Scapi.LogLevel.INFO)
                             
                             if raw:
-                                index = message.find(":")
-                                msg_splitted = message[index + 2:]
+                                index = recv_message.find(":")
+                                msg_splitted = recv_message[index + 2:]
                                 return self.escape_ansi(msg_splitted)
                             
                             else:
                                 if escape_ansi:
-                                    return self.escape_ansi(message)
+                                    return self.escape_ansi(recv_message)
                                 else:
-                                    return message
+                                    return recv_message
                             
                         else: break
                             
