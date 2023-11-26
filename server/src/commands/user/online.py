@@ -10,5 +10,10 @@ from init import users, max_users
 def online_command(socket: socket.socket, username: str, args: list, send):
     onlineUsers = ', '.join([user for user in sorted(users.values())])
     onlineUsersLen2 = len([user for user in sorted(users.values())])
-    send(f"""{GREEN +  Colors.UNDERLINE + Colors.BOLD}Users who are currently online ({onlineUsersLen2}/{max_users}){RESET + Colors.RESET}
+    
+    _online_users = f"({onlineUsersLen2}/{max_users})"
+    if max_users == -1: _online_users = f"({onlineUsersLen2})"
+        
+    
+    send(f"""{GREEN +  Colors.UNDERLINE + Colors.BOLD}Users who are currently online {_online_users}{RESET + Colors.RESET}
         {Colors.BOLD}->{Colors.RESET} {CYAN}{onlineUsers}{RESET + Colors.RESET}""")
