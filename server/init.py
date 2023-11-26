@@ -16,6 +16,11 @@ from src.vars import chat_name, short_ver, codename, server_edition, api
 # Path of init.py
 server_dir = os.path.dirname(os.path.realpath(__file__))
 
+class LogMessages:
+    address_left = "%s has left"
+    user_left = "%s (%s) has left"
+
+
 class ClientSender:
     def __init__(self, socket):
         self.socket = socket
@@ -33,7 +38,7 @@ class ClientSender:
         self.socket.send(self.send_json(json_builder).encode('utf8'))
     
     def close(self, call_exit: bool = True, del_address: bool = False, del_user: bool = False, log_exit: bool = False):
-        if log_exit: log.info(f"{addresses[self.socket][0]} has left")
+        if log_exit: log.info(LogMessages.address_left % addresses[self.socket][0])
         
         self.socket.close()
         
@@ -114,6 +119,8 @@ class stbexceptions:
     broken_pipe_warning     = "123"
     transmition_error       = "242"
     server_banned_error     = "999"
+
+
 
 # Init logger
 class LogFormatter(logging.Formatter):
