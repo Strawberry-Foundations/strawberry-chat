@@ -38,7 +38,7 @@ def escape_ansi(line):
 
 @bot.event
 async def on_ready():
-    print(f'Logged in as {bot.user.name}')
+    scapi_bot.logger(f'(Discord) Logged in as {bot.user.name}', type=Scapi.LogLevel.INFO)
 
 @bot.event
 async def on_message(message):
