@@ -37,8 +37,8 @@ CYAN = '\033[36m'
 WHITE = '\033[37m'
 
 # Version-specified Variables & important variables
-base_version    = "0.13.0"
-ext_version     = base_version + "b2"
+base_version    = "0.13.1"
+ext_version     = base_version + "b1"
 version         = "v" + ext_version
 full_version    = ext_version + "_canary-vacakes-std_stmbv2"
 update_channel  = "canary"
@@ -72,7 +72,7 @@ class Scapi:
             self.host               = host
             self.port               = port
             self.enable_user_input  = enable_user_input
-            self.log_recv_msg     = print_recv_msg
+            self.log_recv_msg       = print_recv_msg
             self.v2_communication   = json
             
             self.trusted_list       = []
@@ -80,13 +80,13 @@ class Scapi:
             self.custom_list        = []
             self.owner              = None
             
-            self.command_registry = {}
-            self.event_registry = {}
+            self.command_registry   = {}
+            self.event_registry     = {}
             
             self.req_permissions    = None
             self.count              = 0
             
-            self.log_msg = f"{CYAN + BOLD}{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}  %sscapi  -->  {RESET}"
+            self.log_msg            = f"{CYAN + BOLD}{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}  %sscapi  -->  {RESET}"
             
             self.logger(f"{GREEN}Starting scapi {version} (v{full_version})", Scapi.LogLevel.INFO)
         
@@ -180,7 +180,7 @@ class Scapi:
             return raw_username     
         
         def send(self):
-            threadFlag = True
+            thread_flag = True
             def delete_last_line():
                 cursorUp = "\x1b[1A"
                 eraseLine = "\x1b[2K"
@@ -188,64 +188,109 @@ class Scapi:
                 sys.stdout.write(eraseLine)
             
             if self.enable_user_input is True:
-                while threadFlag:
+                while thread_flag:
                     try:
                         message = input("")
                         delete_last_line()
                         self.socket.send(message.encode("utf8"))
 
                     except:
-                        if threadFlag == False:
+                        if thread_flag == False:
                             pass
                         
                         else:
                             self.logger(f"{RED}Message could not be sent", type=Scapi.LogLevel.ERROR)
                             break
         
-        def recv_message(self, json=False):
-            global threadFlag
-            threadFlag = True
+        def recv_message(self, json: bool = False, raw: bool = False, escape_ansi: bool = False):
+            thread_flag = True
             
-            try:
-                while threadFlag:
-                    recv_message = self.socket.recv(2048).decode()
-                    
-                    try: message = self.convert_json_data(recv_message)
-                    except: message = recv_message
-                    
-                    if recv_message:
-                        self.count = self.count + 1
+            if json:
+                try:
+                    while thread_flag:
+                        recv_message = self.socket.recv(2048).decode()
                         
-                        try: message_type = message["message_type"]
-                        except: message_type = "unknown"                        
+                        try:
+                            message = self.convert_json_data(recv_message)
                             
-                        if message_type == "user_message":
-                            username    = message["username"]
-                            nickname    = message["nickname"]
-                            badge       = self.badge_handler(message["badge"])
-                            role_color  = message["role_color"]
-                            message     = message["message"]["content"]
+                        except:
+                            self.logger(f"{RED}Couldn't convert the received message data to json", type=Scapi.LogLevel.ERROR)
+                            message = recv_message
+                        
+                        if recv_message:
+                            self.count = self.count + 1
                             
-                            if nickname == username: fmt = f"{role_color}{username}{badge}:\033[0m {message}"
-                            else: fmt = f"{role_color}{nickname} (@{username.lower()}){badge}:\033[0m {message}"
+                            try:
+                                message_type = message["message_type"]
+                            except:
+                                message_type = "unknown"                        
+                                
+                            if message_type == "user_message":
+                                username    = message["username"]
+                                nickname    = message["nickname"]
+                                badge       = self.badge_handler(message["badge"])
+                                role_color  = message["role_color"]
+                                message     = message["message"]["content"]
+                                
+                                if nickname == username:
+                                    fmt = f"{role_color}{username}{badge}:\033[0m {message}"
+                                    
+                                else:
+                                    fmt = f"{role_color}{nickname} (@{username.lower()}){badge}:\033[0m {message}"
+                                
+                            else:
+                                try:
+                                    fmt     = message["message"]["content"]
+                                except:
+                                    fmt     = message
                             
-                        else:
-                            try: fmt     = message["message"]["content"]
-                            except: fmt  = message
+                            if self.log_recv_msg: 
+                                if self.count > 4:
+                                    self.logger(fmt, type=Scapi.LogLevel.INFO)
+                            
+                            if json:
+                                return recv_message
+                            
+                        else: break
+                            
                         
-                        if self.log_recv_msg: 
-                            if self.count > 4:
-                                self.logger(fmt, type=Scapi.LogLevel.INFO)
+                except (KeyboardInterrupt, SystemExit):
+                    while thread_flag:
+                        self.disconnect()
+                        thread_flag = False
                         
-                        if json: return recv_message
+            elif not json: 
+                try:
+                    while thread_flag:
+                        recv_message = self.socket.recv(2048).decode()
+                        message = recv_message
                         
-                    else: break
+                        if message:
+                            self.count = self.count + 1
+                            
+                            if self.log_recv_msg: 
+                                if self.count > 4:
+                                    self.logger(message, type=Scapi.LogLevel.INFO)
+                            
+                            if raw:
+                                index = message.find(":")
+                                msg_splitted = message[index + 2:]
+                                return self.escape_ansi(msg_splitted)
+                            
+                            else:
+                                if escape_ansi:
+                                    return self.escape_ansi(message)
+                                else:
+                                    return message
+                            
+                        else: break
+                            
                         
-                    
-            except (KeyboardInterrupt, SystemExit):
-                while threadFlag:
-                    self.disconnect()
-                    threadFlag = False
+                except (KeyboardInterrupt, SystemExit):
+                    while thread_flag:
+                        self.disconnect()
+                        thread_flag = False
+                
                 
         def login(self):
             self.socket.send(self.username.encode("utf8"))
