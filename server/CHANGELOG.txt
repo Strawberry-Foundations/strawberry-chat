@@ -15,6 +15,7 @@
 - NEW: Added 2 new configuration variables to configure if admins/bots have to wait in the queue
 
 - MODULARITY: More Object Oriented Programming (Queue Class, Stopwatch Class, ...)
+- MODULARITY: Moved open_blacklist() to src.functions
 
 - FIX: Fixed console logger prints static time instead of the real time (#63)
 - FIX: Fully fixed When using Ctrl + C in client, the server will crash (BrokenPipe) (#1)
