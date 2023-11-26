@@ -95,7 +95,7 @@ def connection_thread(sock):
             
             break
         
-        log.info(f"{address[0]} has connected")
+        log.info(LogMessages.connected % address[0])
         
         addresses[client] = address
         threading.Thread(target=client_thread, args=(client,)).start()
@@ -117,14 +117,14 @@ def client_thread(client):
             return
             
     except Exception as e:
-        log.error(f"A login error with {address} occured!")
+        log.error(LogMessages.login_error % address)
         debug_logger(e, stbexceptions.login_error)
         
         del addresses[client]
         return
     
     
-    log.info(f"{user} ({address}) logged in")
+    log.info(LogMessages.login % (user, address))
     
     users[client] = user
 
