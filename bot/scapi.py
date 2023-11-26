@@ -38,7 +38,7 @@ WHITE = '\033[37m'
 
 # Version-specified Variables & important variables
 base_version    = "0.13.1"
-ext_version     = base_version + "b1"
+ext_version     = base_version + "b2"
 version         = "v" + ext_version
 full_version    = ext_version + "_canary-vacakes-std_stmbv2"
 update_channel  = "canary"
