@@ -1,15 +1,15 @@
 from .. import register_command
 
-import socket
+import socket as _socket
 
 from src.colors import *
 from src.db import Database
 
-from init import server_dir, users, afks
-from src.functions import escape_ansi, userRoleColor
+from init import server_dir, users, afks, StbCom
+from src.functions import escape_ansi, userRoleColor, send_json
 
 @register_command("dm", arg_count=2)
-def dm_command(socket: socket.socket, username: str, args: list, send):
+def dm_command(socket: _socket.socket, username: str, args: list, send):
     cmd_db = Database(server_dir + "/users.db", check_same_thread=False)
 
     uname   = args[0]
@@ -24,6 +24,8 @@ def dm_command(socket: socket.socket, username: str, args: list, send):
             global to_sent
             to_sent = sock_object
             found_keys.append(sock_object)
+            
+            print(to_sent)
 
     
     try:
@@ -45,7 +47,15 @@ def dm_command(socket: socket.socket, username: str, args: list, send):
     else:
         if found_keys:
             send(f"{userRoleColor(username)}You{RESET} {Colors.GRAY}-->{Colors.RESET} {userRoleColor(uname)}{uname}{RESET + Colors.RESET}: {msg}")
-            to_sent.send(f"{Colors.RESET + userRoleColor(username)}{username} {Colors.GRAY}-->{RESET + Colors.RESET}{userRoleColor(uname)} You{Colors.RESET + RESET}: {msg}")
+            
+            json_builder = {
+                "message_type": StbCom.SYS_MSG,
+                "message": {
+                    "content": f"{Colors.RESET + userRoleColor(username)}{username} {Colors.GRAY}-->{RESET + Colors.RESET}{userRoleColor(uname)} You{Colors.RESET + RESET}: {msg}"
+                    }
+            }
+            
+            to_sent.send(send_json(json_builder).encode("utf-8"))
             
         else:
             send(f"{RED + Colors.BOLD}User is offline.{RESET + Colors.RESET}")
