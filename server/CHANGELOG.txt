@@ -28,6 +28,7 @@
 - FIX: Fixed CRITICAL: Chat Hashtag Placeholder Format Colors wont be sent correctly (for more look issue description) (#81) 
 - FIX: Fixed TypeError: a bytes-like object is required, not 'str' when using /dm (#83)
 - FIX: Fixed UnboundLocalError: cannot access local variable 'has_dm_enabled' (#84)
+- FIX: Fixed registration (check for used usernames is not working) (#85)
 
 - SCAPI: Added function to use the old Strawberry Communication System (stbmv1)
 - SCAPI: New way for scapi message events (replacement for old legacy "commands" method) (#64)
