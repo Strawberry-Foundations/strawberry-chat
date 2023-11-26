@@ -40,6 +40,7 @@
 
 
 - OPTIMIZATION: Many code optimizations
+- OPTIMIZATION: Removed unnecessary imports
 
 - UPDATE: Updated api protocol from http to https (scapi & server)
 - UPDATE: Some major updates & fixes to news
