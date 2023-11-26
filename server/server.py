@@ -167,21 +167,18 @@ def client_thread(client):
                 debug_logger(e, stbexceptions.transmition_error, type=StbTypes.WARNING)
                 return
             
-            message_length = len(message)
-            
             client_cur = db.cursor()
 
             client_cur.execute('SELECT role FROM users WHERE username = ?', (user,))    
             res = client_cur.fetchone()
-                    
-            # Message length control system
-            rnd = random.randint(0, 2)
-            
+                
             c = db.cursor()
             
+            # Check if the message is too long
             if not res[0] == "bot": 
-                if message_length > max_message_length:
+                if len(message) > max_message_length:
                     if special_messages:
+                        rnd = random.randint(0, 2)
                         match rnd:
                             case 0: sender.send(f"{YELLOW + Colors.BOLD}Your message is too long.{RESET + Colors.RESET}")
                             case 1: sender.send(f"{YELLOW + Colors.BOLD}boah digga halbe bibel wer liest sich das durch{RESET + Colors.RESET}")
@@ -239,7 +236,6 @@ def client_thread(client):
                 continue
             
 
-            # Message handling
             if isMuted(user):
                 sender.send(f"{RED + Colors.BOLD}Sorry, but you were muted by an administrator. Please contact him/her if you have done nothing wrong, or wait until you are unmuted.{RESET + Colors.RESET}")
             
@@ -251,13 +247,12 @@ def client_thread(client):
                 
             else:
                 if not is_empty_or_whitespace(message):
-                    if enable_messages:
-                        log_msg = escape_ansi(message)
-                                                        
-                        log.info(f"{user} ({address}): {log_msg}")
+                    if enable_messages:                 
+                        log.info(f"{user} ({address}): {escape_ansi(message)}")
                             
                     broadcast(message, user)
                     
+                    # Message counter
                     try:
                         c.execute("SELECT msg_count FROM users WHERE username = ?", (user,))
                         msg_count = c.fetchone()
@@ -278,9 +273,7 @@ def client_thread(client):
             log.info(f"{user} ({address}) has left")
             
             try:
-                del addresses[client]
-                del users[client]
-                client.close()
+                sender.close(del_address=True, del_user=True)
                 
             except Exception as e:
                 log.warning("A socket-to-client exception occured")
