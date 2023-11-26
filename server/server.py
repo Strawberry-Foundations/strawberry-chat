@@ -284,6 +284,14 @@ def clientRegister(client, login_cur, sender):
 
     time.sleep(0.05)
     
+    login_cur.execute("SELECT username FROM users")
+    raw_members = login_cur.fetchall()
+    registered_users  = len([raw_members for raw_members in sorted(raw_members)])
+    
+    if registered_users >= max_registered_users and max_registered_users != -1:
+        sender.send(f"{RED + Colors.BOLD}Unfortunately, we are no longer accepting new users. Maybe you will come back later!{RESET + Colors.RESET}")    
+        sender.close(log_exit=True, del_address=True)
+    
     # Ask for a username that the user wants
     sender.send(f"{GREEN + Colors.BOLD}Username: {RESET + Colors.RESET}")
     
@@ -292,7 +300,7 @@ def clientRegister(client, login_cur, sender):
     
     # If username is exit, exit the registration process 
     if registered_username.lower() == "exit":
-        sender.close(log_exit=True)
+        sender.close(log_exit=True, del_address=True)
     
     # Check if the username is allowed
     for uname in registered_username.split():
