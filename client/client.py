@@ -72,7 +72,7 @@ langs           = ["de_DE", "en_US"]
 verified_list   = []
 
 api             = "https://api.strawberryfoundations.xyz/v1/"
-ver             = "2.5.3"
+ver             = "2.5.4"
 
 author          = "Juliandev02"
 use_sys_argv    = False
@@ -369,17 +369,17 @@ def receive(sock):
                             message     = message["message"]["content"]
                             
                             if nickname == username:
-                                fmt = f"[{current_time()}] {role_color}{username}{badge}:{CRESET} {message}"
+                                fmt = f"{CRESET}[{current_time()}] {role_color}{username}{badge}:{CRESET} {message}{CRESET}"
                                 # fmt = f"{time_fmt} {role_color}{username}{badge}:{CRESET} {message}"
                             else:
-                                fmt = f"[{current_time()}] {role_color}{nickname} (@{username.lower()}){badge}:{CRESET} {message}"
+                                fmt = f"{CRESET}[{current_time()}] {role_color}{nickname} (@{username.lower()}){badge}:{CRESET} {message}{CRESET}"
                                 # fmt = f"{time_fmt} {role_color}{nickname} (@{username.lower()}){badge}:{CRESET} {message}"
                             
                             print(fmt)
                             
                         else:
                             message     = message["message"]["content"]
-                            print(f"[{current_time()}] {message}")
+                            print(f"{CRESET}[{current_time()}] {message}{CRESET}")
                             
                             if det_same_sysmsg:
                                 _message = str(message)
