@@ -312,16 +312,20 @@ def clientRegister(client, login_cur, sender):
     try:
         login_cur.execute("SELECT username FROM users WHERE username = ? ", (registered_username,))
         
-        usedUsernames = login_cur.fetchall()[0]
-        usedUsernames = "".join(usedUsernames)
-        
-        if usedUsernames == usedUsernames:
-            sender.send(f"{YELLOW + Colors.BOLD}This username is already in use!{RESET + Colors.RESET}\n")    
-            clientRegister(client, login_cur, sender)
-        
+        try:
+            used_usernames = login_cur.fetchall()[0]
+            used_usernames = "".join(used_usernames)
+            
+            if registered_username == used_usernames:
+                sender.send(f"{YELLOW + Colors.BOLD}This username is already in use!{RESET + Colors.RESET}\n")    
+                clientRegister(client, login_cur, sender)
+                
+        except: pass
+
     except Exception as e:
         log.error("A registration exception occured")
         debug_logger(e, stbexceptions.reg_error)
+
 
     # Ask and receive password
     sender.send(f"{GREEN + Colors.BOLD}Password: {RESET + Colors.RESET}")
@@ -353,16 +357,13 @@ def clientRegister(client, login_cur, sender):
         
             login_cur.execute("SELECT user_id FROM users")
         
-            user_ids = login_cur.fetchall()
-            user_ids = str(user_ids[-1])
-            user_ids = user_ids[1:-2].replace(",", "")
+            user_ids = str(login_cur.fetchall()[-1])[1:-2].replace(",", "")
             user_id = int(user_ids) + 1
             
             creation_date = time.time()
             
             registered_password = hash_password(registered_password)
 
-            # logcur.execute('INSERT INTO users (username, password, role, role_color, enable_blacklisted_words, account_enabled, muted, user_id, msg_count, enable_dms, creation_date) VALUES (?, ?, "member", ?, "true", "true", "false", ?, ?, "true", ?)', (registered_username, registered_password, registered_role_color.lower(), user_ids, 0, creation_date))
             login_cur.execute('''
                            INSERT INTO users (
                                username,
@@ -425,7 +426,7 @@ def clientLogin(client):
         
         # Check if username is "register", "exit" or "sid" 
         if username.lower() == "register": clientRegister(client, login_cur, sender)
-        elif username.lower() == "exit": sender.close(del_address=True)
+        elif username.lower() == "exit": sender.close(del_address=True, log_exit=True)
         elif username.lower() == "sid": strawberryIdLogin(client)
             
         time.sleep(0.05)
