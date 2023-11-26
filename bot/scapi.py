@@ -234,7 +234,7 @@ class Scapi:
                             except: fmt  = message
                         
                         if self.log_recv_msg: 
-                            if self.count > 1:
+                            if self.count > 4:
                                 self.logger(fmt, type=Scapi.LogLevel.INFO)
                         
                         if json: return recv_message
@@ -249,7 +249,7 @@ class Scapi:
                 
         def login(self):
             self.socket.send(self.username.encode("utf8"))
-            time.sleep(1)
+            time.sleep(0.25)
             self.socket.send(self.token.encode("utf8"))
         
         def disconnect(self): self.socket.close()
@@ -375,7 +375,6 @@ class Scapi:
             if self.enable_user_input is True: self.logger(f"{YELLOW}Flag {GREEN + BOLD}'enable_user_input'{RESET + YELLOW} is enabled", type=Scapi.LogLevel.INFO)
             if self.log_recv_msg is True: self.logger(f"{YELLOW}Flag {GREEN + BOLD}'log_recv_msg'{RESET + YELLOW} is enabled", type=Scapi.LogLevel.INFO)
                 
-            time.sleep(0.5)
             if not ready_func is None: ready_func()
             
             send_thread = threading.Thread(target=self.send)
