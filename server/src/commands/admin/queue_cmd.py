@@ -17,14 +17,14 @@ def queue_command(socket: socket.socket, username: str, args: list, send):
     match args[0]:
         case "remove":
             if len(args) == 1:
-                if not len(queue.queue) >= 2:
-                    send(f"{RED}Cannot remove first position in queue: Only one or none person is currently in queue")
+                try:                
+                    log.info(f"{queue.queue[0]} got kicked out of the queue")
+                    queue.remove()
+                    send(f"{GREEN}The first position in the queue has been removed")
+                    
+                except: 
+                    send(f"{RED}Queue is empty")
                     return
-                
-                
-                log.info(f"{queue.queue[(position - 1)]} got kicked out of the queue")
-                queue.remove()
-                send(f"{GREEN}The first position in the queue has been removed")
                 
             
             else: 
