@@ -91,7 +91,7 @@ news_text = f"""{GREEN +  Colors.UNDERLINE + Colors.BOLD}{chat_name} News - {sho
 {news_data['news'][base_ver]['text']}{RESET + Colors.RESET}"""
 
 
-def connectionThread(sock):
+def connection_thread(sock):
     while True:
         try:
             client, address = sock.accept()
@@ -105,10 +105,10 @@ def connectionThread(sock):
         log.info(f"{address[0]} has connected")
         
         addresses[client] = address
-        threading.Thread(target=clientThread, args=(client,)).start()
+        threading.Thread(target=client_thread, args=(client,)).start()
 
 
-def clientThread(client):
+def client_thread(client):
     global db
     
     sender  = ClientSender(client)
@@ -710,7 +710,8 @@ def main():
         if test_mode:
             print(f"{YELLOW + Colors.BOLD}>>> Enabled test mode{RESET + Colors.RESET}")
             print(f"{GREEN + Colors.BOLD}>>> {RESET}Server is running on {ipaddr}:{port}{RESET + Colors.RESET}")
-            _connection_debug = threading.Thread(target=connectionThread, args=(server_socket,), daemon=True)
+            
+            _connection_debug = threading.Thread(target=connection_thread, args=(server_socket,), daemon=True)
             _connection_debug.start()
             time.sleep(10)
         
@@ -724,7 +725,7 @@ def main():
             if all_addresses: print(f"{GREEN + Colors.BOLD}>>> {RESET}Server is running on {Colors.ITALIC + MAGENTA}{ipaddr}:{port}{Colors.RESET} (All addresses)\n")
             else: print(f"{GREEN + Colors.BOLD}>>> {RESET}Server is running on {ipaddr}:{port}\n")
             
-            _connection = threading.Thread(target=connectionThread, args=(server_socket,))
+            _connection = threading.Thread(target=connection_thread, args=(server_socket,))
             _connection.start()
             
             try:
