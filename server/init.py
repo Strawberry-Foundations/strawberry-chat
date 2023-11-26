@@ -177,6 +177,7 @@ max_users               = config['flags']['max_users']
 debug_mode              = config['flags']['debug_mode']
 online_mode             = config['flags']['online_mode']
 update_channel          = config['server']['update_channel']
+admins_wait_queue       = config['flags']['admins_wait_queue']
 
 test_mode               = False
 
