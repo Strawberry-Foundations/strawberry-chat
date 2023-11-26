@@ -511,6 +511,10 @@ def clientLogin(client):
                             sender.send(f"{YELLOW + Colors.BOLD}You're currently at position {queue.position_user(_username)} in the queue.. Time past: {stopwatch.elapsed_time()}s Please wait until one slot is free...{RESET + Colors.RESET}")
                             time.sleep(1)
                             
+                            if queue.position_user(_username) == 0:
+                                sender.send(f"{RED + Colors.BOLD}You have been kicked out of the queue.{RESET + Colors.RESET}")
+                                sender.close(del_address=True, call_exit=True)
+                            
                             if not len(users) >= max_users:
                                 if queue.position_user(_username) == 1:
                                     if result is not None:
