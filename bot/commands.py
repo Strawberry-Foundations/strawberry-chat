@@ -30,6 +30,14 @@ def test_command(username: str, args: list):
         Args: {args}"""
         )
 
+@Bot.command(name="dm", arg_count=1)
+def send_dm_command(username: str, args: list):
+    Bot.send_direct_message(username, " ".join(args))
+
+@Bot.command(name="exit", required_permissions=Scapi.Bot.PermissionLevel.OWNER)
+def exit_command(username: str, args: list):
+    Bot.exit()
+
 @Bot.event
 def on_ready():
     Bot.logger(f"{scapi.BLUE}{Bot.username} started successfully!{scapi.RESET}", type=Scapi.LogLevel.INFO)
