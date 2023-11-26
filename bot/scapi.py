@@ -38,7 +38,7 @@ WHITE = '\033[37m'
 
 # Version-specified Variables & important variables
 base_version    = "0.13.0"
-ext_version     = base_version + "b1"
+ext_version     = base_version + "b2"
 version         = "v" + ext_version
 full_version    = ext_version + "_canary-vacakes-std_stmbv2"
 update_channel  = "canary"
@@ -72,7 +72,7 @@ class Scapi:
             self.host               = host
             self.port               = port
             self.enable_user_input  = enable_user_input
-            self.print_recv_msg     = print_recv_msg
+            self.log_recv_msg     = print_recv_msg
             self.v2_communication   = json
             
             self.trusted_list       = []
@@ -100,7 +100,7 @@ class Scapi:
                 
         def flag_handler(self, enable_user_input: bool = False, print_recv_msg: bool = False, log_msg: str = None, ignore_capitalization: bool = True):
             self.enable_user_input  = enable_user_input
-            self.print_recv_msg     = print_recv_msg
+            self.log_recv_msg       = print_recv_msg
             self.log_msg            = log_msg or f"{CYAN + BOLD}{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}  %sscapi  -->  {RESET}"
             self.event_ignore_cap   = ignore_capitalization
             
@@ -233,7 +233,9 @@ class Scapi:
                             try: fmt     = message["message"]["content"]
                             except: fmt  = message
                         
-                        if self.count > 1: self.logger(fmt, type=Scapi.LogLevel.INFO)
+                        if self.log_recv_msg: 
+                            if self.count > 1:
+                                self.logger(fmt, type=Scapi.LogLevel.INFO)
                         
                         if json: return recv_message
                         
@@ -370,8 +372,8 @@ class Scapi:
                     break
   
         def run(self, ready_func = None):
-            if self.enable_user_input is True: self.logger(f"{YELLOW}Flag {GREEN + BOLD}'enableUserInput'{RESET + YELLOW} is enabled", type=Scapi.LogLevel.INFO)
-            if self.print_recv_msg is True: self.logger(f"{YELLOW}Flag {GREEN + BOLD}'printReceivedMessagesToTerminal'{RESET + YELLOW} is enabled", type=Scapi.LogLevel.INFO)
+            if self.enable_user_input is True: self.logger(f"{YELLOW}Flag {GREEN + BOLD}'enable_user_input'{RESET + YELLOW} is enabled", type=Scapi.LogLevel.INFO)
+            if self.log_recv_msg is True: self.logger(f"{YELLOW}Flag {GREEN + BOLD}'log_recv_msg'{RESET + YELLOW} is enabled", type=Scapi.LogLevel.INFO)
                 
             time.sleep(0.5)
             if not ready_func is None: ready_func()
