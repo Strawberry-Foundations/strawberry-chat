@@ -511,7 +511,7 @@ def clientLogin(client):
                             if not len(users) >= max_users:
                                 if queue.position_user(_username) == 1:
                                     if result is not None:
-                                        log.info(f"{_username} ({addresses[client][0]}) left the queue")
+                                        log.info(LogMessages.queue_left % (_username, addresses[client][0]))
                                         
                                         queue.remove()
                                         stopwatch.stop()
