@@ -125,16 +125,15 @@ def client_thread(client):
     
     
     log.info(f"{user} ({address}) logged in")
+    
     users[client] = user
 
     try:
         sender.send(f"{CYAN + Colors.BOLD}Welcome back {user}! Nice to see you!{RESET + Colors.RESET}")
         online_users_len = len([user for user in sorted(users.values())])
         
-        if online_users_len == 1:
-            _online_users = f"is {online_users_len} user"
-        else:
-            _online_users = f"are {online_users_len} users"
+        if online_users_len == 1: _online_users = f"is {online_users_len} user"
+        else: _online_users = f"are {online_users_len} users"
             
         time.sleep(0.05)
         sender.send(f"""{CYAN + Colors.BOLD}Currently there {_online_users} online. For help use /help{RESET + Colors.RESET}\n{news_text}""")
@@ -182,14 +181,10 @@ def client_thread(client):
             
             if not res[0] == "bot": 
                 if message_length > max_message_length:
-                    if rnd == 0:
-                        sender.send(f"{YELLOW + Colors.BOLD}Your message is too long.{RESET + Colors.RESET}")
-                        
-                    elif rnd == 1:
-                        sender.send(f"{YELLOW + Colors.BOLD}boah digga halbe bibel wer liest sich das durch{RESET + Colors.RESET}")
-                        
-                    elif rnd == 2:
-                        sender.send(f"{YELLOW + Colors.BOLD}junge niemand will sich hier die herr der ringe trilogie durchlesen{RESET + Colors.RESET}")
+                    match rnd:
+                        case 0: sender.send(f"{YELLOW + Colors.BOLD}Your message is too long.{RESET + Colors.RESET}")
+                        case 1: sender.send(f"{YELLOW + Colors.BOLD}boah digga halbe bibel wer liest sich das durch{RESET + Colors.RESET}")
+                        case 2: sender.send(f"{YELLOW + Colors.BOLD}junge niemand will sich hier die herr der ringe trilogie durchlesen{RESET + Colors.RESET}")
 
             # Blacklisted Word System
             client_cur.execute('SELECT role, enable_blacklisted_words FROM users WHERE username = ?', (user,))    
