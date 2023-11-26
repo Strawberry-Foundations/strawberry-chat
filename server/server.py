@@ -495,7 +495,7 @@ def clientLogin(client):
                             
                         
                         queue.add(_username)
-                        log.info(f"{_username} ({addresses[client][0]}) is now in the queue")
+                        log.info(LogMessages.queue_join % (_username, addresses[client][0]))
                         
                         stopwatch = Stopwatch()
                         stopwatch.start()
@@ -572,7 +572,7 @@ def broadcast(message, sent_by="", format: StbCom = StbCom.PLAIN):
                     else: badge = ""
                         
                 except Exception as e:
-                    log.error("Something went wrong while... doing something with the badges?: " + e)
+                    log.error(LogMessages.badge_error + e)
                 
                 
                 c.execute('SELECT role FROM users WHERE username = ?', (sent_by,))
