@@ -20,6 +20,7 @@ class LogMessages:
     address_left = "%s has left"
     user_left = "%s (%s) has left"
     queue_kick = "%s got kicked out of the queue"
+    queue_left = "%s (%s) left the queue"
 
 
 class ClientSender:
