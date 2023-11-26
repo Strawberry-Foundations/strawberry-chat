@@ -14,11 +14,8 @@ import yaml
 from yaml import SafeLoader
 
 import atexit
-import datetime
 import time
 import random
-import requests
-from colorama import Style
 
 from init import *
 from src.colors import *
@@ -40,10 +37,6 @@ from src.commands.admin import      broadcast_cmd, mute, ban, kick, \
                                     queue_cmd
            
 from src.commands.etc import        test_command, news, delaccount
-
-
-                               
-
 
 
 if "--enable-messages" in sys.argv: enable_messages = True
