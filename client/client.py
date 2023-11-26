@@ -394,8 +394,7 @@ def receive(sock):
                                 
                                 if _message == _prev_message:
                                     if escape_ansi(_prev_message).startswith("You're currently at"):
-                                        print("Messages starts with You're currently at")
-                                        # delete_last_line()
+                                        delete_last_line()
                                 
                                 _prev_message = _message
                                 _prev_message = _prev_message[:30]
