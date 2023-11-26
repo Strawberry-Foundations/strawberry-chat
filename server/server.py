@@ -129,15 +129,15 @@ def client_thread(client):
 
     try:
         sender.send(f"{CYAN + Colors.BOLD}Welcome back {user}! Nice to see you!{RESET + Colors.RESET}")
-        onlineUsersLen = len([user for user in sorted(users.values())])
+        online_users_len = len([user for user in sorted(users.values())])
         
-        if onlineUsersLen == 1:
-            onlineUsersStr = f"is {onlineUsersLen} user"
+        if online_users_len == 1:
+            _online_users = f"is {online_users_len} user"
         else:
-            onlineUsersStr = f"are {onlineUsersLen} users"
+            _online_users = f"are {online_users_len} users"
             
         time.sleep(0.05)
-        sender.send(f"""{CYAN + Colors.BOLD}Currently there {onlineUsersStr} online. For help use /help{RESET + Colors.RESET}\n{news_text}""")
+        sender.send(f"""{CYAN + Colors.BOLD}Currently there {_online_users} online. For help use /help{RESET + Colors.RESET}\n{news_text}""")
         
 
     except Exception as e:
