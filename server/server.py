@@ -323,7 +323,7 @@ def clientRegister(client, login_cur, sender):
         except: pass
 
     except Exception as e:
-        log.error("A registration exception occured")
+        log.error(LogMessages.registration_error)
         debug_logger(e, stbexceptions.reg_error)
 
 

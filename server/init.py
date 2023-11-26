@@ -30,6 +30,7 @@ class LogMessages:
     sql_error           = "An SQL error occured!"
     client_side_error   = "A client-side error occurred."
     stc_error           = "A socket-to-client exception occured"
+    registration_error  = "A registration exception occured"
 
 
 class ClientSender:
