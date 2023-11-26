@@ -40,7 +40,7 @@ def queue_command(socket: socket.socket, username: str, args: list, send):
                 
                 
         
-        case "list":
+        case "list" | "show":
             queue_list = ""
             
             if len(queue.queue) == 0:
