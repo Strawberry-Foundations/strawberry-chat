@@ -11,6 +11,8 @@
 - NEW: Added server settings command (start with serversettings show command) (#77)
 - NEW: Replaced ipify global ip api with our own global ip api
 - NEW: Added queue command
+- NEW: Added function to set max_users value to -1 for no max_users (#82)
+- NEW: Added 2 new configuration variables to configure if admins/bots have to wait in the queue
 
 - MODULARITY: More Object Oriented Programming (Queue Class, Stopwatch Class, ...)
 
