@@ -181,24 +181,33 @@ def client_thread(client):
             
             if not res[0] == "bot": 
                 if message_length > max_message_length:
-                    match rnd:
-                        case 0: sender.send(f"{YELLOW + Colors.BOLD}Your message is too long.{RESET + Colors.RESET}")
-                        case 1: sender.send(f"{YELLOW + Colors.BOLD}boah digga halbe bibel wer liest sich das durch{RESET + Colors.RESET}")
-                        case 2: sender.send(f"{YELLOW + Colors.BOLD}junge niemand will sich hier die herr der ringe trilogie durchlesen{RESET + Colors.RESET}")
+                    if special_messages:
+                        match rnd:
+                            case 0: sender.send(f"{YELLOW + Colors.BOLD}Your message is too long.{RESET + Colors.RESET}")
+                            case 1: sender.send(f"{YELLOW + Colors.BOLD}boah digga halbe bibel wer liest sich das durch{RESET + Colors.RESET}")
+                            case 2: sender.send(f"{YELLOW + Colors.BOLD}junge niemand will sich hier die herr der ringe trilogie durchlesen{RESET + Colors.RESET}")
+                            
+                    else: sender.send(f"{YELLOW + Colors.BOLD}Your message is too long.{RESET + Colors.RESET}")
 
             # Blacklisted Word System
             client_cur.execute('SELECT role, enable_blacklisted_words FROM users WHERE username = ?', (user,))    
-            res = client_cur.fetchone()
+            result = client_cur.fetchone()
             
-            if not (res[0] == "admin" or res[0] == "bot" or res[1] == "false"):
+            if not (result[0] == "admin" or result[0] == "bot" or result[1] == "false"):
                 for word in message.split():
                     word = word.lower()
                     
                     if word in blacklist:
                         sender.send(f"{YELLOW + Colors.BOLD}Please be friendlier in the chat. Rejoin when you feel ready!{RESET + Colors.RESET}")
                         sender.close(del_address=True, del_user=True)
+                        
         
-            # Global Command Executor
+            """
+            --- Global Command Executor ---
+            This part of the code processes all slash commands.
+            A command with the arguments is built up here and executed at the end. 
+            """
+            
             if message.startswith("/"):
                 try:
                     message = message[1:]
@@ -221,14 +230,10 @@ def client_thread(client):
                 role = None
                 
                 match user_role:
-                    case "member":
-                        role = PermissionLevel.MEMBER
-                    case "admin":
-                        role = PermissionLevel.ADMIN
-                    case "bot":
-                        role = PermissionLevel.BOT
-                    case _:
-                        role = PermissionLevel.NONE
+                    case "member": role = PermissionLevel.MEMBER
+                    case "admin": role = PermissionLevel.ADMIN
+                    case "bot": role = PermissionLevel.BOT
+                    case _: role = PermissionLevel.NONE
                         
                 execute_command(cmd, client, user, role, args, sender.send)
                 continue
