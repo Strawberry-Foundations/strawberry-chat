@@ -38,7 +38,7 @@ WHITE = '\033[37m'
 
 # Version-specified Variables & important variables
 base_version    = "0.13.1"
-ext_version     = base_version + "b2"
+ext_version     = base_version + "b3"
 version         = "v" + ext_version
 full_version    = ext_version + "_canary-vacakes-std_stmbv2"
 update_channel  = "canary"
@@ -148,6 +148,8 @@ class Scapi:
         def send_message(self, message): self.socket.send(message.encode("utf8"))
         
         def send_direct_message(self, user, message): self.socket.send(f"/dm {user} {message}".encode("utf8"))
+        
+        def exit(self): self.socket.send("/exit".encode("utf8"))
             
         def escape_ansi(self, line):
             ansi_escape = re.compile(r'(?:\x1B[@-_]|[\x80-\x9F])[0-?]*[ -/]*[@-~]')
