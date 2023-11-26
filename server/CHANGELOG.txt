@@ -16,6 +16,7 @@
 
 - MODULARITY: More Object Oriented Programming (Queue Class, Stopwatch Class, ...)
 - MODULARITY: Moved open_blacklist() to src.functions
+- MODULARITY: Added LogMessages Class for standardized log messages
 
 - FIX: Fixed console logger prints static time instead of the real time (#63)
 - FIX: Fully fixed When using Ctrl + C in client, the server will crash (BrokenPipe) (#1)
