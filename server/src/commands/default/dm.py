@@ -32,6 +32,7 @@ def dm_command(socket: _socket.socket, username: str, args: list, send):
         
     except:
         send(f"{RED + Colors.BOLD}User not found{RESET + Colors.RESET}")
+        has_dm_enabled = "false"
     
     if uname == username:
         send(f"{YELLOW}You shouldn't send messages to yourself...{RESET}")
