@@ -41,7 +41,6 @@ class ClientSender:
         if del_user: del users[self.socket]
         if call_exit: exit()
         
-        
 
 class Queue:
     def __init__(self):
@@ -64,6 +63,7 @@ class Queue:
         
         except Exception as e:
             return 0
+        
         
 class Stopwatch:
     def __init__(self):
