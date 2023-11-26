@@ -90,7 +90,7 @@ def connection_thread(sock):
             client, address = sock.accept()
 
         except Exception as e:
-            log.error("A connection error occured!")
+            log.error(LogMessages.connection_error)
             debug_logger(e, stbexceptions.connection_error)  
             
             break
@@ -140,7 +140,7 @@ def client_thread(client):
         
 
     except Exception as e:
-        log.error(f"A Communication error with {address} ({user}) occurred.")
+        log.error(LogMessages.communication_error % (address, user))
         debug_logger(e, stbexceptions.communication_error)
         
         sender.close(del_address=True, del_user=True)
