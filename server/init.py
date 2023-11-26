@@ -19,6 +19,7 @@ server_dir = os.path.dirname(os.path.realpath(__file__))
 class LogMessages:
     address_left = "%s has left"
     user_left = "%s (%s) has left"
+    queue_kick = "%s got kicked out of the queue"
 
 
 class ClientSender:
