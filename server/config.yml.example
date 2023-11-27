@@ -4,7 +4,7 @@ server:
   name: "Your Chat Server Name"
   description: "Write something about your server"
   edition_key: "somekey"
-  update_channel: "canary"
+  update_channel: "dev"
   
 flags:
   enable_messages: false
