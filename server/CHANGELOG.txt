@@ -13,6 +13,7 @@
 - NEW: Added function to set max_users value to -1 for no max_users (#82)
 - NEW: Added 2 new configuration variables to configure if admins/bots have to wait in the queue
 - NEW: Added max. registered user feature (#87)
+- NEW: Added additional alias for /nick remove (--> /nick reset)
 - NEW: Replaced ipify global ip api with our own global ip api
 
 - MODULARITY: More Object Oriented Programming (Queue Class, Stopwatch Class, ...)
@@ -32,6 +33,7 @@
 - FIX: Some fixes to welcome message
 - FIX: Added reset_color argument to replace_htpf to fix not resetting the color correctly
 - FIX: table_query is not correctly according to the newest database (#91)
+- FIX: Cannot change nickname to an nickname with whitespaces (#90)
 
 - SCAPI: Added function to use the old Strawberry Communication System (stbmv1)
 - SCAPI: Added direct messages (#79) + exit command
