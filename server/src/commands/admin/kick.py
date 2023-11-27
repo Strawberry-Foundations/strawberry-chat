@@ -52,6 +52,7 @@ def kick_command(socket: socket.socket, username: str, args: list, send):
                     pass
                 
             except Exception as e: 
+                print(f"Could not kick {uname} ({to_kick}): {e}")
                 pass
             
         else:

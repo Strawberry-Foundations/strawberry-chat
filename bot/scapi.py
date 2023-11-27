@@ -327,10 +327,8 @@ class Scapi:
         
         def command(self, name, arg_count: int = 0, required_permissions=PermissionLevel.ALL, custom_permissions: list = None) -> None:
             def decorator(func):
-                if custom_permissions is None:
-                    self.custom_list = self.custom_list
-                else:
-                    self.custom_list = custom_permissions
+                if custom_permissions is None: self.custom_list = self.custom_list
+                else: self.custom_list = custom_permissions
                     
                 self.req_permissions = required_permissions
                 
