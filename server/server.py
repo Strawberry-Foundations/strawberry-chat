@@ -365,8 +365,12 @@ def clientRegister(client, login_cur, sender):
         
             login_cur.execute("SELECT user_id FROM users")
         
-            user_ids = str(login_cur.fetchall()[-1])[1:-2].replace(",", "")
-            user_id = int(user_ids) + 1
+            try:
+                user_ids = str(login_cur.fetchall()[-1])[1:-2].replace(",", "")
+                user_id = int(user_ids) + 1
+                
+            except: 
+                user_id = 1
             
             creation_date = time.time()
             
