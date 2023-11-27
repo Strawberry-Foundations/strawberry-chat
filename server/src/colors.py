@@ -29,3 +29,4 @@ class Colors:
     UNDERLINE = '\033[4m'
     RESET = '\033[0m'
     GRAY = "\033[90m"
+    ITALIC = "\033[3m"

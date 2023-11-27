@@ -1,17 +1,24 @@
 from .colors import *
 
 # Version-specified Variables & important variables
-base_ver                = "1.8.2"
-short_ver               = "1.8.2"
+base_ver                = "1.9.0"
+short_ver               = "1.9.0b5"
 full_ver                = "v" + short_ver
-update_channel          = "stable"
+stbm_ver                = "v2"
 ver                     = short_ver + "-vacakes"
-chat_name               = "Strawberry Chat"
+
+codename_short          = "vacakes"
 codename                = "Vanilla Cake"
+
+update_channel          = "canary"
+chat_name               = "Strawberry Chat"
 server_edition          = "Standard Edition"
+
 authors                 = ["Juliandev02", "matteodev8", "Paddyk45"]
-api                     = "http://api.strawberryfoundations.xyz/v1/"
+api                     = "https://api.strawberryfoundations.xyz/v1/"
 sid_api                 = "https://id.strawberryfoundations.xyz/v1"
+
+ext_ver                 = f"v{short_ver}_{update_channel}-{codename_short}-std_stmb{stbm_ver}"
 
 # SQL table query
 table_query = """
@@ -23,6 +30,7 @@ table_query = """
 	"description"	TEXT,
 	"badge"	TEXT,
 	"badges"	TEXT,
+	"avatar_url"	TEXT,
 	"role"	TEXT,
 	"role_color"	TEXT,
 	"enable_blacklisted_words"	TEXT,
@@ -32,7 +40,7 @@ table_query = """
 	"strawberry_id"	TEXT,
 	"discord_name"	TEXT,
 	"msg_count"	INTEGER,
-    "creation_date"	INTEGER)"""
+	"creation_date"	INTEGER)"""
  
 role_colors = ["red", "green", "cyan", "blue", "yellow", "magenta",
                "lightred", "lightgreen", "lightcyan", "lightblue", "lightyellow", "lightmagenta",
@@ -115,6 +123,11 @@ admin_settings_help          = f"""{MAGENTA +  Colors.UNDERLINE + Colors.BOLD}Ad
         {BLUE + Colors.BOLD}/admin badge <username> <badge>: {RESET}Sets <username>'s main badge
         {BLUE + Colors.BOLD}/admin description <username> <description>: {RESET}Sets <username>'s description
         {BLUE + Colors.BOLD}/admin role <username> <role>: {RESET}Sets <username>'s role
+    """
+
+server_settings_help          = f"""{BLUE +  Colors.UNDERLINE + Colors.BOLD}Server Settings{RESET + Colors.RESET}
+        {BLUE + Colors.BOLD}/serversettings help: {RESET}Help Command
+        {BLUE + Colors.BOLD}/serversettings show <debug>: {RESET}Shows current configurations
     """
     
 server_help_section    = f"""  {GREEN +  Colors.UNDERLINE + Colors.BOLD}Server commands{RESET + Colors.RESET}

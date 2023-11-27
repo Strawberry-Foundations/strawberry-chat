@@ -1,5 +1,7 @@
 language: en_US
 online_mode: true
+update_channel: "canary"
+detect_same_system_messages: true
 autoserver:
   enabled: false
   server_id: 0
@@ -11,6 +13,7 @@ server:
     port: 49200
     type: Main
     autologin: false
+    compatibility_mode: false # Change to true if you want to connect to servers with v1.8.1 or below
     credentials:
       username: yourname
       password: yourpassword # Warning: This is very insecure

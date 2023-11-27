@@ -2,7 +2,7 @@ news:
   1.6.0:
     text: "
     - NEW: AFK user list command\n
-    - NEW: Sending messages in Afk status is now not possible\n
+    - NEW: Sending messages in Afk status is no longer possible\n
     - NEW: AFK status stays even when you leave the chat\n
     - NEW: Kickall command kicking all online users\n
     - NEW: Changed Chat Name from Salware Chat to Strawberry Chat\n
@@ -56,7 +56,19 @@ news:
 
   1.8.2:
     text: "
-    - FIX: Fixed Console Logger prints static time instead of the real time (#63)
+    - FIX: Fixed Console Logger prints static time instead of the real time (#63)\n
     - SCAPI: Full update of Scapi for the legacy release of Scapi 1.0.0 (stbmv1)"
 
-versions: [1.6.0, 1.7.0, 1.8.0, 1.8.1, 1.8.2]
+  1.9.0:
+    text: "
+    - NEW: Improved and complete new communication system for a better user experience\n
+    - NEW: We added a new configuration for server admins, to configure the maximal amount\n        of logged in users!\n
+    - NEW: We also added a queue system for users, so when the server is full, you'll join the queue ;)\n
+    - NEW: Added experimental user avatars for discord bridge and soon maybe Strawberry Network\n
+    - FIX: Fixed When using Ctrl + C in client, the server will crash (BrokenPipe) (#1)\n
+    - FIX: We have fixed some general bugs that we didn't notice. Read changelog for more information (#63, #72, #70)\n
+    - ADMIN: We added a new command for server admins to configure the server or just show the current configurations!\n
+    Have a look at https://developers.strawberryfoundations.xyz/ for more documentation about Strawberry Chat :)"
+
+
+versions: [1.6.0, 1.7.0, 1.8.0, 1.8.1, 1.8.2, 1.9.0]

@@ -33,7 +33,7 @@ def server_verified():
 
 @app.route('/v1/utils/user/ip', methods=['GET'])
 def user():
-    return jsonify({'ip': request.remote_addr}), 200 
+    return jsonify({'ip': request.access_route[0]}), 200 
 
 @app.route('/v1/versions', methods=['GET', 'POST'])
 def versions():

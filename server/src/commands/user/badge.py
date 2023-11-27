@@ -11,7 +11,7 @@ from init import server_dir, log, debug_logger, stbexceptions
 
 
 @register_command("badge", arg_count=1)
-def badge_command(socket: socket.socket, username: str, args: list):
+def badge_command(socket: socket.socket, username: str, args: list, send):
     cmd_db = Database(server_dir + "/users.db", check_same_thread=False)
 
     cmd = args[0]
@@ -33,7 +33,7 @@ def badge_command(socket: socket.socket, username: str, args: list):
                     badge_to_set = args[2]
                     
                 except:
-                    socket.send(f"{RED + Colors.BOLD}Please pass a valid argument!{RESET + Colors.RESET}".encode("utf8"))
+                    send(f"{RED + Colors.BOLD}Please pass a valid argument!{RESET + Colors.RESET}")
                     return
 
                 cmd_db.execute("SELECT badges FROM users WHERE username = ?", (uname,))
@@ -41,16 +41,16 @@ def badge_command(socket: socket.socket, username: str, args: list):
                 user_badges = cmd_db.fetchone()[0]            
                 
                 if not badge_to_set in user_badges:
-                    socket.send(f"{RED + Colors.BOLD}This user does not own this badge!{RESET + Colors.RESET}".encode("utf8"))
+                    send(f"{RED + Colors.BOLD}This user does not own this badge!{RESET + Colors.RESET}")
                     return
                 
                 cmd_db.execute("UPDATE users SET badge = ? WHERE username = ?", (badge_to_set, uname))
                 cmd_db.commit()
                 
-                socket.send(f"{GREEN + Colors.BOLD}The main badge of {uname} has been updated to '{badge_to_set}'{RESET + Colors.RESET}".encode("utf8"))
+                send(f"{GREEN + Colors.BOLD}The main badge of {uname} has been updated to '{badge_to_set}'{RESET + Colors.RESET}")
             
             else:
-                socket.send(f"{RED}Sorry, you do not have permissons for that.{RESET}".encode("utf8"))
+                send(f"{RED}Sorry, you do not have permissons for that.{RESET}")
                 return
         
         elif len(args) == 2:
@@ -58,7 +58,7 @@ def badge_command(socket: socket.socket, username: str, args: list):
                 badge_to_set = args[1]
                 
             except:
-                socket.send(f"{RED + Colors.BOLD}Please pass a valid argument!{RESET + Colors.RESET}".encode("utf8"))
+                send(f"{RED + Colors.BOLD}Please pass a valid argument!{RESET + Colors.RESET}")
                 return
 
             cmd_db.execute("SELECT badges FROM users WHERE username = ?", (username,))
@@ -66,16 +66,16 @@ def badge_command(socket: socket.socket, username: str, args: list):
             user_badges = cmd_db.fetchone()[0]            
             
             if not badge_to_set in user_badges:
-                socket.send(f"{RED + Colors.BOLD}You do not own this badge!{RESET + Colors.RESET}".encode("utf8"))
+                send(f"{RED + Colors.BOLD}You do not own this badge!{RESET + Colors.RESET}")
                 return
             
             cmd_db.execute("UPDATE users SET badge = ? WHERE username = ?", (badge_to_set, username))
             cmd_db.commit()
             
-            socket.send(f"{GREEN + Colors.BOLD}Your main badge has been updated to '{badge_to_set}'{RESET + Colors.RESET}".encode("utf8"))            
+            send(f"{GREEN + Colors.BOLD}Your main badge has been updated to '{badge_to_set}'{RESET + Colors.RESET}")            
             
         else: 
-            socket.send(f"{RED + Colors.BOLD}Please pass a valid argument!{RESET + Colors.RESET}".encode("utf8"))
+            send(f"{RED + Colors.BOLD}Please pass a valid argument!{RESET + Colors.RESET}")
     
     
     elif cmd == "add":
@@ -85,7 +85,7 @@ def badge_command(socket: socket.socket, username: str, args: list):
                     badge_to_add = args[1]
                     
                 except:
-                    socket.send(f"{RED + Colors.BOLD}Please pass a valid argument!{RESET + Colors.RESET}".encode("utf8"))
+                    send(f"{RED + Colors.BOLD}Please pass a valid argument!{RESET + Colors.RESET}")
                     return
                     
                 cmd_db.execute("SELECT badges FROM users WHERE username = ?", (username,))
@@ -94,7 +94,7 @@ def badge_command(socket: socket.socket, username: str, args: list):
                 
                 # Does the user already have this badge?
                 if badge_to_add in user_badges:
-                    socket.send(f"{RED + Colors.BOLD}This badge is already assigned to your profile!{RESET + Colors.RESET}".encode("utf8"))
+                    send(f"{RED + Colors.BOLD}This badge is already assigned to your profile!{RESET + Colors.RESET}")
                     return
                 
                 new_user_badges = user_badges + badge_to_add
@@ -102,7 +102,7 @@ def badge_command(socket: socket.socket, username: str, args: list):
                 cmd_db.execute("UPDATE users SET badges = ? WHERE username = ?", (new_user_badges, username))
                 cmd_db.commit()
                
-                socket.send(f"{GREEN + Colors.BOLD}Added badge '{badge_to_add}' to your user profile{RESET + Colors.RESET}".encode("utf8"))
+                send(f"{GREEN + Colors.BOLD}Added badge '{badge_to_add}' to your user profile{RESET + Colors.RESET}")
             
             elif len(args) == 3:
                 try:
@@ -111,11 +111,11 @@ def badge_command(socket: socket.socket, username: str, args: list):
                     
                     
                 except:
-                    socket.send(f"{RED + Colors.BOLD}Please pass a valid argument!{RESET + Colors.RESET}".encode("utf8"))
+                    send(f"{RED + Colors.BOLD}Please pass a valid argument!{RESET + Colors.RESET}")
                     return
                     
                 if not doesUserExist(uname):
-                    socket.send(f"{RED + Colors.BOLD}Sorry, this user does not exist!{RESET + Colors.RESET}".encode("utf8"))
+                    send(f"{RED + Colors.BOLD}Sorry, this user does not exist!{RESET + Colors.RESET}")
                     return
                 
                 else: 
@@ -125,7 +125,7 @@ def badge_command(socket: socket.socket, username: str, args: list):
                     
                     # Does the user already have this badge?
                     if badge_to_add in user_badges:
-                        socket.send(f"{RED + Colors.BOLD}This badge is already assigned to {uname}'s profile!{RESET + Colors.RESET}".encode("utf8"))
+                        send(f"{RED + Colors.BOLD}This badge is already assigned to {uname}'s profile!{RESET + Colors.RESET}")
                         return
                     
                     new_user_badges = user_badges + badge_to_add
@@ -133,11 +133,11 @@ def badge_command(socket: socket.socket, username: str, args: list):
                     cmd_db.execute("UPDATE users SET badges = ? WHERE username = ?", (new_user_badges, uname))
                     cmd_db.commit()
                     
-                    socket.send(f"{GREEN + Colors.BOLD}Added badge '{badge_to_add}' to {uname}'s profile{RESET + Colors.RESET}".encode("utf8"))
+                    send(f"{GREEN + Colors.BOLD}Added badge '{badge_to_add}' to {uname}'s profile{RESET + Colors.RESET}")
                     
             else:
-                socket.send(f"{RED + Colors.BOLD}Invalid command usage.{RESET + Colors.RESET}".encode("utf8"))
+                send(f"{RED + Colors.BOLD}Invalid command usage.{RESET + Colors.RESET}")
                 return
         else:
-            socket.send(f"{RED}Sorry, you do not have permissons for that.{RESET}".encode("utf8"))
+            send(f"{RED}Sorry, you do not have permissons for that.{RESET}")
             return
