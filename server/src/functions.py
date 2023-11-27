@@ -73,9 +73,9 @@ def replace_htpf(string, reset_color: bool = False):
     return to_ret
 
 def input_regen_database():
-    input = input(f"{YELLOW + Colors.BOLD}>>> {RESET}WARNING: This will delete your database! Are you sure?: ")
+    confirm_input = input(f"{YELLOW + Colors.BOLD}>>> {RESET}WARNING: This will delete your database! Are you sure?: ")
     
-    if input.lower() == "yes":
+    if confirm_input.lower() == "yes":
         regen_database()
         
         print(f"{GREEN + Colors.BOLD}>>> {RESET}Created table")
