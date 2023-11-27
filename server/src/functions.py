@@ -17,11 +17,15 @@ import errno
 import random
 import requests
 import re
+import json
 
 from colorama import Fore, Style
 from .colors import *
 from init import *
 from .vars import table_query
+
+
+func_db = sql.connect(server_dir + "/users.db", check_same_thread=False)
 
 # Removed ansi characters
 def escape_ansi(string):
@@ -43,7 +47,7 @@ def escape_htpf(string):
                 
     return to_ret
 
-def repl_htpf(string):
+def replace_htpf(string, reset_color: bool = False):
     to_ret = string \
             .replace("#red", RED) \
             .replace("#green", GREEN) \
@@ -62,10 +66,26 @@ def repl_htpf(string):
             .replace("#ftoday", datetime.datetime.now().strftime("%A, %d. %h %Y")) \
             .replace("#tomorrow", (datetime.date.today() + datetime.timedelta(days=1)).strftime("%Y-%m-%d")) \
             .replace("#ftomorrow", (datetime.date.today() + datetime.timedelta(days=1)).strftime("%A, %d. %h %Y"))
-                
+    
+    if reset_color:
+        return to_ret + RESET + Colors.RESET
+    
     return to_ret
 
-def regen_database():
+def input_regen_database(type: str = "standard"):
+    if type == "standard":
+        confirm_input = input(f"{YELLOW + Colors.BOLD}>>> {RESET}WARNING: This will delete your database! Are you sure?: ")
+        
+        if confirm_input.lower() == "yes": regen_database(call_exit=True)
+        else: print(f"{Colors.GRAY + Colors.BOLD}>>> {RESET + Colors.RESET + Colors.BOLD}Cancelled database regeneration process")
+        
+    elif type == "corrupted":
+        confirm_input = input(f"{YELLOW + Colors.BOLD}>>> {RESET}WARNING: Your database is corrupted or was not generated correctly.\n    Would you like to regenerate your database? (Not regenerating the database leads to incorrect execution of the program) ")
+        
+        if confirm_input.lower() == "yes": regen_database(call_exit=True)
+        else: print(f"{Colors.GRAY + Colors.BOLD}>>> {RESET + Colors.RESET + Colors.BOLD}Cancelled database regeneration process")
+
+def regen_database(call_exit: bool = False):
     os.remove(server_dir + "/users.db")
     db = sql.connect(server_dir + "/users.db", check_same_thread=False)
     cr_cursor = db.cursor()
@@ -74,27 +94,43 @@ def regen_database():
     cr_cursor.execute(table_query)
     db.commit()
     cr_cursor.close()
+    print(f"{GREEN + Colors.BOLD}>>> {RESET}Created table")
+    
+    if call_exit:
+        print(f"{YELLOW + Colors.BOLD}>>> {RESET}Restart your server to connect to your new database.")
+        exit()
+
+def table_exists(table_name, cursor):
+    cursor.execute(f"SELECT name FROM sqlite_master WHERE type='table' AND name='{table_name}'")
+    return cursor.fetchone() is not None
 
 def create_empty_file(filename):
     with open(server_dir + "/" + filename, "w") as ef:
         pass
     
-def broadcast_all(message):
+def send_json(data):
+    return json.dumps(data)
+
+def broadcast_all(message, format: StbCom = StbCom.PLAIN):
     try:
         for user in users:
-            user.send(message.encode("utf8"))
-    
-    except BrokenPipeError as e:
-        debug_logger(e, stbexceptions.broken_pipe_warning, type=StbTypes.WARNING)
-        log.warning("You should kick some invalid sessions.")
-    
-    except IOError as e:
-        if e.errno == errno.EPIPE:
-            pass
-  
+            try:
+                json_builder = {
+                    "message_type": StbCom.SYS_MSG,
+                    "message": {
+                        "content": message
+                    }
+                }
+                user.send(send_json(json_builder).encode("utf8"))
+                
+            except BrokenPipeError as e:
+                debug_logger(e, stbexceptions.broken_pipe_warning, type=StbTypes.WARNING)
+                log.warning("You should kick some invalid sessions.")
+
     except Exception as e:
-        pass
-        
+        log.error(f"A broadcasting error occurred.")
+        debug_logger(e, stbexceptions.communication_error)
+
 # Check if user has a nickname
 def hasNickname(uname):
     db = sql.connect(server_dir + "/users.db", check_same_thread=False)
@@ -103,11 +139,8 @@ def hasNickname(uname):
     unick = c.fetchone()
     c.close()
     
-    if unick[0] is not None: 
-        return True
-    
-    else: 
-        return False
+    if unick[0] is not None:  return True
+    else: return False
 
 # Check if user has a (main) badge
 def hasBadge(uname):
@@ -117,11 +150,8 @@ def hasBadge(uname):
     unick = c.fetchone()
     c.close()
     
-    if unick[0] is not None: 
-        return True
-    
-    else: 
-        return False
+    if unick[0] is not None: return True
+    else: return False
     
 # Print a proper user name information for memberlist command
 def memberListNickname(uname):
@@ -131,11 +161,8 @@ def memberListNickname(uname):
     nickname = c.fetchone()
     c.close()
     
-    if hasNickname(uname):
-        return f"{nickname[0]} (@{uname.lower()})"
-    
-    else:
-        return uname
+    if hasNickname(uname): return f"{nickname[0]} (@{uname.lower()})"
+    else: return uname
 
 def memberListBadge(uname):
     db = sql.connect(server_dir + "/users.db", check_same_thread=False)
@@ -144,11 +171,8 @@ def memberListBadge(uname):
     badge = c.fetchone()
     c.close()
     
-    if hasBadge(uname):
-        return f"[{badge[0]}]"
-    
-    else:
-        return ""
+    if hasBadge(uname): return f"[{badge[0]}]"
+    else: return ""
     
 # Get user role color from the user
 def userRoleColor(uname):
@@ -160,75 +184,33 @@ def userRoleColor(uname):
     
     if color[0] is not None: 
         match color[0]:
-            case "red": 
-                return RED + Colors.BOLD
-            
-            case "green": 
-                return GREEN + Colors.BOLD
-                
-            case "cyan": 
-                return CYAN + Colors.BOLD
-            
-            case "blue": 
-                return BLUE
-
-            case "yellow": 
-                return YELLOW
-                
-            case "magenta": 
-                return MAGENTA
-            
-            case "lightred":
-                return LIGHTRED_EX
-            
-            case "lightgreen":
-                return LIGHTGREEN_EX
-            
-            case "lightcyan":
-                return LIGHTCYAN_EX
-            
-            case "lightblue":
-                return LIGHTBLUE_EX
-
-            case "lightyellow":
-                return LIGHTYELLOW_EX
-
-            case "lightmagenta":
-                return LIGHTMAGENTA_EX
-            
-            case "boldred":
-                return Colors.BOLD + RED
-
-            case "boldgreen":
-                return Colors.BOLD + GREEN
-            
-            case "boldcyan":
-                return Colors.BOLD + CYAN
-            
-            case "boldblue":
-                return Colors.BOLD + BLUE
-            
-            case "boldyellow":
-                return Colors.BOLD + YELLOW
-            
-            case "boldmagenta":
-                return Colors.BOLD + MAGENTA
-            
-            case _:
-                return RESET
-    else: 
-        return RESET
+            case "red": return RED + Colors.BOLD
+            case "green": return GREEN + Colors.BOLD
+            case "cyan": return CYAN + Colors.BOLD
+            case "blue": return BLUE
+            case "yellow": return YELLOW
+            case "magenta": return MAGENTA
+            case "lightred": return LIGHTRED_EX
+            case "lightgreen": return LIGHTGREEN_EX
+            case "lightcyan": return LIGHTCYAN_EX
+            case "lightblue": return LIGHTBLUE_EX
+            case "lightyellow": return LIGHTYELLOW_EX
+            case "lightmagenta": return LIGHTMAGENTA_EX
+            case "boldred": return Colors.BOLD + RED
+            case "boldgreen": return Colors.BOLD + GREEN
+            case "boldcyan": return Colors.BOLD + CYAN
+            case "boldblue": return Colors.BOLD + BLUE
+            case "boldyellow": return Colors.BOLD + YELLOW            
+            case "boldmagenta": return Colors.BOLD + MAGENTA
+            case _: return RESET
+    else: return RESET
     
 def isOnline(uname):
     if uname in users.values():
-        if uname in afks:
-            return "🌙"
-        
-        else:
-            return "🟢"
+        if uname in afks: return "🌙"
+        else: return "🟢"
     
-    else:
-        return f"{Colors.GRAY}〇{RESET}"
+    else: return f"{Colors.GRAY}〇{RESET}"
 
 # Check if a user exists
 def doesUserExist(uname):
@@ -250,9 +232,7 @@ def doesUserExist(uname):
 
 def hash_password(password):
     ph = argon2.PasswordHasher()
-    hashed_password = ph.hash(password)
-    
-    return hashed_password
+    return ph.hash(password)
 
 def verify_password(stored_password, entered_password):
     ph = argon2.PasswordHasher()
@@ -264,5 +244,61 @@ def verify_password(stored_password, entered_password):
     except argon2.exceptions.VerifyMismatchError:
         return False
 
-def is_empty_or_whitespace(string):
-    return all(char.isspace() for char in string)
+def is_empty_or_whitespace(string): return all(char.isspace() for char in string)
+
+# Get user's nickname
+def userNickname(uname):
+    db = sql.connect(server_dir + "/users.db", check_same_thread=False)
+    c = db.cursor()
+    c.execute('SELECT nickname FROM users WHERE username = ?', (uname,))
+    unick = c.fetchone()
+    c.close()
+    
+    if unick[0] is not None: 
+        unick = unick[0]
+        return unick
+    
+    else:
+        return uname
+
+# Get user's nickname
+def userAvatarUrl(uname):
+    db = sql.connect(server_dir + "/users.db", check_same_thread=False)
+    c = db.cursor()
+    c.execute('SELECT avatar_url FROM users WHERE username = ?', (uname,))
+    avatar_url = c.fetchone()
+    c.close()
+    
+    if avatar_url[0] is not None: 
+        avatar_url = avatar_url[0]
+        return avatar_url
+    
+    else:
+        return avatar_url
+
+# Check if user is muted
+def isMuted(uname):
+    c = func_db.cursor()
+    c.execute('SELECT muted FROM users WHERE username = ?', (uname,))
+    mutedStatus = c.fetchone()
+    c.close()
+    
+    if mutedStatus[0] == "true": return True
+    else: return False
+    
+# Check if user's account is enabled
+def isAccountEnabled(uname):
+    c = func_db.cursor()
+    c.execute('SELECT account_enabled FROM users WHERE username = ?', (uname,))
+    accountEnabledStatus = c.fetchone()
+    c.close()
+    
+    if accountEnabledStatus[0] == "true": return True
+    else:  return False
+    
+# Blacklisted word functions
+def open_blacklist():
+    with open(server_dir + "/blacklist.txt", "r") as f:
+        for word in f:
+            word = word.strip().lower()
+            blacklist.add(word)

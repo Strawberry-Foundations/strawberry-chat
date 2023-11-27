@@ -1,6 +1,6 @@
 # v1.6.0
 - NEW: AFK user list command
-- NEW: Sending messages in Afk status is now not possible
+- NEW: Sending messages in Afk status is no longer possible
 - NEW: AFK status stays even when you leave the chat
 - NEW: Kickall command kicking all online users
 - NEW: Changed Chat Name from Salware Chat to Strawberry Chat
@@ -41,3 +41,26 @@
 - NEW: Reworked command system
 - FIX: Fixed duplicated code which led to formatting errors
 -> For more information visit https://github.com/orgs/Strawberry-Foundations/projects/1/views/1
+
+# 1.8.1:
+- NEW: Improved kick command with leave message
+- NEW: Improved Discord Bridge
+- FIX: Fixed Bad File Descriptor when logging out (#49)
+- FIX: Fixed 'Sometimes logs get spammed with empty messages after a user connected/disconnected' (#39)
+- FIX: Completly (hopefully) fixed broken formatting of log messages in console (#45)
+- FIX: Fixed showing 'None' as main badge in Memberlist when no main badge is set (#47)
+- UPDATE: Scapi has been updated to v0.11.0 with some improvements
+
+# 1.8.2
+- FIX: Fixed Console Logger prints static time instead of the real time (#63)
+- SCAPI: Full update of Scapi for the legacy release of Scapi 1.0.0 (stbmv1)
+
+# 1.9.0:
+- NEW: Improved and complete new communication system for a better user experience
+- NEW: We added a new configuration for server admins, to configure the maximal amount of logged in users!
+- NEW: We also added a queue system for users, so when the server is full, you'll join the queue ;)
+- NEW: Added experimental user avatars for discord bridge and soon maybe Strawberry Network
+- FIX: Fixed When using Ctrl + C in client, the server will crash (BrokenPipe) (#1)
+- FIX: We have fixed some general bugs that we didn't notice. Read changelog for more information (#63, #72, #70)
+- ADMIN: We added a new command for server admins to configure the server or just show the current configurations!
+Have a look at https://developers.strawberryfoundations.xyz/ for more documentation about Strawberry Chat :)

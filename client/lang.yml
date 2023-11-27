@@ -24,6 +24,10 @@ de_DE:
   UpdateAvailable: "Ein Update für den Strawberry Chat Client ist verfügbar."
   UpgradingFrom: "Aktualisiere von"
   InvalidInput: "Ungültige Eingabe!"
+  ConnectionInterrupt: "Fehler beim Empfangen von Server-Daten: Ist die Verbindung unterbrochen worden?"
+  CheckCompatibilityMode: "Es konnte keine Nachricht korrekt empfangen werden und entschlüsselt werden.\nBitte versuche den Kompatiblitätsmodus zu aktivieren.\nZum aktivieren füge zu deinem Server-Eintrag folgendes hinzu: compatiblity_mode: true\nAlternativ kannst du den Client mit dem Argument --compatiblity-mode starten\n"
+  VerifyClient: "Verifizierung deines Clients ..."
+  VerifyServer: "Verifizierung deiner Server ..."
 
 # Language Strings for en_US (English)
 en_US:
@@ -51,3 +55,7 @@ en_US:
   UpdateAvailable: "An update for Strawberry Chat Client is available."
   UpgradingFrom: "Upgrading from"
   InvalidInput: "Invalid input!"
+  ConnectionInterrupt: "Error while receiving server data: Has the connection been interrupted?"
+  CheckCompatibilityMode: "No message could be received and decrypted correctly.\nPlease try to activate the compatibility mode.\nTo activate, add the following to your server entry: compatiblity_mode: true\nAlternatively, you can start the client with the --compatiblity-mode argument\n"
+  VerifyClient: "Verifying your client ..."
+  VerifyServer: "Verifying your servers ..."

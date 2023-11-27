@@ -10,7 +10,7 @@ from init import server_dir
 
 
 @register_command("news")
-def about_command(socket: socket.socket, username: str, args: list):
+def about_command(socket: socket.socket, username: str, args: list, send):
     # Open Configuration
     with open(server_dir + "/news.yml") as config_data:
             news_data = yaml.load(config_data, Loader=SafeLoader)
@@ -23,16 +23,16 @@ def about_command(socket: socket.socket, username: str, args: list):
     
     if cmd == "list":
         version_list = ", ".join(news_data['versions'])
-        socket.send(f"{CYAN + Colors.BOLD}{chat_name} Versions:{RESET + Colors.RESET} {GREEN}{version_list}{RESET}".encode("utf8"))
+        send(f"{CYAN + Colors.BOLD}{chat_name} Versions:{RESET + Colors.RESET} {GREEN}{version_list}{RESET}")
         
     elif cmd == "show":
         try:
             i_ver = args[1] 
-            socket.send(f"{GREEN + Colors.BOLD + Colors.UNDERLINE}{chat_name} News - v{i_ver}{RESET + Colors.RESET + CYAN + Colors.BOLD}\n{news_data['news'][i_ver]['text']}{RESET + Colors.RESET}".encode("utf8"))
+            send(f"{GREEN + Colors.BOLD + Colors.UNDERLINE}{chat_name} News - v{i_ver}{RESET + Colors.RESET + CYAN + Colors.BOLD}\n{news_data['news'][i_ver]['text']}{RESET + Colors.RESET}")
             
         except:
-            socket.send(f"{RED + Colors.BOLD}This version of {chat_name} does not exist.{RESET + Colors.RESET}".encode("utf8"))
+            send(f"{RED + Colors.BOLD}This version of {chat_name} does not exist.{RESET + Colors.RESET}")
             
     
     else:
-        socket.send(f"{news}".encode("utf8"))
+        send(f"{news}")
