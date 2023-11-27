@@ -56,14 +56,16 @@ def nickname_command(socket: socket.socket, username: str, args: list, send):
             send(f"{RED + Colors.BOLD}Please pass a valid argument!{RESET + Colors.RESET}")
         
     else: 
-        nick = cmd
+        _cmd = args[0]
                 
-        if nick.lower() == "remove":
+        if _cmd.lower() == "remove" or _cmd.lower() == "reset":
             cmd_db.execute("UPDATE users SET nickname = NULL WHERE username = ?", (username,))
             cmd_db.commit()
             
             send(f"{LIGHTGREEN_EX + Colors.BOLD}Removed nickname{RESET + Colors.RESET}")
             return 
+        
+        nick = ' '.join(args[0:])
         
         cmd_db.execute("UPDATE users SET nickname = ? WHERE username = ?", (nick, username))
         cmd_db.commit()
