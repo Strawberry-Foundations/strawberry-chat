@@ -93,6 +93,10 @@ def regen_database(call_exit: bool = False):
         print(f"{YELLOW + Colors.BOLD}>>> {RESET}Restart your server to connect to your new database.")
         exit()
 
+def table_exists(table_name, cursor):
+    cursor.execute(f"SELECT name FROM sqlite_master WHERE type='table' AND name='{table_name}'")
+    return cursor.fetchone() is not None
+
 def create_empty_file(filename):
     with open(server_dir + "/" + filename, "w") as ef:
         pass
