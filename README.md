@@ -9,6 +9,8 @@ The universal chatting platform for your terminal!<br><br>
 ![Scapi Canary](https://img.shields.io/badge/dynamic/json?url=https://api.strawberryfoundations.xyz/v1/versions&query=%24.stbchat.scapi.bot.canary&label=Scapi%20Canary%20Release&color=blue) <br>
 ![Code Size](https://img.shields.io/github/languages/code-size/Strawberry-Foundations/strawberry-chat) ![Commit activity](https://img.shields.io/github/commit-activity/w/Strawberry-Foundations/strawberry-chat) ![License](https://img.shields.io/github/license/Strawberry-Foundations/strawberry-chat)<br> [![CodeQL](https://github.com/Strawberry-Foundations/strawberry-chat/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/Strawberry-Foundations/strawberry-chat/actions/workflows/github-code-scanning/codeql) [![Python Application](https://github.com/Strawberry-Foundations/strawberry-chat/actions/workflows/python.yml/badge.svg)](https://github.com/Strawberry-Foundations/strawberry-chat/actions/workflows/python.yml) <br>
 
+**WARNING:** This branch will no longer be updated. This branch was merged into the Main Branch on 27.11.2023. 
+
 ## What is Strawberry Chat?
 Strawberry Chat is a simple chat platform based on Python TCP sockets. It allows you to chat with other people in a simple and minimal way - without annoying tracking and spying. 
 
