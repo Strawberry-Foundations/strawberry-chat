@@ -30,6 +30,7 @@ table_query = """
 	"description"	TEXT,
 	"badge"	TEXT,
 	"badges"	TEXT,
+	"avatar_url"	TEXT,
 	"role"	TEXT,
 	"role_color"	TEXT,
 	"enable_blacklisted_words"	TEXT,
@@ -39,7 +40,7 @@ table_query = """
 	"strawberry_id"	TEXT,
 	"discord_name"	TEXT,
 	"msg_count"	INTEGER,
-    "creation_date"	INTEGER)"""
+	"creation_date"	INTEGER)"""
  
 role_colors = ["red", "green", "cyan", "blue", "yellow", "magenta",
                "lightred", "lightgreen", "lightcyan", "lightblue", "lightyellow", "lightmagenta",
