@@ -3,12 +3,12 @@
         "server": {
             "stable": "v1.8.2",
             "dev": "v1.8.2",
-            "canary": "v1.9.0a3"
+            "canary": "v1.9.0b5"
         },
     
         "client": {
             "stable": "v2.4.0",
-            "canary": "v2.5.1",
+            "canary": "v2.5.4",
             "lite": "v1.0.1",
             "nano": "v1.0.1"
         },
@@ -17,7 +17,7 @@
             "bot": {
                 "stable": "1.0.0-stbmv1",
                 "dev": "-",
-                "canary": "0.12.1"
+                "canary": "0.13.1b3"
             }
         }
     }
