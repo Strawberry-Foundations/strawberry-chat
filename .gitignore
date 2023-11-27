@@ -180,7 +180,6 @@ server/config.yml
 server/log.txt
 server/CHANGELOG_GITHUB.txt
 
-discord/webhook/discord_webhook_private.py
 discord/config.yml
 
 deprecated/server/log.txt
