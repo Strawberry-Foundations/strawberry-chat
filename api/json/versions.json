@@ -3,7 +3,8 @@
         "server": {
             "stable": "v1.8.2",
             "dev": "v1.9.0b5",
-            "canary": "-"
+            "canary": "-",
+            "legacy": "v1.8.2"
         },
     
         "client": {
@@ -11,14 +12,16 @@
             "dev": "v2.5.4",
             "canary": "-",
             "lite": "v1.0.1",
-            "nano": "v1.0.1"
+            "nano": "v1.0.1",
+            "legacy": "v2.4.0"
         },
 
         "scapi": {
             "bot": {
                 "stable": "1.0.0-stbmv1",
                 "dev": "0.13.1b3",
-                "canary": "-"
+                "canary": "-",
+                "legacy": "1.0.0-stbmv1"
             }
         }
     }
