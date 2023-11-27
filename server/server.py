@@ -49,7 +49,12 @@ if "--regen-database" in sys.argv: input_regen_database()
 if os.path.exists(server_dir + "/users.db"):
     # Connect to database
     db = sql.connect(server_dir + "/users.db", check_same_thread=False)
-    print(f"{GREEN + Colors.BOLD}>>> {RESET}Connected to database")
+    _open_cursor = db.cursor()
+    
+    if table_exists("users", _open_cursor):
+        print(f"{GREEN + Colors.BOLD}>>> {RESET}Connected to database")
+    else:
+        input_regen_database(type="corrupted")
     
 else:
     # Connect/Create database
