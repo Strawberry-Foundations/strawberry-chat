@@ -232,7 +232,7 @@ def client_thread(client):
                 execute_command(cmd, client, user, role, args, sender.send)
                 continue
             
-
+            
             if isMuted(user):
                 sender.send(f"{RED + Colors.BOLD}Sorry, but you were muted by an administrator. Please contact him/her if you have done nothing wrong, or wait until you are unmuted.{RESET + Colors.RESET}")
             
