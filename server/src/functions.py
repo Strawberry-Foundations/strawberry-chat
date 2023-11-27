@@ -72,11 +72,18 @@ def replace_htpf(string, reset_color: bool = False):
     
     return to_ret
 
-def input_regen_database():
-    confirm_input = input(f"{YELLOW + Colors.BOLD}>>> {RESET}WARNING: This will delete your database! Are you sure?: ")
-    
-    if confirm_input.lower() == "yes": regen_database(call_exit=True)
-    else: print(f"{Colors.GRAY + Colors.BOLD}>>> {RESET + Colors.RESET + Colors.BOLD}Cancelled database regeneration process")
+def input_regen_database(type: str = "standard"):
+    if type == "standard":
+        confirm_input = input(f"{YELLOW + Colors.BOLD}>>> {RESET}WARNING: This will delete your database! Are you sure?: ")
+        
+        if confirm_input.lower() == "yes": regen_database(call_exit=True)
+        else: print(f"{Colors.GRAY + Colors.BOLD}>>> {RESET + Colors.RESET + Colors.BOLD}Cancelled database regeneration process")
+        
+    elif type == "corrupted":
+        confirm_input = input(f"{YELLOW + Colors.BOLD}>>> {RESET}WARNING: Your database is corrupted or was not generated correctly.\n    Would you like to regenerate your database? (Not regenerating the database leads to incorrect execution of the program) ")
+        
+        if confirm_input.lower() == "yes": regen_database(call_exit=True)
+        else: print(f"{Colors.GRAY + Colors.BOLD}>>> {RESET + Colors.RESET + Colors.BOLD}Cancelled database regeneration process")
 
 def regen_database(call_exit: bool = False):
     os.remove(server_dir + "/users.db")
