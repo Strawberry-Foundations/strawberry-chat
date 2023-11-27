@@ -31,6 +31,7 @@
 - FIX: Fixed table_query is not correctly according to the newest database (#91)
 - FIX: Fixed cannot change nickname to an nickname with whitespaces (#90)
 - FIX: Fixed when no user entry in database, you cannot register (#89)
+- FIX: Fix ed When using --regen-database; UnboundLocalError: cannot access local variable 'input' where it is not associated with a value (#92)
 - FIX: Fully fixed When using Ctrl + C in client, the server will crash (BrokenPipe) (#1)
 - FIX: Merged welcome message to one message to fix the extra line bug (Fixed #70)
 - FIX: Some fixes to welcome message
