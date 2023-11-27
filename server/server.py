@@ -51,10 +51,14 @@ if os.path.exists(server_dir + "/users.db"):
     db = sql.connect(server_dir + "/users.db", check_same_thread=False)
     _open_cursor = db.cursor()
     
-    if table_exists("users", _open_cursor):
-        print(f"{GREEN + Colors.BOLD}>>> {RESET}Connected to database")
+    if not test_mode:
+        if table_exists("users", _open_cursor):
+            print(f"{GREEN + Colors.BOLD}>>> {RESET}Connected to database")
+        else:
+            input_regen_database(type="corrupted")
     else:
-        input_regen_database(type="corrupted")
+        regen_database(call_exit=False)
+        
     
 else:
     # Connect/Create database
