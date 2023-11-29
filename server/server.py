@@ -629,10 +629,15 @@ def broadcast(message, sent_by="", format: StbCom = StbCom.PLAIN):
                     message = escape_ansi(message)
                     
                 message = replace_htpf(message)
+                _message_lower = message.lower()
                 
                 for u in users.values():
-                    if f"@{u}" in message.split():
-                        message = message.replace(f"@{u}", f"{BACKMAGENTA + Colors.BOLD}@{userNickname(u)}{BACKRESET + Colors.RESET}")
+                    _username_lower = u.lower()
+                    
+                    if f"@{_username_lower}" in _message_lower.split():
+                        message = message.replace(f"@{u}", f"{BACKMAGENTA + Colors.BOLD}@{userNickname(_username_lower)}{BACKRESET + Colors.RESET}") \
+                                         .replace(f"@{_username_lower}", f"{BACKMAGENTA + Colors.BOLD}@{userNickname(_username_lower)}{BACKRESET + Colors.RESET}")
+                
                 
                 if not is_empty_or_whitespace(message):
                     if message != "":
