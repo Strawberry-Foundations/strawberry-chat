@@ -178,7 +178,7 @@ def memberListBadge(uname):
 def userRoleColor(uname):
     db = sql.connect(server_dir + "/users.db", check_same_thread=False)
     c = db.cursor()
-    c.execute('SELECT role_color FROM users WHERE username = ?', (uname,))
+    c.execute('SELECT role_color FROM users WHERE LOWER(username) = LOWER(?)', (uname,))
     color = c.fetchone()
     c.close()
     
