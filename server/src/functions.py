@@ -250,7 +250,7 @@ def is_empty_or_whitespace(string): return all(char.isspace() for char in string
 def userNickname(uname):
     db = sql.connect(server_dir + "/users.db", check_same_thread=False)
     c = db.cursor()
-    c.execute('SELECT nickname FROM users WHERE username = ?', (uname,))
+    c.execute('SELECT nickname FROM users WHERE LOWER(username) = LOWER(?)', (uname,))
     unick = c.fetchone()
     c.close()
     
