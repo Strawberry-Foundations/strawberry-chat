@@ -16,7 +16,7 @@
 - NEW: Added additional alias for /nick remove (--> /nick reset)
 - NEW: Added Pinging user should not be case-sensitive (#95)
 - NEW: Replaced ipify global ip api with our own global ip api
-
+- NEW: Removed case-sensitive username for dm command (#96)
 
 - MODULARITY: More Object Oriented Programming (Queue Class, Stopwatch Class, ...)
 - MODULARITY: Moved open_blacklist() to src.functions
@@ -58,3 +58,4 @@
 
 - UPDATE: Updated api protocol from http to https (scapi & server)
 - UPDATE: Some major updates & fixes to news
+
