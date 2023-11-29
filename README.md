@@ -14,7 +14,8 @@ The universal chatting platform for your terminal!<br><br>
 [![Python Application](https://github.com/Strawberry-Foundations/strawberry-chat/actions/workflows/python.yml/badge.svg)](https://github.com/Strawberry-Foundations/strawberry-chat/actions/workflows/python.yml) <br>
 
 ## What is Strawberry Chat?
-Strawberry Chat is a simple chat platform based on Python TCP sockets. It allows you to chat with other people in a simple and minimal way - without annoying tracking and spying. 
+Strawberry Chat is a simple chat platform based on Python TCP sockets. It allows you to chat with other people in a simple and minimal way - without annoying tracking and spying. <br>
+Also don't mind looking at our documentation! https://developers.strawberryfoundations.xyz/
 
 ## Why?
 My goal was to develop a chat app for the terminal, which is not only minimal, but also useful. Strawberry Chat is actively developing and getting more and more features - and the best thing is, everything is free and stays free! 
