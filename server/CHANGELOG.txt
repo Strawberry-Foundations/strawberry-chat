@@ -38,6 +38,7 @@
 - FIX: Merged welcome message to one message to fix the extra line bug (Fixed #70)
 - FIX: Some fixes to welcome message
 - FIX: Added reset_color argument to replace_htpf to fix not resetting the color correctly
+- FIX: Fixed strawberryIdLogin message sender
 
 - SCAPI: Added function to use the old Strawberry Communication System (stbmv1)
 - SCAPI: Added direct messages (#79) + exit command
