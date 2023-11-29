@@ -20,7 +20,7 @@ def dm_command(socket: _socket.socket, username: str, args: list, send):
     found_keys = []
     
     for sock_object, sock_uname in users.items():
-        if sock_uname == uname:
+        if sock_uname.lower() == uname.lower():
             global to_sent
             to_sent = sock_object
             found_keys.append(sock_object)
