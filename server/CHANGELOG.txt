@@ -14,7 +14,9 @@
 - NEW: Added 2 new configuration variables to configure if admins/bots have to wait in the queue
 - NEW: Added max. registered user feature (#87)
 - NEW: Added additional alias for /nick remove (--> /nick reset)
+- NEW: Added Pinging user should not be case-sensitive (#95)
 - NEW: Replaced ipify global ip api with our own global ip api
+
 
 - MODULARITY: More Object Oriented Programming (Queue Class, Stopwatch Class, ...)
 - MODULARITY: Moved open_blacklist() to src.functions
