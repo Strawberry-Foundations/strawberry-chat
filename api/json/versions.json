@@ -2,7 +2,7 @@
     "stbchat": {
         "server": {
             "stable": "v1.8.2",
-            "dev": "v1.9.0rc1",
+            "dev": "v1.9.0rc2",
             "canary": "-",
             "legacy": "v1.8.2"
         },
