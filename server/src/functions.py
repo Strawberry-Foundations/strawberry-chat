@@ -135,7 +135,7 @@ def broadcast_all(message, format: StbCom = StbCom.PLAIN):
 def hasNickname(uname):
     db = sql.connect(server_dir + "/users.db", check_same_thread=False)
     c = db.cursor()
-    c.execute('SELECT nickname FROM users WHERE username = ?', (uname,))
+    c.execute('SELECT nickname FROM users WHERE LOWER(username) = ?', (uname.lower(),))
     unick = c.fetchone()
     c.close()
     
@@ -146,7 +146,7 @@ def hasNickname(uname):
 def hasBadge(uname):
     db = sql.connect(server_dir + "/users.db", check_same_thread=False)
     c = db.cursor()
-    c.execute('SELECT badge FROM users WHERE username = ?', (uname,))
+    c.execute('SELECT badge FROM users WHERE LOWER(username) = ?', (uname.lower(),))
     unick = c.fetchone()
     c.close()
     
@@ -157,7 +157,7 @@ def hasBadge(uname):
 def memberListNickname(uname):
     db = sql.connect(server_dir + "/users.db", check_same_thread=False)
     c = db.cursor()
-    c.execute("SELECT nickname FROM users WHERE username = ?", (uname,))
+    c.execute("SELECT nickname FROM users WHERE LOWER(username) = ?", (uname.lower(),))
     nickname = c.fetchone()
     c.close()
     
@@ -167,7 +167,7 @@ def memberListNickname(uname):
 def memberListBadge(uname):
     db = sql.connect(server_dir + "/users.db", check_same_thread=False)
     c = db.cursor()
-    c.execute("SELECT badge FROM users WHERE username = ?", (uname,))
+    c.execute("SELECT badge FROM users WHERE LOWER(username) = ?", (uname.lower(),))
     badge = c.fetchone()
     c.close()
     
@@ -265,7 +265,7 @@ def userNickname(uname):
 def userAvatarUrl(uname):
     db = sql.connect(server_dir + "/users.db", check_same_thread=False)
     c = db.cursor()
-    c.execute('SELECT avatar_url FROM users WHERE username = ?', (uname,))
+    c.execute('SELECT avatar_url FROM users WHERE LOWER(username) = ?', (uname.lower(),))
     avatar_url = c.fetchone()
     c.close()
     
@@ -279,7 +279,7 @@ def userAvatarUrl(uname):
 # Check if user is muted
 def isMuted(uname):
     c = func_db.cursor()
-    c.execute('SELECT muted FROM users WHERE username = ?', (uname,))
+    c.execute('SELECT muted FROM users WHERE LOWER(username) = ?', (uname.lower(),))
     mutedStatus = c.fetchone()
     c.close()
     
@@ -289,7 +289,7 @@ def isMuted(uname):
 # Check if user's account is enabled
 def isAccountEnabled(uname):
     c = func_db.cursor()
-    c.execute('SELECT account_enabled FROM users WHERE username = ?', (uname,))
+    c.execute('SELECT account_enabled FROM users WHERE LOWER(username) = ?', (uname.lower(),))
     accountEnabledStatus = c.fetchone()
     c.close()
     
