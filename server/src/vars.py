@@ -2,7 +2,7 @@ from .colors import *
 
 # Version-specified Variables & important variables
 base_ver                = "1.9.0"
-short_ver               = "1.9.0rc1"
+short_ver               = "1.9.0rc2"
 full_ver                = "v" + short_ver
 stbm_ver                = "v2"
 ver                     = short_ver + "-vacakes"
