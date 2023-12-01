@@ -16,6 +16,10 @@ from src.vars import chat_name, short_ver, codename, server_edition, api
 # Path of init.py
 server_dir = os.path.dirname(os.path.realpath(__file__))
 
+"""
+-- LogMessages --
+All types of log messages
+"""
 class LogMessages:
     address_left        = "%s has left"
     user_left           = "%s (%s) has left"
@@ -39,6 +43,10 @@ class LogMessages:
     badge_error         = "Something went wrong while... doing something with the badges?: "
 
 
+"""
+-- ClientSender --
+Class & functions for sending json-messages to clients
+"""
 class ClientSender:
     def __init__(self, socket):
         self.socket = socket
@@ -64,7 +72,10 @@ class ClientSender:
         if del_user: del users[self.socket]
         if call_exit: exit()
         
-
+"""
+-- Queue --
+Queue handling for users
+"""
 class Queue:
     def __init__(self):
         self.queue = []
@@ -87,7 +98,10 @@ class Queue:
         except Exception as e:
             return 0
         
-        
+"""
+-- Stopwatch --
+Required class for the Queue
+"""  
 class Stopwatch:
     def __init__(self):
         self.start_time = None
