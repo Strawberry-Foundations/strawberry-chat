@@ -19,8 +19,13 @@ server_dir = os.path.dirname(os.path.realpath(__file__))
 # Open Configuration
 with open(server_dir + "/config.yml") as config_data:
     config = yaml.load(config_data, Loader=SafeLoader)
-
-import sqlite3
+    
+if config['database']['driver'] == "sqlite": 
+    import sqlite3
+elif config['database']['driver'] == "mysql": 
+    pass
+else:
+    pass
 
 """
 -- LogMessages --
