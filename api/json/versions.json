@@ -1,15 +1,15 @@
 {
     "stbchat": {
         "server": {
-            "stable": "v1.8.2",
-            "dev": "v1.9.0rc2",
+            "stable": "v1.9.0",
+            "dev": "-",
             "canary": "-",
             "legacy": "v1.8.2"
         },
     
         "client": {
-            "stable": "v2.4.0",
-            "dev": "v2.5.4",
+            "stable": "v2.5.0",
+            "dev": "-",
             "canary": "-",
             "lite": "v1.0.1",
             "nano": "v1.0.1",
@@ -18,8 +18,8 @@
 
         "scapi": {
             "bot": {
-                "stable": "1.0.0-stbmv1",
-                "dev": "0.13.1b3",
+                "stable": "0.14.0-stbmv2s",
+                "dev": "-",
                 "canary": "-",
                 "legacy": "1.0.0-stbmv1"
             }
