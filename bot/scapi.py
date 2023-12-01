@@ -37,11 +37,11 @@ CYAN = '\033[36m'
 WHITE = '\033[37m'
 
 # Version-specified Variables & important variables
-base_version    = "0.13.1"
-ext_version     = base_version + "b3"
+base_version    = "0.14.0"
+ext_version     = base_version + ""
 version         = "v" + ext_version
 full_version    = ext_version + "_dev-vacakes-std_stmbv2"
-update_channel  = "dev"
+update_channel  = "stable"
 codename        = "Vanilla Cake"
 authors         = ["Juliandev02"]
 api             = "https://api.strawberryfoundations.xyz/v1/"
