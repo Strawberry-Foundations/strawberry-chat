@@ -10,7 +10,7 @@ ver                     = short_ver + "-vacakes"
 codename_short          = "vacakes"
 codename                = "Vanilla Cake"
 
-update_channel          = "stable"
+update_channel          = "canary"
 chat_name               = "Strawberry Chat"
 server_edition          = "Standard Edition"
 
