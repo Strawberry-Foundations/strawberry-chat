@@ -60,4 +60,3 @@
 
 - UPDATE: Updated api protocol from http to https (scapi & server)
 - UPDATE: Some major updates & fixes to news
-
