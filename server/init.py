@@ -22,7 +22,6 @@ with open(server_dir + "/config.yml") as config_data:
     
 if config['database']['driver'] == "sqlite": 
     import sqlite3
-    import pymysql
 elif config['database']['driver'] == "mysql": 
     import pymysql
 else:
