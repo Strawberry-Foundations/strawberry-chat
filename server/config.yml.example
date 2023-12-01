@@ -4,7 +4,7 @@ server:
   name: "Your Chat Server Name"
   description: "Write something about your server"
   edition_key: "somekey"
-  update_channel: "dev"
+  update_channel: "canary"
   
 flags:
   enable_messages: false
@@ -19,5 +19,13 @@ flags:
   admins_wait_queue: true
   bots_wait_queue: true
   special_messages: false
+
+database:
+  driver: sqlite  # Available values: sqlite, mysql
+  host: localhost
+  port: 3006
+  database_name: data
+  table: chat_data
+
 
 config_ver: 2
