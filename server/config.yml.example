@@ -21,9 +21,12 @@ flags:
   special_messages: false
 
 database:
-  driver: sqlite  # Available values: sqlite, mysql
+  driver: sqlite              # Available values: sqlite, mysql
+  check_same_thread: true     # only for sqlite
+  
   host: localhost
   port: 3006
+  user: admin
   database_name: data
   database_table: chat_data
 
