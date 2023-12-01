@@ -4,3 +4,4 @@ requests
 datetime
 argon2-cffi
 pymysql
+flask
