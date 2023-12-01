@@ -3,3 +3,4 @@ colorama
 requests
 datetime
 argon2-cffi
+pymysql
