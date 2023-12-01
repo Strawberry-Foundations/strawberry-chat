@@ -56,21 +56,23 @@ class LogMessages:
 
 class Database:
     def __init__(self, driver, **kwargs):
-        self.driver     = driver
-        self.connection = None
-        self.cursor     = None
+        self.driver                 = driver
+        self.connection             = None
+        self.cursor                 = None
+        self.sqlite_database_dir    = server_dir + "/users.db"
         
         if self.driver == "sqlite":
-            self.connect_sqlite(kwargs.get('database_path', ':memory:'))
+            self.connect_sqlite(self.sqlite_database_dir)
             
-        elif self.driver == 'mysql':
-            self.connect_mysql(kwargs.get('host', 'localhost'),
-                               kwargs.get('user', 'root'),
-                               kwargs.get('password', ''),
-                               kwargs.get('database', 'test'))
+        elif self.driver == 'mysql':            
+            self.connect_mysql(host=DatabaseConfig.host,
+                               user=DatabaseConfig.user,
+                               password=DatabaseConfig.password,
+                               database=DatabaseConfig.db_name)
+
 
     def connect_sqlite(self, database_path):
-        self.connection = sqlite3.connect(database_path)
+        self.connection = sqlite3.connect(database_path, check_same_thread=DatabaseConfig.chck_thread)
         self.cursor = self.connection.cursor()
     
     def connect_mysql(self, host, user, password, database):
@@ -298,10 +300,14 @@ admins_wait_queue       = config['flags']['admins_wait_queue']
 bots_wait_queue         = config['flags']['bots_wait_queue']
 special_messages        = config['flags']['special_messages']
 
-class DBConfig:
+class DatabaseConfig:
     driver      = config['database']['driver']
+    chck_thread = config['database']['check_same_thread']
+    
     host        = config['database']['host']
     port        = config['database']['port']
+    user        = config['database']['user']
+    password    = config['database']['password']
     db_name     = config['database']['database_name']
     db_table    = config['database']['database_table']
     
