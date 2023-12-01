@@ -2,7 +2,7 @@ from .colors import *
 
 # Version-specified Variables & important variables
 base_ver                = "1.9.0"
-short_ver               = "1.9.0rc2"
+short_ver               = "1.9.0"
 full_ver                = "v" + short_ver
 stbm_ver                = "v2"
 ver                     = short_ver + "-vacakes"
@@ -10,7 +10,7 @@ ver                     = short_ver + "-vacakes"
 codename_short          = "vacakes"
 codename                = "Vanilla Cake"
 
-update_channel          = "canary"
+update_channel          = "stable"
 chat_name               = "Strawberry Chat"
 server_edition          = "Standard Edition"
 
