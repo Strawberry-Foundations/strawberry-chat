@@ -27,6 +27,7 @@ database:
   host: localhost
   port: 3006
   user: admin
+  password: admin
   database_name: data
   database_table: chat_data
 
