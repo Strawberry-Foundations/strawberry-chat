@@ -1,7 +1,4 @@
 import sqlite3
-import os 
-import sys
-from init import * 
 
 class SQLiteDatabaseWrapper:
     def __init__(self, database_path):
