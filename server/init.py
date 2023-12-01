@@ -226,6 +226,14 @@ admins_wait_queue       = config['flags']['admins_wait_queue']
 bots_wait_queue         = config['flags']['bots_wait_queue']
 special_messages        = config['flags']['special_messages']
 
+class DBConfig:
+    driver      = config['database']['driver']
+    host        = config['database']['host']
+    port        = config['database']['port']
+    db_name     = config['database']['database_name']
+    db_table    = config['database']['database_table']
+    
+
 test_mode               = False
 
 # Log configuration
