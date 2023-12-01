@@ -48,10 +48,10 @@ if "--regen-database" in sys.argv: input_regen_database()
 # Check if database file exists
 if os.path.exists(server_dir + "/users.db"):
     # Connect to database
-    _db = Database(type=DatabaseConfig.driver)
+    _db = Database(driver=DatabaseConfig.driver)
     
     db = sql.connect(server_dir + "/users.db", check_same_thread=False)
-    _open_cursor = db.cursor()
+    _open_cursor = _db.cursor
     
     if not test_mode:
         if table_exists("users", _open_cursor):
