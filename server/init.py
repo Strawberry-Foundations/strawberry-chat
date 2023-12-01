@@ -64,11 +64,16 @@ class Database:
         if self.driver == "sqlite":
             self.connect_sqlite(self.sqlite_database_dir)
             
-        elif self.driver == 'mysql':            
-            self.connect_mysql(host=DatabaseConfig.host,
-                               user=DatabaseConfig.user,
-                               password=DatabaseConfig.password,
-                               database=DatabaseConfig.db_name)
+        elif self.driver == 'mysql':
+            try:
+                self.connect_mysql(host=DatabaseConfig.host,
+                                user=DatabaseConfig.user,
+                                password=DatabaseConfig.password,
+                                database=DatabaseConfig.db_name)
+                
+            except (pymysql.err.OperationalError, ConnectionRefusedError):
+                print(f"{RED + Colors.BOLD}>>>{RESET} Could not connect to MySQL server{Colors.RESET}")
+                exit(1)
 
 
     def connect_sqlite(self, database_path):
