@@ -22,8 +22,9 @@ with open(server_dir + "/config.yml") as config_data:
     
 if config['database']['driver'] == "sqlite": 
     import sqlite3
+    import pymysql
 elif config['database']['driver'] == "mysql": 
-    pass
+    import pymysql
 else:
     pass
 
@@ -62,10 +63,61 @@ class Database:
         
         if self.driver == "sqlite":
             self.connect_sqlite(kwargs.get('database_path', ':memory:'))
+            
+        elif self.driver == 'mysql':
+            self.connect_mysql(kwargs.get('host', 'localhost'),
+                               kwargs.get('user', 'root'),
+                               kwargs.get('password', ''),
+                               kwargs.get('database', 'test'))
 
     def connect_sqlite(self, database_path):
         self.connection = sqlite3.connect(database_path)
         self.cursor = self.connection.cursor()
+    
+    def connect_mysql(self, host, user, password, database):
+        self.connection = pymysql.connect(host=host,
+                                          user=user,
+                                          password=password,
+                                          database=database,
+                                          cursorclass=pymysql.cursors.DictCursor)
+        self.cursor = self.connection.cursor()
+        
+    def disconnect(self):
+        if self.connection:
+            self.connection.close()
+
+    def execute_query(self, query, parameters=None):
+        if not self.cursor:
+            raise RuntimeError("Not connected to the database. Call connect method first.")
+
+        if parameters:
+            if isinstance(parameters, (list, tuple)):
+                self.cursor.execute(query, parameters)
+            elif isinstance(parameters, dict):
+                self.cursor.execute(query, parameters)
+            else:
+                raise ValueError("Unsupported parameter type. Use list, tuple, or dictionary.")
+        else:
+            self.cursor.execute(query)
+
+        return self.cursor
+
+
+    def fetch_all(self, query, parameters=None):
+        cursor = self.execute_query(query, parameters)
+        return cursor.fetchall()
+
+    def fetch_one(self, query, parameters=None):
+        cursor = self.execute_query(query, parameters)
+        return cursor.fetchone()
+
+    def commit(self):
+        if self.connection:
+            self.connection.commit()
+
+    def rollback(self):
+        if self.connection:
+            self.connection.rollback()
 
 
 """
