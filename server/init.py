@@ -16,6 +16,12 @@ from src.vars import chat_name, short_ver, codename, server_edition, api
 # Path of init.py
 server_dir = os.path.dirname(os.path.realpath(__file__))
 
+# Open Configuration
+with open(server_dir + "/config.yml") as config_data:
+    config = yaml.load(config_data, Loader=SafeLoader)
+
+import sqlite3
+
 """
 -- LogMessages --
 All types of log messages
@@ -41,6 +47,20 @@ class LogMessages:
     runtime_stop        = "Runtime has stopped."
     server_stop         = "Server stopped"
     badge_error         = "Something went wrong while... doing something with the badges?: "
+
+
+class Database:
+    def __init__(self, driver, **kwargs):
+        self.driver     = driver
+        self.connection = None
+        self.cursor     = None
+        
+        if self.driver == "sqlite":
+            self.connect_sqlite(kwargs.get('database_path', ':memory:'))
+
+    def connect_sqlite(self, database_path):
+        self.connection = sqlite3.connect(database_path)
+        self.cursor = self.connection.cursor()
 
 
 """
@@ -204,10 +224,6 @@ def debug_logger(error_message, error_code, type: StbTypes = StbTypes.ERROR):
 
 # Startup title
 print(f"{CYAN + Colors.BOLD}* -- {chat_name} v{short_ver} {codename} ({server_edition}) -- *{RESET + Colors.RESET}")
-
-# Open Configuration
-with open(server_dir + "/config.yml") as config_data:
-    config = yaml.load(config_data, Loader=SafeLoader)
 
 
 # Configuration
