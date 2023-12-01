@@ -23,7 +23,7 @@ In addition, Strawberry Chat is open source. This means that everyone can contri
 
 ## [JSON Communication](https://github.com/Strawberry-Foundations/strawberry-chat/tree/json-communication)
 Strawberry Chat is currently being rewritten so that we use JSON as the communication format. There are therefore compatibility problems between the server and client.
-|                     | v1.8.0 - v1.8.1 ![](https://img.shields.io/badge/Legacy-green) | v1.8.2 ![](https://img.shields.io/badge/Stable-success) | v1.9.0 ![](https://img.shields.io/badge/Dev-cyan) |
+|                     | v1.8.0 - v1.8.2 ![](https://img.shields.io/badge/Legacy-green) | v1.8.3 ![](https://img.shields.io/badge/Legacy-gray) | v1.9.0 ![](https://img.shields.io/badge/Stable-success) |
 |---------------------|----------------------------------------------------------------|---------------------------------------------------------|--------------------------------------------------------|
 | Standard `<=2.4.0`  | ✅                                                            | ✅                                                      | ✅                                                    | 
 | Standard `v2.5.0`   | ❌                                                            | ❌                                                      | ❌                                                    | 
@@ -36,7 +36,7 @@ Strawberry Chat is currently being rewritten so that we use JSON as the communic
 
 <br>
 
-| CM (Compatibility Mode)    | As of Client Canary/Dev v2.5.1, we have added a feature that allows users to connect to old servers. This is called Compatibility Mode. To activate it you either have to add `compatibility_mode: true` to the respective legacy server entry or start the client with the `--compatibility-mode` flag! |
+| CM (Compatibility Mode)    | As of Client v2.5.1, we have added a feature that allows users to connect to old servers. This is called Compatibility Mode. To activate it you either have to add `compatibility_mode: true` to the respective legacy server entry or start the client with the `--compatibility-mode` flag! |
 |---------------|:------------------------|
 
 
