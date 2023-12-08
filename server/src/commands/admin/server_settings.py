@@ -47,30 +47,30 @@ def user_settings_command(socket: socket.socket, username: str, args: list, send
                 try:
                     if args[1] == "debug":
                         message = f"""{GREEN +  Colors.UNDERLINE + Colors.BOLD}Your Server Settings (Debug){RESET + Colors.RESET}
-            {YELLOW}WARNING:{RESET} This could contain sensible information!
-            
-            {CYAN}IP-Address:{RESET} {ipaddr}
-            {CYAN}Port:{RESET} {port}
-            {CYAN}Enable Logging Messages:{RESET} {enable_messages}
-            {CYAN}Enable Queue:{RESET} {enable_queue}
-            {CYAN}Max Message Length:{RESET} {max_message_length}
-            {CYAN}Max Users:{RESET} {max_users}
-            {CYAN}Debug Mode:{RESET} {debug_mode}
-            {CYAN}Online Mode:{RESET} {online_mode}
-            {CYAN}Update Channel:{RESET} {update_channel}
-            
-            {YELLOW}Afks:{RESET} {afks}
-            {YELLOW}Queue:{RESET} {queue.queue}
-            {YELLOW}Users:{RESET} {users}
-            {YELLOW}Addresses:{RESET} {addresses}
-            {YELLOW}Logged in:{RESET} {user_logged_in}
-            
-            {YELLOW}MySQL Host:{RESET} {DatabaseConfig.host}
-            {YELLOW}MySQL Port:{RESET} {DatabaseConfig.port}
-            {YELLOW}MySQL ChckThread:{RESET} {DatabaseConfig.chck_thread}
-            {YELLOW}MySQL Username:{RESET} {DatabaseConfig.user}
-            {YELLOW}MySQL Password:{RESET} {DatabaseConfig.password}
-            {YELLOW}MySQL Database:{RESET} {DatabaseConfig.db_name}
+        {YELLOW}WARNING:{RESET} This could contain sensible information!
+        
+        {CYAN}IP-Address:{RESET} {ipaddr}
+        {CYAN}Port:{RESET} {port}
+        {CYAN}Enable Logging Messages:{RESET} {enable_messages}
+        {CYAN}Enable Queue:{RESET} {enable_queue}
+        {CYAN}Max Message Length:{RESET} {max_message_length}
+        {CYAN}Max Users:{RESET} {max_users}
+        {CYAN}Debug Mode:{RESET} {debug_mode}
+        {CYAN}Online Mode:{RESET} {online_mode}
+        {CYAN}Update Channel:{RESET} {update_channel}
+        
+        {YELLOW}Afks:{RESET} {afks}
+        {YELLOW}Queue:{RESET} {queue.queue}
+        {YELLOW}Users:{RESET} {users}
+        {YELLOW}Addresses:{RESET} {addresses}
+        {YELLOW}Logged in:{RESET} {user_logged_in}
+        
+        {YELLOW}MySQL Host:{RESET} {DatabaseConfig.host}
+        {YELLOW}MySQL Port:{RESET} {DatabaseConfig.port}
+        {YELLOW}MySQL ChckThread:{RESET} {DatabaseConfig.chck_thread}
+        {YELLOW}MySQL Username:{RESET} {DatabaseConfig.user}
+        {YELLOW}MySQL Password:{RESET} {DatabaseConfig.password}
+        {YELLOW}MySQL Database:{RESET} {DatabaseConfig.db_name}
             """
             
                         send(message)
