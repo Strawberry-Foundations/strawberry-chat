@@ -316,6 +316,8 @@ admins_wait_queue       = config['flags']['admins_wait_queue']
 bots_wait_queue         = config['flags']['bots_wait_queue']
 special_messages        = config['flags']['special_messages']
 
+config_ver_yml          = config['config_ver']
+
 class DatabaseConfig:
     driver      = config['database']['driver']
     chck_thread = config['database']['check_same_thread']
