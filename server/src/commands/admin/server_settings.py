@@ -12,7 +12,8 @@ from init import server_dir, ipaddr, port, \
                  max_message_length, max_users, \
                  debug_mode, online_mode, update_channel, \
                  afks, queue, users, addresses, user_logged_in, blacklist, \
-                 admins_wait_queue, bots_wait_queue, max_registered_users
+                 admins_wait_queue, bots_wait_queue, max_registered_users, \
+                 special_messages, DatabaseConfig
 
 
 @register_command("serversettings", arg_count=1, required_permissions=PermissionLevel.ADMIN)
@@ -39,6 +40,8 @@ def user_settings_command(socket: socket.socket, username: str, args: list, send
         {CYAN}Update Channel:{RESET} {update_channel}
         {CYAN}Admins wait Queue:{RESET} {admins_wait_queue}
         {CYAN}Bots wait Queue:{RESET} {bots_wait_queue}
+        {CYAN}Special Messages:{RESET} {special_messages}
+        {CYAN}Database Driver:{RESET} {DatabaseConfig.driver}
         """
                 send(message)
                 try:
@@ -61,6 +64,13 @@ def user_settings_command(socket: socket.socket, username: str, args: list, send
             {YELLOW}Users:{RESET} {users}
             {YELLOW}Addresses:{RESET} {addresses}
             {YELLOW}Logged in:{RESET} {user_logged_in}
+            
+            {YELLOW}MySQL Host:{RESET} {DatabaseConfig.host}
+            {YELLOW}MySQL Port:{RESET} {DatabaseConfig.port}
+            {YELLOW}MySQL ChckThread:{RESET} {DatabaseConfig.chck_thread}
+            {YELLOW}MySQL Username:{RESET} {DatabaseConfig.user}
+            {YELLOW}MySQL Password:{RESET} {DatabaseConfig.password}
+            {YELLOW}MySQL Database:{RESET} {DatabaseConfig.db_name}
             """
             
                         send(message)
