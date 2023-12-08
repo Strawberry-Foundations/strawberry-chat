@@ -67,6 +67,9 @@ online_mode     = data['online_mode']
 autoserver      = data['autoserver']['enabled']
 autoserver_id   = data['autoserver']['server_id']
 det_same_sysmsg = data['detect_same_system_messages']
+keep_alive      = data['keep_alive']
+config_ver_yml  = data['config_ver']
+
 try: update_channel  = data['update_channel']
 except: update_channel = "stable"
 
@@ -75,6 +78,7 @@ verified_list   = []
 
 api             = "https://api.strawberryfoundations.xyz/v1/"
 ver             = "2.5.4"
+config_ver      = 3
 
 author          = "Juliandev02"
 use_sys_argv    = False
@@ -139,6 +143,14 @@ def badge_handler(badge):
         return " [" + badge + "]"
     else:
         return ""
+
+# Keep Alive handling
+def keep_alive(sock):
+    sock.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)
+    sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPIDLE, 60)
+    sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPINTVL, 10)
+    sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPCNT, 5)
+
 
 # Select server
 def server_selector():
@@ -442,6 +454,9 @@ def main():
     colorama.init()
     
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    
+    if keep_alive:
+        keep_alive(client_socket)
     
     try: 
         print(f"{Fore.YELLOW + BOLD}{Str[lang]['TryConnection']}{Fore.RESET + CRESET}")
