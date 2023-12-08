@@ -74,17 +74,18 @@ role_colors = ["red", "green", "cyan", "blue", "yellow", "magenta",
 default_help_section    = f"""{GREEN +  Colors.UNDERLINE + Colors.BOLD}Default commands{RESET + Colors.RESET}
         {BLUE + Colors.BOLD}/help: {RESET}Help Command
         {BLUE + Colors.BOLD}/about: {RESET}About {chat_name}
-        {BLUE + Colors.BOLD}/dm <user> <message>: {RESET}Send a private message to <user>
-        {BLUE + Colors.BOLD}/news: {RESET}Newsletter
         {BLUE + Colors.BOLD}/exit, /quit: {RESET}Leave chat
+        {BLUE + Colors.BOLD}/dm <user> <message>: {RESET}Send a private message to <user>
+        {BLUE + Colors.BOLD}/joindm <user>: {RESET}Open a separate DM session with <user>
+        {BLUE + Colors.BOLD}/news: {RESET}Newsletter
+        {BLUE + Colors.BOLD}/wakey (<user>): {RESET}Send terminal bell to everyone or (optionally) to an specific user
         {BLUE + Colors.BOLD}/clientinfo: {RESET}Get some information about you
-        {BLUE + Colors.BOLD}/shrug: {RESET}¯\_(ツ)_/¯
-        {BLUE + Colors.BOLD}/tableflip: {RESET}(╯°□°)╯︵ ┻━┻
-        {BLUE + Colors.BOLD}/unflip: {RESET}┬─┬ノ( º _ ºノ)
         {BLUE + Colors.BOLD}/server-info, /info: {RESET}Shows a description about this server \o/
+        
     """
     
 user_help_section       = f"""{CYAN + Colors.UNDERLINE + Colors.BOLD}Profile & User Commands{RESET + Colors.RESET}
+        {BLUE + Colors.BOLD}/settings: {RESET}User Settings
         {BLUE + Colors.BOLD}/online: {RESET}Shows online users
         {BLUE + Colors.BOLD}/members, /users: {RESET}Shows registered users
         {BLUE + Colors.BOLD}/memberlist, /userlist: {RESET}Displays a list of members with their badges and roles
@@ -100,6 +101,8 @@ user_help_section       = f"""{CYAN + Colors.UNDERLINE + Colors.BOLD}Profile & U
     """
     
 admin_help_section      = f"""{MAGENTA +  Colors.UNDERLINE + Colors.BOLD}Admin commands{RESET + Colors.RESET}
+        {BLUE + Colors.BOLD}/serversettings: {RESET}Server Settings
+        {BLUE + Colors.BOLD}/admin: {RESET}Admin Settings
         {BLUE + Colors.BOLD}/kick <user> (<reason>): {RESET}Kick the specificed user for the (optionally) provided reason
         {BLUE + Colors.BOLD}/ban <user>: {RESET}Bans the specificed user
         {BLUE + Colors.BOLD}/unban <user>: {RESET}Unbans the specificed user     
@@ -115,7 +118,7 @@ admin_help_section      = f"""{MAGENTA +  Colors.UNDERLINE + Colors.BOLD}Admin c
         {BLUE + Colors.BOLD}/bwords reload: {RESET}Reloads all blacklisted words
         {BLUE + Colors.BOLD}/bwords add <word>: {RESET}Adds a blacklisted word
         {BLUE + Colors.BOLD}/debug: {RESET}View debug informations
-        {BLUE + Colors.BOLD}/kickall: {RESET}Kick all users (Currently not working)
+        
     """
     
 stbchatplus_help_section    = f"""{RED +  Colors.UNDERLINE + Colors.BOLD}Strawberry Chat+ commands & features{RESET + Colors.RESET}
