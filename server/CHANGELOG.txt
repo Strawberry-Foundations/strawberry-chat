@@ -4,6 +4,7 @@
 - IMPORTANT: 
 
 - NEW: Added Config Command
+- NEW: Added custom_send to ClientSender
 
 - MODULARITY:
 
