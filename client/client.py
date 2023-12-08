@@ -77,7 +77,7 @@ langs           = ["de_DE", "en_US"]
 verified_list   = []
 
 api             = "https://api.strawberryfoundations.xyz/v1/"
-ver             = "2.5.4"
+ver             = "2.5.5"
 config_ver      = 3
 
 author          = "Juliandev02"
