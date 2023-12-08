@@ -32,4 +32,4 @@ database:
   database_table: chat_data
 
 
-config_ver: 2
+config_ver: 3
