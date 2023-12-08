@@ -24,6 +24,11 @@ body:
     id: error
     attributes:
       label: The Error Text/Stacktrace
+
+  - type: textarea
+    id: report
+    attributes:
+      label: Client Report (Run `python client.py --gen-report`
   
   - type: dropdown
     id: chat-type
