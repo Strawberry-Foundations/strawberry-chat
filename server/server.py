@@ -44,6 +44,9 @@ if "--debug-mode" in sys.argv: debug_mode = True
 if "--test-mode" in sys.argv: test_mode = True
 if "--regen-database" in sys.argv: input_regen_database()
 
+if config_ver != config_ver_yml:
+    print(f"{RED + Colors.BOLD}ERROR: {RESET}You are using an old configuration file (v{config_ver_yml}). Please update your configuration file according to the current entries")
+    exit()
 
 # Check if database file exists
 if os.path.exists(server_dir + "/users.db"):
