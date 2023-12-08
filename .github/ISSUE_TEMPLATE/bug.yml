@@ -28,7 +28,7 @@ body:
   - type: textarea
     id: report
     attributes:
-      label: Client Report (Run `python client.py --gen-report`
+      label: Client Report (Run "python client.py --gen-report")
   
   - type: dropdown
     id: chat-type
