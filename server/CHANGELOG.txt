@@ -3,7 +3,7 @@
 
 - IMPORTANT: 
 
-- NEW: 
+- NEW: Added Config Command
 
 - MODULARITY:
 
