@@ -67,7 +67,7 @@ online_mode     = data['online_mode']
 autoserver      = data['autoserver']['enabled']
 autoserver_id   = data['autoserver']['server_id']
 det_same_sysmsg = data['detect_same_system_messages']
-keep_alive      = data['keep_alive']
+conf_keep_alive = data['keep_alive']
 config_ver_yml  = data['config_ver']
 
 try: update_channel  = data['update_channel']
@@ -455,7 +455,7 @@ def main():
     
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     
-    if keep_alive:
+    if conf_keep_alive:
         keep_alive(client_socket)
     
     try: 
