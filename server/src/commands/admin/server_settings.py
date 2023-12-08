@@ -11,7 +11,8 @@ from init import server_dir, ipaddr, port, \
                  enable_messages, enable_queue, \
                  max_message_length, max_users, \
                  debug_mode, online_mode, update_channel, \
-                 afks, queue, users, addresses, user_logged_in, blacklist
+                 afks, queue, users, addresses, user_logged_in, blacklist, \
+                 admins_wait_queue, bots_wait_queue, max_registered_users
 
 
 @register_command("serversettings", arg_count=1, required_permissions=PermissionLevel.ADMIN)
@@ -32,9 +33,12 @@ def user_settings_command(socket: socket.socket, username: str, args: list, send
         {CYAN}Enable Queue:{RESET} {enable_queue}
         {CYAN}Max Message Length:{RESET} {max_message_length}
         {CYAN}Max Users:{RESET} {max_users}
+        {CYAN}Max Registered Users:{RESET} {max_registered_users}
         {CYAN}Debug Mode:{RESET} {debug_mode}
         {CYAN}Online Mode:{RESET} {online_mode}
         {CYAN}Update Channel:{RESET} {update_channel}
+        {CYAN}Admins wait Queue:{RESET} {admins_wait_queue}
+        {CYAN}Bots wait Queue:{RESET} {bots_wait_queue}
         """
                 send(message)
                 try:
