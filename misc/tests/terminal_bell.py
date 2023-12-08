@@ -1,1 +1,1 @@
-print("Terminal Bell erklingen lassen: \a")
+print("\a")
