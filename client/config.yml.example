@@ -2,6 +2,8 @@ language: en_US
 online_mode: true
 update_channel: "stable"
 detect_same_system_messages: true
+keep_alive: true
+config_ver: 3
 autoserver:
   enabled: false
   server_id: 0
