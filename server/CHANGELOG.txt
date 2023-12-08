@@ -6,6 +6,7 @@
 - NEW: Added Config Command
 - NEW: Added custom_send to ClientSender
 - NEW: Added user_dm_screen variable
+- NEW: Added /joindm command (#105)
 
 - MODULARITY:
 
