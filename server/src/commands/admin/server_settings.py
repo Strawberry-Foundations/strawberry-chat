@@ -25,9 +25,7 @@ def user_settings_command(socket: socket.socket, username: str, args: list, send
                 send(f"{server_settings_help}{RESET}")
             
             case "show":
-                message = f"""{GREEN +  Colors.UNDERLINE + Colors.BOLD}Your Server Settings{RESET + Colors.RESET}
-        {YELLOW}WARNING:{RESET} This could contain sensible information!
-        
+                _base_data = f"""
         {CYAN}IP-Address:{RESET} {ipaddr}
         {CYAN}Port:{RESET} {port}
         {CYAN}Enable Logging Messages:{RESET}{ enable_messages}
@@ -43,21 +41,19 @@ def user_settings_command(socket: socket.socket, username: str, args: list, send
         {CYAN}Special Messages:{RESET} {special_messages}
         {CYAN}Database Driver:{RESET} {DatabaseConfig.driver}
         """
-                send(message)
+        
+        
+                message = f"""{GREEN +  Colors.UNDERLINE + Colors.BOLD}Your Server Settings{RESET + Colors.RESET}
+        {YELLOW}WARNING:{RESET} This could contain sensible information!
+        
+        {_base_data}"""
+        
                 try:
                     if args[1] == "debug":
                         message = f"""{GREEN +  Colors.UNDERLINE + Colors.BOLD}Your Server Settings (Debug){RESET + Colors.RESET}
         {YELLOW}WARNING:{RESET} This could contain sensible information!
         
-        {CYAN}IP-Address:{RESET} {ipaddr}
-        {CYAN}Port:{RESET} {port}
-        {CYAN}Enable Logging Messages:{RESET} {enable_messages}
-        {CYAN}Enable Queue:{RESET} {enable_queue}
-        {CYAN}Max Message Length:{RESET} {max_message_length}
-        {CYAN}Max Users:{RESET} {max_users}
-        {CYAN}Debug Mode:{RESET} {debug_mode}
-        {CYAN}Online Mode:{RESET} {online_mode}
-        {CYAN}Update Channel:{RESET} {update_channel}
+        {_base_data}
         
         {YELLOW}Afks:{RESET} {afks}
         {YELLOW}Queue:{RESET} {queue.queue}
@@ -72,10 +68,10 @@ def user_settings_command(socket: socket.socket, username: str, args: list, send
         {YELLOW}MySQL Password:{RESET} {DatabaseConfig.password}
         {YELLOW}MySQL Database:{RESET} {DatabaseConfig.db_name}
             """
-            
-                        send(message)
                         
                 except: pass
+                
+                send(message)
             
             case _:
                 send(f"{Colors.RESET + RED}Invalid subcommand!{RESET + Colors.RESET}")
