@@ -14,6 +14,7 @@ import requests
 import urllib3
 import json
 import re
+import platform
 
 if sys.platform == "linux": import readline
 else: pass
@@ -264,6 +265,16 @@ if len(sys.argv) >= 2:
         try: enableAutologin = data["server"][(int(server_selection) - 1)]["autologin"]     
         except KeyError: enableAutologin = False
  
+    elif sys.argv[1] == "--gen-report":
+        print(f"{Fore.YELLOW + BOLD}CLIENT REPORT{Fore.RESET + CRESET}")
+        print(f"Client Version: {ver}")
+        print(f"Update Channel: {update_channel}")
+        print(f"Language: {lang}")
+        print(f"Online Mode: {online_mode}")
+        print(f"System: {platform.platform()}")
+        print(f"Python: {sys.version}")
+        sys.exit(0)
+
     else:
         print(f"{Fore.RED + BOLD}{Str[lang]['InvalidArgument']}{Fore.RESET + CRESET}")
         sys.exit(1)
