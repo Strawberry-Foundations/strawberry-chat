@@ -144,6 +144,8 @@ class ClientSender:
         self.socket = socket
         
     def send_json(self, data): return json.dumps(data)
+    
+    def custom_send(self, json_data): self.socket.send(self.send_json(json_data).encode('utf8'))
         
     def send(self, message):
         json_builder = {
