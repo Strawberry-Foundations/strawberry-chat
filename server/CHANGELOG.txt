@@ -7,6 +7,7 @@
 - NEW: Added custom_send to ClientSender
 - NEW: Added user_dm_screen variable
 - NEW: Added /joindm command (#105)
+- NEW: Added config file error when using an outdated config file (#106)
 
 - MODULARITY:
 
