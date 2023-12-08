@@ -121,7 +121,9 @@ def dm_command(socket: _socket.socket, username: str, args: list, send):
                     
                     if msg == "/exit":
                         send(f"{YELLOW + Colors.BOLD}You left {_to_sent}'s DM page!{Colors.RESET}")
+                        del user_dm_screen[username]
                         break
+                        
                         
                     
                     send(f"{Colors.GRAY}[{Colors.RESET}{userRoleColor(_to_sent)}{_to_sent}'s DM{RESET + Colors.RESET + Colors.GRAY}]{Colors.RESET} {userRoleColor(username)}You{RESET}{Colors.GRAY}:{Colors.RESET} {msg}")
