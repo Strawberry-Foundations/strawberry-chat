@@ -343,7 +343,7 @@ users           = {}
 addresses       = {}
 user_logged_in  = {}
 blacklist       = set()
-
+user_dm_screen  = {}
 
 
 if os.environ.get("LOG_LEVEL") is not None:
