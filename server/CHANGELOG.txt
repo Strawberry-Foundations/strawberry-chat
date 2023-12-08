@@ -8,6 +8,7 @@
 - NEW: Added user_dm_screen variable
 - NEW: Added /joindm command (#105)
 - NEW: Added config file error when using an outdated config file (#106)
+- NEW: Added wakey command (pings currently everyone) (#108)
 
 - MODULARITY:
 
