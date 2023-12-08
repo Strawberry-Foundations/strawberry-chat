@@ -42,6 +42,29 @@ table_query = """
 	"msg_count"	INTEGER,
 	"creation_date"	INTEGER)"""
  
+mysql_table_query = """
+    CREATE TABLE users (
+        user_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+        username TEXT NOT NULL,
+        password TEXT NOT NULL,
+        nickname TEXT DEFAULT "",
+        description TEXT DEFAULT "",
+        badge TEXT DEFAULT "",
+        badges TEXT DEFAULT "",
+        avatar_url TEXT NOT NULL DEFAULT "",
+        role TEXT NOT NULL,
+        role_color TEXT NOT NULL,
+        enable_blacklisted_words TEXT NOT NULL,
+        account_enabled TEXT NOT NULL,
+        enable_dms TEXT NOT NULL,
+        muted TEXT NOT NULL,
+        strawberry_id TEXT DEFAULT "",
+        discord_name TEXT DEFAULT "",
+        msg_count INT NOT NULL,
+        creation_date INT NOT NULL
+    );
+"""
+ 
 role_colors = ["red", "green", "cyan", "blue", "yellow", "magenta",
                "lightred", "lightgreen", "lightcyan", "lightblue", "lightyellow", "lightmagenta",
                "boldred", "boldgreen", "boldcyan", "boldblue", "boldyellow", "boldmagenta"]
