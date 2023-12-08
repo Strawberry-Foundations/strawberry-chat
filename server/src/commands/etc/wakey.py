@@ -9,8 +9,6 @@ from init import users, afks, StbCom
 
 @register_command("wakey", 0)
 def test_command(socket: socket.socket, username: str, args: list, send):
-    send(f"{Colors.ITALIC + YELLOW}Wakey, wakey ...{Colors.RESET}\a")
-    
     if len(args) == 1:
         uname   = args[0]
     
@@ -24,7 +22,7 @@ def test_command(socket: socket.socket, username: str, args: list, send):
                 
         
         if found_keys:
-            send(f"{Colors.BOLD + GREEN}Send Wakey, wakey to {uname}{Colors.RESET}")
+            send(f"{Colors.BOLD + GREEN}Send Wakey wakey to {uname}{Colors.RESET}")
             
             json_builder = {
                 "message_type": StbCom.SYS_MSG,
@@ -38,3 +36,6 @@ def test_command(socket: socket.socket, username: str, args: list, send):
             
         else:
             send(f"{RED + Colors.BOLD}User is offline.{RESET + Colors.RESET}")
+            
+    else:
+        send(f"{Colors.ITALIC + YELLOW}Wakey, wakey ...{Colors.RESET}\a")
