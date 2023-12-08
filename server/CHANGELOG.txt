@@ -13,4 +13,4 @@
 
 - OPTIMIZATION: 
 
-- UPDATE: 
+- UPDATE: General improvements to server settings command
