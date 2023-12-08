@@ -27,6 +27,8 @@ elif config['database']['driver'] == "mysql":
 else:
     pass
 
+import pymysql
+
 """
 -- LogMessages --
 All types of log messages
@@ -71,8 +73,8 @@ class Database:
                                 password=DatabaseConfig.password,
                                 database=DatabaseConfig.db_name)
                 
-            except (pymysql.err.OperationalError, ConnectionRefusedError):
-                print(f"{RED + Colors.BOLD}>>>{RESET} Could not connect to MySQL server{Colors.RESET}")
+            except (pymysql.err.OperationalError, ConnectionRefusedError) as e:
+                print(f"{RED + Colors.BOLD}>>>{RESET} Could not connect to MySQL server:{Colors.RESET} {e}")
                 exit(1)
 
 
@@ -93,6 +95,9 @@ class Database:
             self.connection.close()
 
     def execute_query(self, query, parameters=None):
+        if self.driver == "mysql":
+            query = query.replace("?", "%s")
+        
         if not self.cursor:
             raise RuntimeError("Not connected to the database. Call connect method first.")
 
@@ -107,9 +112,13 @@ class Database:
             self.cursor.execute(query)
 
         return self.cursor
+    
+    def _execute_query(self, query):
+        self.cursor.execute(query)
+        return self.cursor
 
 
-    def fetch_all(self, query, parameters=None):
+    def fetch_all(self, query, parameters=None):            
         cursor = self.execute_query(query, parameters)
         return cursor.fetchall()
 
