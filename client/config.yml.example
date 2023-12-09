@@ -1,10 +1,13 @@
 language: en_US
-online_mode: true
 update_channel: "stable"
 detect_same_system_messages: true
-keep_alive: true
-config_ver: 3
+config_ver: 4
 enable_notifications: true
+
+networking:
+  online_mode: true
+  keep_alive: true
+  latency_mode: true
 
 autoserver:
   enabled: false
