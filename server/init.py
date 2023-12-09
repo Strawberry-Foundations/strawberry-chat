@@ -166,7 +166,10 @@ class ClientSender:
         if del_user: del users[self.socket]
         if call_exit: exit()
 
-
+"""
+-- User --
+User property handling & login
+"""
 class User:
     def __init__(self, socket):
         self.socket = socket
@@ -174,12 +177,9 @@ class User:
         self.username = ""
         self.address  = addresses[socket][0]
         
-        
     def login(self, func):
         self.username = func
         return self.username
-
-
 
 
 """
