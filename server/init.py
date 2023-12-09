@@ -312,6 +312,11 @@ def debug_logger(error_message, error_code, type: StbTypes = StbTypes.ERROR):
     else:
         None
 
+
+"""
+    --- Initial Strawberry Chat Startup ---
+"""
+
 # Startup title
 print(f"{CYAN + Colors.BOLD}* -- {chat_name} v{short_ver} {codename} ({server_edition}) -- *{RESET + Colors.RESET}")
 
@@ -319,18 +324,26 @@ print(f"{CYAN + Colors.BOLD}* -- {chat_name} v{short_ver} {codename} ({server_ed
 # Configuration
 ipaddr                  = config['server']['address']
 port                    = config['server']['port']
+update_channel          = config['server']['update_channel']
 
 enable_messages         = config['flags']['enable_messages']
-enable_queue            = config['flags']['enable_queue']
 max_message_length      = config['flags']['max_message_length']
-max_users               = config['flags']['max_users']
-max_registered_users    = config['flags']['max_registered_users']
-debug_mode              = config['flags']['debug_mode']
-online_mode             = config['flags']['online_mode']
-update_channel          = config['server']['update_channel']
+
+enable_queue            = config['flags']['enable_queue']
 admins_wait_queue       = config['flags']['admins_wait_queue']
 bots_wait_queue         = config['flags']['bots_wait_queue']
+
+max_users               = config['flags']['max_users']
+max_registered_users    = config['flags']['max_registered_users']
+
+debug_mode              = config['flags']['debug_mode']
+online_mode             = config['flags']['online_mode']
+
 special_messages        = config['flags']['special_messages']
+
+require_signing         = config['security']['require_signing']
+signing_key             = config['security']['signing_key']
+banned_ips              = config['security']['banned_ips']
 
 config_ver_yml          = config['config_ver']
 
