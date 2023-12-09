@@ -408,7 +408,16 @@ log_fh          = logging.FileHandler(server_dir + '/log.txt')
 log_fmt         = logging.Formatter(f"(%(asctime)s) [%(levelname)s]  %(message)s")
 log_ch          = logging.StreamHandler()
 
-# Universal User Index (UUI)
+"""
+--- Universal User Index (UUI) ---
+
+Example:
+"Julian": {
+    "status": "status.online",
+    "dm_screen": false
+}
+"""
+
 user_index      = {}
 
 queue           = Queue()
