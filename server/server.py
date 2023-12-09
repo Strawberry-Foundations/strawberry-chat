@@ -672,7 +672,7 @@ def broadcast(message, sent_by="", format: StbCom = StbCom.PLAIN):
                                 _user = User(to_sent)
                                 _user.set_username(u)
                                 
-                                user_status = _user.status()
+                                user_status = _user.get_status()
                                 
                                 if not user_status == User.Status.dnd:
                                     notification_builder = {
