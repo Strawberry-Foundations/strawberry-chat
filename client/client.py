@@ -381,14 +381,14 @@ def send(sock):
         else:
             print(f"{Fore.GREEN + BOLD}{Str[lang]['AutologinNotActive']}{Fore.RESET + CRESET}\n")
     
-    while threadFlag:
+    while thread_flag:
         try:
             message = input("")
             delete_last_line()
             sock.send(message.encode("utf8"))
 
         except:
-            if threadFlag == False:
+            if thread_flag == False:
                 pass
             else:
                 print(f"{Fore.RED + BOLD}{Str[lang]['ErrCouldNotSendMessage']}{Fore.RESET + CRESET}")
@@ -407,7 +407,7 @@ def receive(sock):
     experimental_debug_mode = True
     
     if compatibility_mode: 
-            while threadFlag:
+            while thread_flag:
                 try:
                     message = sock.recv(2048).decode()
                     
@@ -422,7 +422,7 @@ def receive(sock):
                     break
                 
     elif compatibility_mode == False: 
-        while threadFlag:
+        while thread_flag:
             # Comment this for debugging purposes
             try:
                 message = sock.recv(2048).decode('utf-8')
@@ -528,7 +528,7 @@ def receive(sock):
                 
 
 def main():
-    global threadFlag
+    global thread_flag
     colorama.init()
     
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -569,16 +569,16 @@ def main():
         
     except KeyboardInterrupt:
         print(f"\n{Str[lang]['Aborted']}")
-        threadFlag = False
+        thread_flag = False
         sys.exit(1)
         
-    threadFlag = False
+    thread_flag = False
 
     client_socket.close()
     print(f"\n{Fore.YELLOW}{Str[lang]['CloseApplication']}{Fore.RESET}")
     
 
-threadFlag = True
+thread_flag = True
 
 if __name__ == "__main__":
     main()
