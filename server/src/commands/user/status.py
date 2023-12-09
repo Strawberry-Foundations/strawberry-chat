@@ -51,12 +51,11 @@ def afk_command(socket: socket.socket, user: User, args: list, sender: ClientSen
         
 @register_command("unafk")
 def unafk_command(socket: socket.socket, user: User, args: list, sender: ClientSender):
-    if user.username not in afks:
+    if not user.status == User.Status.afk:
         sender.send(f"{YELLOW + Colors.BOLD}You are not AFK!{RESET + Colors.RESET}")
-
     else:
-        broadcast_all(f"{user.username} is no longer AFK 🌻!")
-        afks.remove(user.username)
+        sender.send(f"{BGREEN}Afk status removed{CRESET}")
+        user.set_user_status(User.Status.online)
         
 @register_command("afks")
 @register_command("afklist")
