@@ -178,17 +178,19 @@ class User:
         offline = "status.offline"
         
     def __init__(self, socket):
-        self.socket = socket
+        self.socket         = socket
         
-        self.username = ""
-        self.address  = addresses[socket][0]
+        self.username       = ""
+        self.address        = addresses[socket][0]
+        self.user_status    = ""
         
     def login(self, func):
         self.username = func
         return self.username
     
-    def set_username(self, username):
-        self.username = username
+    def set_username(self, username): self.username = username
+        
+    def set_user_status(self, status: Status): self.user_status = status
     
     def status(self):
         if self.username in users.values():
