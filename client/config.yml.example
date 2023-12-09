@@ -3,6 +3,7 @@ update_channel: "stable"
 detect_same_system_messages: true
 message_format: default
 enable_notifications: true
+enable_terminal_bell: true
 experimental_debug_mode: false
 extreme_debug_mode: false
 config_ver: 4
