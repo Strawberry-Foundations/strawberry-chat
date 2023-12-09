@@ -31,8 +31,7 @@
 
 - SCAPI: 
 
-- OPTIMIZATION: Moved unafk command to afk src file
-- OPTIMIZATION: Moved afklist command to afk src file
+- OPTIMIZATION: Moved afk, unafk, dnd, undnd commands to status src file
 
 - UPDATE: General improvements to server settings command
 - UPDATE: Revision of the help command
