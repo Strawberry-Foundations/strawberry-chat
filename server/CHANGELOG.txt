@@ -13,6 +13,7 @@
 - NEW: Added IP-Banning (#111)
 - NEW: Added additional alias for server_info command (serverinfo)
 - NEW: Added Windows/Mac/Linux System Notification when getting pinged (configurable) (#114)
+- NEW: Added latency mode for client (configurable)
 
 - MODULARITY:
 
