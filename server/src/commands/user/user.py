@@ -8,11 +8,11 @@ from src.colors import *
 from src.db import Database
 from src.functions import doesUserExist, userRoleColor, isOnline
 
-from init import server_dir
+from init import User, ClientSender, server_dir
 
 @register_command("user")
 @register_command("member")
-def members_command(socket: socket.socket, username: str, args: list, send):
+def members_command(socket: socket.socket, user: User, args: list, sender: ClientSender):
     cmd_db = sql.connect(server_dir + "/users.db", check_same_thread=False)
     cmd_c  = cmd_db.cursor()
     
@@ -23,20 +23,20 @@ def members_command(socket: socket.socket, username: str, args: list, send):
         uname = "me"
     
     if uname.startswith("me"):
-        uname = username
+        uname = user.username
     
     if uname == "":
-        uname = username
+        uname = user.username
         
     if not doesUserExist(uname):
-        send(f"{RED + Colors.BOLD}Sorry, this user does not exist!{RESET + Colors.RESET}")
+        sender.send(f"{RED + Colors.BOLD}Sorry, this user does not exist!{RESET + Colors.RESET}")
         return
     
     try:
         cmd_c.execute("SELECT username, nickname, badge, role, role_color, description, badges, discord_name, user_id, strawberry_id, creation_date FROM users WHERE LOWER(username) = ?", (uname.lower(),))
         
     except:
-        send(f"{RED + Colors.BOLD}Sorry, this user does not exist!{RESET + Colors.RESET}")
+        sender.send(f"{RED + Colors.BOLD}Sorry, this user does not exist!{RESET + Colors.RESET}")
         return
     
     for row in cmd_c:
@@ -129,7 +129,7 @@ def members_command(socket: socket.socket, username: str, args: list, send):
                 all_badges = all_badges + "\n        " + stbchat_plus_user
             
             
-        send(
+        sender.send(
             f"""{CYAN + Colors.BOLD + Colors.UNDERLINE}User profile of {row[0]}{RESET + Colors.RESET} {isOnline(row[0])}
         {GREEN + Colors.BOLD}Username:{RESET + userRoleColor(row[0])} @{row[0].lower()}{RESET + Colors.RESET}
         {GREEN + Colors.BOLD}User-ID:{RESET + LIGHTBLUE_EX} {row[8]}{RESET + Colors.RESET}
