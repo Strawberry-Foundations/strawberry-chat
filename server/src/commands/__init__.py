@@ -2,6 +2,7 @@ import socket
 from enum import Enum
 
 from src.colors import *
+from init import User, ClientSender
 
 class PermissionLevel(Enum):
     MEMBER  = 0
@@ -21,7 +22,7 @@ def register_command(name, arg_count=0, required_permissions=PermissionLevel.MEM
     return decorator
 
 
-def execute_command(command_str, socket: socket.socket, user: str, user_perms: PermissionLevel, args: list, client_sender = None):
+def execute_command(command_str: str, socket: socket.socket, user_object: User, user_perms: PermissionLevel, args: list, client_sender: ClientSender):
     command_name = command_str
     if command_name in command_registry:
         cmd = command_registry[command_name]
@@ -39,7 +40,7 @@ def execute_command(command_str, socket: socket.socket, user: str, user_perms: P
             client_sender(f"{RED}Not enough arguments! The command requires {cmd[1]} {argumentsString} but {args.__len__()} were given.{RESET}")
             return
         
-        cmd[0](socket, user, args, client_sender)
+        cmd[0](socket, user_object, args, client_sender)
         
     else:
         client_sender(f"{RED}Command '{command_name}' not found.{RESET}")
