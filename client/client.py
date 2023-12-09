@@ -408,12 +408,14 @@ def receive(sock):
                             
                             print(fmt)
                             
+                        # todo: add user profile picture caching
                         elif message_type == "stbchat_notification":
                             notify_content     = message["content"]
+                            notify_username    = message["username"]
+                            notify_useravatar  = message["avatar_url"]
                             
-                            notification.title = "Strawberry Chat"
+                            notification.title = notify_username
                             notification.message = notify_content
-                            # notification.audio = "D:\Musik\Mein Mix\Diamonds.wav"
                             notification.icon = "D:\Strawberry Foundations\Assets\png\sf_logo_downscaled.png"
                             
                             notification.send()
