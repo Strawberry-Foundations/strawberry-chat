@@ -159,10 +159,9 @@ def client_thread(client):
         if online_users_len == 1: _online_users = f"is {online_users_len} user"
         else: _online_users = f"are {online_users_len} users"
             
-        time.sleep(0.05)
+        time.sleep(0.095)
         sender.send(f"""{CYAN + Colors.BOLD}Currently there {_online_users} online. For help use /help{RESET + Colors.RESET}\n{news_text}""")
-        
-        
+      
 
     except Exception as e:
         log.error(LogMessages.communication_error % (address, user.username))
@@ -482,18 +481,19 @@ def clientLogin(client):
     
     while not logged_in:
         # Ask for the username
-        time.sleep(0.05)
+        time.sleep(0.1)
         sender.send(f"{GREEN + Colors.BOLD}Username: {RESET + Colors.RESET}")
         
         # Receive the ansi-escaped username and strip all new lines in case
         username = escape_ansi(client.recv(2048).decode("utf8")).strip().rstrip()
+        print(username)
         
         # Check if username is "register", "exit" or "sid" 
         if username.lower() == "register": clientRegister(client, login_cur, sender)
         elif username.lower() == "exit": sender.close(del_address=True, log_exit=True)
         elif username.lower() == "sid": strawberryIdLogin(client)
             
-        time.sleep(0.05)
+        time.sleep(0.1)
         
         # Ask for the password
         sender.send(f"{GREEN + Colors.BOLD}Password: {RESET + Colors.RESET}")
