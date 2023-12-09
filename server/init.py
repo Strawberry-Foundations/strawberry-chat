@@ -178,6 +178,7 @@ class User:
         dnd     = "status.dnd"
         online  = "status.online"
         offline = "status.offline"
+        none    = "status.none"
         
     def __init__(self, socket="type.none"):
         if socket == "type.none":
@@ -189,7 +190,7 @@ class User:
             
             self.username       = ""
             self.address        = addresses[socket][0]
-            self.user_status    = ""
+            self.user_status    = User.Status.none
         
     def login(self, func):
         self.username = func
@@ -201,7 +202,7 @@ class User:
     
     def status(self):
         if self.username in users.values():
-            if self.username in afks or self.user_status == "status.afk":
+            if self.user_status == "status.afk":
                 return User.Status.afk
             elif self.username in do_not_disturb:
                 return User.Status.dnd
