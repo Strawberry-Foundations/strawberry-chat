@@ -130,9 +130,9 @@ def client_thread(client):
     
     
     try:
-        user.login(clientLogin(client))
+        _username = user.login(clientLogin(client))
         
-        user_logged_in[user.address] = True
+        user_logged_in[user.username] = True
         
         if user.address == "CltExit":
             sender.close(log_exit=True, del_address=True, call_exit=True)
