@@ -33,7 +33,7 @@ def kick_command(socket: socket.socket, user: User, args: list, sender: ClientSe
     
     else:
         if found_keys:
-            # try:
+            try:
                 log.info(f"{uname} ({addresses[socket][0]}) has been kicked out of the chat by {user.username} for following reason: {reason}")
                 
                 del addresses[to_kick]
@@ -45,18 +45,16 @@ def kick_command(socket: socket.socket, user: User, args: list, sender: ClientSe
                 _to_kick = ClientSender(to_kick)
                 _to_kick.send(f"{YELLOW + Colors.BOLD}You have been kicked out of the chat for the following reason: {reason}{RESET + Colors.RESET}")
                 
-                
                 broadcast_all(f"{Colors.GRAY + Colors.BOLD}<--{Colors.RESET} {userRoleColor(uname)}{uname}{YELLOW + Colors.BOLD} has left the chat room!{RESET + Colors.RESET}")
-                
                 
                 try: to_kick.close()
                 except Exception as e:
                     print(f"Could not kick {uname} ({to_kick}) (Closing connection): {e}")
                     pass
                 
-            # except Exception as e: 
-            #     print(f"Could not kick {uname} ({to_kick}): {e}")
-            #     pass
+            except Exception as e: 
+                print(f"Could not kick {uname} ({to_kick}): {e}")
+                pass
             
         else:
             sender.send(f"{RED + Colors.BOLD}User not found or user is offline.{RESET + Colors.RESET}")
