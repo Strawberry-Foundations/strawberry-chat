@@ -6,11 +6,11 @@ import yaml
 from src.vars import chat_name, short_ver, base_ver
 from src.colors import *
 from yaml import SafeLoader
-from init import server_dir
+from init import User, ClientSender, server_dir
 
 
 @register_command("news")
-def about_command(socket: socket.socket, username: str, args: list, send):
+def about_command(socket: socket.socket, user: User, args: list, sender: ClientSender):
     # Open Configuration
     with open(server_dir + "/news.yml") as config_data:
             news_data = yaml.load(config_data, Loader=SafeLoader)
@@ -23,16 +23,16 @@ def about_command(socket: socket.socket, username: str, args: list, send):
     
     if cmd == "list":
         version_list = ", ".join(news_data['versions'])
-        send(f"{CYAN + Colors.BOLD}{chat_name} Versions:{RESET + Colors.RESET} {GREEN}{version_list}{RESET}")
+        sender.send(f"{CYAN + Colors.BOLD}{chat_name} Versions:{RESET + Colors.RESET} {GREEN}{version_list}{RESET}")
         
     elif cmd == "show":
         try:
             i_ver = args[1] 
-            send(f"{GREEN + Colors.BOLD + Colors.UNDERLINE}{chat_name} News - v{i_ver}{RESET + Colors.RESET + CYAN + Colors.BOLD}\n{news_data['news'][i_ver]['text']}{RESET + Colors.RESET}")
+            sender.send(f"{GREEN + Colors.BOLD + Colors.UNDERLINE}{chat_name} News - v{i_ver}{RESET + Colors.RESET + CYAN + Colors.BOLD}\n{news_data['news'][i_ver]['text']}{RESET + Colors.RESET}")
             
         except:
-            send(f"{RED + Colors.BOLD}This version of {chat_name} does not exist.{RESET + Colors.RESET}")
+            sender.send(f"{RED + Colors.BOLD}This version of {chat_name} does not exist.{RESET + Colors.RESET}")
             
     
     else:
-        send(f"{news}")
+        sender.send(f"{news}")
