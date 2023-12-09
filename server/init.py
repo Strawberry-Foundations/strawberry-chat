@@ -412,7 +412,7 @@ afks            = list([])
 do_not_disturb  = list([])
 
 # just an prototype
-user_index = {}
+user_index      = {}
 
 queue           = Queue()
 users           = {}
