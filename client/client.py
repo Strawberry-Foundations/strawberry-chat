@@ -56,56 +56,55 @@ GRAY            = "\033[90m"
 # Path of client.py
 client_dir = os.path.dirname(os.path.realpath(__file__))
 
-# Check if config exists
+# Check if config exists & then open config if exists
 if os.path.exists(client_dir + "/config.yml"):
-    # Open Configuration
     try:
         with open(client_dir + "/config.yml") as config:
-                data = yaml.load(config, Loader=SafeLoader)
+            data = yaml.load(config, Loader=SafeLoader)
+            
     except: 
-        print(f"{RED}Error: Your configuration is invalid. Please check your config file. {RESET}")
+        print(f"{RED}Error: Your configuration is invalid. Please check your config file.{RESET}")
         sys.exit(1)
+        
 else:
-    print(f"{RED}Error: Your configuration is not available. Please check if there is a config.yml in the client.py folder. {RESET}")
+    print(f"{RED}Error: Your configuration is not available. Please check if there is a config.yml in the client.py folder.{RESET}")
     sys.exit(1)
 
 
 # Variables
 lang                    = data['language']
+update_channel          = data['update_channel']
+detect_same_sysmsg      = data['detect_same_system_messages']
+message_format          = data['message_format']
+enable_notifications    = data['enable_notifications']
 
 autoserver              = data['autoserver']['enabled']
 autoserver_id           = data['autoserver']['server_id']
-det_same_sysmsg         = data['detect_same_system_messages']
-message_format          = "gray_time"
-
-enable_notifications    = data['enable_notifications']
 
 online_mode             = data['networking']['online_mode']
 conf_keep_alive         = data['networking']['keep_alive']
 latency_mode            = data['networking']['latency_mode']
 latency_mode_time       = data['networking']['latency_mode_time']
 
-update_channel          = data['update_channel']
-
-langs                   = ["de_DE", "en_US"]
-verified_list           = []
-
-api                     = "https://api.strawberryfoundations.xyz/v1/"
 ver                     = "2.6.0"
+author                  = "Juliandev02"
 
 config_ver              = 4
 config_ver_yml          = data['config_ver']
 
-author                  = "Juliandev02"
+langs                   = ["de_DE", "en_US"]
+verified_list           = []
+notification            = Notify(default_notification_application_name="Strawberry Chat")
+
+api                     = "https://api.strawberryfoundations.xyz/v1/"
+
 use_sys_argv            = False
 experimental_debug_mode = False
-
-notification            = Notify(default_notification_application_name="Strawberry Chat")
 
 
 # Open language strings
 with open(client_dir + "/lang.yml", encoding="utf-8") as langStrings:
-        Str = yaml.load(langStrings, Loader=SafeLoader)
+    Str = yaml.load(langStrings, Loader=SafeLoader)
 
 
 # Client-important functions
@@ -494,7 +493,7 @@ def receive(sock):
                                 print(f"{CRESET}[{current_time()}] {message}{CRESET}")
                                 
                                 
-                                if det_same_sysmsg:
+                                if detect_same_sysmsg:
                                     _message = str(message)
                                     _message = _message[:28]
                                     
