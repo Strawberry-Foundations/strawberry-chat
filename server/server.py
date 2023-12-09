@@ -126,7 +126,7 @@ def client_thread(client):
     address = addresses[client][0]
     
     # Prototype of ip-banning
-    if user.address == "xxx.xxx.xxx.xxx":
+    if user.address in banned_ips:
         sender.send(f"{RED + Colors.BOLD}Sorry, you're not allowed to connect to this server.{Colors.RESET}")
         sender.close(log_exit=True, del_address=True, call_exit=True)
     
