@@ -77,6 +77,7 @@ update_channel          = data['update_channel']
 detect_same_sysmsg      = data['detect_same_system_messages']
 message_format          = data['message_format']
 enable_notifications    = data['enable_notifications']
+experimental_debug_mode = data['experimental_debug_mode']
 
 autoserver              = data['autoserver']['enabled']
 autoserver_id           = data['autoserver']['server_id']
@@ -395,17 +396,17 @@ def send(sock):
                 print(f"{Fore.RED + BOLD}{Str[lang]['ErrCouldNotSendMessage']}{Fore.RESET + CRESET}")
                 break
 
-
+# Receiving thread
 def receive(sock):
-    try: compatibility_mode = data['server'][(int(server_selection) - 1)]['compatibility_mode']
+    try:    compatibility_mode = data['server'][(int(server_selection) - 1)]['compatibility_mode']
     except: compatibility_mode = False
     
-    if "--compatibility-mode" in sys.argv: compatibility_mode = True
+    if "--compatibility-mode" in sys.argv:
+        compatibility_mode = True
     
     interrupt_counter = 0
     retry_limit = 4
     _prev_message = None
-    experimental_debug_mode = True
     
     if compatibility_mode: 
             while thread_flag:
