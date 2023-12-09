@@ -107,6 +107,14 @@ with open(client_dir + "/lang.yml", encoding="utf-8") as lang_strings:
     Str = yaml.load(lang_strings, Loader=SafeLoader)
 
 
+# Check if language is available
+if lang not in langs:
+    print(f"{Fore.RED + BOLD}Error loading language: Selected language is not available.{Fore.RESET}")
+    print(f"{Fore.YELLOW + BOLD}Falling back to en_US\n{Fore.RESET}")
+    
+    time.sleep(1)
+    lang = "en_US"
+
 # Client-important functions
 
 # Check verification of a server
@@ -290,16 +298,6 @@ try:
     
 except Exception as e:
     print(f"{RED}{e}{RESET}")
-
-# Check if language is available
-if lang not in langs:
-    print(f"{Fore.RED + BOLD}Error loading language: Selected language is not available.{Fore.RESET}")
-    print(f"{Fore.YELLOW + BOLD}Falling back to en_US\n{Fore.RESET}")
-    
-    time.sleep(1)
-    lang = "en_US"
-    
-    
 
 # If --server is in the arguments, skip server selection input
 if len(sys.argv) >= 2:
