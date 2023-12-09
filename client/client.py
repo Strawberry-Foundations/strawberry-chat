@@ -106,7 +106,6 @@ experimental_debug_mode = False
 with open(client_dir + "/lang.yml", encoding="utf-8") as lang_strings:
     Str = yaml.load(lang_strings, Loader=SafeLoader)
 
-
 # Check if language is available
 if lang not in langs:
     print(f"{Fore.RED + BOLD}Error loading language: Selected language is not available.{Fore.RESET}")
@@ -115,8 +114,11 @@ if lang not in langs:
     time.sleep(1)
     lang = "en_US"
 
-# Client-important functions
 
+"""
+--- Client-important functions ---
+These functions are neccessary to run the client
+"""
 # Check verification of a server
 def is_verified(address: str):
     try:
