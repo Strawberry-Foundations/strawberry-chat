@@ -14,6 +14,7 @@
 - NEW: Added additional alias for server_info command (serverinfo)
 - NEW: Added Windows/Mac/Linux System Notification when getting pinged (configurable) (#114)
 - NEW: Added latency mode for client (configurable)
+- NEW: Added Send terminal bell to user when user gets mentioned (#109) (Client-side)
 
 - MODULARITY:
 
