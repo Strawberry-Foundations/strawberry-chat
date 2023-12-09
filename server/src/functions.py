@@ -229,18 +229,6 @@ def check_user_status(type="object", user = None):
         case User.Status.dnd: return "🔴"
         case User.Status.offline: return f"{Colors.GRAY}〇{RESET}"
 
-def check_user_status_other(username):
-    user = User()
-    user.set_username(username)
-        
-    user_status = user.status()
-    
-    match user_status:
-        case User.Status.online: return "🟢"
-        case User.Status.afk: return "🌙"
-        case User.Status.dnd: return "🔴"
-        case User.Status.offline: return f"{Colors.GRAY}〇{RESET}"
-
 # Check if a user exists
 def doesUserExist(uname):
     db = sql.connect(server_dir + "/users.db", check_same_thread=False)
