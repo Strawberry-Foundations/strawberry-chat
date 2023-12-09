@@ -19,6 +19,8 @@
 - FIX: Fixed "user class specific properties" for slash commands (#113)
 - FIX: Fixed self-mentioning
 - FIX: Fixed notification when mentioning other users
+- FIX: Fixed an keyerror when assigning user_logged_in
+- FIX: Fixed strange bug that will display wrong username
 
 - SCAPI: 
 
