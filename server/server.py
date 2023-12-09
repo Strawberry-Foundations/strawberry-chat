@@ -527,6 +527,15 @@ def clientLogin(client):
                 
                 _username = result[0]
                 
+                backend_builder = {
+                        "message_type": "stbchat_backend",
+                        "user_meta": {
+                            "username": _username
+                        }
+                    }
+                
+                client.send(send_json(backend_builder).encode("utf-8"))
+                
                 if enable_queue and not max_users == -1:
                     if len(users) >= max_users:
                         
