@@ -221,7 +221,7 @@ def check_user_status(type="object", user = None):
         _user = User(socket="type.none")
         _user.set_username(user)
             
-        user_status = _user.status()
+        user_status = _user.get_status()
     
     match user_status:
         case User.Status.online: return "🟢"
