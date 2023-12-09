@@ -103,6 +103,10 @@ api                     = "https://api.strawberryfoundations.xyz/v1/"
 
 sys_argv            = False
 
+# Client meta data
+class ClientMeta:
+    username = ""
+
 
 # Open language strings
 with open(client_dir + "/lang.yml", encoding="utf-8") as lang_strings:
