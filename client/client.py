@@ -457,6 +457,9 @@ def receive(sock):
                             else:
                                 pass
                             
+                        elif message_type == "stbchat_backend":
+                            _meta_username = message["user_meta"]["username"]
+                            
                         else:
                             message     = message["message"]["content"]
                             print(f"{CRESET}[{current_time()}] {message}{CRESET}")
