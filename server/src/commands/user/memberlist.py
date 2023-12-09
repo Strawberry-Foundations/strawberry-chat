@@ -6,7 +6,7 @@ import requests
 from src.colors import *
 from src.db import Database
 
-from init import server_dir, users, config, online_mode, global_ip, max_users
+from init import User, ClientSender, server_dir, users, config, online_mode, global_ip, max_users
 from src.vars import api
 from src.functions import memberListNickname, memberListBadge, isOnline
 
@@ -16,7 +16,7 @@ from yaml import SafeLoader
 
 @register_command("memberlist")
 @register_command("userlist")
-def memberlist_command(socket: socket.socket, username: str, args: list, send):
+def memberlist_command(socket: socket.socket, user: User, args: list, sender: ClientSender):
     badge = {}
     
     cmd_db = Database(server_dir + "/users.db", check_same_thread=False)
@@ -61,7 +61,7 @@ def memberlist_command(socket: socket.socket, username: str, args: list, send):
     _online_users = f"{onlineUsersLen2}/{max_users}"
     if max_users == -1: _online_users = f"{onlineUsersLen2}"
                 
-    send(f"""{CYAN +  Colors.UNDERLINE + Colors.BOLD}{verified_txt}{config['server']['name'].upper()} ({membersLen} Members, {_online_users} Online){RESET + Colors.RESET}
+    sender.send(f"""{CYAN +  Colors.UNDERLINE + Colors.BOLD}{verified_txt}{config['server']['name'].upper()} ({membersLen} Members, {_online_users} Online){RESET + Colors.RESET}
         {Colors.BOLD}->{Colors.RESET} {RED}Administrators ({admins_len}){RESET}
            {LIGHTRED_EX}{admins}{RESET}
         
