@@ -35,3 +35,4 @@ BACKRESET       = Back.RESET
 
 CRESET          = Colors.RESET
 BGREEN          = Colors.BOLD + Fore.GREEN
+BRED            = Colors.BOLD + Fore.RED
