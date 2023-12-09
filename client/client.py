@@ -103,8 +103,8 @@ experimental_debug_mode = False
 
 
 # Open language strings
-with open(client_dir + "/lang.yml", encoding="utf-8") as langStrings:
-    Str = yaml.load(langStrings, Loader=SafeLoader)
+with open(client_dir + "/lang.yml", encoding="utf-8") as lang_strings:
+    Str = yaml.load(lang_strings, Loader=SafeLoader)
 
 
 # Client-important functions
