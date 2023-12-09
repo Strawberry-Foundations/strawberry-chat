@@ -78,6 +78,7 @@ detect_same_sysmsg      = data['detect_same_system_messages']
 message_format          = data['message_format']
 enable_notifications    = data['enable_notifications']
 experimental_debug_mode = data['experimental_debug_mode']
+extreme_debug_mode      = data['extreme_debug_mode']
 
 autoserver              = data['autoserver']['enabled']
 autoserver_id           = data['autoserver']['server_id']
@@ -205,6 +206,9 @@ class MessageFormatter:
 def server_selector():
     print(f"{Fore.CYAN + BOLD + UNDERLINE}Strawberry Chat Client (v{ver}){CRESET}")
     print(f"{Fore.LIGHTGREEN_EX}{Str[lang]['Welcome']}{Fore.RESET}\n")
+    
+    if extreme_debug_mode: 
+        print(f"{YELLOW + BOLD}{Str[lang]['ExtremeDebugModeActivated']}{CRESET}\n")
     
     print(f"{Fore.GREEN + BOLD + UNDERLINE}{Str[lang]['AvailableServers']}:{Fore.RESET + CRESET}")
 
@@ -423,10 +427,16 @@ def receive(sock):
                     try:
                         try:
                             message_type = message["message_type"]
+                            if extreme_debug_mode: print(f"{YELLOW + BOLD}Message Event:{CRESET + GRAY} {message_type}{CRESET}")
                             
-                        except:
+                        except Exception as e:
                             print(f"{YELLOW + BOLD}{Str[lang]['CouldNotReadJson']}{CRESET}")
                             message_type = "unknown"
+                            
+                            if extreme_debug_mode:
+                                print(f"↳ {RED + BOLD}{e}{CRESET}")
+                                print(f"↳ {YELLOW + BOLD}Received data: {message}{CRESET}")
+                                print(f"↳ {YELLOW + BOLD}Data type: {type(message)}{CRESET}")
                             
                             continue
                         
@@ -439,8 +449,8 @@ def receive(sock):
                                 message     = message["message"]["content"]
                                 
                                 match message_format:
-                                    case "default": fmt = MessageFormatter.default()
-                                    case "gray_time": fmt = MessageFormatter.gray_time()
+                                    case "default": fmt = MessageFormatter.default(username=username, nickname=nickname, badge=badge, role_color=role_color, message=message)
+                                    case "gray_time": fmt = MessageFormatter.gray_time(username=username, nickname=nickname, badge=badge, role_color=role_color, message=message)
                                 
                                 print(fmt)
                             
@@ -475,7 +485,6 @@ def receive(sock):
                                 
                             case _:
                                 message     = message["message"]["content"]
-                                print(type(message))
                                 print(f"{CRESET}[{current_time()}] {message}{CRESET}")
                                 
                                 
