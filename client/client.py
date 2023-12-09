@@ -192,6 +192,7 @@ class MessageFormatter:
 def server_selector():
     print(f"{Fore.CYAN + BOLD + UNDERLINE}Strawberry Chat Client (v{ver}){CRESET}")
     print(f"{Fore.LIGHTGREEN_EX}{Str[lang]['Welcome']}{Fore.RESET}\n")
+    
     print(f"{Fore.GREEN + BOLD + UNDERLINE}{Str[lang]['AvailableServers']}:{Fore.RESET + CRESET}")
 
     for i in range(len(data["server"])):
@@ -218,7 +219,7 @@ def server_selector():
         try:
             host = input(f"{Fore.LIGHTBLUE_EX + BOLD}{Str[lang]['Ipaddr']}{Fore.RESET + CRESET}")
             port = int(input(f"{Fore.LIGHTBLUE_EX + BOLD}{Str[lang]['Port']}{Fore.RESET + CRESET}"))
-            enableAutologin = False 
+            enable_auto_login = False 
             
         except KeyboardInterrupt:
             print(f"\n{Fore.YELLOW}{Str[lang]['Aborted']}{Fore.RESET}")
@@ -237,8 +238,8 @@ def server_selector():
         sys.exit(1)
         
     else:
-        try: enableAutologin = data["server"][(int(server_selection) - 1)]["autologin"]
-        except KeyError: enableAutologin = False 
+        try: enable_auto_login = data["server"][(int(server_selection) - 1)]["autologin"]
+        except KeyError: enable_auto_login = False 
             
         try:
             host = data["server"][(int(server_selection) - 1)]["address"]
@@ -248,7 +249,7 @@ def server_selector():
             
         except KeyError: pass
     
-    return host, port, enableAutologin, server_selection, custom_server_sel
+    return host, port, enable_auto_login, server_selection, custom_server_sel
 
 # Try requesting our api server
 if online_mode:
