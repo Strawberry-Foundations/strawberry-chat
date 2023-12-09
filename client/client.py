@@ -115,6 +115,26 @@ if lang not in langs:
     time.sleep(1)
     lang = "en_US"
 
+if extreme_debug_mode:
+    print(f"{Fore.YELLOW + BOLD}CLIENT DEBUG REPORT{Fore.RESET + CRESET}")
+    print(f"Client Version: {ver}")
+    print(f"Update Channel: {update_channel}")
+    print(f"Detect same Sysmsg: {detect_same_sysmsg}")
+    print(f"Message format: {message_format}")
+    print(f"Enable Notifications: {enable_notifications}")
+    print(f"Experimental debug mode: {experimental_debug_mode}")
+    print(f"Extreme debug mode: {extreme_debug_mode}")
+    print(f"Autoserver: {autoserver}")
+    print(f"Autoserver Id: {autoserver_id}")
+    print(f"Keep alive: {conf_keep_alive}")
+    print(f"Latency mode: {latency_mode}")
+    print(f"Latency mode time: {latency_mode_time}")
+    print(f"Language: {lang}")
+    print(f"Online Mode: {online_mode}")
+    print(f"System: {platform.platform()}")
+    print(f"Python: {sys.version}")
+    print("")
+
 
 """
 --- Client-important functions ---
