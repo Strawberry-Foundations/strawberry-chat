@@ -673,7 +673,8 @@ def broadcast(message, sent_by="", format: StbCom = StbCom.PLAIN):
                                         "message_type": "stbchat_notification",
                                         "username": sent_by,
                                         "avatar_url": userAvatarUrl(sent_by),
-                                        "content": f"{escape_ansi(message)}"
+                                        "content": f"{escape_ansi(message)}",
+                                        "bell": True
                                     }
                                     
                                 to_sent.send(send_json(notification_builder).encode('utf8'))
