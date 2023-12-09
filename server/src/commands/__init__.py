@@ -28,7 +28,7 @@ def execute_command(command_str: str, socket: socket.socket, user_object: User, 
         cmd = command_registry[command_name]
         
         if user_perms.value < cmd[2].value:
-            client_sender(f"{RED}Sorry, you do not have permission for this command.{RESET}")
+            client_sender.send(f"{RED}Sorry, you do not have permission for this command.{RESET}")
             return
         
         if cmd[1] > args.__len__():
@@ -37,13 +37,13 @@ def execute_command(command_str: str, socket: socket.socket, user_object: User, 
             else: 
                 argumentsString = "arguments"
                 
-            client_sender(f"{RED}Not enough arguments! The command requires {cmd[1]} {argumentsString} but {args.__len__()} were given.{RESET}")
+            client_sender.send(f"{RED}Not enough arguments! The command requires {cmd[1]} {argumentsString} but {args.__len__()} were given.{RESET}")
             return
         
         cmd[0](socket, user_object, args, client_sender)
         
     else:
-        client_sender(f"{RED}Command '{command_name}' not found.{RESET}")
+        client_sender.send(f"{RED}Command '{command_name}' not found.{RESET}")
 
 
 def list_commands():
