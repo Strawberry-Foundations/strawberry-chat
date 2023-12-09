@@ -10,6 +10,7 @@
 - NEW: Added config file error when using an outdated config file (#106)
 - NEW: Added Wakey command (#108)
 - NEW: Added KeepAlive for Client (#107)
+- NEW: Added IP-Banning (#111)
 
 - MODULARITY:
 
