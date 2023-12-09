@@ -186,7 +186,7 @@ class User:
             self.address        = addresses[socket][0]
             
         self.username       = ""
-        self.user_status    = User.Status.none
+        self.status    = User.Status.none
         
     def login(self, func):
         self.username = func
@@ -196,10 +196,10 @@ class User:
         self.username = username
         
     def set_user_status(self, status: Status):
-        self.user_status = status
+        self.status = status
         user_index[self.username]["status"] = status
     
-    def status(self):
+    def get_status(self):
         if self.username in users.values():
             if user_index[self.username]["status"] == "status.afk":
                 return User.Status.afk
@@ -218,7 +218,7 @@ class User:
             "status": User.Status.online
         }
         
-        self.user_status = User.Status.online
+        self.status = User.Status.online
         
         print(user_index)
         
@@ -408,7 +408,6 @@ log_fmt         = logging.Formatter(f"(%(asctime)s) [%(levelname)s]  %(message)s
 log_ch          = logging.StreamHandler()
 
 # Lists, Dicts and Sets
-afks            = list([])
 do_not_disturb  = list([])
 
 # just an prototype
