@@ -171,6 +171,12 @@ class ClientSender:
 User property handling & login
 """
 class User:
+    class Status:
+        afk     = "status.afk"
+        dnd     = "status.dnd"
+        online  = "status.online"
+        offline = "status.offline"
+        
     def __init__(self, socket):
         self.socket = socket
         
@@ -180,6 +186,18 @@ class User:
     def login(self, func):
         self.username = func
         return self.username
+    
+    def status(self):
+        if self.username in users:
+            if self.username in afks:
+                return User.Status.afk
+            elif self.username in do_not_disturb:
+                return User.Status.dnd
+            else:
+                return User.Status.online
+        else:
+            return User.Status.offline
+
 
 
 """
