@@ -12,6 +12,7 @@ with open(server_dir + "/config.yml") as config_data:
         config = yaml.load(config_data, Loader=SafeLoader)
 
 @register_command("server-info")
+@register_command("serverinfo")
 @register_command("info")
 @register_command("server-desc")
 @register_command("server-description")
