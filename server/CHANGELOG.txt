@@ -19,6 +19,7 @@
 - NEW: Added Do not disturb mode for disabling pings (terminal bells) (#110)
 - NEW: Added status command
 - NEW: Removed afk message blocker
+- NEW: Added multiple message formattings for client
 
 - MODULARITY: Migration of various user dicts to one large dict
 
