@@ -279,19 +279,23 @@ try:
                 pass  
             
         delete_last_line()
+        
         print(f"{GREEN}{Str[lang]['VerifyServer']} ✓{RESET}")
         time.sleep(.1)
+        
         delete_last_line()
         delete_last_line()
         
     else: pass
     
-except Exception as e: print(f"{RED}{e}{RESET}")
+except Exception as e:
+    print(f"{RED}{e}{RESET}")
 
 # Check if language is available
 if lang not in langs:
     print(f"{Fore.RED + BOLD}Error loading language: Selected language is not available.{Fore.RESET}")
     print(f"{Fore.YELLOW + BOLD}Falling back to en_US\n{Fore.RESET}")
+    
     time.sleep(1)
     lang = "en_US"
     
