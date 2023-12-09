@@ -5,7 +5,7 @@ import yaml
 
 from src.colors import *
 from yaml import SafeLoader
-from init import server_dir
+from init import User, ClientSender, server_dir
 
 # Open Configuration
 with open(server_dir + "/config.yml") as config_data:
@@ -15,6 +15,6 @@ with open(server_dir + "/config.yml") as config_data:
 @register_command("info")
 @register_command("server-desc")
 @register_command("server-description")
-def server_info_command(socket: socket.socket, username: str, args: list, send):
+def server_info_command(socket: socket.socket, user: User, args: list, sender: ClientSender):
     desc = config['server']['description']
-    send(f"{WHITE + Colors.BOLD}{desc}{RESET + Colors.RESET}")
+    sender.send(f"{WHITE + Colors.BOLD}{desc}{RESET + Colors.RESET}")
