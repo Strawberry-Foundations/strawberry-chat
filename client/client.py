@@ -257,7 +257,7 @@ if online_mode:
         
         check_for_updates()
         
-        print(f"{YELLOW}{Str[lang]['VerifyClient']} {GREEN}✓{RESET}")
+        print(f"{GREEN}{Str[lang]['VerifyClient']} ✓{RESET}")
     
     # If api is not available, print an error message
     except (socket.gaierror, urllib3.exceptions.NewConnectionError, urllib3.exceptions.MaxRetryError, requests.exceptions.ConnectionError): 
@@ -279,7 +279,7 @@ try:
                 pass  
             
         delete_last_line()
-        print(f"{YELLOW}{Str[lang]['VerifyServer']}{RESET} {GREEN}✓{RESET}")
+        print(f"{GREEN}{Str[lang]['VerifyServer']}{RESET} ✓{RESET}")
         time.sleep(.1)
         delete_last_line()
         delete_last_line()
