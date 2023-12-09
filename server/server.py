@@ -119,8 +119,6 @@ def connection_thread(sock):
 
 
 def client_thread(client):
-    global db
-    
     sender  = ClientSender(client)
     user    = User(client)
     address = addresses[client][0]
@@ -229,7 +227,7 @@ def client_thread(client):
                 try:
                     message = message[1:].split()
                     
-                    cmd = message[0]
+                    command = message[0]
                     args = message[1:]
                     
                 except: 
@@ -252,7 +250,16 @@ def client_thread(client):
                     case "bot": role = PermissionLevel.BOT
                     case _: role = PermissionLevel.NONE
                         
-                execute_command(cmd, client, user.username, role, args, sender.send)
+                # execute_command(cmd, client, user.username, role, args, sender.send)
+                execute_command(
+                    command_str=command,
+                    socket=client,
+                    user_object=user,
+                    user_perms=role,
+                    args=args,
+                    client_sender=sender
+                    )
+                
                 continue
             
             
