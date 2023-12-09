@@ -449,7 +449,7 @@ def receive(sock):
     if not compatibility_mode: 
         while thread_flag:
             # Comment this for debugging purposes
-            # try:
+            try:
                 message = sock.recv(2048).decode('utf-8')
 
                 try:
@@ -559,20 +559,20 @@ def receive(sock):
                     break
                 
             # Comment this for debugging purposes
-            # except Exception as e:
-            #     interrupt_counter += 1 
+            except Exception as e:
+                interrupt_counter += 1 
                 
-            #     if experimental_debug_mode:
-            #         print(f"{Fore.RED + BOLD}{Str[lang]['ConnectionInterrupt']}{Fore.RESET + CRESET}")
-            #         print(e)
-            #         print("Occured by: message receiving")
+                if experimental_debug_mode:
+                    print(f"{Fore.RED + BOLD}{Str[lang]['ConnectionInterrupt']}{Fore.RESET + CRESET}")
+                    print(e)
+                    print("Occured by: message receiving")
                 
-            #     if interrupt_counter > retry_limit: 
-            #         print(f"{Fore.RED + BOLD}{Str[lang]['CheckCompatibilityMode']}{Fore.RESET + CRESET}")
-            #         retry_limit += 4
+                if interrupt_counter > retry_limit: 
+                    print(f"{Fore.RED + BOLD}{Str[lang]['CheckCompatibilityMode']}{Fore.RESET + CRESET}")
+                    retry_limit += 4
                     
-            #     time.sleep(0.5)
-            #     pass
+                time.sleep(0.5)
+                pass
             
     # Compatibility mode for connecting to old server versions (1.8.3 and below)
     else: 
