@@ -5,25 +5,25 @@ import socket
 from src.colors import *
 from src.functions import broadcast_all
 
-from init import User, ClientSender, afks
+from init import User, ClientSender, do_not_disturb
 
 @register_command("dnd")
 def dnd_command(socket: socket.socket, user: User, args: list, sender: ClientSender):
-    if user.username in afks:
-        sender.send(f"{YELLOW + Colors.BOLD}You are already AFK!{RESET + Colors.RESET}")
+    if user.username in do_not_disturb:
+        sender.send(f"{YELLOW + Colors.BOLD}You are already in Do not Disturb!{RESET + Colors.RESET}")
         
     else:
-        broadcast_all(f"{user.username} is now AFK 🌙..")
-        afks.append(user.username)
+        do_not_disturb.append(user.username)
+        sender.send(f"{GREEN + Colors.BOLD}You're now in Do not Disturb!{RESET + Colors.RESET}")
         
 @register_command("undnd")
 def undnd_command(socket: socket.socket, user: User, args: list, sender: ClientSender):
-    if user.username not in afks:
-        sender.send(f"{YELLOW + Colors.BOLD}You are not AFK!{RESET + Colors.RESET}")
+    if user.username not in do_not_disturb:
+        sender.send(f"{YELLOW + Colors.BOLD}You are not in Do not Disturb!{RESET + Colors.RESET}")
 
     else:
-        broadcast_all(f"{user.username} is no longer AFK 🌻!")
-        afks.remove(user.username)
+        do_not_disturb.remove(user.username)
+        sender.send(f"{GREEN + Colors.BOLD}You're no longer in Do not Disturb!{RESET + Colors.RESET}")
         
 # @register_command("afks")
 # @register_command("afklist")
