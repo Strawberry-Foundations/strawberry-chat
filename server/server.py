@@ -658,14 +658,15 @@ def broadcast(message, sent_by="", format: StbCom = StbCom.PLAIN):
                         message = message.replace(f"@{u}", f"{BACKMAGENTA + Colors.BOLD}@{userNickname(_username_lower)}{BACKRESET + Colors.RESET}") \
                                          .replace(f"@{_username_lower}", f"{BACKMAGENTA + Colors.BOLD}@{userNickname(_username_lower)}{BACKRESET + Colors.RESET}")
                         
-                        notification_builder = {
-                                "message_type": "stbchat_notification",
-                                "username": sent_by,
-                                "avatar_url": userAvatarUrl(sent_by),
-                                "content": f"{escape_ansi(message)}"
-                            }
-                            
-                        user.send(send_json(notification_builder).encode('utf8'))
+                        if not _username_lower == sent_by.lower():                            
+                            notification_builder = {
+                                    "message_type": "stbchat_notification",
+                                    "username": sent_by,
+                                    "avatar_url": userAvatarUrl(sent_by),
+                                    "content": f"{escape_ansi(message)}"
+                                }
+                                
+                            user.send(send_json(notification_builder).encode('utf8'))
                 
                 if not is_empty_or_whitespace(message):
                     if message != "":
