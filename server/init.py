@@ -221,8 +221,6 @@ class User:
         
         self.status = User.Status.online
         
-        print(user_index)
-        
 """
 -- Queue --
 Queue handling for users
