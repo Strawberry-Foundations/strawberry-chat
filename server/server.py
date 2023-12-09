@@ -132,7 +132,7 @@ def client_thread(client):
     
     
     try:
-        _user = user.login(clientLogin(client))
+        user.login(clientLogin(client))
         
         user_logged_in[user.username] = True
         
