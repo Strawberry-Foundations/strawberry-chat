@@ -4,6 +4,8 @@ update_channel: "stable"
 detect_same_system_messages: true
 keep_alive: true
 config_ver: 3
+enable_notifications: true
+
 autoserver:
   enabled: false
   server_id: 0
