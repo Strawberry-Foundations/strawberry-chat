@@ -201,9 +201,9 @@ class User:
     
     def status(self):
         if self.username in users.values():
-            if self.user_status == "status.afk":
+            if user_index[self.username]["status"] == "status.afk":
                 return User.Status.afk
-            elif self.username in do_not_disturb:
+            elif user_index[self.username]["status"] == "status.dnd":
                 return User.Status.dnd
             else:
                 return User.Status.online
