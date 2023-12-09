@@ -441,9 +441,10 @@ def receive(sock):
                                     
                                     notification.title = notify_username
                                     notification.message = notify_content
-                                    notification.icon = "D:\Strawberry Foundations\Assets\png\sf_logo_downscaled.png"
+                                    notification.icon = "./notification.png"
                                     
                                     notification.send()
+                                    
                                 except: 
                                     print(f"{Fore.RED + BOLD}{Str[lang]['NotificationError']}{Fore.RESET + CRESET}")
                                 
