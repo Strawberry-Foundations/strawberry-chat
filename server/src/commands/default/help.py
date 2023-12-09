@@ -4,17 +4,17 @@ import socket
 import time
 
 from src.vars import default_help_section, user_help_section, admin_help_section, stbchatplus_help_section
-
+from init import User, ClientSender
 
 @register_command("help")
-def help_command(socket: socket.socket, username: str, args: list, send):
-    send(default_help_section)
+def help_command(socket: socket.socket, user: User, args: list, sender: ClientSender):
+    sender.send(default_help_section)
                     
     time.sleep(0.1)
-    send(user_help_section)
+    sender.send(user_help_section)
     
     time.sleep(0.1)
-    send(admin_help_section)
+    sender.send(admin_help_section)
     
     time.sleep(0.1)
-    send(stbchatplus_help_section)
+    sender.send(stbchatplus_help_section)
