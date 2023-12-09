@@ -187,6 +187,9 @@ class User:
         self.username = func
         return self.username
     
+    def set_username(self, username):
+        self.username = username
+    
     def status(self):
         if self.username in users.values():
             if self.username in afks:
