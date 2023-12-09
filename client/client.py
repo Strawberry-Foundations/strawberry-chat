@@ -279,7 +279,7 @@ try:
                 pass  
             
         delete_last_line()
-        print(f"{GREEN}{Str[lang]['VerifyServer']}{RESET} ✓{RESET}")
+        print(f"{GREEN}{Str[lang]['VerifyServer']} ✓{RESET}")
         time.sleep(.1)
         delete_last_line()
         delete_last_line()
