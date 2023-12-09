@@ -188,7 +188,7 @@ class User:
         return self.username
     
     def status(self):
-        if self.username in users:
+        if self.username in users.values():
             if self.username in afks:
                 return User.Status.afk
             elif self.username in do_not_disturb:
