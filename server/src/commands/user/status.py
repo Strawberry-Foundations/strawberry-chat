@@ -6,7 +6,7 @@ from src.colors import *
 from src.functions import broadcast_all
 from src.db import Database
 
-from init import User, ClientSender, do_not_disturb, server_dir
+from init import User, ClientSender, server_dir
 
 @register_command("status", arg_count=1)
 def status_command(socket: socket.socket, user: User, args: list, sender: ClientSender):
