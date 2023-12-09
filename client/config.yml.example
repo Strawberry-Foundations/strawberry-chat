@@ -4,6 +4,7 @@ detect_same_system_messages: true
 message_format: default
 enable_notifications: true
 experimental_debug_mode: false
+extreme_debug_mode: false
 config_ver: 4
 
 networking:
