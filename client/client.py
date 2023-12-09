@@ -98,7 +98,7 @@ notification            = Notify(default_notification_application_name="Strawber
 
 api                     = "https://api.strawberryfoundations.xyz/v1/"
 
-use_sys_argv            = False
+sys_argv            = False
 experimental_debug_mode = False
 
 
@@ -307,18 +307,18 @@ except Exception as e:
 # If --server is in the arguments, skip server selection input
 if len(sys.argv) >= 2:
     if "--compatibility-mode" in sys.argv:
-        use_sys_argv = False
-        host, port, enableAutologin, server_selection, custom_server_sel = server_selector()
+        sys_argv = False
+        host, port, enable_autologin, server_selection, custom_server_sel = server_selector()
     
     elif sys.argv[1] == "--server":
-        use_sys_argv = True
+        sys_argv = True
         server_selection = sys.argv[2]
         
         host = data["server"][(int(server_selection) - 1)]["address"]
         port = int(data["server"][(int(server_selection) - 1)]["port"])
         
-        try: enableAutologin = data["server"][(int(server_selection) - 1)]["autologin"]     
-        except KeyError: enableAutologin = False
+        try: enable_autologin = data["server"][(int(server_selection) - 1)]["autologin"]     
+        except KeyError: enable_autologin = False
  
     elif sys.argv[1] == "--gen-report":
         print(f"{Fore.YELLOW + BOLD}CLIENT REPORT{Fore.RESET + CRESET}")
@@ -344,17 +344,17 @@ elif autoserver == True:
     host = data["server"][(int(server_id))]["address"]
     port = int(data["server"][(int(server_id))]["port"])
     
-    try: enableAutologin = data["server"][(int(server_id))]["autologin"]
-    except KeyError: enableAutologin = False
+    try: enable_autologin = data["server"][(int(server_id))]["autologin"]
+    except KeyError: enable_autologin = False
 
 # If no arguments passed, start client without any special functions
 else:
-    host, port, enableAutologin, server_selection, custom_server_sel = server_selector()
+    host, port, enable_autologin, server_selection, custom_server_sel = server_selector()
     
 
 def send(sock):
-    if use_sys_argv == True:
-        if enableAutologin == True:
+    if sys_argv == True:
+        if enable_autologin == True:
             print(f"{Fore.GREEN + BOLD}{Str[lang]['AutologinActive']}{Fore.RESET + CRESET}\n")
             
             if latency_mode:
@@ -376,7 +376,7 @@ def send(sock):
         print(f"{Fore.YELLOW + BOLD}{Str[lang]['Warning']}: {Str[lang]['AutologinNotAvailable']}{Fore.RESET + CRESET}\n")
         
     else:
-        if enableAutologin == True:
+        if enable_autologin == True:
             print(f"{Fore.GREEN + BOLD}{Str[lang]['AutologinActive']}{Fore.RESET + CRESET}\n")
             if latency_mode:
                 time.sleep(latency_mode_time)
@@ -560,7 +560,7 @@ def main():
         print(f"{Fore.RED + BOLD}{Str[lang]['ErrNotReachable']}{Fore.RESET + CRESET}")
         sys.exit(1)
     
-    if use_sys_argv == True:
+    if sys_argv == True:
         pass
     
     elif server_selection == custom_server_sel:
