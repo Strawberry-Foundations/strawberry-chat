@@ -136,24 +136,24 @@ def client_thread(client):
         
         user_logged_in[user.username] = True
         
-        if user == "CltExit":
+        if user.username == "CltExit":
             sender.close(log_exit=True, del_address=True, call_exit=True)
             
     except Exception as e:
         log.error(LogMessages.login_error % address)
         debug_logger(e, stbexceptions.login_error)
         
-        del addresses[client]
+        # del addresses[client]
+        sender.close(log_exit=True, del_address=True, call_exit=True)
         return
     
+    log.info(LogMessages.login % (user.username, address))
     
-    log.info(LogMessages.login % (user, address))
-    
-    users[client] = user
+    users[client] = user.username
 
     try:
-        sender.send(f"{CYAN + Colors.BOLD}Welcome back {user}! Nice to see you!{RESET + Colors.RESET}")
-        online_users_len = len([user for user in sorted(users.values())])
+        sender.send(f"{CYAN + Colors.BOLD}Welcome back {user.username}! Nice to see you!{RESET + Colors.RESET}")
+        online_users_len = len([user for user.username in sorted(users.values())])
         
         if online_users_len == 1: _online_users = f"is {online_users_len} user"
         else: _online_users = f"are {online_users_len} users"
@@ -163,19 +163,19 @@ def client_thread(client):
         
 
     except Exception as e:
-        log.error(LogMessages.communication_error % (address, user))
+        log.error(LogMessages.communication_error % (address, user.username))
         debug_logger(e, stbexceptions.communication_error)
         
         sender.close(del_address=True, del_user=True)
         return
     
     time.sleep(0.1)
-    broadcast(f"{Colors.GRAY + Colors.BOLD}-->{Colors.RESET} {userRoleColor(user)}{user}{GREEN + Colors.BOLD} has joined the chat room!{RESET + Colors.RESET}")
+    broadcast(f"{Colors.GRAY + Colors.BOLD}-->{Colors.RESET} {userRoleColor(user.username)}{user.username}{GREEN + Colors.BOLD} has joined the chat room!{RESET + Colors.RESET}")
 
     while True:
         try:
             try:
-                if user_logged_in[user]:
+                if user_logged_in[user.username]:
                     message = client.recv(2048).decode("utf8")                    
                     
                     if len(message) == 0: return
@@ -191,7 +191,7 @@ def client_thread(client):
             
             client_cur = db.cursor()
 
-            client_cur.execute('SELECT role FROM users WHERE username = ?', (user,))    
+            client_cur.execute('SELECT role FROM users WHERE username = ?', (user.username,))    
             res = client_cur.fetchone()
                 
             c = db.cursor()
@@ -209,7 +209,7 @@ def client_thread(client):
                     else: sender.send(f"{YELLOW + Colors.BOLD}Your message is too long.{RESET + Colors.RESET}")
 
             # Blacklisted Word System
-            client_cur.execute('SELECT role, enable_blacklisted_words FROM users WHERE username = ?', (user,))    
+            client_cur.execute('SELECT role, enable_blacklisted_words FROM users WHERE username = ?', (user.username,))    
             result = client_cur.fetchone()
             
             if not (result[0] == "admin" or result[0] == "bot" or result[1] == "false"):
@@ -237,7 +237,7 @@ def client_thread(client):
                     continue
                 
                 try:
-                    c.execute('SELECT role FROM users WHERE username = ?', (user,))
+                    c.execute('SELECT role FROM users WHERE username = ?', (user.username,))
 
                 except Exception as e:
                     log.error(LogMessages.sql_error)
@@ -252,31 +252,31 @@ def client_thread(client):
                     case "bot": role = PermissionLevel.BOT
                     case _: role = PermissionLevel.NONE
                         
-                execute_command(cmd, client, user, role, args, sender.send)
+                execute_command(cmd, client, user.username, role, args, sender.send)
                 continue
             
             
-            if isMuted(user):
+            if isMuted(user.username):
                 sender.send(f"{RED + Colors.BOLD}Sorry, but you were muted by an administrator. Please contact him/her if you have done nothing wrong, or wait until you are unmuted.{RESET + Colors.RESET}")
             
-            elif not isAccountEnabled(user):
+            elif not isAccountEnabled(user.username):
                 sender.send(f"{RED + Colors.BOLD}Your account was disabled by an administrator.{RESET + Colors.RESET}")
                 
-            elif user in afks:
+            elif user.username in afks:
                 sender.send(f"{RED}Sorry, you are AFK.{RESET}")
                 
             else:
                 if not is_empty_or_whitespace(message):
                     if enable_messages:                 
-                        log.info(f"{user} ({address}): {escape_ansi(message)}")
+                        log.info(f"{user.username} ({address}): {escape_ansi(message)}")
                             
-                    broadcast(message, user)
+                    broadcast(message, user.username)
                     
                     # Message counter
                     try:
-                        c.execute("SELECT msg_count FROM users WHERE username = ?", (user,))
+                        c.execute("SELECT msg_count FROM users WHERE username = ?", (user.username,))
                         msg_count = c.fetchone()[0] + 1
-                        c.execute("UPDATE users SET msg_count = ? WHERE username = ?", (msg_count, user))
+                        c.execute("UPDATE users SET msg_count = ? WHERE username = ?", (msg_count, user.username))
                         db.commit()
                         
                     except Exception as e:
@@ -289,7 +289,7 @@ def client_thread(client):
             
             debug_logger(e, stbexceptions.client_error)
             traceback.print_exc()
-            log.info(LogMessages.user_left % (user, address))
+            log.info(LogMessages.user_left % (user.username, address))
             
             try:
                 sender.close(del_address=True, del_user=True)
@@ -298,7 +298,7 @@ def client_thread(client):
                 log.warning(LogMessages.stc_error)
                 debug_logger(e, stbexceptions.stc_error, type=StbTypes.WARNING)
             
-            broadcast(f"{Colors.GRAY + Colors.BOLD}<--{Colors.RESET} {userRoleColor(user)}{user}{YELLOW + Colors.BOLD} has left the chat room!{RESET + Colors.RESET}")
+            broadcast(f"{Colors.GRAY + Colors.BOLD}<--{Colors.RESET} {userRoleColor(user.username)}{user.username}{YELLOW + Colors.BOLD} has left the chat room!{RESET + Colors.RESET}")
             break
 
 def clientRegister(client, login_cur, sender):
