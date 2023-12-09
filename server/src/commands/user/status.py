@@ -6,7 +6,7 @@ from src.colors import *
 from src.functions import broadcast_all
 from src.db import Database
 
-from init import User, ClientSender, do_not_disturb,  server_dir
+from init import User, ClientSender, do_not_disturb, server_dir
 
 @register_command("status", arg_count=1)
 def status_command(socket: socket.socket, user: User, args: list, sender: ClientSender):
@@ -57,10 +57,19 @@ def unafk_command(socket: socket.socket, user: User, args: list, sender: ClientS
         sender.send(f"{BGREEN}Afk status removed{CRESET}")
         user.set_user_status(User.Status.online)
         
-# @register_command("afks")
-# @register_command("afklist")
-# def afklist_command(socket: socket.socket, user: User, args: list, sender: ClientSender):
-#     afkUsers = ', '.join([afks for afks in sorted(afks)])
-#     afkUsersLen = len([afks for afks in sorted(afks)])
-#     sender.send(f"""{GREEN +  Colors.UNDERLINE + Colors.BOLD}Users who are currently Afk ({afkUsersLen}){RESET + Colors.RESET}
-#         {Colors.BOLD}->{Colors.RESET} {CYAN}{afkUsers}{RESET}""")
+        
+@register_command("dnd")
+def dnd_command(socket: socket.socket, user: User, args: list, sender: ClientSender):
+    if user.status == User.Status.dnd:
+        sender.send(f"{YELLOW + Colors.BOLD}You are already in Do not Disturb!{RESET + Colors.RESET}")
+    else:
+        sender.send(f"{BGREEN}Status set to {RED}do not disturb{CRESET}")
+        user.set_user_status(User.Status.dnd)
+        
+@register_command("undnd")
+def undnd_command(socket: socket.socket, user: User, args: list, sender: ClientSender):
+    if not user.status == User.Status.dnd:
+        sender.send(f"{YELLOW + Colors.BOLD}You are not in Do not disturb!{RESET + Colors.RESET}")
+    else:
+        sender.send(f"{BGREEN}Do not disturb status removed{CRESET}")
+        user.set_user_status(User.Status.online)
