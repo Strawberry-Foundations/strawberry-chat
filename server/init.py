@@ -400,6 +400,16 @@ log_ch          = logging.StreamHandler()
 afks            = list([])
 do_not_disturb  = list([])
 
+# just an prototype
+user_stats = {
+    "julian": {
+        "status": "status.online"
+    },
+    "juliandev02": {
+        "status": "status.dnd"
+    }
+}
+
 queue           = Queue()
 users           = {}
 addresses       = {}
