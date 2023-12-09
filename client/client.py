@@ -434,15 +434,18 @@ def receive(sock):
                         # todo: add user profile picture caching
                         elif message_type == "stbchat_notification":
                             if enable_notifications:
-                                notify_content     = message["content"]
-                                notify_username    = message["username"]
-                                notify_useravatar  = message["avatar_url"]
-                                
-                                notification.title = notify_username
-                                notification.message = notify_content
-                                notification.icon = "D:\Strawberry Foundations\Assets\png\sf_logo_downscaled.png"
-                                
-                                notification.send()
+                                try:
+                                    notify_content     = message["content"]
+                                    notify_username    = message["username"]
+                                    notify_useravatar  = message["avatar_url"]
+                                    
+                                    notification.title = notify_username
+                                    notification.message = notify_content
+                                    notification.icon = "D:\Strawberry Foundations\Assets\png\sf_logo_downscaled.png"
+                                    
+                                    notification.send()
+                                except: 
+                                    print(f"{Fore.RED + BOLD}{Str[lang]['NotificationError']}{Fore.RESET + CRESET}")
                                 
                             else:
                                 pass
@@ -453,7 +456,6 @@ def receive(sock):
                             
                             
                             if det_same_sysmsg:
-                                
                                 _message = str(message)
                                 _message = _message[:28]
                                 
