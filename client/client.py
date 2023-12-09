@@ -65,13 +65,16 @@ else:
 
 # Variables
 lang                    = data['language']
-online_mode             = data['online_mode']
+
 autoserver              = data['autoserver']['enabled']
 autoserver_id           = data['autoserver']['server_id']
 det_same_sysmsg         = data['detect_same_system_messages']
-conf_keep_alive         = data['keep_alive']
-config_ver_yml          = data['config_ver']
+
 enable_notifications    = data['enable_notifications']
+
+online_mode             = data['networking']['online_mode']
+conf_keep_alive         = data['networking']['keep_alive']
+latency_mode            = data['networking']['latency_mode']
 
 try: update_channel     = data['update_channel']
 except: update_channel  = "stable"
@@ -80,8 +83,10 @@ langs                   = ["de_DE", "en_US"]
 verified_list           = []
 
 api                     = "https://api.strawberryfoundations.xyz/v1/"
-ver                     = "2.5.5"
-config_ver              = 3
+ver                     = "2.6.0"
+
+config_ver              = 4
+config_ver_yml          = data['config_ver']
 
 author                  = "Juliandev02"
 use_sys_argv            = False
