@@ -75,9 +75,9 @@ enable_notifications    = data['enable_notifications']
 online_mode             = data['networking']['online_mode']
 conf_keep_alive         = data['networking']['keep_alive']
 latency_mode            = data['networking']['latency_mode']
+latency_mode_time       = data['networking']['latency_mode_time']
 
-try: update_channel     = data['update_channel']
-except: update_channel  = "stable"
+update_channel          = data['update_channel']
 
 langs                   = ["de_DE", "en_US"]
 verified_list           = []
@@ -323,8 +323,13 @@ def send(sock):
     if use_sys_argv == True:
         if enableAutologin == True:
             print(f"{Fore.GREEN + BOLD}{Str[lang]['AutologinActive']}{Fore.RESET + CRESET}\n")
+            
+            if latency_mode: time.sleep(1)
             sock.send(f"{data['server'][(int(server_selection) - 1)]['credentials']['username']}".encode("utf8"))
-            time.sleep(0.1)
+            
+            if latency_mode: time.sleep(1)
+            else: time.sleep(0.1)
+            
             sock.send(f"{data['server'][(int(server_selection) - 1)]['credentials']['password']}".encode("utf8"))
         
         else:
@@ -337,7 +342,10 @@ def send(sock):
         if enableAutologin == True:
             print(f"{Fore.GREEN + BOLD}{Str[lang]['AutologinActive']}{Fore.RESET + CRESET}\n")
             sock.send(f"{data['server'][(int(server_selection) - 1)]['credentials']['username']}".encode("utf8"))
-            time.sleep(0.1)
+            
+            if latency_mode: time.sleep(1)
+            else: time.sleep(0.1)
+            
             sock.send(f"{data['server'][(int(server_selection) - 1)]['credentials']['password']}".encode("utf8"))
         
         else:
