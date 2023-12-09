@@ -676,6 +676,11 @@ def broadcast(message, sent_by="", format: StbCom = StbCom.PLAIN):
                                     }
                                     
                                 to_sent.send(send_json(notification_builder).encode('utf8'))
+                            
+                            else:
+                                pass
+                        else:
+                            pass
                     
                 if not is_empty_or_whitespace(message):
                     if message != "":
