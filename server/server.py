@@ -98,9 +98,11 @@ news_text = f"""{GREEN +  Colors.UNDERLINE + Colors.BOLD}{chat_name} News - {sho
 {news_data['news'][base_ver]['text']}{RESET + Colors.RESET}"""
 
 
+# Main Thread for handling user connetions
 def connection_thread(sock):
     while True:
         try:
+            # Accept new connections
             client, address = sock.accept()
 
         except Exception as e:
@@ -111,6 +113,7 @@ def connection_thread(sock):
         
         log.info(LogMessages.connected % address[0])
         
+        # Asign newly client's value in addresses to newly connected address
         addresses[client] = address
         threading.Thread(target=client_thread, args=(client,)).start()
 
@@ -119,12 +122,19 @@ def client_thread(client):
     global db
     
     sender  = ClientSender(client)
+    user    = User(client)
     address = addresses[client][0]
     
+    # Prototype of ip-banning
+    if user.address == "xxx.xxx.xxx.xxx":
+        sender.send(f"{RED + Colors.BOLD}Sorry, you're not allowed to connect to this server.{Colors.RESET}")
+        sender.close(log_exit=True, del_address=True, call_exit=True)
+    
+    
     try:
-        user = clientLogin(client)
+        _user = user.login(clientLogin(client))
         
-        user_logged_in[user] = True
+        user_logged_in[user.username] = True
         
         if user == "CltExit":
             del addresses[client]
