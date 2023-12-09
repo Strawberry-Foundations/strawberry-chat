@@ -1,5 +1,12 @@
 from colorama import Fore, Back
 
+class Colors:
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+    RESET = '\033[0m'
+    GRAY = "\033[90m"
+    ITALIC = "\033[3m"
+    
 # Alias for colorama colors
 BLACK           = Fore.BLACK
 RED             = Fore.RED
@@ -24,9 +31,4 @@ BACKMAGENTA     = Back.MAGENTA
 BACKYELLOW      = Back.YELLOW
 BACKRESET       = Back.RESET
 
-class Colors:
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
-    RESET = '\033[0m'
-    GRAY = "\033[90m"
-    ITALIC = "\033[3m"
+BGREEN          = Colors.BOLD + Fore.GREEN
