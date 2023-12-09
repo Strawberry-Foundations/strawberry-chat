@@ -6,10 +6,10 @@ from src.colors import *
 from src.functions import doesUserExist
 from src.db import Database
 
-from init import server_dir, log, queue, LogMessages
+from init import User, ClientSender, server_dir, log, queue, LogMessages
 
 @register_command("queue", arg_count=1, required_permissions=PermissionLevel.ADMIN)
-def queue_command(socket: socket.socket, username: str, args: list, send):
+def queue_command(socket: socket.socket, user: User, args: list, sender: ClientSender):
     cmd_db = Database(server_dir + "/users.db", check_same_thread=False)
 
     uname = args[0]
@@ -20,10 +20,10 @@ def queue_command(socket: socket.socket, username: str, args: list, send):
                 try:                
                     log.info(LogMessages.queue_kick % queue.queue[0]) 
                     queue.remove()
-                    send(f"{GREEN}The first position in the queue has been removed")
+                    sender.send(f"{GREEN}The first position in the queue has been removed")
                     
                 except: 
-                    send(f"{RED}Queue is empty")
+                    sender.send(f"{RED}Queue is empty")
                     return
                 
             
@@ -33,10 +33,10 @@ def queue_command(socket: socket.socket, username: str, args: list, send):
                 try:
                     log.info(LogMessages.queue_kick % queue.queue[(position - 1)]) 
                     queue.remove(pos=(position - 1))
-                    send(f"{GREEN}Removed position {position} from the queue")
+                    sender.send(f"{GREEN}Removed position {position} from the queue")
                     
                 except: 
-                    send(f"{RED}This position is not available")
+                    sender.send(f"{RED}This position is not available")
                     return
                 
                 
@@ -47,10 +47,10 @@ def queue_command(socket: socket.socket, username: str, args: list, send):
             queue_list = ""
             
             if len(queue.queue) == 0:
-                send(f"{RED}Queue is empty")
+                sender.send(f"{RED}Queue is empty")
                 return
                 
             for pos, user in enumerate(queue.queue, start=1):
                 queue_list = queue_list + f"\n#{pos}: {user}"
                 
-            send(f"{queue_list}")
+            sender.send(f"{queue_list}")
