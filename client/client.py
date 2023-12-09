@@ -449,7 +449,7 @@ def receive(sock):
     if not compatibility_mode: 
         while thread_flag:
             # Comment this for debugging purposes
-            try:
+            # try:
                 message = sock.recv(2048).decode('utf-8')
 
                 try:
@@ -518,12 +518,16 @@ def receive(sock):
                             case "stbchat_backend":
                                 ClientMeta.username = message["user_meta"]["username"]
                                 
+                                if extreme_debug_mode:
+                                    print(f"{YELLOW + BOLD}Received client meta data{CRESET}")
+                                    print(f"↳ {YELLOW + BOLD}Username:{CRESET + GRAY} {ClientMeta.username}{CRESET}")
+                                
                             case "system_message":
                                 message = message["message"]["content"]
                                 
                                 match message_format:
-                                    case "default": fmt = MessageFormatter.default(username=username, nickname=nickname, badge=badge, role_color=role_color, message=message, message_type=message_type)
-                                    case "gray_time": fmt = MessageFormatter.gray_time(username=username, nickname=nickname, badge=badge, role_color=role_color, message=message, message_type=message_type)
+                                    case "default": fmt = MessageFormatter.default(message=message, message_type=message_type)
+                                    case "gray_time": fmt = MessageFormatter.gray_time(message=message, message_type=message_type)
                                     
                                 print(fmt)
                                 
@@ -537,6 +541,9 @@ def receive(sock):
                                     
                                     prev_message = _message
                                     prev_message = prev_message[:30]
+                                    
+                            case _:
+                                pass
                     
                     except Exception as e:
                         time.sleep(0.05)
@@ -552,20 +559,20 @@ def receive(sock):
                     break
                 
             # Comment this for debugging purposes
-            except Exception as e:
-                interrupt_counter += 1 
+            # except Exception as e:
+            #     interrupt_counter += 1 
                 
-                if experimental_debug_mode:
-                    print(f"{Fore.RED + BOLD}{Str[lang]['ConnectionInterrupt']}{Fore.RESET + CRESET}")
-                    print(e)
-                    print("Occured by: message receiving")
+            #     if experimental_debug_mode:
+            #         print(f"{Fore.RED + BOLD}{Str[lang]['ConnectionInterrupt']}{Fore.RESET + CRESET}")
+            #         print(e)
+            #         print("Occured by: message receiving")
                 
-                if interrupt_counter > retry_limit: 
-                    print(f"{Fore.RED + BOLD}{Str[lang]['CheckCompatibilityMode']}{Fore.RESET + CRESET}")
-                    retry_limit += 4
+            #     if interrupt_counter > retry_limit: 
+            #         print(f"{Fore.RED + BOLD}{Str[lang]['CheckCompatibilityMode']}{Fore.RESET + CRESET}")
+            #         retry_limit += 4
                     
-                time.sleep(0.5)
-                pass
+            #     time.sleep(0.5)
+            #     pass
             
     # Compatibility mode for connecting to old server versions (1.8.3 and below)
     else: 
