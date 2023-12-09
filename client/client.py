@@ -233,21 +233,17 @@ def server_selector():
         print(f"{Fore.RED + BOLD}{Str[lang]['InvalidServerSelection']}{Fore.RESET + CRESET}")
         sys.exit(1)
         
-    elif server_selection == "":
-        print(f"{Fore.RED + BOLD}{Str[lang]['InvalidServerSelection']}{Fore.RESET + CRESET}")
-        sys.exit(1)
-        
     else:
         try: enable_auto_login = data["server"][(int(server_selection) - 1)]["autologin"]
         except KeyError: enable_auto_login = False 
             
         try:
             host = data["server"][(int(server_selection) - 1)]["address"]
-            port = data["server"][(int(server_selection) - 1)]["port"]
-            port = int(port)
+            port = int(data["server"][(int(server_selection) - 1)]["port"])
             
-            
-        except KeyError: pass
+        except KeyError:
+            print(f"\n{Fore.YELLOW}{Str[lang]['Aborted']}{Fore.RESET}")
+            sys.exit(1)
     
     return host, port, enable_auto_login, server_selection, custom_server_sel
 
