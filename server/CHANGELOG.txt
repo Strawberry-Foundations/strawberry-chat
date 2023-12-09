@@ -11,6 +11,7 @@
 - NEW: Added Wakey command (#108)
 - NEW: Added KeepAlive for Client (#107)
 - NEW: Added IP-Banning (#111)
+- NEW: Added additional alias for server_info command (serverinfo)
 
 - MODULARITY:
 
