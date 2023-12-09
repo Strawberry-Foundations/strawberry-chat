@@ -29,10 +29,12 @@
 - FIX: Fixed an keyerror when assigning user_logged_in
 - FIX: Fixed strange bug that will display wrong username
 - FIX: Fixed Kick Command: a bytes-like object is required, not 'str' (#117)
+- FIX: (Particially) Fixed "string indices must be integers, not 'str'" client issue
 
 - SCAPI: 
 
 - OPTIMIZATION: Moved afk, unafk, dnd, undnd commands to status src file
+- OPTIMIZATION: Complete code optimization of client
 
 - UPDATE: General improvements to server settings command
 - UPDATE: Revision of the help command
