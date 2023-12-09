@@ -19,7 +19,7 @@
 - NEW: Added Do not disturb mode for disabling pings (terminal bells) (#110)
 - NEW: Added status command
 
-- MODULARITY:
+- MODULARITY: Migration of various user dicts to one large dict
 
 - FIX: Fixed "user class specific properties" for slash commands (#113)
 - FIX: Fixed self-mentioning
