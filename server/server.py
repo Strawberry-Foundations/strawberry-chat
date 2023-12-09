@@ -137,8 +137,7 @@ def client_thread(client):
         user_logged_in[user.username] = True
         
         if user == "CltExit":
-            del addresses[client]
-            return
+            sender.close(log_exit=True, del_address=True, call_exit=True)
             
     except Exception as e:
         log.error(LogMessages.login_error % address)
