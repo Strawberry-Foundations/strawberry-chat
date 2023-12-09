@@ -15,8 +15,10 @@ import urllib3
 import json
 import re
 import platform
+from notifypy import Notify
 
-if sys.platform == "linux": import readline
+if sys.platform == "linux":
+    import readline
 else: pass
 
 # Colors
@@ -83,6 +85,8 @@ config_ver      = 3
 author          = "Juliandev02"
 use_sys_argv    = False
 experimental_debug_mode = False
+
+notification    = Notify(default_notification_application_name="Strawberry Chat")
 
 
 # Open language strings
@@ -403,6 +407,16 @@ def receive(sock):
                                 # fmt = f"{time_fmt} {role_color}{nickname} (@{username.lower()}){badge}:{CRESET} {message}"
                             
                             print(fmt)
+                            
+                        elif message_type == "stbchat_notification":
+                            notify_content     = message["content"]
+                            
+                            notification.title = "Strawberry Chat"
+                            notification.message = notify_content
+                            # notification.audio = "D:\Musik\Mein Mix\Diamonds.wav"
+                            notification.icon = "D:\Strawberry Foundations\Assets\png\sf_logo_downscaled.png"
+                            
+                            notification.send()
                             
                         else:
                             message     = message["message"]["content"]
