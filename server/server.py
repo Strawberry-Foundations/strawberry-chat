@@ -250,7 +250,6 @@ def client_thread(client):
                     case "bot": role = PermissionLevel.BOT
                     case _: role = PermissionLevel.NONE
                         
-                # execute_command(cmd, client, user.username, role, args, sender.send)
                 execute_command(
                     command_str=command,
                     socket=client,
