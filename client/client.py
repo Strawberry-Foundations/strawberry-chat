@@ -1,25 +1,32 @@
 #!/usr/bin/env python3
 
-import os
 import socket
+import os
 import sys
+import threading
+
 import colorama
 from colorama import Fore
+
 import datetime
-import threading
-import yaml
-from yaml import SafeLoader
 import time
-import requests
-import urllib3
+
+import platform
 import json
 import re
-import platform
+
+import yaml
+from yaml import SafeLoader
+
+import requests
+import urllib3
+
 from notifypy import Notify
 
 if sys.platform == "linux":
     import readline
-else: pass
+else:
+    pass
 
 # Colors
 BLACK           = Fore.BLACK
@@ -69,6 +76,7 @@ lang                    = data['language']
 autoserver              = data['autoserver']['enabled']
 autoserver_id           = data['autoserver']['server_id']
 det_same_sysmsg         = data['detect_same_system_messages']
+message_format          = "gray_time"
 
 enable_notifications    = data['enable_notifications']
 
@@ -160,6 +168,27 @@ def keep_alive(sock):
     sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPIDLE, 60)
     sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPINTVL, 10)
     sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPCNT, 5)
+    
+class MessageFormatter:
+    def default(username: str, nickname: str, role_color: str, badge: str, message: str):
+        time_fmt = f"[{current_time()}]"
+        
+        if nickname == username:
+            fmt = f"{CRESET}{time_fmt} {role_color}{username}{badge}:{CRESET} {message}{CRESET}"
+        else:
+            fmt = f"{CRESET}{time_fmt} {role_color}{nickname} (@{username.lower()}){badge}:{CRESET} {message}{CRESET}"
+            
+        return fmt
+    
+    def gray_time(username: str, nickname: str, role_color: str, badge: str, message: str):
+        time_fmt = f"{GRAY}{current_time()}{RESET}"
+        
+        if nickname == username:
+            fmt = f"{CRESET}{time_fmt} {role_color}{username}{badge}:{CRESET} {message}{CRESET}"
+        else:
+            fmt = f"{CRESET}{time_fmt} {role_color}{nickname} (@{username.lower()}){badge}:{CRESET} {message}{CRESET}"
+            
+        return fmt
 
 
 # Select server
@@ -402,79 +431,79 @@ def receive(sock):
                 
     elif compatibility_mode == False: 
         while threadFlag:
+            # Comment this for debugging purposes
             try:
                 message = sock.recv(2048).decode('utf-8')
 
                 try: message = conv_json_data(message)
                 except: message = message
                 
-                time_fmt = f"{GRAY}{current_time()}{RESET}"
-                
                 if message:
                     try:
-                        try: message_type = message["message_type"]
-                        except: message_type = "unknown"
+                        try:
+                            message_type = message["message_type"]
+                        except:
+                            message_type = "unknown"
                         
-                        if message_type == "user_message":
-                            username    = message["username"]
-                            nickname    = message["nickname"]
-                            badge       = badge_handler(message["badge"])
-                            role_color  = message["role_color"]
-                            message     = message["message"]["content"]
-                            
-                            if nickname == username:
-                                fmt = f"{CRESET}[{current_time()}] {role_color}{username}{badge}:{CRESET} {message}{CRESET}"
-                                # fmt = f"{time_fmt} {role_color}{username}{badge}:{CRESET} {message}"
-                            else:
-                                fmt = f"{CRESET}[{current_time()}] {role_color}{nickname} (@{username.lower()}){badge}:{CRESET} {message}{CRESET}"
-                                # fmt = f"{time_fmt} {role_color}{nickname} (@{username.lower()}){badge}:{CRESET} {message}"
-                            
-                            print(fmt)
-                            
-                        # todo: add user profile picture caching
-                        elif message_type == "stbchat_notification":
-                            terminal_bell     = message["bell"]
-                            
-                            if terminal_bell:
-                                print("\a")
-                                delete_last_line()
-                            
-                            if enable_notifications:
-                                try:
-                                    notify_content     = message["content"]
-                                    notify_username    = message["username"]
-                                    notify_useravatar  = message["avatar_url"]
-                                    
-                                    notification.title = notify_username
-                                    notification.message = notify_content
-                                    notification.icon = "./notification.png"
-                                    
-                                    notification.send()
-                                    
-                                except: 
-                                    print(f"{Fore.RED + BOLD}{Str[lang]['NotificationError']}{Fore.RESET + CRESET}")
+                        match message_type:
+                            case "user_message":
+                                username    = message["username"]
+                                nickname    = message["nickname"]
+                                badge       = badge_handler(message["badge"])
+                                role_color  = message["role_color"]
+                                message     = message["message"]["content"]
                                 
-                            else:
-                                pass
-                            
-                        elif message_type == "stbchat_backend":
-                            _meta_username = message["user_meta"]["username"]
-                            
-                        else:
-                            message     = message["message"]["content"]
-                            print(f"{CRESET}[{current_time()}] {message}{CRESET}")
-                            
-                            
-                            if det_same_sysmsg:
-                                _message = str(message)
-                                _message = _message[:28]
+                                match message_format:
+                                    case "default": fmt = MessageFormatter.default()
+                                    case "gray_time": fmt = MessageFormatter.gray_time()
                                 
-                                if _message == _prev_message:
-                                    if escape_ansi(_prev_message).startswith("You're currently at"):
-                                        delete_last_line()
+                                print(fmt)
+                            
+                            # todo: add user profile picture caching
+                            case "stbchat_notification":
+                                terminal_bell     = message["bell"]
                                 
-                                _prev_message = _message
-                                _prev_message = _prev_message[:30]
+                                if terminal_bell:
+                                    print("\a")
+                                    delete_last_line()
+                                
+                                if enable_notifications:
+                                    try:
+                                        notify_content     = message["content"]
+                                        notify_username    = message["username"]
+                                        notify_useravatar  = message["avatar_url"]
+                                        
+                                        notification.title = notify_username
+                                        notification.message = notify_content
+                                        notification.icon = "./notification.png"
+                                        
+                                        notification.send()
+                                        
+                                    except: 
+                                        print(f"{Fore.RED + BOLD}{Str[lang]['NotificationError']}{Fore.RESET + CRESET}")
+                                    
+                                else:
+                                    pass
+                            
+                            case "stbchat_backend":
+                                _meta_username = message["user_meta"]["username"]
+                                
+                            case _:
+                                message     = message["message"]["content"]
+                                print(type(message))
+                                print(f"{CRESET}[{current_time()}] {message}{CRESET}")
+                                
+                                
+                                if det_same_sysmsg:
+                                    _message = str(message)
+                                    _message = _message[:28]
+                                    
+                                    if _message == _prev_message:
+                                        if escape_ansi(_prev_message).startswith("You're currently at"):
+                                            delete_last_line()
+                                    
+                                    _prev_message = _message
+                                    _prev_message = _prev_message[:30]
                     
                     except Exception as e:
                         time.sleep(0.05)
@@ -484,16 +513,19 @@ def receive(sock):
                         if experimental_debug_mode:
                             print(f"{Fore.RED + BOLD}{Str[lang]['ConnectionInterrupt']}{Fore.RESET + CRESET}")
                             print(e)
+                            print("Occured by: message_type_checking")
 
                 else:
                     break
                 
+            # Comment this for debugging purposes
             except Exception as e:
                 interrupt_counter += 1 
                 
                 if experimental_debug_mode:
                     print(f"{Fore.RED + BOLD}{Str[lang]['ConnectionInterrupt']}{Fore.RESET + CRESET}")
                     print(e)
+                    print("Occured by: message receiving")
                 
                 if interrupt_counter > retry_limit: 
                     print(f"{Fore.RED + BOLD}{Str[lang]['CheckCompatibilityMode']}{Fore.RESET + CRESET}")
