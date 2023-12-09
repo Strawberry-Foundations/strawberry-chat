@@ -130,11 +130,11 @@ def client_thread(client):
     
     
     try:
-        user.login(clientLogin(client))
+        _username = user.login(clientLogin(client))
         
-        user_logged_in[user.username] = True
+        user_logged_in[_username] = True
         
-        if user.username == "CltExit":
+        if _username == "CltExit":
             sender.close(log_exit=True, del_address=True, call_exit=True)
             
     except Exception as e:
@@ -146,18 +146,21 @@ def client_thread(client):
         return
     
     log.info(LogMessages.login % (user.username, address))
+    print(f"1: {user.username}")
     
     users[client] = user.username
 
     try:
         sender.send(f"{CYAN + Colors.BOLD}Welcome back {user.username}! Nice to see you!{RESET + Colors.RESET}")
-        online_users_len = len([user for user.username in sorted(users.values())])
+        online_users_len = len(users)
         
         if online_users_len == 1: _online_users = f"is {online_users_len} user"
         else: _online_users = f"are {online_users_len} users"
             
         time.sleep(0.05)
         sender.send(f"""{CYAN + Colors.BOLD}Currently there {_online_users} online. For help use /help{RESET + Colors.RESET}\n{news_text}""")
+        
+        print(f"2: {user.username}")
         
 
     except Exception as e:
@@ -168,6 +171,7 @@ def client_thread(client):
         return
     
     time.sleep(0.1)
+    print(f"3: {user.username}")
     broadcast(f"{Colors.GRAY + Colors.BOLD}-->{Colors.RESET} {userRoleColor(user.username)}{user.username}{GREEN + Colors.BOLD} has joined the chat room!{RESET + Colors.RESET}")
 
     while True:
