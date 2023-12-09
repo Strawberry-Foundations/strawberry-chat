@@ -6,7 +6,7 @@ import datetime
 
 from src.colors import *
 from src.db import Database
-from src.functions import doesUserExist, userRoleColor, isOnline
+from src.functions import doesUserExist, userRoleColor, isOnline, check_user_status_other
 
 from init import User, ClientSender, server_dir
 
@@ -128,9 +128,9 @@ def members_command(socket: socket.socket, user: User, args: list, sender: Clien
             if "💫" in row[6]:
                 all_badges = all_badges + "\n        " + stbchat_plus_user
             
-            
+        
         sender.send(
-            f"""{CYAN + Colors.BOLD + Colors.UNDERLINE}User profile of {row[0]}{RESET + Colors.RESET} {isOnline(row[0])}
+            f"""{CYAN + Colors.BOLD + Colors.UNDERLINE}User profile of {row[0]}{RESET + Colors.RESET} {check_user_status_other(row[0])}
         {GREEN + Colors.BOLD}Username:{RESET + userRoleColor(row[0])} @{row[0].lower()}{RESET + Colors.RESET}
         {GREEN + Colors.BOLD}User-ID:{RESET + LIGHTBLUE_EX} {row[8]}{RESET + Colors.RESET}
         {GREEN + Colors.BOLD}Nickname:{RESET + Colors.BOLD} {nickname}{RESET + Colors.RESET}
