@@ -127,9 +127,6 @@ def members_command(socket: socket.socket, user: User, args: list, sender: Clien
                 all_badges = all_badges + "\n        " + strawberry_badge
             if "💫" in row[6]:
                 all_badges = all_badges + "\n        " + stbchat_plus_user
-            
-        
-        print(check_user_status(type="name", user=row[0]))
         
         sender.send(
             f"""{CYAN + Colors.BOLD + Colors.UNDERLINE}User profile of {row[0]}{RESET + Colors.RESET} {check_user_status(type="name", user=row[0])}
