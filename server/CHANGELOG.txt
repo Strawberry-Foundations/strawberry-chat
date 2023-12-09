@@ -17,6 +17,7 @@
 - NEW: Added Send terminal bell to user when user gets mentioned (#109) (Client-side)
 - NEW: Added check_user_status() (better version of isOnline)
 - NEW: Added Do not disturb mode for disabling pings (terminal bells) (#110)
+- NEW: Added status command
 
 - MODULARITY:
 
