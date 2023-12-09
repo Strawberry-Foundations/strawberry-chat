@@ -14,8 +14,6 @@ flags:
   max_registered_users: 2
   debug_mode: true
   online_mode: true
-  require_signing: false
-  signing_key: none
   admins_wait_queue: true
   bots_wait_queue: true
   special_messages: false
@@ -31,5 +29,10 @@ database:
   database_name: data
   database_table: chat_data
 
+security:
+  require_signing: false
+  signing_key: none
+  banned_ips: []
 
-config_ver: 3
+
+config_ver: 4
