@@ -8,6 +8,7 @@ networking:
   online_mode: true
   keep_alive: true
   latency_mode: true
+  latency_mode_time: 1
 
 autoserver:
   enabled: false
