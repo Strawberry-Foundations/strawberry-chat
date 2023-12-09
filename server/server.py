@@ -486,7 +486,6 @@ def clientLogin(client):
         
         # Receive the ansi-escaped username and strip all new lines in case
         username = escape_ansi(client.recv(2048).decode("utf8")).strip().rstrip()
-        print(username)
         
         # Check if username is "register", "exit" or "sid" 
         if username.lower() == "register": clientRegister(client, login_cur, sender)
