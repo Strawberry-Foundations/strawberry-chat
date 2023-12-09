@@ -36,7 +36,8 @@ from src.commands.admin import      broadcast_cmd, mute, ban, kick, \
                                     debug, role, bwords, server_settings, \
                                     queue_cmd
            
-from src.commands.etc import        test_command, news, delaccount, wakey
+from src.commands.etc import        test_command, news, delaccount, wakey, \
+                                    backend_debug
 
 
 if "--enable-messages" in sys.argv: enable_messages = True
