@@ -18,6 +18,7 @@
 
 - FIX: Fixed "user class specific properties" for slash commands (#113)
 - FIX: Fixed self-mentioning
+- FIX: Fixed notification when mentioning other users
 
 - SCAPI: 
 
