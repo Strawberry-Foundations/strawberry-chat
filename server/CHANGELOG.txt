@@ -20,6 +20,7 @@
 - SCAPI: 
 
 - OPTIMIZATION: Moved unafk command to afk src file
+- OPTIMIZATION: Moved afklist command to afk src file
 
 - UPDATE: General improvements to server settings command
 - UPDATE: Revision of the help command
