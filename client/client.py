@@ -123,8 +123,11 @@ These functions are neccessary to run the client
 def is_verified(address: str):
     try:
         if online_mode:
-            if address in verified_list: return f"[{Str[lang]['Verified']}] "
-            else: return ""            
+            if address in verified_list:
+                return f"[{Str[lang]['Verified']}] "
+            else:
+                return ""
+            
         else:
             return ""
         
