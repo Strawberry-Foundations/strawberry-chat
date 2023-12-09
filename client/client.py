@@ -324,11 +324,15 @@ def send(sock):
         if enableAutologin == True:
             print(f"{Fore.GREEN + BOLD}{Str[lang]['AutologinActive']}{Fore.RESET + CRESET}\n")
             
-            if latency_mode: time.sleep(1)
+            if latency_mode:
+                time.sleep(latency_mode_time)
+                
             sock.send(f"{data['server'][(int(server_selection) - 1)]['credentials']['username']}".encode("utf8"))
             
-            if latency_mode: time.sleep(1)
-            else: time.sleep(0.1)
+            if latency_mode:
+                time.sleep(latency_mode_time)
+            else:
+                time.sleep(0.1)
             
             sock.send(f"{data['server'][(int(server_selection) - 1)]['credentials']['password']}".encode("utf8"))
         
@@ -341,10 +345,15 @@ def send(sock):
     else:
         if enableAutologin == True:
             print(f"{Fore.GREEN + BOLD}{Str[lang]['AutologinActive']}{Fore.RESET + CRESET}\n")
+            if latency_mode:
+                time.sleep(latency_mode_time)
+                
             sock.send(f"{data['server'][(int(server_selection) - 1)]['credentials']['username']}".encode("utf8"))
             
-            if latency_mode: time.sleep(1)
-            else: time.sleep(0.1)
+            if latency_mode:
+                time.sleep(latency_mode_time)
+            else:
+                time.sleep(0.1)
             
             sock.send(f"{data['server'][(int(server_selection) - 1)]['credentials']['password']}".encode("utf8"))
         
