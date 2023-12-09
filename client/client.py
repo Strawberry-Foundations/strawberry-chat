@@ -100,7 +100,6 @@ notification            = Notify(default_notification_application_name="Strawber
 api                     = "https://api.strawberryfoundations.xyz/v1/"
 
 sys_argv            = False
-experimental_debug_mode = False
 
 
 # Open language strings
