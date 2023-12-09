@@ -137,6 +137,8 @@ def client_thread(client):
         if user.address == "CltExit":
             sender.close(log_exit=True, del_address=True, call_exit=True)
             
+        user.system_register()
+            
     except Exception as e:
         log.error(LogMessages.login_error % address)
         debug_logger(e, stbexceptions.login_error)
