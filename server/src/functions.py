@@ -215,6 +215,7 @@ def isOnline(uname):
     
 def check_user_status(user: User):
     user_status = user.status()
+    
     match user_status:
         case User.Status.online: return "🟢"
         case User.Status.afk: return "🌙"
