@@ -213,8 +213,15 @@ def isOnline(uname):
     else: return f"{Colors.GRAY}〇{RESET}"
     
     
-def check_user_status(user: User):
-    user_status = user.status()
+def check_user_status(type="object", user = None):
+    if type == "object":
+        user_status = user.status()
+        
+    elif type == "name":
+        _user = User(socket="type.none")
+        _user.set_username(user)
+            
+        user_status = _user.status()
     
     match user_status:
         case User.Status.online: return "🟢"
