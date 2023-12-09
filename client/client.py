@@ -508,7 +508,7 @@ def receive(sock):
                                     pass
                             
                             case "stbchat_backend":
-                                _meta_username = message["user_meta"]["username"]
+                                ClientMeta.username = message["user_meta"]["username"]
                                 
                             case _:
                                 message     = message["message"]["content"]
