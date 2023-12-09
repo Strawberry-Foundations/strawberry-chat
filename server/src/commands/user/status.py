@@ -19,7 +19,7 @@ def status_command(socket: socket.socket, user: User, args: list, sender: Client
                     sender.send(f"{BGREEN}Status set to {YELLOW}afk{CRESET}")
                     user.set_user_status(User.Status.afk)
                     
-                case "afk":
+                case "dnd":
                     sender.send(f"{BGREEN}Status set to {RED}do not disturb{CRESET}")
                     user.set_user_status(User.Status.dnd)
                     
@@ -37,3 +37,6 @@ def status_command(socket: socket.socket, user: User, args: list, sender: Client
                 
         case "get":
             sender.send(f"{BGREEN}Your current status: {user.user_status}{CRESET}")
+            
+        case "system_register":
+            sender.send(user.get_system_register())
