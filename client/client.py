@@ -414,15 +414,21 @@ def receive(sock):
             try:
                 message = sock.recv(2048).decode('utf-8')
 
-                try: message = conv_json_data(message)
-                except: message = message
+                try:
+                    message = conv_json_data(message)
+                except:
+                    message = message
                 
                 if message:
                     try:
                         try:
                             message_type = message["message_type"]
+                            
                         except:
+                            print(f"{YELLOW + BOLD}{Str[lang]['CouldNotReadJson']}{CRESET}")
                             message_type = "unknown"
+                            
+                            continue
                         
                         match message_type:
                             case "user_message":
