@@ -668,7 +668,6 @@ def broadcast(message, sent_by="", format: StbCom = StbCom.PLAIN):
                                     found_keys.append(sock_object)
                                     
                             if found_keys:
-                                        
                                 notification_builder = {
                                         "message_type": "stbchat_notification",
                                         "username": sent_by,
