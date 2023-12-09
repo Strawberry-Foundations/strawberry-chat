@@ -369,6 +369,8 @@ log_ch          = logging.StreamHandler()
 
 # Lists, Dicts and Sets
 afks            = list([])
+do_not_disturb  = list([])
+
 queue           = Queue()
 users           = {}
 addresses       = {}
