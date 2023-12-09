@@ -412,7 +412,7 @@ def send(sock):
             if latency_mode:
                 time.sleep(latency_mode_time)
             else:
-                time.sleep(0.1)
+                time.sleep(0.2)
             
             sock.send(f"{server['credentials']['password']}".encode("utf8"))
         
