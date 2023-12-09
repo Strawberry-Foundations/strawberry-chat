@@ -406,22 +406,21 @@ def receive(sock):
     
     interrupt_counter = 0
     retry_limit = 4
-    _prev_message = None
+    prev_message = None
     
     if compatibility_mode: 
-            while thread_flag:
-                try:
-                    message = sock.recv(2048).decode()
-                    
-                    if message:
-                        print("[{}] {}".format(current_time(), message))
-                    else:
-                        break
-                    
-                except:
-                    print(host, port)
-                    print(f"{Fore.RED + BOLD}{Str[lang]['ErrNotReachable']}{Fore.RESET + CRESET}")
+        while thread_flag:
+            try:
+                message = sock.recv(2048).decode()
+                
+                if message:
+                    print("[{}] {}".format(current_time(), message))
+                else:
                     break
+                
+            except:
+                print(f"{Fore.RED + BOLD}{Str[lang]['ErrNotReachable']}{Fore.RESET + CRESET}")
+                break
                 
     elif compatibility_mode == False: 
         while thread_flag:
@@ -492,12 +491,12 @@ def receive(sock):
                                     _message = str(message)
                                     _message = _message[:28]
                                     
-                                    if _message == _prev_message:
-                                        if escape_ansi(_prev_message).startswith("You're currently at"):
+                                    if _message == prev_message:
+                                        if escape_ansi(prev_message).startswith("You're currently at"):
                                             delete_last_line()
                                     
-                                    _prev_message = _message
-                                    _prev_message = _prev_message[:30]
+                                    prev_message = _message
+                                    prev_message = prev_message[:30]
                     
                     except Exception as e:
                         time.sleep(0.05)
