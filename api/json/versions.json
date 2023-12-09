@@ -8,7 +8,7 @@
         },
     
         "client": {
-            "stable": "v2.5.5",
+            "stable": "v2.6.0",
             "dev": "-",
             "canary": "-",
             "lite": "v1.0.1",
