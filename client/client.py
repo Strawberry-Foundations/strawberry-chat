@@ -64,29 +64,30 @@ else:
 
 
 # Variables
-lang            = data['language']
-online_mode     = data['online_mode']
-autoserver      = data['autoserver']['enabled']
-autoserver_id   = data['autoserver']['server_id']
-det_same_sysmsg = data['detect_same_system_messages']
-conf_keep_alive = data['keep_alive']
-config_ver_yml  = data['config_ver']
+lang                    = data['language']
+online_mode             = data['online_mode']
+autoserver              = data['autoserver']['enabled']
+autoserver_id           = data['autoserver']['server_id']
+det_same_sysmsg         = data['detect_same_system_messages']
+conf_keep_alive         = data['keep_alive']
+config_ver_yml          = data['config_ver']
+enable_notifications    = data['enable_notifications']
 
-try: update_channel  = data['update_channel']
-except: update_channel = "stable"
+try: update_channel     = data['update_channel']
+except: update_channel  = "stable"
 
-langs           = ["de_DE", "en_US"]
-verified_list   = []
+langs                   = ["de_DE", "en_US"]
+verified_list           = []
 
-api             = "https://api.strawberryfoundations.xyz/v1/"
-ver             = "2.5.5"
-config_ver      = 3
+api                     = "https://api.strawberryfoundations.xyz/v1/"
+ver                     = "2.5.5"
+config_ver              = 3
 
-author          = "Juliandev02"
-use_sys_argv    = False
+author                  = "Juliandev02"
+use_sys_argv            = False
 experimental_debug_mode = False
 
-notification    = Notify(default_notification_application_name="Strawberry Chat")
+notification            = Notify(default_notification_application_name="Strawberry Chat")
 
 
 # Open language strings
