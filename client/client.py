@@ -207,23 +207,31 @@ def keep_alive(sock):
     sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPCNT, 5)
     
 class MessageFormatter:
-    def default(username: str, nickname: str, role_color: str, badge: str, message: str):
+    def default(username: str, nickname: str, role_color: str, badge: str, message: str, message_type: str):
         time_fmt = f"[{current_time()}]"
         
-        if nickname == username:
-            fmt = f"{CRESET}{time_fmt} {role_color}{username}{badge}:{CRESET} {message}{CRESET}"
-        else:
-            fmt = f"{CRESET}{time_fmt} {role_color}{nickname} (@{username.lower()}){badge}:{CRESET} {message}{CRESET}"
+        if message_type == "user_message":
+            if nickname == username:
+                fmt = f"{CRESET}{time_fmt} {role_color}{username}{badge}:{CRESET} {message}{CRESET}"
+            else:
+                fmt = f"{CRESET}{time_fmt} {role_color}{nickname} (@{username.lower()}){badge}:{CRESET} {message}{CRESET}"
+                
+        elif message_type == "system_message":
+            fmt = f"{CRESET}{time_fmt} {message}{CRESET}"
             
         return fmt
     
-    def gray_time(username: str, nickname: str, role_color: str, badge: str, message: str):
+    def gray_time(username: str, nickname: str, role_color: str, badge: str, message: str, message_type: str):
         time_fmt = f"{GRAY}{current_time()}{RESET}"
         
-        if nickname == username:
-            fmt = f"{CRESET}{time_fmt} {role_color}{username}{badge}:{CRESET} {message}{CRESET}"
-        else:
-            fmt = f"{CRESET}{time_fmt} {role_color}{nickname} (@{username.lower()}){badge}:{CRESET} {message}{CRESET}"
+        if message_type == "user_message":
+            if nickname == username:
+                fmt = f"{CRESET}{time_fmt} {role_color}{username}{badge}:{CRESET} {message}{CRESET}"
+            else:
+                fmt = f"{CRESET}{time_fmt} {role_color}{nickname} (@{username.lower()}){badge}:{CRESET} {message}{CRESET}"
+                
+        elif message_type == "system_message":
+            fmt = f"{CRESET}{time_fmt} {message}{CRESET}"
             
         return fmt
 
@@ -476,8 +484,8 @@ def receive(sock):
                                 message     = message["message"]["content"]
                                 
                                 match message_format:
-                                    case "default": fmt = MessageFormatter.default(username=username, nickname=nickname, badge=badge, role_color=role_color, message=message)
-                                    case "gray_time": fmt = MessageFormatter.gray_time(username=username, nickname=nickname, badge=badge, role_color=role_color, message=message)
+                                    case "default": fmt = MessageFormatter.default(username, nickname, badge, role_color, message, message_type)
+                                    case "gray_time": fmt = MessageFormatter.gray_time(username, nickname, badge, role_color, message, message_type)
                                 
                                 print(fmt)
                             
@@ -510,9 +518,14 @@ def receive(sock):
                             case "stbchat_backend":
                                 ClientMeta.username = message["user_meta"]["username"]
                                 
-                            case _:
-                                message     = message["message"]["content"]
-                                print(f"{CRESET}[{current_time()}] {message}{CRESET}")
+                            case "system_message":
+                                message = message["message"]["content"]
+                                
+                                match message_format:
+                                    case "default": fmt = MessageFormatter.default(username, nickname, badge, role_color, message, message_type)
+                                    case "gray_time": fmt = MessageFormatter.gray_time(username, nickname, badge, role_color, message, message_type)
+                                    
+                                print(fmt)
                                 
                                 
                                 if detect_same_sysmsg:
