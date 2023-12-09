@@ -30,6 +30,7 @@ de_DE:
   VerifyServer: "Verifizierung deiner Server ..."
   NotificationError: "Fehler beim Senden einer Benachrichtigung. Bitte versuche Benachrichtigungen in der Konfigurationsdatei zu deaktivieren."
   CouldNotReadJson: "Die vom Server empfangenen Daten konnten nicht als JSON-Daten eingelesen werden."
+  ExtremeDebugModeActivated: "Warnung: Der extreme Debug Modus ist aktiviert. Dieser ist nicht zur produktiven Verwendung geeignet und sollte daher\nnur für das Debuggen des Clients verwendet werden!"
 
 # Language Strings for en_US (English)
 en_US:
@@ -63,3 +64,4 @@ en_US:
   VerifyServer: "Verifying your servers ..."
   NotificationError: "Error sending a notification. Please try deactivating notifications in the configuration file."
   CouldNotReadJson: "The data received from the server could not be read in as JSON data."
+  ExtremeDebugModeActivated: "Warning: The extreme debug mode is activated. This is not suitable for productive use and should therefore\nonly be used for debugging the client!"
