@@ -525,8 +525,7 @@ def receive(sock):
                                     case "default": fmt = MessageFormatter.default(username=username, nickname=nickname, badge=badge, role_color=role_color, message=message, message_type=message_type)
                                     case "gray_time": fmt = MessageFormatter.gray_time(username=username, nickname=nickname, badge=badge, role_color=role_color, message=message, message_type=message_type)
                                     
-                                # print(fmt)
-                                
+                                print(fmt)
                                 
                                 if detect_same_sysmsg:
                                     _message = str(message)
