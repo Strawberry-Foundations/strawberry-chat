@@ -215,7 +215,8 @@ class User:
         
     def system_register(self):
         user_index[self.username] = {
-            "status": User.Status.online
+            "status": User.Status.online,
+            "dm_screen": False
         }
         
         self.status = User.Status.online
@@ -407,9 +408,7 @@ log_fh          = logging.FileHandler(server_dir + '/log.txt')
 log_fmt         = logging.Formatter(f"(%(asctime)s) [%(levelname)s]  %(message)s")
 log_ch          = logging.StreamHandler()
 
-# Lists, Dicts and Sets
-
-# just an prototype
+# Universal User Index (UUI)
 user_index      = {}
 
 queue           = Queue()
