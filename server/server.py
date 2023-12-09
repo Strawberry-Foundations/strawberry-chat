@@ -27,7 +27,7 @@ from src.commands import PermissionLevel, execute_command, list_commands
 from src.commands.default import    help, server_info, changelog, \
                                     about, dm, exit_cmd
                      
-from src.commands.user import       online, afk, msgcount, \
+from src.commands.user import       online, afk, dnd, msgcount, \
                                     members, description, memberlist, \
                                     discord, user_settings, user, \
                                     nickname, badge
