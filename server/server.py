@@ -30,7 +30,7 @@ from src.commands.default import    help, server_info, changelog, \
 from src.commands.user import       online, afk, dnd, msgcount, \
                                     members, description, memberlist, \
                                     discord, user_settings, user, \
-                                    nickname, badge
+                                    nickname, badge, status
 
 from src.commands.admin import      broadcast_cmd, mute, ban, kick, \
                                     debug, role, bwords, server_settings, \
