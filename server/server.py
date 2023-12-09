@@ -27,10 +27,10 @@ from src.commands import PermissionLevel, execute_command, list_commands
 from src.commands.default import    help, server_info, changelog, \
                                     about, dm, exit_cmd
                      
-from src.commands.user import       online, afklist, afk, \
-                                    msgcount, members, description, \
-                                    memberlist, discord, user_settings, \
-                                    user, nickname, badge
+from src.commands.user import       online, afk, msgcount, \
+                                    members, description, memberlist, \
+                                    discord, user_settings, user, \
+                                    nickname, badge
 
 from src.commands.admin import      broadcast_cmd, mute, ban, kick, \
                                     debug, role, bwords, server_settings, \
