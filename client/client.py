@@ -408,21 +408,8 @@ def receive(sock):
     retry_limit = 4
     prev_message = None
     
-    if compatibility_mode: 
-        while thread_flag:
-            try:
-                message = sock.recv(2048).decode()
-                
-                if message:
-                    print("[{}] {}".format(current_time(), message))
-                else:
-                    break
-                
-            except:
-                print(f"{Fore.RED + BOLD}{Str[lang]['ErrNotReachable']}{Fore.RESET + CRESET}")
-                break
-                
-    elif compatibility_mode == False: 
+    # Check if compatibility mode is not enabled
+    if not compatibility_mode: 
         while thread_flag:
             # Comment this for debugging purposes
             try:
@@ -526,6 +513,21 @@ def receive(sock):
                     
                 time.sleep(0.5)
                 pass
+            
+    # Compatibility mode for connecting to old server versions (1.8.3 and below)
+    else: 
+        while thread_flag:
+            try:
+                message = sock.recv(2048).decode()
+                
+                if message:
+                    print("[{}] {}".format(current_time(), message))
+                else:
+                    break
+                
+            except:
+                print(f"{Fore.RED + BOLD}{Str[lang]['ErrNotReachable']}{Fore.RESET + CRESET}")
+                break
                 
 
 def main():
