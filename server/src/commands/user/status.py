@@ -57,10 +57,10 @@ def unafk_command(socket: socket.socket, user: User, args: list, sender: ClientS
         sender.send(f"{BGREEN}Afk status removed{CRESET}")
         user.set_user_status(User.Status.online)
         
-@register_command("afks")
-@register_command("afklist")
-def afklist_command(socket: socket.socket, user: User, args: list, sender: ClientSender):
-    afkUsers = ', '.join([afks for afks in sorted(afks)])
-    afkUsersLen = len([afks for afks in sorted(afks)])
-    sender.send(f"""{GREEN +  Colors.UNDERLINE + Colors.BOLD}Users who are currently Afk ({afkUsersLen}){RESET + Colors.RESET}
-        {Colors.BOLD}->{Colors.RESET} {CYAN}{afkUsers}{RESET}""")
+# @register_command("afks")
+# @register_command("afklist")
+# def afklist_command(socket: socket.socket, user: User, args: list, sender: ClientSender):
+#     afkUsers = ', '.join([afks for afks in sorted(afks)])
+#     afkUsersLen = len([afks for afks in sorted(afks)])
+#     sender.send(f"""{GREEN +  Colors.UNDERLINE + Colors.BOLD}Users who are currently Afk ({afkUsersLen}){RESET + Colors.RESET}
+#         {Colors.BOLD}->{Colors.RESET} {CYAN}{afkUsers}{RESET}""")
