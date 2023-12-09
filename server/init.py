@@ -181,24 +181,23 @@ class User:
         none    = "status.none"
         
     def __init__(self, socket="type.none"):
-        if socket == "type.none":
-            self.username       = ""    
-            self.user_status    = ""
-            
-        else:            
+        if not socket == "type.none":          
             self.socket         = socket
-            
-            self.username       = ""
             self.address        = addresses[socket][0]
-            self.user_status    = User.Status.none
+            
+        self.username       = ""
+        self.user_status    = User.Status.none
         
     def login(self, func):
         self.username = func
         return self.username
     
-    def set_username(self, username): self.username = username
+    def set_username(self, username: str):
+        self.username = username
         
-    def set_user_status(self, status: Status): self.user_status = status
+    def set_user_status(self, status: Status):
+        self.user_status = status
+        user_index[self.username]["status"] = status
     
     def status(self):
         if self.username in users.values():
@@ -210,6 +209,18 @@ class User:
                 return User.Status.online
         else:
             return User.Status.offline
+        
+    def get_system_register(self):
+        return user_index[self.username]
+        
+    def system_register(self):
+        user_index[self.username] = {
+            "status": User.Status.online
+        }
+        
+        self.user_status = User.Status.online
+        
+        print(user_index)
         
 """
 -- Queue --
@@ -401,14 +412,7 @@ afks            = list([])
 do_not_disturb  = list([])
 
 # just an prototype
-user_stats = {
-    "julian": {
-        "status": "status.online"
-    },
-    "juliandev02": {
-        "status": "status.dnd"
-    }
-}
+user_index = {}
 
 queue           = Queue()
 users           = {}
