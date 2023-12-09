@@ -12,7 +12,7 @@ from init import User, ClientSender, DatabaseConfig, \
                  enable_messages, enable_queue, \
                  max_message_length, max_users, \
                  debug_mode, online_mode, update_channel, \
-                 afks, queue, users, addresses, user_logged_in, blacklist, \
+                 queue, users, addresses, user_logged_in, blacklist, \
                  admins_wait_queue, bots_wait_queue, max_registered_users, \
                  special_messages
 
@@ -56,7 +56,7 @@ def user_settings_command(socket: socket.socket, user: User, args: list, sender:
         
         {_base_data}
         
-        {YELLOW}Afks:{RESET} {afks}
+        # {YELLOW}Afks:{RESET} N/A
         {YELLOW}Queue:{RESET} {queue.queue}
         {YELLOW}Users:{RESET} {users}
         {YELLOW}Addresses:{RESET} {addresses}
