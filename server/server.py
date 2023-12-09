@@ -658,8 +658,9 @@ def broadcast(message, sent_by="", format: StbCom = StbCom.PLAIN):
                     if f"@{_username_lower}" in _message_lower.split():
                         message = message.replace(f"@{u}", f"{BACKMAGENTA + Colors.BOLD}@{userNickname(_username_lower)}{BACKRESET + Colors.RESET}") \
                                          .replace(f"@{_username_lower}", f"{BACKMAGENTA + Colors.BOLD}@{userNickname(_username_lower)}{BACKRESET + Colors.RESET}")
+                                         
                         
-                        if not _username_lower == sent_by.lower():                            
+                        if not _username_lower == sent_by.lower():
                             found_keys = []
     
                             for sock_object, sock_uname in users.items():
@@ -669,15 +670,21 @@ def broadcast(message, sent_by="", format: StbCom = StbCom.PLAIN):
                                     found_keys.append(sock_object)
                                     
                             if found_keys:
-                                notification_builder = {
-                                        "message_type": "stbchat_notification",
-                                        "username": sent_by,
-                                        "avatar_url": userAvatarUrl(sent_by),
-                                        "content": f"{escape_ansi(message)}",
-                                        "bell": True
-                                    }
-                                    
-                                to_sent.send(send_json(notification_builder).encode('utf8'))
+                                _user = User(to_sent)
+                                _user.set_username(u)
+                                
+                                user_status = _user.status()
+                                
+                                if not user_status == User.Status.dnd:
+                                    notification_builder = {
+                                            "message_type": "stbchat_notification",
+                                            "username": sent_by,
+                                            "avatar_url": userAvatarUrl(sent_by),
+                                            "content": f"{escape_ansi(message)}",
+                                            "bell": True
+                                        }
+                                        
+                                    to_sent.send(send_json(notification_builder).encode('utf8'))
                             
                             else:
                                 pass
