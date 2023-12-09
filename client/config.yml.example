@@ -15,8 +15,8 @@ autoserver:
 
 server:
   0: 
-    name: chat.strawberryfoundations.xyz
-    address: 65.21.77.13
+    name: strawberryfoundations.xyz
+    address: 45.131.109.170
     port: 49200
     type: Main
     autologin: false
@@ -25,9 +25,9 @@ server:
       username: yourname
       password: yourpassword # Warning: This is very insecure
   1: 
-    name: chat.strawberryfoundations.xyz
-    address: 65.21.77.13
-    port: 49201
+    name: localhost
+    address: localhost
+    port: 8080
     type: Off Topic
   2: 
     name: your.chatserver.com
