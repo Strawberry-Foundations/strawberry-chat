@@ -13,6 +13,8 @@ from colorama import Style
 from src.colors import *
 from src.vars import chat_name, short_ver, codename, server_edition, api
 
+import socket as _socket
+
 # Path of init.py
 server_dir = os.path.dirname(os.path.realpath(__file__))
 
@@ -177,12 +179,17 @@ class User:
         online  = "status.online"
         offline = "status.offline"
         
-    def __init__(self, socket):
-        self.socket         = socket
-        
-        self.username       = ""
-        self.address        = addresses[socket][0]
-        self.user_status    = ""
+    def __init__(self, socket="type.none"):
+        if socket == "type.none":
+            self.username       = ""    
+            self.user_status    = ""
+            
+        else:            
+            self.socket         = socket
+            
+            self.username       = ""
+            self.address        = addresses[socket][0]
+            self.user_status    = ""
         
     def login(self, func):
         self.username = func
