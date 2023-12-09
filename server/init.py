@@ -408,7 +408,6 @@ log_fmt         = logging.Formatter(f"(%(asctime)s) [%(levelname)s]  %(message)s
 log_ch          = logging.StreamHandler()
 
 # Lists, Dicts and Sets
-do_not_disturb  = list([])
 
 # just an prototype
 user_index      = {}
