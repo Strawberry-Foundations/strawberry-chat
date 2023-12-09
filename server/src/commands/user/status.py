@@ -30,3 +30,10 @@ def status_command(socket: socket.socket, user: User, args: list, sender: Client
                 case "online" | "reset":
                     sender.send(f"{BGREEN}Status set to online{CRESET}")
                     user.set_user_status(User.Status.online)
+                
+                case _:
+                    sender.send(f"{BRED}Invalid status type{CRESET}")
+                    return
+                
+        case "get":
+            sender.send(f"{BGREEN}Your current status: {user.user_status}{CRESET}")
