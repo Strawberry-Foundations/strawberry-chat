@@ -18,6 +18,7 @@
 - NEW: Added check_user_status() (better version of isOnline)
 - NEW: Added Do not disturb mode for disabling pings (terminal bells) (#110)
 - NEW: Added status command
+- NEW: Removed afk message blocker
 
 - MODULARITY: Migration of various user dicts to one large dict
 
