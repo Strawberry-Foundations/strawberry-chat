@@ -2,13 +2,13 @@ import socket
 from .. import register_command
 
 from src.colors import *
-from src.functions import send_json
+from src.functions import send_json, broadcast_all
 
-from init import users, afks, StbCom
+from init import StbCom, User, ClientSender, users, afks
 
 
 @register_command("wakey", 0)
-def test_command(socket: socket.socket, username: str, args: list, send):
+def test_command(socket: socket.socket, user: User, args: list, sender: ClientSender):
     if len(args) == 1:
         uname   = args[0]
     
@@ -22,7 +22,7 @@ def test_command(socket: socket.socket, username: str, args: list, send):
                 
         
         if found_keys:
-            send(f"{Colors.BOLD + GREEN}Send Wakey wakey to {uname}{Colors.RESET}")
+            sender.send(f"{Colors.BOLD + GREEN}Send Wakey wakey to {uname}{Colors.RESET}")
             
             json_builder = {
                 "message_type": StbCom.SYS_MSG,
@@ -35,7 +35,7 @@ def test_command(socket: socket.socket, username: str, args: list, send):
         
             
         else:
-            send(f"{RED + Colors.BOLD}User is offline.{RESET + Colors.RESET}")
+            sender.send(f"{RED + Colors.BOLD}User is offline.{RESET + Colors.RESET}")
             
     else:
-        send(f"{Colors.ITALIC + YELLOW}Wakey, wakey ...{Colors.RESET}\a")
+        broadcast_all(f"{Colors.ITALIC + YELLOW}Wakey, wakey ...{Colors.RESET}\a")
