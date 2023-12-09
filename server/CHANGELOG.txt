@@ -15,7 +15,7 @@
 
 - MODULARITY:
 
-- FIX: 
+- FIX: Fixed "user class specific properties" for slash commands (#113)
 
 - SCAPI: 
 
