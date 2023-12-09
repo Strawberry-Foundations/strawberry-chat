@@ -28,6 +28,7 @@ de_DE:
   CheckCompatibilityMode: "Es konnte keine Nachricht korrekt empfangen werden und entschlüsselt werden.\nBitte versuche den Kompatiblitätsmodus zu aktivieren.\nZum aktivieren füge zu deinem Server-Eintrag folgendes hinzu: compatiblity_mode: true\nAlternativ kannst du den Client mit dem Argument --compatiblity-mode starten\n"
   VerifyClient: "Verifizierung deines Clients ..."
   VerifyServer: "Verifizierung deiner Server ..."
+  NotificationError: "Fehler beim Senden einer Benachrichtigung. Bitte versuche Benachrichtigungen in der Konfigurationsdatei zu deaktivieren."
 
 # Language Strings for en_US (English)
 en_US:
@@ -59,3 +60,4 @@ en_US:
   CheckCompatibilityMode: "No message could be received and decrypted correctly.\nPlease try to activate the compatibility mode.\nTo activate, add the following to your server entry: compatiblity_mode: true\nAlternatively, you can start the client with the --compatiblity-mode argument\n"
   VerifyClient: "Verifying your client ..."
   VerifyServer: "Verifying your servers ..."
+  NotificationError: "Error sending a notification. Please try deactivating notifications in the configuration file."
