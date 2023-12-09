@@ -222,19 +222,11 @@ def check_user_status(user: User):
         case User.Status.dnd: return "🔴"
         case User.Status.offline: return f"{Colors.GRAY}〇{RESET}"
 
-def check_user_status_other(user):
-    def status(username):
-        if username in users.values():
-            if username in afks:
-                return User.Status.afk
-            elif username in do_not_disturb:
-                return User.Status.dnd
-            else:
-                return User.Status.online
-        else:
-            return User.Status.offline
+def check_user_status_other(username):
+    user = User()
+    user.set_username(username)
         
-    user_status = status(user)
+    user_status = user.status()
     
     match user_status:
         case User.Status.online: return "🟢"
