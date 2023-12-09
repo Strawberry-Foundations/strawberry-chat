@@ -56,7 +56,7 @@ def user_settings_command(socket: socket.socket, user: User, args: list, sender:
         
         {_base_data}
         
-        # {YELLOW}Afks:{RESET} N/A
+        {YELLOW}Afks:{RESET} N/A
         {YELLOW}Queue:{RESET} {queue.queue}
         {YELLOW}Users:{RESET} {users}
         {YELLOW}Addresses:{RESET} {addresses}
