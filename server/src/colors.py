@@ -18,6 +18,7 @@ CYAN            = Fore.CYAN
 WHITE           = Fore.WHITE
 RESET           = Fore.RESET
 
+
 LIGHTBLACK_EX   = Fore.LIGHTBLACK_EX
 LIGHTRED_EX     = Fore.LIGHTRED_EX
 LIGHTGREEN_EX   = Fore.LIGHTGREEN_EX
@@ -31,4 +32,5 @@ BACKMAGENTA     = Back.MAGENTA
 BACKYELLOW      = Back.YELLOW
 BACKRESET       = Back.RESET
 
+CRESET          = Colors.RESET
 BGREEN          = Colors.BOLD + Fore.GREEN
