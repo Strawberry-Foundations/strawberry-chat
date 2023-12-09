@@ -16,6 +16,7 @@ BLUE            = Fore.BLUE
 MAGENTA         = Fore.MAGENTA
 CYAN            = Fore.CYAN
 WHITE           = Fore.WHITE
+GRAY            = "\033[90m"
 RESET           = Fore.RESET
 
 
