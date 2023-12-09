@@ -304,6 +304,7 @@ try:
 except Exception as e:
     print(f"{RED}{e}{RESET}")
 
+
 # If --server is in the arguments, skip server selection input
 if len(sys.argv) >= 2:
     if "--compatibility-mode" in sys.argv:
@@ -319,6 +320,8 @@ if len(sys.argv) >= 2:
         
         try: enable_autologin = data["server"][(int(server_selection) - 1)]["autologin"]     
         except KeyError: enable_autologin = False
+        
+        custom_server_sel = 0
  
     elif sys.argv[1] == "--gen-report":
         print(f"{Fore.YELLOW + BOLD}CLIENT REPORT{Fore.RESET + CRESET}")
@@ -351,44 +354,29 @@ elif autoserver == True:
 else:
     host, port, enable_autologin, server_selection, custom_server_sel = server_selector()
     
-
-def send(sock):
-    if sys_argv == True:
-        if enable_autologin == True:
-            print(f"{Fore.GREEN + BOLD}{Str[lang]['AutologinActive']}{Fore.RESET + CRESET}\n")
-            
-            if latency_mode:
-                time.sleep(latency_mode_time)
-                
-            sock.send(f"{data['server'][(int(server_selection) - 1)]['credentials']['username']}".encode("utf8"))
-            
-            if latency_mode:
-                time.sleep(latency_mode_time)
-            else:
-                time.sleep(0.1)
-            
-            sock.send(f"{data['server'][(int(server_selection) - 1)]['credentials']['password']}".encode("utf8"))
-        
-        else:
-            print(f"{Fore.GREEN + BOLD}{Str[lang]['AutologinNotActive']}{Fore.RESET + CRESET}\n")
-            
-    elif server_selection == custom_server_sel:
+# Sending thread
+def send(sock):            
+    if server_selection == custom_server_sel:
         print(f"{Fore.YELLOW + BOLD}{Str[lang]['Warning']}: {Str[lang]['AutologinNotAvailable']}{Fore.RESET + CRESET}\n")
         
     else:
-        if enable_autologin == True:
+        # Use autologin feature if enabled
+        if enable_autologin:
             print(f"{Fore.GREEN + BOLD}{Str[lang]['AutologinActive']}{Fore.RESET + CRESET}\n")
+            
             if latency_mode:
                 time.sleep(latency_mode_time)
                 
-            sock.send(f"{data['server'][(int(server_selection) - 1)]['credentials']['username']}".encode("utf8"))
+            server = data['server'][(int(server_selection) - 1)]
+                
+            sock.send(f"{server['credentials']['username']}".encode("utf8"))
             
             if latency_mode:
                 time.sleep(latency_mode_time)
             else:
                 time.sleep(0.1)
             
-            sock.send(f"{data['server'][(int(server_selection) - 1)]['credentials']['password']}".encode("utf8"))
+            sock.send(f"{server['credentials']['password']}".encode("utf8"))
         
         else:
             print(f"{Fore.GREEN + BOLD}{Str[lang]['AutologinNotActive']}{Fore.RESET + CRESET}\n")
