@@ -110,10 +110,10 @@ with open(client_dir + "/lang.yml", encoding="utf-8") as lang_strings:
 # Client-important functions
 
 # Check verification of a server
-def is_verified(addr):
+def is_verified(address: str):
     try:
         if online_mode:
-            if addr in verified_list: return f"[{Str[lang]['Verified']}] "
+            if address in verified_list: return f"[{Str[lang]['Verified']}] "
             else: return ""            
         else:
             return ""
@@ -125,7 +125,7 @@ def is_verified(addr):
 def current_time(): return datetime.datetime.now().strftime("%H:%M")
 
 # Escape ansi from a string
-def escape_ansi(string): return re.compile(r'(?:\x1B[@-_]|[\x80-\x9F])[0-?]*[ -/]*[@-~]').sub('', string)
+def escape_ansi(string: str): return re.compile(r'(?:\x1B[@-_]|[\x80-\x9F])[0-?]*[ -/]*[@-~]').sub('', string)
 
 # Convert raw input to json data
 def conv_json_data(data): return json.loads(data)
@@ -152,8 +152,6 @@ def check_for_updates():
         print(f"{BOLD + CYAN}strawberry-chat{GREEN}@{MAGENTA}{update_channel} {RESET}{online_ver}{RESET}")
         print(f"↳ {Str[lang]['UpgradingFrom']} {CYAN + BOLD}strawberry-chat{GREEN}@{MAGENTA}{update_channel} {RESET}{ver}{RESET}\n")
         
-
-
 # Handle user badges
 def badge_handler(badge):
     if not badge == "":
