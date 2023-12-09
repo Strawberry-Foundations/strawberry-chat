@@ -411,20 +411,23 @@ def receive(sock):
                             
                         # todo: add user profile picture caching
                         elif message_type == "stbchat_notification":
-                            notify_content     = message["content"]
-                            notify_username    = message["username"]
-                            notify_useravatar  = message["avatar_url"]
-                            
-                            notification.title = notify_username
-                            notification.message = notify_content
-                            notification.icon = "D:\Strawberry Foundations\Assets\png\sf_logo_downscaled.png"
-                            
-                            notification.send()
+                            if enable_notifications:
+                                notify_content     = message["content"]
+                                notify_username    = message["username"]
+                                notify_useravatar  = message["avatar_url"]
+                                
+                                notification.title = notify_username
+                                notification.message = notify_content
+                                notification.icon = "D:\Strawberry Foundations\Assets\png\sf_logo_downscaled.png"
+                                
+                                notification.send()
+                                
+                            else:
+                                pass
                             
                         else:
                             message     = message["message"]["content"]
                             print(f"{CRESET}[{current_time()}] {message}{CRESET}")
-                            
                             
                             
                             if det_same_sysmsg:
