@@ -5,7 +5,7 @@ import socket as _socket
 from src.colors import *
 from src.db import Database
 
-from init import StbCom, User, ClientSender, server_dir, users, afks, user_dm_screen
+from init import StbCom, User, ClientSender, server_dir, users, user_dm_screen
 from src.functions import escape_ansi, userRoleColor, send_json
 
 @register_command("dm", arg_count=2)
@@ -13,6 +13,9 @@ def dm_command(socket: _socket.socket, user: User, args: list, sender: ClientSen
     cmd_db = Database(server_dir + "/users.db", check_same_thread=False)
 
     uname   = args[0]
+    _uname  = User()
+    _uname.set_username(uname)
+    
     msg     = ' '.join(args[1:])
     msg     = escape_ansi(msg)
     msg     = msg.strip("\n")
@@ -37,7 +40,7 @@ def dm_command(socket: _socket.socket, user: User, args: list, sender: ClientSen
     if uname == user.username:
         sender.send(f"{YELLOW}You shouldn't send messages to yourself...{RESET}")
     
-    elif uname in afks:
+    elif _uname.status == User.Status.afk:
         sender.send(f"{YELLOW}This user is currently afk...{RESET}")
     
     elif has_dm_enabled == "false":
@@ -81,6 +84,9 @@ def dm_command(socket: _socket.socket, user: User, args: list, sender: ClientSen
     cmd_db = Database(server_dir + "/users.db", check_same_thread=False)
     
     _to_sent = args[0]
+    _uname  = User()
+    _uname.set_username(_to_sent)
+    
     found_keys = []
     to_sent = {}
     
@@ -100,7 +106,7 @@ def dm_command(socket: _socket.socket, user: User, args: list, sender: ClientSen
     if _to_sent == user.username:
         sender.send(f"{YELLOW}You shouldn't send messages to yourself...{RESET}")
         
-    elif _to_sent in afks:
+    elif _uname.status == User.Status.afk:
         sender.send(f"{YELLOW}This user is currently afk...{RESET}")    
         
     elif has_dm_enabled == "false":
