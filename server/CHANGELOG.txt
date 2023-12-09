@@ -23,6 +23,7 @@
 - FIX: Fixed notification when mentioning other users
 - FIX: Fixed an keyerror when assigning user_logged_in
 - FIX: Fixed strange bug that will display wrong username
+- FIX: Fixed Kick Command: a bytes-like object is required, not 'str' (#117)
 
 - SCAPI: 
 
