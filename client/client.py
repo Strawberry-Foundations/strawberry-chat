@@ -389,7 +389,8 @@ def send(sock):
 
         except:
             if thread_flag == False:
-                pass
+                break
+            
             else:
                 print(f"{Fore.RED + BOLD}{Str[lang]['ErrCouldNotSendMessage']}{Fore.RESET + CRESET}")
                 break
