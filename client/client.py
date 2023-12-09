@@ -89,7 +89,7 @@ conf_keep_alive         = data['networking']['keep_alive']
 latency_mode            = data['networking']['latency_mode']
 latency_mode_time       = data['networking']['latency_mode_time']
 
-ver                     = "2.6.0"
+ver                     = "2.6.1"
 author                  = "Juliandev02"
 
 config_ver              = 4
