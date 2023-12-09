@@ -165,7 +165,23 @@ class ClientSender:
         if del_address: del addresses[self.socket]
         if del_user: del users[self.socket]
         if call_exit: exit()
+
+
+class User:
+    def __init__(self, socket):
+        self.socket = socket
         
+        self.username = ""
+        self.address  = addresses[socket][0]
+        
+        
+    def login(self, func):
+        self.username = func
+        return self.username
+
+
+
+
 """
 -- Queue --
 Queue handling for users
