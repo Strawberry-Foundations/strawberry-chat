@@ -1,8 +1,9 @@
 language: en_US
 update_channel: "stable"
 detect_same_system_messages: true
-config_ver: 4
+message_format: default
 enable_notifications: true
+config_ver: 4
 
 networking:
   online_mode: true
