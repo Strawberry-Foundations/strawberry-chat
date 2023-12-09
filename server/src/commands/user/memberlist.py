@@ -8,7 +8,7 @@ from src.db import Database
 
 from init import User, ClientSender, server_dir, users, config, online_mode, global_ip, max_users
 from src.vars import api
-from src.functions import memberListNickname, memberListBadge, isOnline, check_user_status_other
+from src.functions import memberListNickname, memberListBadge, isOnline, check_user_status
 
 import yaml
 from yaml import SafeLoader
@@ -28,18 +28,18 @@ def memberlist_command(socket: socket.socket, user: User, args: list, sender: Cl
     cmd_db.execute("SELECT username, badge FROM users WHERE role = 'admin'")
     raw_admins  = cmd_db.fetchall()
     admins_len  = len([raw_admins for raw_admins in sorted(raw_admins)])
-    admins      = "\n           ".join([f"{check_user_status_other(result[0])}{LIGHTRED_EX} {memberListNickname(result[0])} {memberListBadge(result[0])}" for result in raw_admins])
+    admins      = "\n           ".join([f"{check_user_status(type='name', user=result[0])}{LIGHTRED_EX} {memberListNickname(result[0])} {memberListBadge(result[0])}" for result in raw_admins])
     
     cmd_db.execute("SELECT username, badge FROM users WHERE role = 'bot'")
     raw_bots    = cmd_db.fetchall()
     bots_len    = len([raw_bots for raw_bots in sorted(raw_bots)])
-    bots        = "\n           ".join([f"{check_user_status_other(result[0])}{LIGHTMAGENTA_EX} {memberListNickname(result[0])} {memberListBadge(result[0])}" for result in raw_bots])
+    bots        = "\n           ".join([f"{check_user_status(type='name', user=result[0])}{LIGHTMAGENTA_EX} {memberListNickname(result[0])} {memberListBadge(result[0])}" for result in raw_bots])
     
     
     cmd_db.execute("SELECT username, badge FROM users WHERE role = 'member'")
     raw_members = cmd_db.fetchall()
     members_len = len([raw_members for raw_members in sorted(raw_members)])
-    members     = "\n           ".join([f"{check_user_status_other(result[0])}{LIGHTYELLOW_EX} {memberListNickname(result[0])} {memberListBadge(result[0])}" for result in raw_members])
+    members     = "\n           ".join([f"{check_user_status(type='name', user=result[0])}{LIGHTYELLOW_EX} {memberListNickname(result[0])} {memberListBadge(result[0])}" for result in raw_members])
     
     try:
         if online_mode == True:
