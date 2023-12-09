@@ -659,15 +659,25 @@ def broadcast(message, sent_by="", format: StbCom = StbCom.PLAIN):
                                          .replace(f"@{_username_lower}", f"{BACKMAGENTA + Colors.BOLD}@{userNickname(_username_lower)}{BACKRESET + Colors.RESET}")
                         
                         if not _username_lower == sent_by.lower():                            
-                            notification_builder = {
-                                    "message_type": "stbchat_notification",
-                                    "username": sent_by,
-                                    "avatar_url": userAvatarUrl(sent_by),
-                                    "content": f"{escape_ansi(message)}"
-                                }
-                                
-                            user.send(send_json(notification_builder).encode('utf8'))
-                
+                            found_keys = []
+    
+                            for sock_object, sock_uname in users.items():
+                                if sock_uname.lower() == _username_lower:
+                                    global to_sent
+                                    to_sent = sock_object
+                                    found_keys.append(sock_object)
+                                    
+                            if found_keys:
+                                        
+                                notification_builder = {
+                                        "message_type": "stbchat_notification",
+                                        "username": sent_by,
+                                        "avatar_url": userAvatarUrl(sent_by),
+                                        "content": f"{escape_ansi(message)}"
+                                    }
+                                    
+                                to_sent.send(send_json(notification_builder).encode('utf8'))
+                    
                 if not is_empty_or_whitespace(message):
                     if message != "":
                         try: 
@@ -697,9 +707,9 @@ def broadcast(message, sent_by="", format: StbCom = StbCom.PLAIN):
             debug_logger(e, stbexceptions.broken_pipe_error)
             exit(1)
   
-    except Exception as e:
-        log.error(LogMessages.broadcast_error)
-        debug_logger(e, stbexceptions.communication_error)
+    # except Exception as e:
+    #     log.error(LogMessages.broadcast_error)
+    #     debug_logger(e, stbexceptions.communication_error)
 
 
 
