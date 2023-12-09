@@ -207,7 +207,7 @@ def keep_alive(sock):
     sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPCNT, 5)
     
 class MessageFormatter:
-    def default(username: str, nickname: str, role_color: str, badge: str, message: str, message_type: str):
+    def default(username: str = "", nickname: str = "", role_color: str = "", badge: str = "", message: str = "", message_type: str = "system_message"):
         time_fmt = f"[{current_time()}]"
         
         if message_type == "user_message":
@@ -221,7 +221,7 @@ class MessageFormatter:
             
         return fmt
     
-    def gray_time(username: str, nickname: str, role_color: str, badge: str, message: str, message_type: str):
+    def gray_time(username: str = "", nickname: str = "", role_color: str = "", badge: str = "", message: str = "", message_type: str = "system_message"):
         time_fmt = f"{GRAY}{current_time()}{RESET}"
         
         if message_type == "user_message":
@@ -521,9 +521,9 @@ def receive(sock):
                             case "system_message":
                                 message = message["message"]["content"]
                                 
-                                # match message_format:
-                                #     case "default": fmt = MessageFormatter.default(username, nickname, badge, role_color, message, message_type)
-                                #     case "gray_time": fmt = MessageFormatter.gray_time(username, nickname, badge, role_color, message, message_type)
+                                match message_format:
+                                    case "default": fmt = MessageFormatter.default(username=username, nickname=nickname, badge=badge, role_color=role_color, message=message, message_type=message_type)
+                                    case "gray_time": fmt = MessageFormatter.gray_time(username=username, nickname=nickname, badge=badge, role_color=role_color, message=message, message_type=message_type)
                                     
                                 # print(fmt)
                                 
