@@ -433,6 +433,12 @@ def receive(sock):
                             
                         # todo: add user profile picture caching
                         elif message_type == "stbchat_notification":
+                            terminal_bell     = message["bell"]
+                            
+                            if terminal_bell:
+                                print("\a")
+                                delete_last_line()
+                            
                             if enable_notifications:
                                 try:
                                     notify_content     = message["content"]
