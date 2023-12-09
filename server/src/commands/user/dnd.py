@@ -14,6 +14,7 @@ def dnd_command(socket: socket.socket, user: User, args: list, sender: ClientSen
         
     else:
         do_not_disturb.append(user.username)
+        user.set_user_status(User.Status.dnd)
         sender.send(f"{GREEN + Colors.BOLD}You're now in Do not Disturb!{RESET + Colors.RESET}")
         
 @register_command("undnd")
@@ -23,6 +24,7 @@ def undnd_command(socket: socket.socket, user: User, args: list, sender: ClientS
 
     else:
         do_not_disturb.remove(user.username)
+        user.set_user_status(User.Status.online)
         sender.send(f"{GREEN + Colors.BOLD}You're no longer in Do not Disturb!{RESET + Colors.RESET}")
         
 # @register_command("afks")
