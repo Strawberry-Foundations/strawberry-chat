@@ -271,9 +271,6 @@ def client_thread(client):
             elif not isAccountEnabled(user.username):
                 sender.send(f"{RED + Colors.BOLD}Your account was disabled by an administrator.{RESET + Colors.RESET}")
                 
-            elif user.username in afks:
-                sender.send(f"{RED}Sorry, you are AFK.{RESET}")
-                
             else:
                 if not is_empty_or_whitespace(message):
                     if enable_messages:                 
