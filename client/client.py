@@ -77,6 +77,7 @@ update_channel          = data['update_channel']
 detect_same_sysmsg      = data['detect_same_system_messages']
 message_format          = data['message_format']
 enable_notifications    = data['enable_notifications']
+enable_terminal_bell    = data['enable_terminal_bell']
 experimental_debug_mode = data['experimental_debug_mode']
 extreme_debug_mode      = data['extreme_debug_mode']
 
@@ -122,6 +123,7 @@ if extreme_debug_mode:
     print(f"Detect same Sysmsg: {detect_same_sysmsg}")
     print(f"Message format: {message_format}")
     print(f"Enable Notifications: {enable_notifications}")
+    print(f"Enable Terminal Bell: {enable_terminal_bell}")
     print(f"Experimental debug mode: {experimental_debug_mode}")
     print(f"Extreme debug mode: {extreme_debug_mode}")
     print(f"Autoserver: {autoserver}")
@@ -443,6 +445,7 @@ def receive(sock):
                 except:
                     message = message
                 
+                # todo: stbmv2.1 (?)
                 if message:
                     try:
                         try:
@@ -478,7 +481,7 @@ def receive(sock):
                             case "stbchat_notification":
                                 terminal_bell     = message["bell"]
                                 
-                                if terminal_bell:
+                                if terminal_bell and enable_terminal_bell:
                                     print("\a")
                                     delete_last_line()
                                 
