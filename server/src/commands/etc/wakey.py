@@ -4,7 +4,7 @@ from .. import register_command
 from src.colors import *
 from src.functions import send_json, broadcast_all
 
-from init import StbCom, User, ClientSender, users, afks
+from init import StbCom, User, ClientSender, users
 
 
 @register_command("wakey", 0)
