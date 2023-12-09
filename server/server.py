@@ -642,6 +642,8 @@ def broadcast(message, sent_by="", format: StbCom = StbCom.PLAIN):
                     if f"@{_username_lower}" in _message_lower.split():
                         message = message.replace(f"@{u}", f"{BACKMAGENTA + Colors.BOLD}@{userNickname(_username_lower)}{BACKRESET + Colors.RESET}") \
                                          .replace(f"@{_username_lower}", f"{BACKMAGENTA + Colors.BOLD}@{userNickname(_username_lower)}{BACKRESET + Colors.RESET}")
+                                         
+                        message = message + "\a"
                 
                 
                 if not is_empty_or_whitespace(message):
