@@ -251,9 +251,12 @@ def server_selector():
 if online_mode:
     try:
         print(f"{YELLOW}{Str[lang]['VerifyClient']}{RESET}")
+        
         requests.get(api)
-        check_for_updates()
         delete_last_line()
+        
+        check_for_updates()
+        
         print(f"{YELLOW}{Str[lang]['VerifyClient']} {GREEN}✓{RESET}")
     
     # If api is not available, print an error message
