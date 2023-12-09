@@ -198,23 +198,6 @@ class User:
         else:
             return User.Status.offline
         
-    class Others:
-        def __init__(self, username):
-            self.username = username
-            
-        def status(self):
-            if self.username in users:
-                if self.username in afks:
-                    return User.Status.afk
-                elif self.username in do_not_disturb:
-                    return User.Status.dnd
-                else:
-                    return User.Status.online
-            else:
-                return User.Status.offline
-
-
-
 """
 -- Queue --
 Queue handling for users
