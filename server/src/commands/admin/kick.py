@@ -48,7 +48,7 @@ def kick_command(socket: socket.socket, user: User, args: list, sender: ClientSe
                 
                 try: to_kick.close()
                 except Exception as e:
-                    print(f"Could not kick {uname} ({to_kick}): {e}")
+                    print(f"Could not kick {uname} ({to_kick}) (Closing connection): {e}")
                     pass
                 
             except Exception as e: 
