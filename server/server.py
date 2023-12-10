@@ -394,6 +394,11 @@ def clientRegister(client: socket.socket, login_cur: sql.Connection, sender: Cli
     if contains_whitespace(registered_password):
         sender.send(f"{YELLOW + Colors.BOLD}Your password must not contain spaces{RESET + Colors.RESET}\n")    
         clientRegister(client, login_cur, sender, wait=True)
+        
+    # if password is longer than 32 characters, return an error message and start from the beginning
+    if len(registered_password) > 32:
+        sender.send(f"{YELLOW + Colors.BOLD}Your password is too long{RESET + Colors.RESET}\n")    
+        clientRegister(client, login_cur, sender, wait=True)
     
     # Confirm the new password
     sender.send(f"{GREEN + Colors.BOLD}Confirm Password: {RESET + Colors.RESET}")
