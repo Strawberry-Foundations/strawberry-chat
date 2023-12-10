@@ -5,6 +5,7 @@
 - NEW: Added special_messages from main branch
 
 - FIX: Fixed Connection refused when starting Strawberry Chat v1.8.2 (#119)
+- FIX: Fixed case-sensitive user mentioning
 
 - UPDATE: Cleanup & code formatting improvements
 
