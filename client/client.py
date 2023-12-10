@@ -92,7 +92,7 @@ latency_mode_time       = data['networking']['latency_mode_time']
 ver                     = "2.6.1"
 author                  = "Juliandev02"
 
-config_ver              = 4
+config_ver              = 5
 config_ver_yml          = data['config_ver']
 
 langs                   = ["de_DE", "en_US"]
