@@ -529,7 +529,7 @@ def broadcast(message, sent_by=""):
                     c.execute('SELECT badge FROM users WHERE username = ?', (sent_by,))
                     user_badge = c.fetchone()
                
-                    if user_badge[0] is not None: badge = user_badge[0]    
+                    if user_badge[0] is not None: badge = " [" + user_badge[0] + "]"
                     else: badge = ""
                         
                 except Exception as e:
