@@ -317,13 +317,15 @@ def clientRegister(client: socket.socket, login_cur: sql.Connection, sender: Cli
     if wait: time.sleep(1)
     
     time.sleep(.1)
+    
     # Send a welcome message
     sender.send(f"{MAGENTA + Colors.BOLD + Colors.UNDERLINE}Welcome!{RESET + Colors.RESET}\n        {Colors.BOLD}Register, to chat with us!{Colors.RESET}")
 
     time.sleep(0.05)
     
     login_cur.execute("SELECT username FROM users")
-    raw_members = login_cur.fetchall()
+    
+    raw_members       = login_cur.fetchall()
     registered_users  = len([raw_members for raw_members in sorted(raw_members)])
     
     if registered_users >= max_registered_users and max_registered_users != -1:
