@@ -98,6 +98,8 @@ config_ver_yml          = data['config_ver']
 
 langs                   = ["de_DE", "en_US"]
 verified_list           = []
+
+# todo: fork notifypy and make a better and newer version of it 
 notification            = Notify()
 
 api                     = "https://api.strawberryfoundations.xyz/v1/"
