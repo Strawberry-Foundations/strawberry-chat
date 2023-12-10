@@ -377,9 +377,8 @@ def clientRegister(client: socket.socket, login_cur: sql.Connection, sender: Cli
                 sender.send(f"{YELLOW + Colors.BOLD}This username is already in use!{RESET + Colors.RESET}\n")    
                 clientRegister(client, login_cur, sender, wait=True)
                 
-        except Exception as e:
-            log.error(LogMessages.sql_error)
-            debug_logger(e, stbexceptions.sql_error)
+        except: 
+            pass
 
     except Exception as e:
         log.error(LogMessages.registration_error)
