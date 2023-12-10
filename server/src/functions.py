@@ -212,6 +212,11 @@ def isOnline(uname):
     
     else: return f"{Colors.GRAY}〇{RESET}"
     
+def contains_whitespace(string):
+    for c in string:
+        if c == " ":
+            return True
+    return False
     
 def check_user_status(type="object", user = None):
     if type == "object":
