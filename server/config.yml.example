@@ -12,6 +12,7 @@ config:
   max_registered_users: -1
   max_username_length: 32
   max_password_length: 256  
+  recv_allowed_bytes: 8192
 
 flags:
   enable_messages: false
