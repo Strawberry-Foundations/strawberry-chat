@@ -266,3 +266,10 @@ def verify_password(stored_password, entered_password):
 
 def is_empty_or_whitespace(string):
     return all(char.isspace() for char in string)
+
+# Blacklisted word functions
+def open_blacklist():
+    with open(server_dir + "/blacklist.txt", "r") as f:
+        for word in f:
+            word = word.strip().lower()
+            blacklist.add(word)
