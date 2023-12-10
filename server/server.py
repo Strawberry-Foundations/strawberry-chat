@@ -686,6 +686,7 @@ def broadcast(message, sent_by="", format: StbCom = StbCom.PLAIN):
                                 if not user_status == User.Status.dnd:
                                     notification_builder = {
                                             "message_type": "stbchat_notification",
+                                            "title": "Strawberry Chat",
                                             "username": sent_by,
                                             "avatar_url": userAvatarUrl(sent_by),
                                             "content": f"{escape_ansi(message)}",
