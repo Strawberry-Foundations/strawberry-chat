@@ -105,7 +105,7 @@ debug_mode              = config['flags']['debug_mode']
 online_mode             = config['flags']['online_mode']
 
 config_ver_yml          = config['config_ver']
-
+test_mode               = False
 
 # Log configuration
 log             = logging.getLogger("LOG")
