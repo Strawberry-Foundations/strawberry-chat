@@ -40,6 +40,13 @@ from src.commands.admin import      broadcast_cmd, mute, ban, kick, \
 
 from src.commands.etc import        test_command, news, delaccount
 
+if "--enable-messages" in sys.argv: enable_messages = True
+if "--debug-mode" in sys.argv: debug_mode = True
+if "--test-mode" in sys.argv: test_mode = True
+
+if config_ver != config_ver_yml:
+    print(f"{RED + Colors.BOLD}ERROR: {RESET}You are using an old configuration file (v{config_ver_yml}). Please update your configuration file according to the current entries")
+    exit()
 
 # Check if database file exists
 if os.path.exists(server_dir + "/users.db"):
@@ -78,12 +85,6 @@ else:
     create_empty_file("blacklist.txt")
     open_blacklist()
 
-
-if "--enable-messages" in sys.argv:
-    enable_messages = True
-
-if "--debug-mode" in sys.argv:
-    debug_mode = True
     
 if "--regen-database" in sys.argv:
     ays_input = input(f"{YELLOW + Colors.BOLD}>>> {RESET}WARNING: This will delete your database! Are you sure?: ")
@@ -96,12 +97,6 @@ if "--regen-database" in sys.argv:
         
     else:
         print(f"{Colors.GRAY + Colors.BOLD}>>> {RESET + Colors.RESET + Colors.BOLD}Cancelled database regeneration process")
-
-if "--test-mode" in sys.argv:
-    test_mode = True
-    
-else:
-    test_mode = False
 
 
 # General Functions
