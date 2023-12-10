@@ -80,6 +80,7 @@ enable_notifications    = data['enable_notifications']
 enable_terminal_bell    = data['enable_terminal_bell']
 experimental_debug_mode = data['experimental_debug_mode']
 extreme_debug_mode      = data['extreme_debug_mode']
+recv_allowed_bytes      = data['recv_allowed_bytes']
 
 autoserver              = data['autoserver']['enabled']
 autoserver_id           = data['autoserver']['server_id']
@@ -450,7 +451,7 @@ def receive(sock):
         while thread_flag:
             # Comment this for debugging purposes
             try:
-                message = sock.recv(2048).decode('utf-8')
+                message = sock.recv(int(recv_allowed_bytes)).decode('utf-8')
 
                 try:
                     message = conv_json_data(message)
