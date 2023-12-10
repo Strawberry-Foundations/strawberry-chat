@@ -268,10 +268,8 @@ def clientThread(client):
                 
             else:
                 if not is_empty_or_whitespace(message):
-                    if enable_messages:
-                        log_msg = escape_ansi(message)
-                                                        
-                        log.info(f"{user} ({address}): {log_msg}")
+                    if enable_messages:                 
+                        log.info(f"{user} ({address}): {escape_ansi(message)}")
                             
                     broadcast(message, user)
                     
