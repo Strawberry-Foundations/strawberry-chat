@@ -177,7 +177,7 @@ def client_thread(client):
         try:
             try:
                 if user_logged_in[user.username]:
-                    message = client.recv(2048).decode("utf8")                    
+                    message = client.recv(int(recv_allowed_bytes)).decode("utf8")                    
                     
                     if len(message) == 0: return
                     
