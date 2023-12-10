@@ -219,10 +219,15 @@ def clientThread(client):
             """
             
             if message.startswith("/"):
-                message = message[1:]
-                args = message.split()
-                cmd = args[0]
-                args = args[1:]
+                try:
+                    message = message[1:].split()
+                    
+                    command = message[0]
+                    args = message[1:]
+                    
+                except: 
+                    client.send(f"{RED}Not enough arguments! Please pass an valid command!{RESET}".encode("utf8"))
+                    continue
                 
                 try:
                     c.execute('SELECT role FROM users WHERE username = ?', (user,))
@@ -244,7 +249,7 @@ def clientThread(client):
                     case _:
                         role = PermissionLevel.NONE
                         
-                execute_command(cmd, client, user, role, args)
+                execute_command(command, client, user, role, args)
                 continue
             
 
