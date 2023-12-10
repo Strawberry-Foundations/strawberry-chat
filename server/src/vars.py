@@ -21,6 +21,9 @@ sid_api                 = "https://id.strawberryfoundations.xyz/v1"
 ext_ver                 = f"v{short_ver}_{update_channel}-{codename_short}-std_stmb{stbm_ver}"
 config_ver              = 4
 
+username_allowed_characters = "abcdefghijklmnopqrstuvwxyz0123456789._"
+
+
 # SQL table query
 table_query = """
     CREATE TABLE "users" (
