@@ -509,10 +509,12 @@ def clientLogin(client):
             client.send(f"{RED + Colors.BOLD}User not found.\n{RESET + Colors.RESET}".encode("utf8"))
 
 
-def broadcast(message, sentBy=""):
+def broadcast(message, sent_by=""):
+    ansi_reset_count = 0 
     c = db.cursor()
+    
     try:
-        if sentBy == "":
+        if sent_by == "":
             for user in users:
                 try: user.send(message.encode("utf8"))
                 except BrokenPipeError as e:
@@ -521,43 +523,48 @@ def broadcast(message, sentBy=""):
 
         else:
             for user in users:
+                ansi_reset_count += 1 
+                
                 try: 
-                    c.execute('SELECT badge FROM users WHERE username = ?', (sentBy,))
-                    res = c.fetchone()
+                    c.execute('SELECT badge FROM users WHERE username = ?', (sent_by,))
+                    user_badge = c.fetchone()
                
-                    if res[0] is not None:
-                        badge = " [" + res[0] + "]"
-                        
-                    else:
-                        badge = ""
+                    if user_badge[0] is not None: badge = user_badge[0]    
+                    else: badge = ""
                         
                 except Exception as e:
                     log.error("Something went wrong while... doing something with the badges?: " + e)
                 
                 
-                c.execute('SELECT role FROM users WHERE username = ?', (sentBy,))
-                res = c.fetchone()
+                c.execute('SELECT role FROM users WHERE username = ?', (sent_by,))
+                user_role = c.fetchone()
                 
-                if res[0] != "bot":
+                if user_role[0] != "bot":
                     message = message.strip("\n")
                 
-                message = escape_ansi(message)
+                if ansi_reset_count <= 1:
+                    message = escape_ansi(message)
+                
                 message = repl_htpf(message)
+                _message_lower = message.lower()
                 
                 for u in users.values():
-                    if f"@{u}" in message.split():
-                        message = message.replace(f"@{u}", f"{BACKMAGENTA + Colors.BOLD}@{userNickname(u)}{BACKRESET + Colors.RESET}")
+                    _username_lower = u.lower()
+                    
+                    if f"@{_username_lower}" in _message_lower.split():
+                        message = message.replace(f"@{u}", f"{BACKMAGENTA + Colors.BOLD}@{userNickname(_username_lower)}{BACKRESET + Colors.RESET}") \
+                                         .replace(f"@{_username_lower}", f"{BACKMAGENTA + Colors.BOLD}@{userNickname(_username_lower)}{BACKRESET + Colors.RESET}")
                 
                 
                 if not is_empty_or_whitespace(message):
                     if message != "":
-                        if hasNickname(sentBy) == True:
-                            try: user.send(f"{userRoleColor(sentBy)}{userNickname(sentBy)} (@{sentBy.lower()}){badge}{RESET + Colors.RESET}: {message}{RESET + Colors.RESET}".encode("utf8"))
+                        if hasNickname(sent_by) == True:
+                            try: user.send(f"{userRoleColor(sent_by)}{userNickname(sent_by)} (@{sent_by.lower()}){badge}{RESET + Colors.RESET}: {message}{RESET + Colors.RESET}".encode("utf8"))
                             except BrokenPipeError:
                                 pass
                             
                         else: 
-                            try: user.send(f"{userRoleColor(sentBy)}{sentBy}{badge}{RESET + Colors.RESET}: {message}{RESET + Colors.RESET}".encode("utf8"))
+                            try: user.send(f"{userRoleColor(sent_by)}{sent_by}{badge}{RESET + Colors.RESET}: {message}{RESET + Colors.RESET}".encode("utf8"))
                             except BrokenPipeError:
                                 pass
                                 
