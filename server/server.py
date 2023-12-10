@@ -307,12 +307,12 @@ def client_thread(client):
             broadcast(f"{Colors.GRAY + Colors.BOLD}<--{Colors.RESET} {userRoleColor(user.username)}{user.username}{YELLOW + Colors.BOLD} has left the chat room!{RESET + Colors.RESET}")
             break
 
-def clientRegister(client, login_cur, sender, wait: bool = False):
-    def contains_whitespace(username):
+def clientRegister(client, login_cur, sender, wait: bool = False):    
+    def is_valid_username(username, allowed_characters):
         for c in username:
-            if c == " ":
-                return True
-        return False
+            if c not in allowed_characters:
+                return False
+    return True
     
     if wait: time.sleep(1)
     
