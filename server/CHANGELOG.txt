@@ -1,5 +1,3 @@
-# 1.8.2
+# 1.8.3
 
-- FIX: Fixed Console Logger prints static time instead of the real time (#63)"
-
-- SCAPI: Full update of Scapi for the legacy release of Scapi 1.0.0 (stbmv1)
+- FIX: Fixed Connection refused when starting Strawberry Chat v1.8.2 (#119)
