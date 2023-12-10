@@ -6,7 +6,7 @@ from src.colors import *
 from src.db import Database
 
 from init import StbCom, User, ClientSender, server_dir, users, user_dm_screen
-from src.functions import escape_ansi, userRoleColor, send_json
+from src.functions import escape_ansi, userRoleColor, send_json, userAvatarUrl
 
 @register_command("dm", arg_count=2)
 def dm_command(socket: _socket.socket, user: User, args: list, sender: ClientSender):
@@ -75,6 +75,17 @@ def dm_command(socket: _socket.socket, user: User, args: list, sender: ClientSen
                 }
                 
                 to_sent.send(send_json(json_builder).encode("utf-8"))
+                
+                notification_builder = {
+                    "message_type": "stbchat_notification",
+                    "title": "Strawberry Chat (Direct message)",
+                    "username": f"@{user.username}",
+                    "avatar_url": userAvatarUrl(user.username),
+                    "content": f"{escape_ansi(msg)}",
+                    "bell": True
+                }
+
+                to_sent.send(send_json(notification_builder).encode('utf8'))
             
         else:
             sender.send(f"{RED + Colors.BOLD}User is offline.{RESET + Colors.RESET}")
