@@ -312,7 +312,7 @@ def clientRegister(client, login_cur, sender, wait: bool = False):
         for c in username:
             if c not in allowed_characters:
                 return False
-    return True
+        return True
     
     if wait: time.sleep(1)
     
@@ -339,6 +339,10 @@ def clientRegister(client, login_cur, sender, wait: bool = False):
     # If username is exit, exit the registration process 
     if registered_username.lower() == "exit":
         sender.close(log_exit=True, del_address=True)
+        
+    if not is_valid_username(registered_username, username_allowed_characters):
+        sender.send(f"{YELLOW + Colors.BOLD}Please use only letters, numbers, dots or underscores{RESET + Colors.RESET}\n")    
+        clientRegister(client, login_cur, sender, wait=True)
 
     if contains_whitespace(registered_username):
         sender.send(f"{YELLOW + Colors.BOLD}Your username must not contain spaces{RESET + Colors.RESET}\n")    
