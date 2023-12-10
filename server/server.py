@@ -340,14 +340,17 @@ def clientRegister(client, login_cur, sender, wait: bool = False):
     if registered_username.lower() == "exit":
         sender.close(log_exit=True, del_address=True)
         
+    # If username character is not in our charset, return an error message and start from the beginning
     if not is_valid_username(registered_username, username_allowed_characters):
         sender.send(f"{YELLOW + Colors.BOLD}Please use only letters, numbers, dots or underscores{RESET + Colors.RESET}\n")    
         clientRegister(client, login_cur, sender, wait=True)
 
+    # If username contains whitespaces, return an error message and start from the beginning
     if contains_whitespace(registered_username):
         sender.send(f"{YELLOW + Colors.BOLD}Your username must not contain spaces{RESET + Colors.RESET}\n")    
         clientRegister(client, login_cur, sender, wait=True)
-        
+    
+    # if username is longer than 32 characters, return an error message and start from the beginning
     if len(registered_username) > 32:
         sender.send(f"{YELLOW + Colors.BOLD}Your username is too long{RESET + Colors.RESET}\n")    
         clientRegister(client, login_cur, sender, wait=True)
