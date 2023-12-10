@@ -1,3 +1,4 @@
 # 1.8.3
 
+- NEW: Removed signing configuration
 - FIX: Fixed Connection refused when starting Strawberry Chat v1.8.2 (#119)
