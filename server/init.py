@@ -104,6 +104,9 @@ max_message_length      = config['flags']['max_message_length']
 debug_mode              = config['flags']['debug_mode']
 online_mode             = config['flags']['online_mode']
 
+config_ver_yml          = config['config_ver']
+
+
 # Log configuration
 log             = logging.getLogger("LOG")
 log_fh          = logging.FileHandler(server_dir + '/log.txt')
