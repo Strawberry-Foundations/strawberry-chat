@@ -101,8 +101,12 @@ update_channel          = config['server']['update_channel']
 
 enable_messages         = config['flags']['enable_messages']
 max_message_length      = config['flags']['max_message_length']
+
 debug_mode              = config['flags']['debug_mode']
 online_mode             = config['flags']['online_mode']
+
+special_messages        = config['flags']['special_messages']
+
 
 config_ver_yml          = config['config_ver']
 test_mode               = False
