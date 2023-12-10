@@ -240,16 +240,19 @@ def clientThread(client):
                 role = None
                 
                 match user_role:
-                    case "member":
-                        role = PermissionLevel.MEMBER
-                    case "admin":
-                        role = PermissionLevel.ADMIN
-                    case "bot":
-                        role = PermissionLevel.BOT
-                    case _:
-                        role = PermissionLevel.NONE
+                    case "member": role = PermissionLevel.MEMBER
+                    case "admin": role = PermissionLevel.ADMIN
+                    case "bot": role = PermissionLevel.BOT
+                    case _: role = PermissionLevel.NONE
                         
-                execute_command(command, client, user, role, args)
+                execute_command(
+                    command_str=command, 
+                    socket=client,
+                    user=user,
+                    user_perms=role,
+                    args=args
+                    )
+                
                 continue
             
 
