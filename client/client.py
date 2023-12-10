@@ -97,7 +97,7 @@ config_ver_yml          = data['config_ver']
 
 langs                   = ["de_DE", "en_US"]
 verified_list           = []
-notification            = Notify(default_notification_application_name="Strawberry Chat")
+notification            = Notify() #default_notification_application_name="Strawberry Chat"
 
 api                     = "https://api.strawberryfoundations.xyz/v1/"
 
@@ -499,10 +499,12 @@ def receive(sock):
                                 
                                 if enable_notifications:
                                     try:
+                                        notify_title       = message["title"]
                                         notify_content     = message["content"]
                                         notify_username    = message["username"]
                                         notify_useravatar  = message["avatar_url"]
                                         
+                                        notification.application_name = notify_title
                                         notification.title = notify_username
                                         notification.message = notify_content
                                         notification.icon = "./notification.png"
