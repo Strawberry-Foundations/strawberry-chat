@@ -6,7 +6,9 @@ enable_notifications: true
 enable_terminal_bell: true
 experimental_debug_mode: false
 extreme_debug_mode: false
-config_ver: 4
+recv_allowed_bytes: 8192
+config_ver: 5
+
 
 networking:
   online_mode: true
