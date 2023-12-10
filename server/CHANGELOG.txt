@@ -8,3 +8,4 @@
 - UPDATE: Cleanup & code formatting improvements
 
 - MODULARITY: Moved open_blacklist() to src.functions
+- MODULARITY: Moved userNickname, isMuted, isAccountEnabled to src.functions
