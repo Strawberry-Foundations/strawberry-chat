@@ -352,8 +352,8 @@ def clientRegister(client: socket.socket, login_cur: sql.Connection, sender: Cli
         sender.send(f"{YELLOW + Colors.BOLD}Please use only letters, numbers, dots or underscores{RESET + Colors.RESET}\n")    
         clientRegister(client, login_cur, sender, wait=True)
 
-    # if username is longer than 32 characters, return an error message and start from the beginning
-    if len(registered_username) > 32:
+    # if username is longer than max_username_length (default: 32) characters, return an error message and start from the beginning
+    if len(registered_username) > max_username_length:
         sender.send(f"{YELLOW + Colors.BOLD}Your username is too long{RESET + Colors.RESET}\n")    
         clientRegister(client, login_cur, sender, wait=True)
         
@@ -395,8 +395,8 @@ def clientRegister(client: socket.socket, login_cur: sql.Connection, sender: Cli
         sender.send(f"{YELLOW + Colors.BOLD}Your password must not contain spaces{RESET + Colors.RESET}\n")    
         clientRegister(client, login_cur, sender, wait=True)
         
-    # if password is longer than 32 characters, return an error message and start from the beginning
-    if len(registered_password) > 32:
+    # if password is longer than max_password_length (default: 256) characters, return an error message and start from the beginning
+    if len(registered_password) > max_password_length:
         sender.send(f"{YELLOW + Colors.BOLD}Your password is too long{RESET + Colors.RESET}\n")    
         clientRegister(client, login_cur, sender, wait=True)
     
