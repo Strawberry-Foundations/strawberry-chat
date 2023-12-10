@@ -40,6 +40,7 @@ from src.commands.admin import      broadcast_cmd, mute, ban, kick, \
 
 from src.commands.etc import        test_command, news, delaccount
 
+
 if "--enable-messages" in sys.argv: enable_messages = True
 if "--debug-mode" in sys.argv: debug_mode = True
 if "--test-mode" in sys.argv: test_mode = True
@@ -70,12 +71,7 @@ else:
     print(f"{YELLOW + Colors.BOLD}>>> {RESET}Restart your server to connect to your new database.")
     exit()
 
-# Blacklisted word functions
-def open_blacklist():
-    with open(server_dir + "/blacklist.txt", "r") as f:
-        for word in f:
-            word = word.strip().lower()
-            blacklist.add(word)
+
 
 # Check if blacklist exists
 if os.path.exists(server_dir + "/blacklist.txt"):
