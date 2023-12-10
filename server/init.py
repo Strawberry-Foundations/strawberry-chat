@@ -376,6 +376,7 @@ max_users               = config['config']['max_users']
 max_registered_users    = config['config']['max_registered_users']
 max_username_length     = config['config']['max_username_length']
 max_password_length     = config['config']['max_password_length']
+recv_allowed_bytes      = config['config']['recv_allowed_bytes']
 
 debug_mode              = config['flags']['debug_mode']
 online_mode             = config['flags']['online_mode']
