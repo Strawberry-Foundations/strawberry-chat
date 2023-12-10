@@ -308,6 +308,7 @@ def client_thread(client):
             break
 
 def clientRegister(client, login_cur, sender):
+    time.sleep(.1)
     # Send a welcome message
     sender.send(f"{MAGENTA + Colors.BOLD + Colors.UNDERLINE}Welcome!{RESET + Colors.RESET}\n        {Colors.BOLD}Register, to chat with us!{Colors.RESET}")
 
@@ -341,7 +342,7 @@ def clientRegister(client, login_cur, sender):
             clientRegister(client, login_cur, sender)
             
         # If username is in this set of blacklisted words, return an error message and start from the beginning
-        elif uname in ["exit", "register", "login"]:
+        elif uname in ["exit", "register", "login", "sid"]:
             sender.send(f"{YELLOW + Colors.BOLD}This username is not allowed{RESET + Colors.RESET}\n")    
             clientRegister(client, login_cur, sender)
     
