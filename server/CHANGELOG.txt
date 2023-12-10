@@ -2,6 +2,7 @@
 
 - NEW: Added input_regen_database() function from main branch
 - NEW: Removed signing configuration
+- NEW: Added special_messages from main branch
 
 - FIX: Fixed Connection refused when starting Strawberry Chat v1.8.2 (#119)
 
