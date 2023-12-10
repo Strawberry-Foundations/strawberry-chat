@@ -204,12 +204,9 @@ def clientThread(client):
 
             # Blacklisted Word System
             client_cur.execute('SELECT role, enable_blacklisted_words FROM users WHERE username = ?', (user,))    
-            res = client_cur.fetchone()
+            result = client_cur.fetchone()
             
-            if res[0] == "admin" or res[0] == "bot" or res[1] == "false":
-                pass
-            
-            else:
+            if not (result[0] == "admin" or result[0] == "bot" or result[1] == "false"):
                 for word in message.split():
                     word = word.lower()
                     
