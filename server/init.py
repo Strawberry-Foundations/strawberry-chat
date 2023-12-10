@@ -2,7 +2,6 @@ import os
 import yaml
 import requests
 import logging
-import datetime
 
 from enum import Enum
 from yaml import SafeLoader
@@ -14,6 +13,9 @@ from src.vars import chat_name, short_ver, codename, server_edition, api
 # Path of init.py
 server_dir = os.path.dirname(os.path.realpath(__file__))
 
+# Open Configuration
+with open(server_dir + "/config.yml") as config_data:
+    config = yaml.load(config_data, Loader=SafeLoader)
 
 # StbTypes, required for the debug_logger
 class StbTypes(Enum):
@@ -84,23 +86,23 @@ def debug_logger(error_message, error_code, type: StbTypes = StbTypes.ERROR):
     else:
         None
 
+"""
+    --- Initial Strawberry Chat Startup ---
+"""
+
 # Startup title
 print(f"{CYAN + Colors.BOLD}* -- {chat_name} v{short_ver} {codename} ({server_edition}) -- *{RESET + Colors.RESET}")
-
-# Open Configuration
-with open(server_dir + "/config.yml") as config_data:
-    config = yaml.load(config_data, Loader=SafeLoader)
 
 
 # Configuration
 ipaddr                  = config['server']['address']
 port                    = config['server']['port']
+update_channel          = config['server']['update_channel']
 
 enable_messages         = config['flags']['enable_messages']
 max_message_length      = config['flags']['max_message_length']
 debug_mode              = config['flags']['debug_mode']
 online_mode             = config['flags']['online_mode']
-update_channel          = config['server']['update_channel']
 
 # Log configuration
 log             = logging.getLogger("LOG")
