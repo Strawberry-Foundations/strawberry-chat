@@ -188,6 +188,8 @@ def client_thread(client):
             except Exception as e:
                 log.warning(LogMessages.transmission_error)
                 debug_logger(e, stbexceptions.transmition_error, type=StbTypes.WARNING)
+                sender.close(del_address=True, del_user=True, call_exit=True)
+                
                 return
             
             client_cur = db.cursor()
