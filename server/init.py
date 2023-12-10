@@ -9,7 +9,7 @@ from yaml import SafeLoader
 from colorama import Style
 
 from src.colors import *
-from src.vars import chat_name, short_ver, codename, server_edition
+from src.vars import chat_name, short_ver, codename, server_edition, api
 
 # Path of init.py
 server_dir = os.path.dirname(os.path.realpath(__file__))
@@ -131,7 +131,7 @@ log.addHandler(log_fh)
 
 # Receive your global ip address for verification
 def get_global_ip():
-    response    = requests.get('https://api.ipify.org?format=json')
+    response    = requests.get(api + 'utils/user/ip')
     data        = response.json()
     return data['ip']
 
