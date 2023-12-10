@@ -366,14 +366,16 @@ port                    = config['server']['port']
 update_channel          = config['server']['update_channel']
 
 enable_messages         = config['flags']['enable_messages']
-max_message_length      = config['flags']['max_message_length']
 
 enable_queue            = config['flags']['enable_queue']
 admins_wait_queue       = config['flags']['admins_wait_queue']
 bots_wait_queue         = config['flags']['bots_wait_queue']
 
-max_users               = config['flags']['max_users']
-max_registered_users    = config['flags']['max_registered_users']
+max_message_length      = config['config']['max_message_length']
+max_users               = config['config']['max_users']
+max_registered_users    = config['config']['max_registered_users']
+max_username_length     = config['config']['max_username_length']
+max_password_length     = config['config']['max_password_length']
 
 debug_mode              = config['flags']['debug_mode']
 online_mode             = config['flags']['online_mode']
