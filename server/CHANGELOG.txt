@@ -3,3 +3,4 @@
 - NEW: Removed signing configuration
 - FIX: Fixed Connection refused when starting Strawberry Chat v1.8.2 (#119)
 - UPDATE: Cleanup & code formatting improvements
+- MODULARITY: Moved open_blacklist() to src.functions
