@@ -208,16 +208,16 @@ def clientThread(client):
             
             if not (result[0] == "admin" or result[0] == "bot" or result[1] == "false"):
                 for word in message.split():
-                    word = word.lower()
-                    
-                    if word in blacklist:
+                    if word.lower() in blacklist:
                         client.send(f"{YELLOW + Colors.BOLD}Please be friendlier in the chat. Rejoin when you feel ready!{RESET + Colors.RESET}".encode("utf8"))
                         client.close()
-                        
-                    else:
-                        pass
         
-            # Global Command Executor
+            """
+            --- Global Command Executor ---
+            This part of the code processes all slash commands.
+            A command with the arguments is built up here and executed at the end. 
+            """
+            
             if message.startswith("/"):
                 message = message[1:]
                 args = message.split()
