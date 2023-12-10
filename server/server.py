@@ -348,13 +348,17 @@ def clientRegister(client, login_cur, sender, wait: bool = False):
         sender.send(f"{YELLOW + Colors.BOLD}Your username must not contain spaces{RESET + Colors.RESET}\n")    
         clientRegister(client, login_cur, sender, wait=True)
         
+    if len(registered_username) > 32:
+        sender.send(f"{YELLOW + Colors.BOLD}Your username is too long{RESET + Colors.RESET}\n")    
+        clientRegister(client, login_cur, sender, wait=True)
+        
     # If username is in blacklisted words, return an error message and start from the beginning
     if registered_username.lower() in blacklist:
         sender.send(f"{YELLOW + Colors.BOLD}This username is not allowed{RESET + Colors.RESET}\n")    
         clientRegister(client, login_cur, sender, wait=True)
         
     # If username is in this set of blacklisted words, return an error message and start from the beginning
-    elif registered_username.lower() in ["exit", "register", "login", "sid"]:
+    if registered_username.lower() in ["exit", "register", "login", "sid"]:
         sender.send(f"{YELLOW + Colors.BOLD}This username is not allowed{RESET + Colors.RESET}\n")    
         clientRegister(client, login_cur, sender, wait=True)
     
