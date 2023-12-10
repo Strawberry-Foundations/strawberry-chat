@@ -7,11 +7,7 @@ import time
 
 app = Flask(__name__)
 
-def currentTime():
-    now = datetime.datetime.now()
-    formattedTime = now.strftime("%H:%M")
-    return formattedTime
-
+def current_time(): return datetime.datetime.now().strftime("%H:%M")
 
 @app.route('/')
 def index():
@@ -44,8 +40,8 @@ def recv():
             message = clientSocket.recv(2048).decode()
                 
             if message:
-                yield escape_ansi(f"data: [{currentTime()}] {message}\n\n")
-                print(escape_ansi(f"data: [{currentTime()}] {message}"))
+                yield escape_ansi(f"data: [{current_time()}] {message}\n\n")
+                print(escape_ansi(f"data: [{current_time()}] {message}"))
                 
             else:
                 break
