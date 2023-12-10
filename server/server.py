@@ -657,10 +657,8 @@ def server_commands(socket):
 
 def main():
     try:
-        if test_mode:
-            port = 49200
-        else:
-            port = config['server']['port']
+        if test_mode: port = 49200
+        else: port = config['server']['port']
             
         atexit.register(cleanup)
         
@@ -672,6 +670,7 @@ def main():
         if test_mode:
             print(f"{YELLOW + Colors.BOLD}>>> Enabled test mode{RESET + Colors.RESET}")
             print(f"{GREEN + Colors.BOLD}>>> {RESET}Server is running on {ipaddr}:{port}{RESET + Colors.RESET}")
+            
             _connection_debug = threading.Thread(target=connectionThread, args=(server_socket,), daemon=True)
             _connection_debug.start()
             time.sleep(10)
