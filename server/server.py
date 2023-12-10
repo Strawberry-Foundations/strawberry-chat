@@ -181,35 +181,30 @@ def clientThread(client):
                 debug_logger(e, stbexceptions.transmition_error, type=StbTypes.WARNING)
                 return
             
-            message_length = len(message)
-            
-            clcur = db.cursor()
+            client_cur = db.cursor()
 
-            clcur.execute('SELECT role FROM users WHERE username = ?', (user,))    
-            res = clcur.fetchone()
+            client_cur.execute('SELECT role FROM users WHERE username = ?', (user,))    
+            res = client_cur.fetchone()
                     
             # Message length control system
             rnd = random.randint(0, 2)
             
             c = db.cursor()
             
-            if res[0] == "bot":
-                pass
-            
-            else:
-                if message_length > max_message_length:
-                    if rnd == 0:
-                        client.send(f"{YELLOW + Colors.BOLD}Your message is too long.{RESET + Colors.RESET}".encode("utf8"))
-                        
-                    elif rnd == 1:
-                        client.send(f"{YELLOW + Colors.BOLD}boah digga halbe bibel wer liest sich das durch{RESET + Colors.RESET}".encode("utf8"))
-                        
-                    elif rnd == 2:
-                        client.send(f"{YELLOW + Colors.BOLD}junge niemand will sich hier die herr der ringe trilogie durchlesen{RESET + Colors.RESET}".encode("utf8"))
+            if not res[0] == "bot": 
+                if len(message) > max_message_length:
+                    if special_messages:
+                        rnd = random.randint(0, 2)
+                        match rnd:
+                            case 0: client.send(f"{YELLOW + Colors.BOLD}Your message is too long.{RESET + Colors.RESET}".encode("utf8"))
+                            case 1: client.send(f"{YELLOW + Colors.BOLD}boah digga halbe bibel wer liest sich das durch{RESET + Colors.RESET}".encode("utf8"))
+                            case 2: client.send(f"{YELLOW + Colors.BOLD}junge niemand will sich hier die herr der ringe trilogie durchlesen{RESET + Colors.RESET}".encode("utf8"))
+                            
+                    else: client.send(f"{YELLOW + Colors.BOLD}Your message is too long.{RESET + Colors.RESET}".encode("utf8"))
 
             # Blacklisted Word System
-            clcur.execute('SELECT role, enable_blacklisted_words FROM users WHERE username = ?', (user,))    
-            res = clcur.fetchone()
+            client_cur.execute('SELECT role, enable_blacklisted_words FROM users WHERE username = ?', (user,))    
+            res = client_cur.fetchone()
             
             if res[0] == "admin" or res[0] == "bot" or res[1] == "false":
                 pass
