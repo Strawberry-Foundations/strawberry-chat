@@ -22,7 +22,7 @@
 - NEW: Added error handling if address is already in use
 - NEW: Added system notification when receiving an dm (#116)
 - NEW: Added specific restrictions for username (only lowercase, a - z, 0 - 9, dots, underscore) (#122)
-
+- NEW: Added username length checking
 - NEW: Removed afk message blocker
 
 
