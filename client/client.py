@@ -98,7 +98,7 @@ config_ver_yml          = data['config_ver']
 
 langs                   = ["de_DE", "en_US"]
 verified_list           = []
-notification            = Notify() #default_notification_application_name="Strawberry Chat"
+notification            = Notify()
 
 api                     = "https://api.strawberryfoundations.xyz/v1/"
 
