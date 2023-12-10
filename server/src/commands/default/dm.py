@@ -171,6 +171,17 @@ def dm_command(socket: _socket.socket, user: User, args: list, sender: ClientSen
                         }
                         
                         to_sent[user.username].send(send_json(json_builder).encode("utf-8"))
+                        
+                        notification_builder = {
+                            "message_type": "stbchat_notification",
+                            "title": "Strawberry Chat (Direct message)",
+                            "username": f"@{user.username}",
+                            "avatar_url": userAvatarUrl(user.username),
+                            "content": f"{escape_ansi(msg)}",
+                            "bell": True
+                        }
+
+                        to_sent[user.username].send(send_json(notification_builder).encode('utf8'))
 
                 except OSError:
                     return
