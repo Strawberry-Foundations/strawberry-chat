@@ -631,9 +631,15 @@ def main():
         
         server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        server_socket.bind((ipaddr, port))
-        server_socket.listen()
         
+        try:
+            server_socket.bind((ipaddr, port))
+            server_socket.listen()
+            
+        except OSError:
+            print(f"{RED + Colors.BOLD}ERROR: {RESET}Address already in use ({MAGENTA}{ipaddr}:{port}{RESET})")
+            exit(1)
+            
         if test_mode:
             print(f"{YELLOW + Colors.BOLD}>>> Enabled test mode{RESET + Colors.RESET}")
             print(f"{GREEN + Colors.BOLD}>>> {RESET}Server is running on {ipaddr}:{port}{RESET + Colors.RESET}")
