@@ -23,6 +23,7 @@
 - NEW: Added system notification when receiving an dm (#116)
 - NEW: Added specific restrictions for username (only lowercase, a - z, 0 - 9, dots, underscore) (#122)
 - NEW: Added username length checking
+- NEW: Added max_username_length & max_password_length config + moved some values to config yml
 - NEW: Removed afk message blocker
 
 
