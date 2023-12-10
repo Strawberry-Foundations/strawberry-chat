@@ -7,7 +7,21 @@ import time
 
 app = Flask(__name__)
 
+# Return current time
 def current_time(): return datetime.datetime.now().strftime("%H:%M")
+
+# Escape ansi from a string
+def escape_ansi(string: str): return re.compile(r'(?:\x1B[@-_]|[\x80-\x9F])[0-?]*[ -/]*[@-~]').sub('', string)
+
+# Convert raw input to json data
+def conv_json_data(data): return json.loads(data)
+
+# Handle user badges
+def badge_handler(badge):
+    if not badge == "":
+        return " [" + badge + "]"
+    else:
+        return ""
 
 @app.route('/')
 def index():
@@ -38,10 +52,30 @@ def recv():
     while threadFlag:
         try:
             message = clientSocket.recv(2048).decode()
-                
+            
+            try:
+                message = conv_json_data(message)
+            except:
+                message = message
+            
             if message:
+                try:
+                    message_type = message["message_type"]
+                    
+                except Exception as e:
+                    message_type = "unknown"    
+                    continue
+                
+                match message_type:
+                    case "user_message":
+                        username    = message["username"]
+                        nickname    = message["nickname"]
+                        badge       = badge_handler(message["badge"])
+                        role_color  = message["role_color"]
+                        message     = message["message"]["content"]
+                            
                 yield escape_ansi(f"data: [{current_time()}] {message}\n\n")
-                print(escape_ansi(f"data: [{current_time()}] {message}"))
+                print(escape_ansi(f"data: [{current_time()}] {message} --> {username}"))
                 
             else:
                 break
