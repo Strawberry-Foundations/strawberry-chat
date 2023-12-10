@@ -307,7 +307,15 @@ def client_thread(client):
             broadcast(f"{Colors.GRAY + Colors.BOLD}<--{Colors.RESET} {userRoleColor(user.username)}{user.username}{YELLOW + Colors.BOLD} has left the chat room!{RESET + Colors.RESET}")
             break
 
-def clientRegister(client, login_cur, sender):
+def clientRegister(client, login_cur, sender, wait: bool = False):
+    def contains_whitespace(username):
+        for c in username:
+            if c == " ":
+                return True
+        return False
+    
+    if wait: time.sleep(1)
+    
     time.sleep(.1)
     # Send a welcome message
     sender.send(f"{MAGENTA + Colors.BOLD + Colors.UNDERLINE}Welcome!{RESET + Colors.RESET}\n        {Colors.BOLD}Register, to chat with us!{Colors.RESET}")
@@ -331,20 +339,20 @@ def clientRegister(client, login_cur, sender):
     # If username is exit, exit the registration process 
     if registered_username.lower() == "exit":
         sender.close(log_exit=True, del_address=True)
-    
-    # Check if the username is allowed
-    for uname in registered_username.split():
-        uname = uname.lower()
+
+    if contains_whitespace(registered_username):
+        sender.send(f"{YELLOW + Colors.BOLD}Your username must not contain spaces{RESET + Colors.RESET}\n")    
+        clientRegister(client, login_cur, sender, wait=True)
         
-        # If username is in blacklisted words, return an error message and start from the beginning
-        if uname in blacklist:
-            sender.send(f"{YELLOW + Colors.BOLD}This username is not allowed{RESET + Colors.RESET}\n")    
-            clientRegister(client, login_cur, sender)
-            
-        # If username is in this set of blacklisted words, return an error message and start from the beginning
-        elif uname in ["exit", "register", "login", "sid"]:
-            sender.send(f"{YELLOW + Colors.BOLD}This username is not allowed{RESET + Colors.RESET}\n")    
-            clientRegister(client, login_cur, sender)
+    # If username is in blacklisted words, return an error message and start from the beginning
+    if registered_username.lower() in blacklist:
+        sender.send(f"{YELLOW + Colors.BOLD}This username is not allowed{RESET + Colors.RESET}\n")    
+        clientRegister(client, login_cur, sender, wait=True)
+        
+    # If username is in this set of blacklisted words, return an error message and start from the beginning
+    elif registered_username.lower() in ["exit", "register", "login", "sid"]:
+        sender.send(f"{YELLOW + Colors.BOLD}This username is not allowed{RESET + Colors.RESET}\n")    
+        clientRegister(client, login_cur, sender, wait=True)
     
     # Check if the username is already in use
     try:
@@ -356,7 +364,7 @@ def clientRegister(client, login_cur, sender):
             
             if registered_username == used_usernames:
                 sender.send(f"{YELLOW + Colors.BOLD}This username is already in use!{RESET + Colors.RESET}\n")    
-                clientRegister(client, login_cur, sender)
+                clientRegister(client, login_cur, sender, wait=True)
                 
         except: pass
 
@@ -369,13 +377,17 @@ def clientRegister(client, login_cur, sender):
     sender.send(f"{GREEN + Colors.BOLD}Password: {RESET + Colors.RESET}")
     registered_password = client.recv(2048).decode("utf8")
     
+    if contains_whitespace(registered_password):
+        sender.send(f"{YELLOW + Colors.BOLD}Your password must not contain spaces{RESET + Colors.RESET}\n")    
+        clientRegister(client, login_cur, sender, wait=True)
+    
     # Confirm the new password
     sender.send(f"{GREEN + Colors.BOLD}Confirm Password: {RESET + Colors.RESET}")
     confirm_password = client.recv(2048).decode("utf8")
     
     # If passwords does not match, return an error message
     if registered_password != confirm_password:
-        sender.send(f"{RED + Colors.BOLD}Passwords do not match{RESET + Colors.RESET}")
+        sender.send(f"{RED + Colors.BOLD}Passwords do not match{RESET + Colors.RESET}\n")
         clientRegister(client, login_cur, sender)
     
     # Ask and receive role color
