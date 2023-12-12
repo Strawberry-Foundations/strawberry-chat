@@ -21,7 +21,7 @@ from yaml import SafeLoader
 import requests
 import urllib3
 
-from notifypy import Notify
+from notifier import Notifier
 
 if sys.platform == "linux":
     import readline
@@ -100,7 +100,7 @@ langs                   = ["de_DE", "en_US"]
 verified_list           = []
 
 # todo: fork notifypy and make a better and newer version of it 
-notification            = Notify()
+notification            = Notifier(default_notification_icon_legacy="./notification.ico")
 
 api                     = "https://api.strawberryfoundations.xyz/v1/"
 
