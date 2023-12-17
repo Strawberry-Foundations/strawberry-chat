@@ -23,7 +23,8 @@ config_ver              = 6
 
 username_allowed_characters = "abcdefghijklmnopqrstuvwxyz0123456789._"
 
-MESSAGE_SEPARATOR = b'\x1e'
+# MESSAGE_SEPARATOR = b'\x1e'
+MESSAGE_SEPARATOR = ''
 
 
 # SQL table query
