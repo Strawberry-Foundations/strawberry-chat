@@ -482,6 +482,8 @@ def receive(sock):
                     if extreme_debug_mode:
                         print(f"{RED + BOLD}[!] {YELLOW}Splitting failed{CRESET}: {RED + BOLD}{e}{CRESET}")
 
+                
+
                 try:
                     message = conv_json_data(message)
                     
