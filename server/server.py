@@ -661,7 +661,7 @@ def broadcast(message, sent_by="", format: StbCom = StbCom.PLAIN):
                         }
                     }
                     
-                    user.send(send_json(json_builder).encode("utf-8"))
+                    user.send(send_json(json_builder).encode("utf-8")  + MESSAGE_SEPARATOR)
                     
                 except BrokenPipeError as e:
                     debug_logger(e, stbexceptions.broken_pipe_warning, type=StbTypes.WARNING)
@@ -727,7 +727,7 @@ def broadcast(message, sent_by="", format: StbCom = StbCom.PLAIN):
                                             "bell": True
                                         }
                                         
-                                    to_sent.send(send_json(notification_builder).encode('utf8'))
+                                    to_sent.send(send_json(notification_builder).encode('utf8') + MESSAGE_SEPARATOR)
                             
                             else:
                                 pass
@@ -749,7 +749,7 @@ def broadcast(message, sent_by="", format: StbCom = StbCom.PLAIN):
                                 }
                             }
                             
-                            user.send(send_json(json_builder).encode('utf8'))
+                            user.send(send_json(json_builder).encode('utf8') + MESSAGE_SEPARATOR)
                             
                         except BrokenPipeError: pass
                     else: pass
