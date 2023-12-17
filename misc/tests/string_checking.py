@@ -8,7 +8,7 @@ def check_and_split(input_string, substring):
         return None, None
 
 # Beispiel-Nutzung
-input_string = '{"message_type": "stbchat_backend", "user_meta": {"username": "Julian"}}{"message_type": "system_message", "message": {"content": "\u001b[36m\u001b[1mWelcome back Julian! Nice to see you!\u001b[39m\u001b[0m"}}'
+input_string = '{"message_type": "stbchat_backend", "user_meta": {"username": "Julian"}}{"message_type": "system_message", "message": {"content": "Welcome back Julian! Nice to see you!"}}'
 substring = "}}"
 
 part_before, part_after = check_and_split(input_string, substring)
