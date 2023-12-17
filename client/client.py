@@ -53,6 +53,8 @@ UNDERLINE       = '\033[4m'
 CRESET          = '\033[0m'
 GRAY            = "\033[90m"
 
+MESSAGE_SEPARATOR = '\x1e'
+
 # Path of client.py
 client_dir = os.path.dirname(os.path.realpath(__file__))
 
@@ -450,15 +452,44 @@ def receive(sock):
     
     # Check if compatibility mode is not enabled
     if not compatibility_mode: 
+        buffer = b''
+
         while thread_flag:
             # Comment this for debugging purposes
             try:
                 message = sock.recv(int(recv_allowed_bytes)).decode('utf-8')
+                
+                try:
+                    d_message = message.split(MESSAGE_SEPARATOR)
+                    
+                    if len(d_message) > 1:
+                        if d_message[1] == "":
+                            if extreme_debug_mode and experimental_debug_mode:
+                                print(f"\n{GREEN + BOLD}[!] {YELLOW}Received JSON with MESSAGE_SEPARATOR character{CRESET}")
+                            
+                        else:
+                            if extreme_debug_mode:
+                                print(f"\n{RED + BOLD}[!] {YELLOW}Found malformed json{CRESET}")
+                                print(f"↳ {YELLOW + BOLD}Received data: {d_message}{CRESET}")
+                                print(f"↳ {YELLOW + BOLD}Index Length: {len(d_message)}{CRESET}")   
+                                print(f"↳ {YELLOW + BOLD}Splitted (Index: 0): {d_message[0]}{CRESET}")   
+                                print(f"↳ {YELLOW + BOLD}Splitted (Index: 1): {d_message[1]}{CRESET}\n")   
+                    
+                    message = d_message[0]
+                    
+                except Exception as e: 
+                    if extreme_debug_mode:
+                        print(f"{RED + BOLD}[!] {YELLOW}Splitting failed{CRESET}: {RED + BOLD}{e}{CRESET}")
 
                 try:
                     message = conv_json_data(message)
-                except:
+                    
+                except Exception as e:
+                    if extreme_debug_mode:
+                        print(f"{RED + BOLD}[!] {YELLOW}JSON Convert failed{CRESET}: {RED + BOLD}{e}{CRESET}")
+                        
                     message = message
+               
                 
                 # todo: stbmv2.1 (?)
                 if message:
@@ -525,7 +556,7 @@ def receive(sock):
                                 
                                 if extreme_debug_mode:
                                     print(f"{YELLOW + BOLD}Received client meta data{CRESET}")
-                                    print(f"↳ {YELLOW + BOLD}Username:{CRESET + GRAY} {ClientMeta.username}{CRESET}")
+                                    print(f"↳ {YELLOW + BOLD}Username:{CRESET + GRAY} {ClientMeta.username}{CRESET}\n")
                                 
                             case "system_message":
                                 message = message["message"]["content"]
