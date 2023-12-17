@@ -568,7 +568,7 @@ def clientLogin(client):
                         }
                     }
                 
-                client.send(send_json(backend_builder).encode("utf-8"))
+                client.send(send_json(backend_builder).encode("utf-8") + MESSAGE_SEPARATOR)
                 
                 if enable_queue and not max_users == -1:
                     if len(users) >= max_users:
