@@ -53,7 +53,8 @@ UNDERLINE       = '\033[4m'
 CRESET          = '\033[0m'
 GRAY            = "\033[90m"
 
-MESSAGE_SEPARATOR = '\x1e'
+# MESSAGE_SEPARATOR = '\x1e'
+MESSAGE_SEPARATOR = ''
 
 # Path of client.py
 client_dir = os.path.dirname(os.path.realpath(__file__))
