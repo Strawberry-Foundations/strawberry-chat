@@ -11,7 +11,7 @@ from yaml import SafeLoader
 from colorama import Style
 
 from src.colors import *
-from src.vars import chat_name, short_ver, codename, server_edition, api
+from src.vars import chat_name, short_ver, codename, server_edition, api, MESSAGE_SEPARATOR
 
 import socket as _socket
 
@@ -157,7 +157,7 @@ class ClientSender:
             }
         }
         
-        self.socket.send(self.send_json(json_builder).encode('utf8'))
+        self.socket.send(self.send_json(json_builder).encode('utf8') + MESSAGE_SEPARATOR)
     
     def close(self, call_exit: bool = True, del_address: bool = False, del_user: bool = False, log_exit: bool = False):
         if log_exit: log.info(LogMessages.address_left % addresses[self.socket][0])
