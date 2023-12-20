@@ -890,6 +890,7 @@ def main():
             
             _connection = threading.Thread(target=connection_thread, args=(server_socket,))
             _connection.start()
+            _connection.join()
             
             # try:
             #     _cmd = threading.Thread(target=server_commands, args=(server_socket,))
