@@ -42,6 +42,7 @@ class LogMessages:
     queue_left          = "%s (%s) left the queue"
     queue_join          = "%s (%s) is now in the queue"
     connected           = "%s has connected"
+    connected_rlm       = "%s (ratelimited) has connected"
     login               = "%s (%s) logged in"
     login_error         = "A login error with %s occured!"
     communication_error = "A communication error with %s (%s) occured!"
@@ -144,6 +145,7 @@ Class & functions for sending json-messages to clients
 class ClientSender:
     def __init__(self, socket):
         self.socket = socket
+        self.address = addresses[socket][0]
         
     def send_json(self, data): return json.dumps(data)
     
@@ -419,14 +421,16 @@ Example:
 }
 """
 
-user_index      = {}
+user_index       = {}
 
-queue           = Queue()
-users           = {}
-addresses       = {}
-user_logged_in  = {}
-blacklist       = set()
-user_dm_screen  = {}
+queue            = Queue()
+users            = {}
+addresses        = {}
+user_logged_in   = {}
+blacklist        = set()
+user_dm_screen   = {}
+connection_count = {}
+ignore_list      = {}
 
 
 if os.environ.get("LOG_LEVEL") is not None:
