@@ -100,7 +100,7 @@ news_text = f"""{GREEN +  Colors.UNDERLINE + Colors.BOLD}{chat_name} News - {sho
 
 
 # Main Thread for handling user connetions
-def connection_thread(sock):
+def connection_thread(sock: socket.socket):
     while True:
         try:
             # Accept new connections
@@ -112,14 +112,51 @@ def connection_thread(sock):
             
             break
         
-        log.info(LogMessages.connected % address[0])
-        
         # Asign newly client's value in addresses to newly connected address
         addresses[client] = address
-        threading.Thread(target=client_thread, args=(client,)).start()
+
+        
+        if address[0] in ignore_list:
+            log.info(LogMessages.connected_rlm % address[0])
+            json_builder = {
+                    "message_type": StbCom.SYS_MSG,
+                    "message": {
+                        "content": f"{RED + Colors.BOLD}You have been ratelimited due to spam activity. Please try again later{Colors.RESET}"
+                    }
+                }
+            
+            client.send(send_json(json_builder).encode("utf-8"))
+            client.close()
+            
+            del addresses[client]
+        
+        else:
+            if address[0] in connection_count:
+                connection_count[address[0]] += 1
+                
+                if connection_count[address[0]] >= 10:
+                    log.warning(f"IP address {address[0]} has reached its connection limit. Blocking IP address")
+                    ignore_list[address[0]] = time.time()                
+                    client.close()
+                    
+                    del addresses[client]
+                    
+                else:
+                    connection_count[address[0]] += 1
+                    
+                    log.info(LogMessages.connected % address[0])
+                    threading.Thread(target=client_thread, args=(client,)).start()
+                
+            else:
+                connection_count[address[0]] = 0
+                connection_count[address[0]] += 1
+                
+                log.info(LogMessages.connected % address[0])
+                threading.Thread(target=client_thread, args=(client,)).start()
+                
 
 
-def client_thread(client):
+def client_thread(client: socket.socket):
     sender  = ClientSender(client)
     user    = User(client)
     address = addresses[client][0]
@@ -128,7 +165,11 @@ def client_thread(client):
     if user.address in banned_ips:
         sender.send(f"{RED + Colors.BOLD}Sorry, you're not allowed to connect to this server.{Colors.RESET}")
         sender.close(log_exit=True, del_address=True, call_exit=True)
-    
+        
+    if user.address in ignore_list:
+        if not time.time() - ignore_list[user.address] > 300:
+            # sender.send(f"{RED + Colors.BOLD}You have been ratelimited due to spam activity. Please try again later{Colors.RESET}")
+            sender.close(log_exit=True, del_address=True, call_exit=False)
     
     try:
         _username = user.login(clientLogin(client))
@@ -139,6 +180,8 @@ def client_thread(client):
             sender.close(log_exit=True, del_address=True, call_exit=True)
             
         user.system_register()
+        del ignore_list[user.address]
+        del connection_count[user.address]
             
     except Exception as e:
         log.error(LogMessages.login_error % address)
@@ -304,7 +347,7 @@ def client_thread(client):
                 
             except Exception as e:
                 log.warning(LogMessages.stc_error)
-                debug_logger(e, stbexceptions.stc_error, type=StbTypes.WARNING)
+                debug_logger(e, stbexceptions.stc_error, type=StbTypes.WARNING)        
             
             broadcast(f"{Colors.GRAY + Colors.BOLD}<--{Colors.RESET} {userRoleColor(user.username)}{user.username}{YELLOW + Colors.BOLD} has left the chat room!{RESET + Colors.RESET}")
             break
@@ -506,6 +549,7 @@ def clientLogin(client):
     logged_in   = False
     login_cur   = db.cursor()
     
+    
     welcome_message_base = f"{Colors.RESET + Colors.BOLD}Welcome to Strawberry Chat!{Colors.RESET}"
     welcome_message_ext  = f"{Colors.BOLD}New here? Type '{MAGENTA}Register{RESET}' to register! You want to leave? Type '{MAGENTA}Exit{RESET}' {Colors.RESET}"
     
@@ -668,7 +712,7 @@ def broadcast(message, sent_by="", format: StbCom = StbCom.PLAIN):
                     log.warning(LogMessages.invalid_sessions_w)
 
         else:
-            for user in users:
+            for user in users:                
                 ansi_reset_count += 1 
                 
                 try: 
@@ -779,7 +823,7 @@ def cleanup(info_msg=True):
     
 def server_commands(socket):
     while True:
-        command = input(f"")
+        command = "input(f"")"
         
         if command == "help":
             print(server_help_section)
