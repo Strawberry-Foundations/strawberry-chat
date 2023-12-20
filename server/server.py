@@ -891,12 +891,12 @@ def main():
             _connection = threading.Thread(target=connection_thread, args=(server_socket,))
             _connection.start()
             
-            try:
-                _cmd = threading.Thread(target=server_commands, args=(server_socket,))
-                _cmd.start()
-                _cmd.join()
+            # try:
+            #     _cmd = threading.Thread(target=server_commands, args=(server_socket,))
+            #     _cmd.start()
+            #     _cmd.join()
                 
-            except KeyboardInterrupt: pass
+            # except KeyboardInterrupt: pass
 
             cleanup()
             server_socket.close()
