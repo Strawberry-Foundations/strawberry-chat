@@ -180,8 +180,11 @@ def client_thread(client: socket.socket):
             sender.close(log_exit=True, del_address=True, call_exit=True)
             
         user.system_register()
-        del ignore_list[user.address]
-        del connection_count[user.address]
+        
+        if user.address in ignore_list:
+            del ignore_list[user.address]
+        if user.address in connection_count:
+            del connection_count[user.address]
             
     except Exception as e:
         log.error(LogMessages.login_error % address)
