@@ -571,6 +571,7 @@ def strawberryIdLogin(client, login_cur: sql.Cursor):
                     
                     try:
                         login_cur.execute("UPDATE users SET strawberry_id = ? WHERE username = ?", (_data['data']['username'], username,))
+                        db.commit()
                         
                     except Exception as e:
                         log.error(LogMessages.sql_error)
