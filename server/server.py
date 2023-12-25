@@ -944,7 +944,10 @@ def main():
         
         
         if test_mode:
-            print(f"{YELLOW + Colors.BOLD}>>> Enabled test mode{RESET + Colors.RESET}")
+            print(f"\n{Colors.BOLD}  {CYAN}* ------------- TEST MODE ------------ *{RESET + Colors.RESET}")
+            print(f"{Colors.BOLD}  {CYAN}|{RESET}  You enabled test mode. This should  {CYAN}|{RESET + Colors.RESET}")
+            print(f"{Colors.BOLD}  {CYAN}|{RESET} only be used in testing environments {CYAN}|{RESET + Colors.RESET}")
+            print(f"{Colors.BOLD}  {CYAN}* ------------------------------------ *{RESET + Colors.RESET}\n")
             print(f"{GREEN + Colors.BOLD}>>> {RESET}Server is running on {ipaddr}:{port}{RESET + Colors.RESET}")
             
             _connection_debug = threading.Thread(target=connection_thread, args=(server_socket,), daemon=True)
@@ -959,15 +962,25 @@ def main():
                 else:
                     return f"{RED}disabled"
                 
+            def get_ratelimit_timeout():
+                rlm = str(Networking.ratelimit_timeout)
+                match len(rlm):
+                    case 1: return f"{RESET}({CYAN}{rlm}s{RESET})    "
+                    case 2: return f"{RESET}({CYAN}{rlm}s{RESET})   "
+                    case 3: return f"{RESET}({CYAN}{rlm}s{RESET})  "
+                    case 4: return f"{RESET}({CYAN}{rlm}s{RESET}) "
+                    case 5: return f"{RESET}({CYAN}{rlm}s{RESET})"
+                    case _: return f"        "
+                
             
             print(f"\n{Colors.BOLD}  {CYAN}* ------------- FEATURES ------------- *{RESET + Colors.RESET}")                
             print(f"{Colors.BOLD}  {CYAN}|{WHITE} *{YELLOW} Console Message Logging is {is_feature_enabled(enable_messages)}{CYAN}|{RESET + Colors.RESET}")
             print(f"{Colors.BOLD}  {CYAN}|{WHITE} *{YELLOW} Debug Mode is {is_feature_enabled(debug_mode)}             {CYAN}|{RESET + Colors.RESET}")
-            print(f"{Colors.BOLD}  {CYAN}|{WHITE} *{YELLOW} Ratelimit is {is_feature_enabled(Networking.ratelimit)}              {CYAN}|{RESET + Colors.RESET}")
+            print(f"{Colors.BOLD}  {CYAN}|{WHITE} *{YELLOW} Ratelimit is {is_feature_enabled(Networking.ratelimit)}{get_ratelimit_timeout()}      {CYAN}|{RESET + Colors.RESET}")
             print(f"{Colors.BOLD}  {CYAN}* ------------------------------------ *{RESET + Colors.RESET}\n")
                 
                 
-            if online_mode == False:
+            if not online_mode:
                 print(f"\n{Colors.BOLD}  {YELLOW}* -------------- WARNING ------------- *{RESET + Colors.RESET}")
                 print(f"{Colors.BOLD}  {YELLOW}|   Online mode is disabled and your   {YELLOW}|{RESET + Colors.RESET}")
                 print(f"{Colors.BOLD}  {YELLOW}|     server might be in danger!       {YELLOW}|{RESET + Colors.RESET}")
@@ -976,7 +989,7 @@ def main():
             
             if ipaddr == "0.0.0.0": all_addresses = True
             
-            if all_addresses: print(f"{GREEN + Colors.BOLD}>>> {RESET}Server is running on {Colors.ITALIC + MAGENTA}{ipaddr}:{port}{Colors.RESET} (All addresses)\n")
+            if all_addresses: print(f"{GREEN + Colors.BOLD}>>> {RESET}Server is running on {Colors.ITALIC + MAGENTA}{ipaddr}:{port}{Colors.RESET} (All addresses)\n")   
             else: print(f"{GREEN + Colors.BOLD}>>> {RESET}Server is running on {ipaddr}:{port}\n")
             
             _connection = threading.Thread(target=connection_thread, args=(server_socket,))
