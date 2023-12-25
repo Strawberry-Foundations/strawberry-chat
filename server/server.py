@@ -950,12 +950,29 @@ def main():
             _connection_debug = threading.Thread(target=connection_thread, args=(server_socket,), daemon=True)
             _connection_debug.start()
             time.sleep(10)
+            
         
         else:
-            if enable_messages: print(f"{YELLOW + Colors.BOLD}>>> Enabled Flag {CYAN}'enable_messages'{RESET + Colors.RESET}")
-            if debug_mode: print(f"{YELLOW + Colors.BOLD}>>> Enabled Flag {CYAN}'debug_mode'{RESET + Colors.RESET}")
-            if Networking.ratelimit: print(f"{YELLOW + Colors.BOLD}>>> Ratelimit is enabled ({Networking.ratelimit_timeout}s){RESET + Colors.RESET}")
-            if online_mode == False: print(f"{RED + Colors.BOLD}>>> {YELLOW}WARNING:{RED} Online mode is disabled and your server might be in danger! Consider using the online mode!{RESET + Colors.RESET}")
+            def is_feature_enabled(feature):
+                if feature:
+                    return f"{GREEN}enabled "
+                else:
+                    return f"{RED}disabled"
+                
+            
+            print(f"\n{Colors.BOLD}  {CYAN}* ------------- FEATURES ------------- *{RESET + Colors.RESET}")                
+            print(f"{Colors.BOLD}  {CYAN}|{WHITE} *{YELLOW} Console Message Logging is {is_feature_enabled(enable_messages)}{CYAN}|{RESET + Colors.RESET}")
+            print(f"{Colors.BOLD}  {CYAN}|{WHITE} *{YELLOW} Debug Mode is {is_feature_enabled(debug_mode)}             {CYAN}|{RESET + Colors.RESET}")
+            print(f"{Colors.BOLD}  {CYAN}|{WHITE} *{YELLOW} Ratelimit is {is_feature_enabled(Networking.ratelimit)}              {CYAN}|{RESET + Colors.RESET}")
+            print(f"{Colors.BOLD}  {CYAN}* ------------------------------------ *{RESET + Colors.RESET}\n")
+                
+                
+            if online_mode == False:
+                print(f"\n{Colors.BOLD}  {YELLOW}* -------------- WARNING ------------- *{RESET + Colors.RESET}")
+                print(f"{Colors.BOLD}  {YELLOW}|   Online mode is disabled and your   {YELLOW}|{RESET + Colors.RESET}")
+                print(f"{Colors.BOLD}  {YELLOW}|     server might be in danger!       {YELLOW}|{RESET + Colors.RESET}")
+                print(f"{Colors.BOLD}  {YELLOW}|   Consider using the online mode!    {YELLOW}|{RESET + Colors.RESET}")
+                print(f"{Colors.BOLD}  {YELLOW}* ------------------------------------ *{RESET + Colors.RESET}\n")
             
             if ipaddr == "0.0.0.0": all_addresses = True
             
