@@ -568,8 +568,10 @@ def strawberryIdLogin(client, login_cur: sql.Cursor):
                 
                 if verify_password(stored_password, password):
                     sender.send(f"{GREEN + Colors.BOLD}Thanks for using Strawberry Chat! Your Strawberry ID is now linked with your Account.{RESET + Colors.RESET}")
+                    
                     try:
                         login_cur.execute("UPDATE users SET strawberry_id = ? WHERE username = ?", (_data['data']['username'], username,))
+                        
                     except Exception as e:
                         log.error(LogMessages.sql_error)
                         debug_logger(e, stbexceptions.sql_error)
