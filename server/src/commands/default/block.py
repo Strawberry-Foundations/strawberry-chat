@@ -55,6 +55,7 @@ def block_command(socket: socket.socket, user: User, args: list, sender: ClientS
         sender.send(f"{RED}{Colors.BOLD}User does not exist{Colors.RESET}")
         log.info(f"Exception in blocked_users: {e}")
 
+
 @register_command("unblock", arg_count=1)
 def unblock_command(socket: socket.socket, user: User, args: list, sender: ClientSender):
     cmd_db = Database(server_dir + "/users.db", check_same_thread=False)
@@ -62,11 +63,11 @@ def unblock_command(socket: socket.socket, user: User, args: list, sender: Clien
     username = args[0].lower()
     
     if username.lower() == user.username.lower():
-        sender.send(f"{YELLOW}{Colors.BOLD}Don't block yourself!{Colors.RESET}")
+        sender.send(f"{YELLOW}{Colors.BOLD}You cannot unblock yourself..{Colors.RESET}")
         return
     
     try:    
-        cmd_db.execute("SELECT username FROM users WHERE LOWER(username) = ?", (username.lower(),))
+        cmd_db.execute("SELECT username FROM users WHERE LOWER(username) = ?", (username,))
         result = cmd_db.fetchall()
 
         if result:            
@@ -75,30 +76,41 @@ def unblock_command(socket: socket.socket, user: User, args: list, sender: Clien
                 blocked_users = cmd_db.fetchall()
                 
                 if blocked_users[0][0] == None:
-                    # blocked_users = "".join(blocked_users[0])
-                    blocked_users[0] = (username,)
-                    print(blocked_users)
-                    print(blocked_users[0])
-                    blocked_users = "".join(blocked_users[0])
-                    
+                    sender.send(f"{GREEN}{Colors.BOLD}Your Blocklist is empty!{Colors.RESET}")
+                    return
                     
                 else:
-                    blocked_users = "".join(blocked_users[0])
-                    blocked_users += "," + username 
+                    blocked_users_list = blocked_users[0][0].split(",")
                 
-                cmd_db.execute("UPDATE users SET blocked_users = ? WHERE LOWER(username) = ?", (blocked_users, user.username.lower()))
-                cmd_db.commit()
+                    if username not in blocked_users_list:
+                        sender.send(f"{YELLOW}{Colors.BOLD}This user is not blocked{Colors.RESET}")
+                        return
+                    
+                    if len(blocked_users[0]) == 1:
+                        cmd_db.execute("UPDATE users SET blocked_users = NULL WHERE LOWER(username) = ?", (user.username.lower(),))
+                        cmd_db.commit()
+                        
+                        
+                    else:
+                        blocked_users_list.remove(username)
+                        print(",".join(blocked_users_list))
+                        
+                        blocked_users = ",".join(blocked_users_list)
                 
-                sender.send(f"{GREEN}{Colors.BOLD}{username.capitalize()} has been blocked{Colors.RESET}")
+                        cmd_db.execute("UPDATE users SET blocked_users = ? WHERE LOWER(username) = ?", (blocked_users, user.username.lower()))
+                        cmd_db.commit()
+
+                sender.send(f"{GREEN}{Colors.BOLD}{username.capitalize()} has been unblocked{Colors.RESET}")
                 
             else:
                 sender.send(f"{RED}{Colors.BOLD}User does not exist{Colors.RESET}")
                 
         else:
             sender.send(f"{RED}{Colors.BOLD}User does not exist{Colors.RESET}")
-        
-    except:
+            
+    except Exception as e:
         sender.send(f"{RED}{Colors.BOLD}User does not exist{Colors.RESET}")
+        log.info(f"Exception in blocked_users: {e}")
 
 
 @register_command("blocklist", arg_count=0)
