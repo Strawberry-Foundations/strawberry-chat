@@ -30,6 +30,7 @@
 - NEW: Added Block user's so they cannot dm you (#121)
 - NEW: Added is_blocked (function)
 - NEW: Added user-block checking for dm commands
+- NEW: Added configuration for ratelimit
 - NEW: Removed afk message blocker
 
 
