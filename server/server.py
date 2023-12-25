@@ -115,45 +115,50 @@ def connection_thread(sock: socket.socket):
         # Asign newly client's value in addresses to newly connected address
         addresses[client] = address
 
-        
-        if address[0] in ignore_list:
-            log.info(LogMessages.connected_rlm % address[0])
-            json_builder = {
-                    "message_type": StbCom.SYS_MSG,
-                    "message": {
-                        "content": f"{RED + Colors.BOLD}You have been ratelimited due to spam activity. Please try again later{Colors.RESET}"
-                    }
-                }
-            
-            client.send(send_json(json_builder).encode("utf-8"))
-            client.close()
-            
-            del addresses[client]
-        
-        else:
-            if address[0] in connection_count:
-                connection_count[address[0]] += 1
-                
-                if connection_count[address[0]] >= 10:
-                    log.warning(f"IP address {address[0]} has reached its connection limit. Blocking IP address")
-                    ignore_list[address[0]] = time.time()                
+        if Networking.ratelimit:
+            if address[0] in ignore_list:
+                if not time.time() - ignore_list[address[0]] > Networking.ratelimit_timeout:
+                    log.info(LogMessages.connected_rlm % address[0])
+                    json_builder = {
+                            "message_type": StbCom.SYS_MSG,
+                            "message": {
+                                "content": f"{RED + Colors.BOLD}You have been ratelimited due to spam activity. Please try again later{Colors.RESET}"
+                            }
+                        }
+                    
+                    client.send(send_json(json_builder).encode("utf-8"))
                     client.close()
                     
                     del addresses[client]
+            
+            else:
+                if address[0] in connection_count:
+                    connection_count[address[0]] += 1
+                    
+                    if connection_count[address[0]] >= 10:
+                        log.warning(f"IP address {address[0]} has reached its connection limit. Blocking IP address")
+                        ignore_list[address[0]] = time.time()                
+                        client.close()
+                        
+                        del addresses[client]
+                        
+                    else:
+                        connection_count[address[0]] += 1
+                        
+                        log.info(LogMessages.connected % address[0])
+                        threading.Thread(target=client_thread, args=(client,)).start()
                     
                 else:
+                    connection_count[address[0]] = 0
                     connection_count[address[0]] += 1
                     
                     log.info(LogMessages.connected % address[0])
                     threading.Thread(target=client_thread, args=(client,)).start()
-                
-            else:
-                connection_count[address[0]] = 0
-                connection_count[address[0]] += 1
-                
-                log.info(LogMessages.connected % address[0])
-                threading.Thread(target=client_thread, args=(client,)).start()
-                
+                    
+        else:
+            log.info(LogMessages.connected % address[0])
+            threading.Thread(target=client_thread, args=(client,)).start()    
+
 
 
 def client_thread(client: socket.socket):
@@ -165,8 +170,8 @@ def client_thread(client: socket.socket):
     if user.address in banned_ips:
         sender.send(f"{RED + Colors.BOLD}Sorry, you're not allowed to connect to this server.{Colors.RESET}")
         sender.close(log_exit=True, del_address=True, call_exit=True)
-        
-    if user.address in ignore_list:
+    
+    if user.address in ignore_list and Networking.ratelimit:
         if not time.time() - ignore_list[user.address] > 300:
             # sender.send(f"{RED + Colors.BOLD}You have been ratelimited due to spam activity. Please try again later{Colors.RESET}")
             sender.close(log_exit=True, del_address=True, call_exit=False)
@@ -181,10 +186,11 @@ def client_thread(client: socket.socket):
             
         user.system_register()
         
-        if user.address in ignore_list:
-            del ignore_list[user.address]
-        if user.address in connection_count:
-            del connection_count[user.address]
+        if Networking.ratelimit:
+            if user.address in ignore_list:
+                del ignore_list[user.address]
+            if user.address in connection_count:
+                del connection_count[user.address]
             
     except Exception as e:
         log.error(LogMessages.login_error % address)
