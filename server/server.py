@@ -227,6 +227,11 @@ def client_thread(client: socket.socket):
                     
                     if len(message) == 0: return
                     
+                    if message == "[#<keepalive.event.sent>]":
+                        # pass
+                        log.info(message)
+                        continue
+                    
                 else: return
 
             except OSError: return
