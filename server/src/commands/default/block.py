@@ -1,6 +1,7 @@
 from .. import register_command
 
 import socket
+import sqlite3 as sql
 
 from src.colors import *
 from src.db import Database
@@ -9,7 +10,8 @@ from init import User, ClientSender, server_dir, log
 
 @register_command("block", arg_count=1)
 def block_command(socket: socket.socket, user: User, args: list, sender: ClientSender):
-    cmd_db = Database(server_dir + "/users.db", check_same_thread=False)
+    db = sql.connect(server_dir + "/users.db", check_same_thread=False)
+    c = db.cursor()
     
     username = args[0].lower()
     
@@ -18,13 +20,13 @@ def block_command(socket: socket.socket, user: User, args: list, sender: ClientS
         return
     
     try:    
-        cmd_db.execute("SELECT username FROM users WHERE LOWER(username) = ?", (username,))
-        result = cmd_db.fetchall()
+        c.execute("SELECT username FROM users WHERE LOWER(username) = ?", (username,))
+        result = c.fetchall()
 
         if result:            
             if "".join(result[0]).lower() == username:
-                cmd_db.execute("SELECT blocked_users FROM users WHERE LOWER(username) = ?", (user.username.lower(),))
-                blocked_users = cmd_db.fetchall()
+                c.execute("SELECT blocked_users FROM users WHERE LOWER(username) = ?", (user.username.lower(),))
+                blocked_users = c.fetchall()
                 
                 if blocked_users[0][0] == None:
                     blocked_users[0] = (username,)
@@ -40,8 +42,8 @@ def block_command(socket: socket.socket, user: User, args: list, sender: ClientS
                     blocked_users = "".join(blocked_users[0])
                     blocked_users += "," + username 
                     
-                with cmd_db:
-                    cmd_db.execute("UPDATE users SET blocked_users = ? WHERE LOWER(username) = ?", (blocked_users, user.username.lower()))
+                with db:
+                    db.execute("UPDATE users SET blocked_users = ? WHERE LOWER(username) = ?", (blocked_users, user.username.lower()))
                 # cmd_db.commit()
                 
                 sender.send(f"{GREEN}{Colors.BOLD}{username.capitalize()} has been blocked{Colors.RESET}")
@@ -59,7 +61,8 @@ def block_command(socket: socket.socket, user: User, args: list, sender: ClientS
 
 @register_command("unblock", arg_count=1)
 def unblock_command(socket: socket.socket, user: User, args: list, sender: ClientSender):
-    cmd_db = Database(server_dir + "/users.db", check_same_thread=False)
+    db = sql.connect(server_dir + "/users.db", check_same_thread=False)
+    c = db.cursor()
     
     username = args[0].lower()
     
@@ -68,13 +71,13 @@ def unblock_command(socket: socket.socket, user: User, args: list, sender: Clien
         return
     
     try:    
-        cmd_db.execute("SELECT username FROM users WHERE LOWER(username) = ?", (username,))
-        result = cmd_db.fetchall()
+        c.execute("SELECT username FROM users WHERE LOWER(username) = ?", (username,))
+        result = c.fetchall()
 
         if result:            
             if "".join(result[0]).lower() == username:
-                cmd_db.execute("SELECT blocked_users FROM users WHERE LOWER(username) = ?", (user.username.lower(),))
-                blocked_users = cmd_db.fetchall()
+                c.execute("SELECT blocked_users FROM users WHERE LOWER(username) = ?", (user.username.lower(),))
+                blocked_users = c.fetchall()
                 
                 if blocked_users[0][0] == None:
                     sender.send(f"{GREEN}{Colors.BOLD}Your Blocklist is empty!{Colors.RESET}")
@@ -88,8 +91,8 @@ def unblock_command(socket: socket.socket, user: User, args: list, sender: Clien
                         return
                     
                     if len(blocked_users[0]) == 1:
-                        with cmd_db:
-                            cmd_db.execute("UPDATE users SET blocked_users = NULL WHERE LOWER(username) = ?", (user.username.lower(),))
+                        with db:
+                            db.execute("UPDATE users SET blocked_users = NULL WHERE LOWER(username) = ?", (user.username.lower(),))
                         # cmd_db.commit()
                         
                         
@@ -99,8 +102,8 @@ def unblock_command(socket: socket.socket, user: User, args: list, sender: Clien
                         
                         blocked_users = ",".join(blocked_users_list)
 
-                        with cmd_db:
-                            cmd_db.execute("UPDATE users SET blocked_users = ? WHERE LOWER(username) = ?", (blocked_users, user.username.lower()))
+                        with db:
+                            db.execute("UPDATE users SET blocked_users = ? WHERE LOWER(username) = ?", (blocked_users, user.username.lower()))
                         # cmd_db.commit()
 
                 sender.send(f"{GREEN}{Colors.BOLD}{username.capitalize()} has been unblocked{Colors.RESET}")
