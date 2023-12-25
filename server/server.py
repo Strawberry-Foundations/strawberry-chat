@@ -524,7 +524,7 @@ def clientRegister(client: socket.socket, login_cur: sql.Connection, sender: Cli
 The Strawberry ID login function for logging into the chat.
 Currently, login is not supported, only linking your Strawberry ID to your account
 """
-def strawberryIdLogin(client):
+def strawberryIdLogin(client, login_cur: sql.Cursor):
     sender = ClientSender(client)
     sender.send(f"{GREEN + Colors.BOLD}Visit {CYAN}https://id.strawberryfoundations.xyz/v1/en?service=stbchat{RESET}{GREEN} to login!{RESET + Colors.RESET}")
     sender.send(f"{GREEN + Colors.BOLD}After you have logged in, please enter the code that is shown to you.{RESET + Colors.RESET}")
@@ -540,18 +540,57 @@ def strawberryIdLogin(client):
             _data = credentials.json()
             
             sender.send(f"{GREEN + Colors.BOLD}Logged in as {_data['data']['username']}{RESET + Colors.RESET}")
+            time.sleep(.5)
             
+            # Ask for the username
+            sender.send(f"{GREEN + Colors.BOLD}Login to your Strawberry Chat Account to save your Strawberry ID Account details{RESET + Colors.RESET}")
+            sender.send(f"{GREEN + Colors.BOLD}Username: {RESET + Colors.RESET}")
+        
+            # Receive the ansi-escaped username and strip all new lines in case
+            username = escape_ansi(client.recv(2048).decode("utf8")).strip().rstrip()
+            
+            if username.lower() == "exit": sender.close(del_address=True, log_exit=True)
+            
+            # Ask for the password
+            sender.send(f"{GREEN + Colors.BOLD}Password: {RESET + Colors.RESET}")
+            
+            # Receive the ansi-escaped password and strip all new lines in case
+            password = escape_ansi(client.recv(2048).decode("utf8")).strip("\n").rstrip()
+            
+            # Select the password from the database and fetch it 
+            login_cur.execute("SELECT password, account_enabled FROM users WHERE username = ?", (username,))
+            result = login_cur.fetchone()
+
+            # If the result is not none, fetch some things from the database [...].
+            if result is not None:
+                stored_password = result[0]
+                account_enabled = result[1]
+                
+                if verify_password(stored_password, password):
+                    sender.send(f"{GREEN + Colors.BOLD}Thanks for using Strawberry Chat! Your Strawberry ID is now linked with your Account.{RESET + Colors.RESET}")
+                    login_cur.execute("UPDATE users SET strawberry_id = ? WHERE username = ?", (username,))
+                    time.sleep(.5)
+                    clientLogin(client)
+                    
+                # If passwords does not match, return an error message and start from the beginning
+                else:
+                    sender.send(f"{RED + Colors.BOLD}Wrong username or password.{RESET + Colors.RESET}\n")
+            
+            # If the password could not be fetched from the database, return an error message and start from the beginning
+            else:
+                sender.send(f"{RED + Colors.BOLD}User not found.\n{RESET + Colors.RESET}")
+                    
         except Exception as e: 
             sender.send(f"{RED + Colors.BOLD}Invalid code.{RESET + Colors.RESET}")
             time.sleep(.5)
-            strawberryIdLogin(client)
+            strawberryIdLogin(client, login_cur)
             
             
         test = escape_ansi(client.recv(2048).decode("utf8")).strip().rstrip()
         
     else: 
         time.sleep(.5)
-        strawberryIdLogin(client)
+        strawberryIdLogin(client, login_cur)
         
 
 """
@@ -583,7 +622,7 @@ def clientLogin(client):
         # Check if username is "register", "exit" or "sid" 
         if username.lower() == "register": clientRegister(client, login_cur, sender)
         elif username.lower() == "exit": sender.close(del_address=True, log_exit=True)
-        elif username.lower() == "sid": strawberryIdLogin(client)
+        elif username.lower() == "sid": strawberryIdLogin(client, login_cur)
             
         time.sleep(0.1)
         
