@@ -13,7 +13,7 @@ def description_command(socket: socket.socket, user: User, args: list, sender: C
     
     cmd = " ".join(args)
     
-    if cmd.lower() == "remove" or desc.lower() == "reset":
+    if cmd.lower() == "remove" or cmd.lower() == "reset":
         cmd_db.execute("UPDATE users SET strawberry_id = NULL WHERE username = ?", (user.username,))
         cmd_db.commit()
         
