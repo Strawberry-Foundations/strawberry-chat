@@ -25,6 +25,7 @@
 - NEW: Added username length checking
 - NEW: Added max_username_length & max_password_length config + moved some values to config yml
 - NEW: Added rate limiting (#129)
+- NEW: Added strawberry-id command
 - NEW: Removed afk message blocker
 
 
