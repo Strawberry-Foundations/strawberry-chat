@@ -17,43 +17,43 @@ def block_command(socket: socket.socket, user: User, args: list, sender: ClientS
         sender.send(f"{YELLOW}{Colors.BOLD}Don't block yourself!{Colors.RESET}")
         return
     
-    # try:    
-    cmd_db.execute("SELECT username FROM users WHERE LOWER(username) = ?", (username,))
-    result = cmd_db.fetchall()
+    try:    
+        cmd_db.execute("SELECT username FROM users WHERE LOWER(username) = ?", (username,))
+        result = cmd_db.fetchall()
 
-    if result:            
-        if "".join(result[0]).lower() == username:
-            cmd_db.execute("SELECT blocked_users FROM users WHERE LOWER(username) = ?", (user.username.lower(),))
-            blocked_users = cmd_db.fetchall()
-            
-            if blocked_users[0][0] == None:
-                blocked_users[0] = (username,)
-                blocked_users = "".join(blocked_users[0])
+        if result:            
+            if "".join(result[0]).lower() == username:
+                cmd_db.execute("SELECT blocked_users FROM users WHERE LOWER(username) = ?", (user.username.lower(),))
+                blocked_users = cmd_db.fetchall()
+                
+                if blocked_users[0][0] == None:
+                    blocked_users[0] = (username,)
+                    blocked_users = "".join(blocked_users[0])
+                    
+                else:
+                    blocked_users_list = blocked_users[0][0].split(",")
+                
+                    if username in blocked_users_list:
+                        sender.send(f"{YELLOW}{Colors.BOLD}This user is already blocked!{Colors.RESET}")
+                        return
+                
+                    blocked_users = "".join(blocked_users[0])
+                    blocked_users += "," + username 
+                
+                cmd_db.execute("UPDATE users SET blocked_users = ? WHERE LOWER(username) = ?", (blocked_users, user.username.lower()))
+                cmd_db.commit()
+                
+                sender.send(f"{GREEN}{Colors.BOLD}{username.capitalize()} has been blocked{Colors.RESET}")
                 
             else:
-                blocked_users_list = blocked_users[0][0].split(",")
-            
-                if username in blocked_users_list:
-                    sender.send(f"{YELLOW}{Colors.BOLD}This user is already blocked!{Colors.RESET}")
-                    return
-            
-                blocked_users = "".join(blocked_users[0])
-                blocked_users += "," + username 
-            
-            cmd_db.execute("UPDATE users SET blocked_users = ? WHERE LOWER(username) = ?", (blocked_users, user.username.lower()))
-            cmd_db.commit()
-            
-            sender.send(f"{GREEN}{Colors.BOLD}{username.capitalize()} has been blocked{Colors.RESET}")
-            
+                sender.send(f"{RED}{Colors.BOLD}User does not exist{Colors.RESET}")
+                
         else:
             sender.send(f"{RED}{Colors.BOLD}User does not exist{Colors.RESET}")
             
-    else:
+    except Exception as e:
         sender.send(f"{RED}{Colors.BOLD}User does not exist{Colors.RESET}")
-        
-    # except Exception as e:
-    #     sender.send(f"{RED}{Colors.BOLD}User does not exist{Colors.RESET}")
-    #     log.info(f"Exception in blocked_users: {e}")
+        log.info(f"Exception in blocked_users: {e}")
 
 @register_command("unblock", arg_count=1)
 def unblock_command(socket: socket.socket, user: User, args: list, sender: ClientSender):
