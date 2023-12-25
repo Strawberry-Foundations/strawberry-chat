@@ -27,6 +27,7 @@
 - NEW: Added rate limiting (#129)
 - NEW: Added strawberry-id command
 - NEW: Added strawberry id login/linker
+- NEW: Added Block user's so they cannot dm you (#121)
 - NEW: Removed afk message blocker
 
 
