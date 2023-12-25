@@ -328,8 +328,12 @@ def open_blacklist():
 # example: user = Julian (person that you want to send an dm)
 #          user_check = Juliandev02 (check if this person (juliandev02) is blocked by julian)
 def is_blocked(user: str, user_check: str):
-    cmd_db.execute("SELECT blocked_users FROM users WHERE LOWER(username) = ?", (user.lower(),))
+    db = sql.connect(server_dir + "/users.db", check_same_thread=False)
+    c = db.cursor()
+    c.execute("SELECT blocked_users FROM users WHERE LOWER(username) = ?", (user.lower(),))
     blocked_users = cmd_db.fetchall()
+    c.close()
+    db.close()
     
     if blocked_users[0][0] == None:
         return False
