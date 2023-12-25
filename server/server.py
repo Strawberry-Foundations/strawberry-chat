@@ -25,7 +25,7 @@ from src.online import *
 from src.commands import PermissionLevel, execute_command, list_commands
 
 from src.commands.default import    help, server_info, changelog, \
-                                    about, dm, exit_cmd
+                                    about, dm, exit_cmd, block
                      
 from src.commands.user import       online, msgcount, members, \
                                     description, memberlist, discord, \
