@@ -331,7 +331,7 @@ def is_blocked(user: str, user_check: str):
     db = sql.connect(server_dir + "/users.db", check_same_thread=False)
     c = db.cursor()
     c.execute("SELECT blocked_users FROM users WHERE LOWER(username) = ?", (user.lower(),))
-    blocked_users = cmd_db.fetchall()
+    blocked_users = c.fetchall()
     c.close()
     db.close()
     
