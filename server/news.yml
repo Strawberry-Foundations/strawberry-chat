@@ -73,7 +73,8 @@ news:
   1.10.0:
     text: "
     - NEW: We added a new way to chat with your best friend! You can now use /joindm for an better DM interface!\n
-    - NEW: We also added notifications for desktop users, so if they get mentioned, they instantly get an notification ;)
+    - NEW: We also added notifications for desktop users, so if they get mentioned, they instantly get an notification ;)\n
+    - NEW: You can now block users from sending you dm messages ith the help of our new /block command!
     "
 
 versions: [1.6.0, 1.7.0, 1.8.0, 1.8.1, 1.8.2, 1.9.0, 1.10.0]
