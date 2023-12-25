@@ -393,7 +393,7 @@ config_ver_yml          = config['config_ver']
 
 class Networking:
     ratelimit = config['networking']["ratelimit"]
-    ratelimit = config['networking']["ratelimit_timeout"]
+    ratelimit_timeout = config['networking']["ratelimit_timeout"]
 
 
 class DatabaseConfig:
