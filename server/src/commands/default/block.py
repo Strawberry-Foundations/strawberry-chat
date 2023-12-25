@@ -39,9 +39,10 @@ def block_command(socket: socket.socket, user: User, args: list, sender: ClientS
                 
                     blocked_users = "".join(blocked_users[0])
                     blocked_users += "," + username 
-                
-                cmd_db.execute("UPDATE users SET blocked_users = ? WHERE LOWER(username) = ?", (blocked_users, user.username.lower()))
-                cmd_db.commit()
+                    
+                with cmd_db:
+                    cmd_db.execute("UPDATE users SET blocked_users = ? WHERE LOWER(username) = ?", (blocked_users, user.username.lower()))
+                # cmd_db.commit()
                 
                 sender.send(f"{GREEN}{Colors.BOLD}{username.capitalize()} has been blocked{Colors.RESET}")
                 
@@ -87,8 +88,9 @@ def unblock_command(socket: socket.socket, user: User, args: list, sender: Clien
                         return
                     
                     if len(blocked_users[0]) == 1:
-                        cmd_db.execute("UPDATE users SET blocked_users = NULL WHERE LOWER(username) = ?", (user.username.lower(),))
-                        cmd_db.commit()
+                        with cmd_db:
+                            cmd_db.execute("UPDATE users SET blocked_users = NULL WHERE LOWER(username) = ?", (user.username.lower(),))
+                        # cmd_db.commit()
                         
                         
                     else:
@@ -96,9 +98,10 @@ def unblock_command(socket: socket.socket, user: User, args: list, sender: Clien
                         print(",".join(blocked_users_list))
                         
                         blocked_users = ",".join(blocked_users_list)
-                
-                        cmd_db.execute("UPDATE users SET blocked_users = ? WHERE LOWER(username) = ?", (blocked_users, user.username.lower()))
-                        cmd_db.commit()
+
+                        with cmd_db:
+                            cmd_db.execute("UPDATE users SET blocked_users = ? WHERE LOWER(username) = ?", (blocked_users, user.username.lower()))
+                        # cmd_db.commit()
 
                 sender.send(f"{GREEN}{Colors.BOLD}{username.capitalize()} has been unblocked{Colors.RESET}")
                 
