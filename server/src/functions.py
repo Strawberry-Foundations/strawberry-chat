@@ -324,3 +324,19 @@ def open_blacklist():
         for word in f:
             word = word.strip().lower()
             blacklist.add(word)
+            
+# example: user = Julian (person that you want to send an dm)
+#          user_check = Juliandev02 (check if this person (juliandev02) is blocked by julian)
+def is_blocked(user: str, user_check: str):
+    cmd_db.execute("SELECT blocked_users FROM users WHERE LOWER(username) = ?", (user.lower(),))
+    blocked_users = cmd_db.fetchall()
+    
+    if blocked_users[0][0] == None:
+        return False
+        
+    blocked_users = blocked_users[0][0].split(",")
+    
+    if user_check.lower() in blocked_users:
+        return True
+    
+    return False
