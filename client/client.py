@@ -206,7 +206,7 @@ def badge_handler(badge):
         return ""
 
 # Keep Alive handling
-def keep_alive(sock):
+def keep_alive(sock: socket.socket):
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)
     sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPIDLE, 60)
     sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPINTVL, 10)
