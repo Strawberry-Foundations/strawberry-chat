@@ -92,6 +92,7 @@ default_help_section    = f"""{GREEN +  Colors.UNDERLINE + Colors.BOLD}Default c
     
 user_help_section       = f"""{CYAN + Colors.UNDERLINE + Colors.BOLD}Profile & User Commands{RESET + Colors.RESET}
         {BLUE + Colors.BOLD}/settings: {RESET}User Settings
+        {BLUE + Colors.BOLD}/strawberry-id: {RESET}Strawberry ID Settings (Subcommands: reset/remove)
         {BLUE + Colors.BOLD}/online: {RESET}Shows online users
         {BLUE + Colors.BOLD}/members, /users: {RESET}Shows registered users
         {BLUE + Colors.BOLD}/memberlist, /userlist: {RESET}Displays a list of members with their badges and roles
