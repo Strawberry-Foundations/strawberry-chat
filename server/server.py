@@ -954,6 +954,7 @@ def main():
         else:
             if enable_messages: print(f"{YELLOW + Colors.BOLD}>>> Enabled Flag {CYAN}'enable_messages'{RESET + Colors.RESET}")
             if debug_mode: print(f"{YELLOW + Colors.BOLD}>>> Enabled Flag {CYAN}'debug_mode'{RESET + Colors.RESET}")
+            if Networking.ratelimit: print(f"{YELLOW + Colors.BOLD}>>> Ratelimit is enabled ({Networking.ratelimit_timeout}s){RESET + Colors.RESET}")
             if online_mode == False: print(f"{RED + Colors.BOLD}>>> {YELLOW}WARNING:{RED} Online mode is disabled and your server might be in danger! Consider using the online mode!{RESET + Colors.RESET}")
             
             if ipaddr == "0.0.0.0": all_addresses = True
