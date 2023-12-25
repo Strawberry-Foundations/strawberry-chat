@@ -28,6 +28,7 @@
 - NEW: Added strawberry-id command
 - NEW: Added strawberry id login/linker
 - NEW: Added Block user's so they cannot dm you (#121)
+- NEW: Added is_blocked (function)
 - NEW: Removed afk message blocker
 
 
