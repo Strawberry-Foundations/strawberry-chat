@@ -391,6 +391,11 @@ banned_ips              = config['security']['banned_ips']
 
 config_ver_yml          = config['config_ver']
 
+class Networking:
+    ratelimit = config['networking']["ratelimit"]
+    ratelimit = config['networking']["ratelimit_timeout"]
+
+
 class DatabaseConfig:
     driver      = config['database']['driver']
     chck_thread = config['database']['check_same_thread']
