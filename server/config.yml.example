@@ -14,6 +14,10 @@ config:
   max_password_length: 256  
   recv_allowed_bytes: 8192
 
+networking:
+  ratelimit: true
+  ratelimit_timeout: 300
+
 flags:
   enable_messages: false
   enable_queue: false
