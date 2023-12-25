@@ -6,7 +6,7 @@ from src.colors import *
 from src.db import Database
 
 from init import StbCom, User, ClientSender, server_dir, users, user_dm_screen
-from src.functions import escape_ansi, userRoleColor, send_json, userAvatarUrl
+from src.functions import escape_ansi, userRoleColor, send_json, userAvatarUrl, is_blocked
 
 @register_command("dm", arg_count=2)
 def dm_command(socket: _socket.socket, user: User, args: list, sender: ClientSender):
@@ -27,8 +27,7 @@ def dm_command(socket: _socket.socket, user: User, args: list, sender: ClientSen
             global to_sent
             to_sent = sock_object
             found_keys.append(sock_object)
-            
-    
+                
     try:
         cmd_db.execute("SELECT enable_dms FROM users WHERE username = ?", (user.username,))
         has_dm_enabled = cmd_db.fetchone()[0]
@@ -43,10 +42,17 @@ def dm_command(socket: _socket.socket, user: User, args: list, sender: ClientSen
     elif _uname.status == User.Status.afk:
         sender.send(f"{YELLOW}This user is currently afk...{RESET}")
     
+    elif is_blocked(uname, user.username):
+        sender.send(f"{YELLOW}Sorry, but your message could not be delivered to the recipient.{RESET}")
+    
+    elif is_blocked(user.username, uname):
+        sender.send(f"{YELLOW}You cannot send messages to a user that you have blocked!{RESET}")
+    
     elif has_dm_enabled == "false":
         sender.send(f"{YELLOW}This user has deactivated his/her DM's{RESET}")
     
     else:
+        
         if found_keys:
             sender.send(f"{userRoleColor(user.username)}You{RESET} {Colors.GRAY}-->{Colors.RESET} {userRoleColor(uname)}{uname}{RESET + Colors.RESET}: {msg}")
             
@@ -118,7 +124,13 @@ def dm_command(socket: _socket.socket, user: User, args: list, sender: ClientSen
         sender.send(f"{YELLOW}You shouldn't send messages to yourself...{RESET}")
         
     elif _uname.status == User.Status.afk:
-        sender.send(f"{YELLOW}This user is currently afk...{RESET}")    
+        sender.send(f"{YELLOW}This user is currently afk...{RESET}")
+        
+    elif is_blocked(uname, user.username):
+        sender.send(f"{YELLOW}Sorry, but your message could not be delivered to the recipient.{RESET}")
+    
+    elif is_blocked(user.username, uname):
+        sender.send(f"{YELLOW}You cannot send messages to a user that you have blocked!{RESET}")
         
     elif has_dm_enabled == "false":
         sender.send(f"{YELLOW}This user has deactivated his/her DM's{RESET}")
