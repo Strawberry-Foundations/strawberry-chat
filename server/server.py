@@ -130,6 +130,11 @@ def connection_thread(sock: socket.socket):
                     client.close()
                     
                     del addresses[client]
+                    
+                else:
+                    log.info(LogMessages.ratelimit_remoed % address[0])
+                    del ignore_list[address[0]]
+                    del connection_count[address[0]]
             
             else:
                 if address[0] in connection_count:
