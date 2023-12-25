@@ -14,7 +14,7 @@ def block_command(socket: socket.socket, user: User, args: list, sender: ClientS
     username = args[0].lower()
     
     if username.lower() == user.username.lower():
-        sender.send(f"{YELLOW}{Colors.BOLD}Dont block yourself!{Colors.RESET}")
+        sender.send(f"{YELLOW}{Colors.BOLD}Don't block yourself!{Colors.RESET}")
     
     try:    
         cmd_db.execute("SELECT username FROM users WHERE LOWER(username) = ?", (username.lower(),))
