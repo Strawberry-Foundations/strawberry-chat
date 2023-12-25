@@ -171,6 +171,7 @@ client/client.go
 client/client
 
 server/users.db
+server/_users.db
 server/users.db.bak
 server/users_unhashed.db
 
