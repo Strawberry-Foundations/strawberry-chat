@@ -519,7 +519,11 @@ def clientRegister(client: socket.socket, login_cur: sql.Connection, sender: Cli
         time.sleep(0.5)
         clientRegister(client, login_cur, sender)
 
-
+"""
+--- STRAWBERRY ID LOGIN ---
+The Strawberry ID login function for logging into the chat.
+Currently, login is not supported, only linking your Strawberry ID to your account
+"""
 def strawberryIdLogin(client):
     sender = ClientSender(client)
     sender.send(f"{GREEN + Colors.BOLD}Visit https://id.strawberryfoundations.xyz/v1/en?service=stbchat to login!{RESET + Colors.RESET}")
