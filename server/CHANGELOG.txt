@@ -31,6 +31,7 @@
 - NEW: Added is_blocked (function)
 - NEW: Added user-block checking for dm commands
 - NEW: Added configuration for ratelimit (Enabling or disabling ratelimit + ratelimit timeout)
+- NEW: Added small but fine cli "windows"
 - NEW: Removed afk message blocker
 
 
