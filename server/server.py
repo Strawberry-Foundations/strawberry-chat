@@ -568,7 +568,12 @@ def strawberryIdLogin(client, login_cur: sql.Cursor):
                 
                 if verify_password(stored_password, password):
                     sender.send(f"{GREEN + Colors.BOLD}Thanks for using Strawberry Chat! Your Strawberry ID is now linked with your Account.{RESET + Colors.RESET}")
-                    login_cur.execute("UPDATE users SET strawberry_id = ? WHERE username = ?", (username,))
+                    try:
+                        login_cur.execute("UPDATE users SET strawberry_id = ? WHERE username = ?", (_data['data']['username'], username,))
+                    except Exception as e:
+                        log.error(LogMessages.sql_error)
+                        debug_logger(e, stbexceptions.sql_error)
+                        
                     time.sleep(.5)
                     clientLogin(client)
                     
@@ -580,7 +585,7 @@ def strawberryIdLogin(client, login_cur: sql.Cursor):
             else:
                 sender.send(f"{RED + Colors.BOLD}User not found.\n{RESET + Colors.RESET}")
                     
-        except Exception as e: 
+        except Exception as e:
             sender.send(f"{RED + Colors.BOLD}Invalid code.{RESET + Colors.RESET}")
             time.sleep(.5)
             strawberryIdLogin(client, login_cur)
