@@ -13,6 +13,52 @@ def block_command(socket: socket.socket, user: User, args: list, sender: ClientS
     
     username = args[0].lower()
     
+    if username == user.username.lower():
+        sender.send(f"{YELLOW}{Colors.BOLD}Don't block yourself!{Colors.RESET}")
+        return
+    
+    try:    
+        cmd_db.execute("SELECT username FROM users WHERE LOWER(username) = ?", (username,))
+        result = cmd_db.fetchall()
+
+        if result:            
+            if "".join(result[0]).lower() == username:
+                cmd_db.execute("SELECT blocked_users FROM users WHERE LOWER(username) = ?", (user.username.lower(),))
+                blocked_users = cmd_db.fetchall()
+                blocked_users_list = blocked_users[0][0].split(",")
+                
+                if username in blocked_users_list:
+                    sender.send(f"{YELLOW}{Colors.BOLD}This user is already blocked!{Colors.RESET}")
+                    return
+                
+                if blocked_users[0][0] == None:
+                    blocked_users[0] = (username,)
+                    blocked_users = "".join(blocked_users[0])
+                    
+                else:
+                    blocked_users = "".join(blocked_users[0])
+                    blocked_users += "," + username 
+                
+                cmd_db.execute("UPDATE users SET blocked_users = ? WHERE LOWER(username) = ?", (blocked_users, user.username.lower()))
+                cmd_db.commit()
+                
+                sender.send(f"{GREEN}{Colors.BOLD}{username.capitalize()} has been blocked{Colors.RESET}")
+                
+            else:
+                sender.send(f"{RED}{Colors.BOLD}User does not exist{Colors.RESET}")
+                
+        else:
+            sender.send(f"{RED}{Colors.BOLD}User does not exist{Colors.RESET}")
+        
+    except:
+        sender.send(f"{RED}{Colors.BOLD}User does not exist{Colors.RESET}")
+
+@register_command("unblock", arg_count=1)
+def unblock_command(socket: socket.socket, user: User, args: list, sender: ClientSender):
+    cmd_db = Database(server_dir + "/users.db", check_same_thread=False)
+    
+    username = args[0].lower()
+    
     if username.lower() == user.username.lower():
         sender.send(f"{YELLOW}{Colors.BOLD}Don't block yourself!{Colors.RESET}")
         return
