@@ -57,6 +57,7 @@ class LogMessages:
     runtime_stop        = "Runtime has stopped."
     server_stop         = "Server stopped"
     badge_error         = "Something went wrong while... doing something with the badges?: "
+    ratelimit_remoed    = "Ratelimit timeout for %s removed"
 
 
 class Database:
