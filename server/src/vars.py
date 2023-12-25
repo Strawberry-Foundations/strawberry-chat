@@ -47,7 +47,8 @@ table_query = """
 	"strawberry_id"	TEXT,
 	"discord_name"	TEXT,
 	"msg_count"	INTEGER,
-	"creation_date"	INTEGER)"""
+	"creation_date"	INTEGER,
+	"blocked_users"	TEXT)"""
  
 mysql_table_query = """
     CREATE TABLE users (
@@ -68,7 +69,8 @@ mysql_table_query = """
         strawberry_id TEXT DEFAULT "",
         discord_name TEXT DEFAULT "",
         msg_count INT NOT NULL,
-        creation_date INT NOT NULL
+        creation_date INT NOT NULL,
+	    blocked_users TEXT DEFAULT ""
     );
 """
  
