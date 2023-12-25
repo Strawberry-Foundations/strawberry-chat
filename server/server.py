@@ -526,7 +526,7 @@ Currently, login is not supported, only linking your Strawberry ID to your accou
 """
 def strawberryIdLogin(client):
     sender = ClientSender(client)
-    sender.send(f"{GREEN + Colors.BOLD}Visit https://id.strawberryfoundations.xyz/v1/en?service=stbchat to login!{RESET + Colors.RESET}")
+    sender.send(f"{GREEN + Colors.BOLD}Visit {CYAN}https://id.strawberryfoundations.xyz/v1/en?service=stbchat{RESET}{GREEN} to login!{RESET + Colors.RESET}")
     sender.send(f"{GREEN + Colors.BOLD}After you have logged in, please enter the code that is shown to you.{RESET + Colors.RESET}")
     
     code = escape_ansi(client.recv(2048).decode("utf8")).strip().rstrip()
@@ -542,14 +542,17 @@ def strawberryIdLogin(client):
             sender.send(f"{GREEN + Colors.BOLD}Logged in as {_data['data']['username']}{RESET + Colors.RESET}")
             
         except Exception as e: 
-            print(e)
             sender.send(f"{RED + Colors.BOLD}Invalid code.{RESET + Colors.RESET}")
+            time.sleep(.5)
             strawberryIdLogin(client)
+            
             
         test = escape_ansi(client.recv(2048).decode("utf8")).strip().rstrip()
         
     else: 
+        time.sleep(.5)
         strawberryIdLogin(client)
+        
 
 """
 --- CLIENT LOGIN ---
