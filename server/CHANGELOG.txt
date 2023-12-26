@@ -34,6 +34,7 @@
 - NEW: Added small but fine cli "windows"
 - NEW: Added check if badge exists in general (badge command)
 - NEW: Added Badge remove command
+- NEW: Added an user validator if session is valid (#127)
 - NEW: Removed afk message blocker
 
 
