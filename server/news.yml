@@ -74,7 +74,7 @@ news:
     text: "
     - NEW: We added a new way to chat with your best friend! You can now use /joindm for an better DM interface!\n
     - NEW: We also added notifications for desktop users, so if they get mentioned, they instantly get an notification ;)\n
-    - NEW: You can now block users from sending you dm messages ith the help of our new /block command!
+    - NEW: You can now block users from sending you dm messages ith the help of our new /block command!\n
     - NEW: We improved our security system - Ratelimiting & automatic session removal!
     "
 
