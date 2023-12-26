@@ -262,16 +262,19 @@ def client_thread(client: socket.socket):
             c = db.cursor()
             
             # Check if the message is too long
-            if not res[0] == "bot": 
-                if len(message) > max_message_length:
-                    if special_messages:
-                        rnd = random.randint(0, 2)
-                        match rnd:
-                            case 0: sender.send(f"{YELLOW + Colors.BOLD}Your message is too long.{RESET + Colors.RESET}")
-                            case 1: sender.send(f"{YELLOW + Colors.BOLD}boah digga halbe bibel wer liest sich das durch{RESET + Colors.RESET}")
-                            case 2: sender.send(f"{YELLOW + Colors.BOLD}junge niemand will sich hier die herr der ringe trilogie durchlesen{RESET + Colors.RESET}")
-                            
-                    else: sender.send(f"{YELLOW + Colors.BOLD}Your message is too long.{RESET + Colors.RESET}")
+            try:
+                if not res[0] == "bot": 
+                    if len(message) > max_message_length:
+                        if special_messages:
+                            rnd = random.randint(0, 2)
+                            match rnd:
+                                case 0: sender.send(f"{YELLOW + Colors.BOLD}Your message is too long.{RESET + Colors.RESET}")
+                                case 1: sender.send(f"{YELLOW + Colors.BOLD}boah digga halbe bibel wer liest sich das durch{RESET + Colors.RESET}")
+                                case 2: sender.send(f"{YELLOW + Colors.BOLD}junge niemand will sich hier die herr der ringe trilogie durchlesen{RESET + Colors.RESET}")
+                                
+                        else: sender.send(f"{YELLOW + Colors.BOLD}Your message is too long.{RESET + Colors.RESET}")
+            except: 
+                pass
 
             # Blacklisted Word System
             client_cur.execute('SELECT role, enable_blacklisted_words FROM users WHERE username = ?', (user.username,))    
@@ -339,8 +342,13 @@ def client_thread(client: socket.socket):
                 if not is_empty_or_whitespace(message):
                     if enable_messages:                 
                         log.info(f"{user.username} ({address}): {escape_ansi(message)}")
-                            
-                    broadcast(message, user.username)
+                    
+                    try:
+                        broadcast(message, user.username)
+                        
+                    except RuntimeError:
+                        log.error(LogMessages.broadcast_error)
+                        debug_logger(e, stbexceptions.communication_error)
                     
                     # Message counter
                     try:
