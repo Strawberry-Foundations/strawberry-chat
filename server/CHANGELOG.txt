@@ -45,7 +45,8 @@
 - FIX: Fixed Kick Command: a bytes-like object is required, not 'str' (#117)
 - FIX: (Particially) Fixed "string indices must be integers, not 'str'" client issue
 
-- SCAPI: 
+- SCAPI: Added Scapi.LogLevel.WARNING
+- SCAPI: Added stbchat_notification + stbchat_backend types for scapi
 
 - OPTIMIZATION: Moved afk, unafk, dnd, undnd commands to status src file
 - OPTIMIZATION: Complete code optimization of client
