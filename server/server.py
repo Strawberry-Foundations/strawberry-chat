@@ -982,21 +982,24 @@ def main():
                 else:
                     return f"{RED}disabled"
                 
-            def get_ratelimit_timeout():
+            def get_ratelimit_timeout(feat_enabled):
                 rlm = str(Networking.ratelimit_timeout)
-                match len(rlm):
-                    case 1: return f"{RESET}({CYAN}{rlm}s{RESET})    "
-                    case 2: return f"{RESET}({CYAN}{rlm}s{RESET})   "
-                    case 3: return f"{RESET}({CYAN}{rlm}s{RESET})  "
-                    case 4: return f"{RESET}({CYAN}{rlm}s{RESET}) "
-                    case 5: return f"{RESET}({CYAN}{rlm}s{RESET})"
-                    case _: return f"        "
+                if feat_enabled == True:
+                    match len(rlm):
+                        case 1: return f"{RESET}({CYAN}{rlm}s{RESET})    "
+                        case 2: return f"{RESET}({CYAN}{rlm}s{RESET})   "
+                        case 3: return f"{RESET}({CYAN}{rlm}s{RESET})  "
+                        case 4: return f"{RESET}({CYAN}{rlm}s{RESET}) "
+                        case 5: return f"{RESET}({CYAN}{rlm}s{RESET})"
+                        case _: return f"        "
+                else:
+                    return "        "
                 
             
             print(f"\n{Colors.BOLD}  {CYAN}* ------------- FEATURES ------------- *{RESET + Colors.RESET}")                
             print(f"{Colors.BOLD}  {CYAN}|{WHITE} *{YELLOW} Console Message Logging is {is_feature_enabled(enable_messages)}{CYAN}|{RESET + Colors.RESET}")
             print(f"{Colors.BOLD}  {CYAN}|{WHITE} *{YELLOW} Debug Mode is {is_feature_enabled(debug_mode)}             {CYAN}|{RESET + Colors.RESET}")
-            print(f"{Colors.BOLD}  {CYAN}|{WHITE} *{YELLOW} Ratelimit is {is_feature_enabled(Networking.ratelimit)}{get_ratelimit_timeout()}      {CYAN}|{RESET + Colors.RESET}")
+            print(f"{Colors.BOLD}  {CYAN}|{WHITE} *{YELLOW} Ratelimit is {is_feature_enabled(Networking.ratelimit)}{get_ratelimit_timeout(is_feature_enabled(Networking.ratelimit))}      {CYAN}|{RESET + Colors.RESET}")
             print(f"{Colors.BOLD}  {CYAN}* ------------------------------------ *{RESET + Colors.RESET}\n")
                 
                 
