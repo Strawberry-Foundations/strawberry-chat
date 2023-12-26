@@ -238,7 +238,7 @@ class Scapi:
                                 continue
                             
                             match message_type:
-                                case "user_message"
+                                case "user_message":
                                     username    = message["username"]
                                     nickname    = message["nickname"]
                                     badge       = self.badge_handler(message["badge"])
