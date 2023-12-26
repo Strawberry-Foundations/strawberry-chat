@@ -46,6 +46,8 @@ codename        = "Vanilla Cake"
 authors         = ["Juliandev02"]
 api             = "https://api.strawberryfoundations.xyz/v1/"
 
+message_types_logging = ["user_message", "system_message"]
+
 class Messages:
     permission_error = "#redYou lack the permission to use this command!#reset"
     command_not_found = "#redCommand '%s' not found.#reset"
@@ -263,7 +265,7 @@ class Scapi:
                                     pass
                             
                             if self.log_recv_msg: 
-                                if self.count > 5:
+                                if self.count > 5 and (message_type in message_types_logging):
                                     self.logger(fmt, type=Scapi.LogLevel.INFO)
                             
                             if json:
@@ -400,14 +402,17 @@ class Scapi:
                     
                     try:
                         raw_data = json.loads(recv_message)
-                        _this_works = True
+                        worker_flag = True
                         
                     except:
                         raw_data = recv_message
-                        _this_works = False
+                        worker_flag = False
                     
-                    if _this_works:
-                        raw_message = raw_data["message"]["content"]
+                    if worker_flag:
+                        try:
+                            raw_message = raw_data["message"]["content"]
+                        except: 
+                            raw_message = ""
                     
                         if raw_message.startswith(self.prefix):
                             message = raw_message[1:]
@@ -434,7 +439,7 @@ class Scapi:
                 except Exception as e: 
                     self.logger(f"{RED}An unknown exception occured{RESET}", type=Scapi.LogLevel.ERROR)
                     self.logger(f"{RED}{e}{RESET}", type=Scapi.LogLevel.ERROR)
-                    break
+                    # break
   
         def run(self, ready_func = None):
             if self.enable_user_input is True: self.logger(f"{YELLOW}Flag {GREEN + BOLD}'enable_user_input'{RESET + YELLOW} is enabled", type=Scapi.LogLevel.INFO)
