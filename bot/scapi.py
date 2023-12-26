@@ -230,31 +230,40 @@ class Scapi:
                             
                             try:
                                 message_type = message["message_type"]
+                                
                             except:
                                 self.logger(f"{YELLOW}{BOLD}The data received from the server could not be read in as JSON data.{RESET}", type=Scapi.LogLevel.WARNING)
                                 message_type = "unknown"
                                 
-                            if message_type == "user_message":
-                                username    = message["username"]
-                                nickname    = message["nickname"]
-                                badge       = self.badge_handler(message["badge"])
-                                role_color  = message["role_color"]
-                                message     = message["message"]["content"]
-                                
-                                if nickname == username:
-                                    fmt     = f"{role_color}{username}{badge}:\033[0m {message}"
+                                continue
+                            
+                            match message_type:
+                                case "user_message"
+                                    username    = message["username"]
+                                    nickname    = message["nickname"]
+                                    badge       = self.badge_handler(message["badge"])
+                                    role_color  = message["role_color"]
+                                    message     = message["message"]["content"]
                                     
-                                else:
-                                    fmt     = f"{role_color}{nickname} (@{username.lower()}){badge}:\033[0m {message}"
+                                    if nickname == username:
+                                        fmt     = f"{role_color}{username}{badge}:\033[0m {message}"
+                                    else:
+                                        fmt     = f"{role_color}{nickname} (@{username.lower()}){badge}:\033[0m {message}"
                                 
-                            else:
-                                try:
-                                    fmt     = message["message"]["content"]
-                                except:
-                                    fmt     = message
+                                case "system_message":
+                                    try:
+                                        fmt     = message["message"]["content"]
+                                    except:
+                                        fmt     = message
+                                
+                                case "stbchat_notification":
+                                    pass
+                                
+                                case "stbchat_backend":
+                                    pass
                             
                             if self.log_recv_msg: 
-                                if self.count > 4:
+                                if self.count > 5:
                                     self.logger(fmt, type=Scapi.LogLevel.INFO)
                             
                             if json:
