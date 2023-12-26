@@ -1004,11 +1004,11 @@ def main():
                 
                 
             if not online_mode:
-                print(f"\n{Colors.BOLD}  {YELLOW}* -------------- WARNING -------------- *{RESET + Colors.RESET}")
-                print(f"{Colors.BOLD}  {YELLOW}|    Online mode is disabled and your   {YELLOW}|{RESET + Colors.RESET}")
-                print(f"{Colors.BOLD}  {YELLOW}|      server might be in danger!       {YELLOW}|{RESET + Colors.RESET}")
-                print(f"{Colors.BOLD}  {YELLOW}|    Consider using the online mode!    {YELLOW}|{RESET + Colors.RESET}")
-                print(f"{Colors.BOLD}  {YELLOW}* ------------------------------------ *{RESET + Colors.RESET}\n")
+                print(f"\n{Colors.BOLD}  {YELLOW}* --------------- WARNING -------------- *{RESET + Colors.RESET}")
+                print(f"{Colors.BOLD}  {YELLOW}|    Online mode is disabled and your    {YELLOW}|{RESET + Colors.RESET}")
+                print(f"{Colors.BOLD}  {YELLOW}|       server might be in danger!       {YELLOW}|{RESET + Colors.RESET}")
+                print(f"{Colors.BOLD}  {YELLOW}|     Consider using the online mode!    {YELLOW}|{RESET + Colors.RESET}")
+                print(f"{Colors.BOLD}  {YELLOW}* -------------------------------------- *{RESET + Colors.RESET}\n")
             
             if ipaddr == "0.0.0.0": all_addresses = True
             
