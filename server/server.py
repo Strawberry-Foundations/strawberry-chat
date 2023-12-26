@@ -996,18 +996,18 @@ def main():
                     return "        "
                 
             
-            print(f"\n{Colors.BOLD}  {CYAN}* ------------- FEATURES ------------- *{RESET + Colors.RESET}")                
-            print(f"{Colors.BOLD}  {CYAN}|{WHITE} *{YELLOW} Console Message Logging is {is_feature_enabled(enable_messages)}{CYAN}|{RESET + Colors.RESET}")
-            print(f"{Colors.BOLD}  {CYAN}|{WHITE} *{YELLOW} Debug Mode is {is_feature_enabled(debug_mode)}             {CYAN}|{RESET + Colors.RESET}")
-            print(f"{Colors.BOLD}  {CYAN}|{WHITE} *{YELLOW} Ratelimit is {is_feature_enabled(Networking.ratelimit)}{get_ratelimit_timeout(is_feature_enabled(Networking.ratelimit))}      {CYAN}|{RESET + Colors.RESET}")
-            print(f"{Colors.BOLD}  {CYAN}* ------------------------------------ *{RESET + Colors.RESET}\n")
+            print(f"\n{Colors.BOLD}  {CYAN}* -------------- FEATURES -------------- *{RESET + Colors.RESET}")                
+            print(f"{Colors.BOLD}  {CYAN}|{WHITE} *{YELLOW} Console Message Logging is {is_feature_enabled(enable_messages)}{CYAN}  |{RESET + Colors.RESET}")
+            print(f"{Colors.BOLD}  {CYAN}|{WHITE} *{YELLOW} Debug Mode is {is_feature_enabled(debug_mode)}             {CYAN}  |{RESET + Colors.RESET}")
+            print(f"{Colors.BOLD}  {CYAN}|{WHITE} *{YELLOW} Ratelimit is {is_feature_enabled(Networking.ratelimit)}{get_ratelimit_timeout(is_feature_enabled(Networking.ratelimit))}        {CYAN}|{RESET + Colors.RESET}")
+            print(f"{Colors.BOLD}  {CYAN}* -------------------------------------- *{RESET + Colors.RESET}\n")
                 
                 
             if not online_mode:
-                print(f"\n{Colors.BOLD}  {YELLOW}* -------------- WARNING ------------- *{RESET + Colors.RESET}")
-                print(f"{Colors.BOLD}  {YELLOW}|   Online mode is disabled and your   {YELLOW}|{RESET + Colors.RESET}")
-                print(f"{Colors.BOLD}  {YELLOW}|     server might be in danger!       {YELLOW}|{RESET + Colors.RESET}")
-                print(f"{Colors.BOLD}  {YELLOW}|   Consider using the online mode!    {YELLOW}|{RESET + Colors.RESET}")
+                print(f"\n{Colors.BOLD}  {YELLOW}* -------------- WARNING -------------- *{RESET + Colors.RESET}")
+                print(f"{Colors.BOLD}  {YELLOW}|    Online mode is disabled and your   {YELLOW}|{RESET + Colors.RESET}")
+                print(f"{Colors.BOLD}  {YELLOW}|      server might be in danger!       {YELLOW}|{RESET + Colors.RESET}")
+                print(f"{Colors.BOLD}  {YELLOW}|    Consider using the online mode!    {YELLOW}|{RESET + Colors.RESET}")
                 print(f"{Colors.BOLD}  {YELLOW}* ------------------------------------ *{RESET + Colors.RESET}\n")
             
             if ipaddr == "0.0.0.0": all_addresses = True
