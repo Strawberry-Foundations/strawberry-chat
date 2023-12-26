@@ -1,3 +1,4 @@
+
 # v1.6.0
 - NEW: AFK user list command
 - NEW: Sending messages in Afk status is no longer possible
@@ -64,3 +65,9 @@
 - FIX: We have fixed some general bugs that we didn't notice. Read changelog for more information (#63, #72, #70)
 - ADMIN: We added a new command for server admins to configure the server or just show the current configurations!
 Have a look at https://developers.strawberryfoundations.xyz/ for more documentation about Strawberry Chat :)
+
+# 1.10.0:
+- NEW: We added a new way to chat with your best friend! You can now use /joindm for an better DM interface!
+- NEW: We also added notifications for desktop users, so if they get mentioned, they instantly get an notification ;)
+- NEW: You can now block users from sending you dm messages ith the help of our new /block command!
+- NEW: We improved our security system - Ratelimiting & automatic session removal!
