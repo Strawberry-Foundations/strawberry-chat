@@ -33,6 +33,7 @@
 - NEW: Added configuration for ratelimit (Enabling or disabling ratelimit + ratelimit timeout)
 - NEW: Added small but fine cli "windows"
 - NEW: Added check if badge exists in general (badge command)
+- NEW: Added Badge remove command
 - NEW: Removed afk message blocker
 
 
