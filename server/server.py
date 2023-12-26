@@ -783,6 +783,12 @@ def broadcast(message, sent_by="", format: StbCom = StbCom.PLAIN):
                 except BrokenPipeError as e:
                     debug_logger(e, stbexceptions.broken_pipe_warning, type=StbTypes.WARNING)
                     log.warning(LogMessages.invalid_sessions_w)
+                    
+                    del users[user]
+                    log.warning(LogMessages.rem_invalid_ses)
+                    time.sleep(.5)
+                    break
+                    
 
         else:
             for user in users:                
@@ -868,7 +874,12 @@ def broadcast(message, sent_by="", format: StbCom = StbCom.PLAIN):
                             
                             user.send(send_json(json_builder).encode('utf8') + MESSAGE_SEPARATOR)
                             
-                        except BrokenPipeError: pass
+                        except BrokenPipeError:
+                            del users[user]
+                            log.warning(LogMessages.rem_invalid_ses)
+                            time.sleep(.5)
+                            break
+                        
                     else: pass
                 else: pass
                     
