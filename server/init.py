@@ -53,6 +53,7 @@ class LogMessages:
     stc_error           = "A socket-to-client exception occured"
     registration_error  = "A registration exception occured"
     invalid_sessions_w  = "You should kick some invalid sessions."
+    rem_invalid_ses     = "Removed some invalid sessions."
     broadcast_error     = "A broadcasting error occurred."
     runtime_stop        = "Runtime has stopped."
     server_stop         = "Server stopped"
