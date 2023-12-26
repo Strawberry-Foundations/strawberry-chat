@@ -346,8 +346,9 @@ def client_thread(client: socket.socket):
                     try:
                         c.execute("SELECT msg_count FROM users WHERE username = ?", (user.username,))
                         msg_count = c.fetchone()[0] + 1
-                        c.execute("UPDATE users SET msg_count = ? WHERE username = ?", (msg_count, user.username))
-                        db.commit()
+                        
+                        with db:
+                            db.execute("UPDATE users SET msg_count = ? WHERE username = ?", (msg_count, user.username))
                         
                     except Exception as e:
                         log.error(LogMessages.sql_error)
