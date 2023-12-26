@@ -37,7 +37,7 @@ CYAN = '\033[36m'
 WHITE = '\033[37m'
 
 # Version-specified Variables & important variables
-base_version    = "0.14.0"
+base_version    = "0.15.0"
 ext_version     = base_version + ""
 version         = "v" + ext_version
 full_version    = ext_version + "_dev-vacakes-std_stmbv2"
@@ -394,6 +394,7 @@ class Scapi:
                 cmd[0](user, args)
                 
             else: self.send_message(command_not_found_msg % command_name)
+        
         
         def message_handler(self):
             while True:
