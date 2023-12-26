@@ -56,6 +56,7 @@ class Scapi:
         INFO = 0
         ERROR = 1
         MESSAGE = 2
+        WARNING = 3
                 
     class Bot:    
         class PermissionLevel(Enum):
@@ -122,6 +123,10 @@ class Scapi:
                      
                 case Scapi.LogLevel.MESSAGE:
                     log_level = f"{GREEN}MESSAGE "
+                    print(f"{self.log_msg % log_level}{message}{RESET}")  
+                    
+                case Scapi.LogLevel.Warning:
+                    log_level = f"{YELLOW}WARNING "
                     print(f"{self.log_msg % log_level}{message}{RESET}")  
             
 
@@ -216,7 +221,8 @@ class Scapi:
                         try:
                             message = self.convert_json_data(recv_message)
                             
-                        except:
+                        except Exception as e:
+                            self.logger(f"{YELLOW}JSON Convert failed{RESET}: {RED + BOLD}{e}{RESET}", type=Scapi.LogLevel.WARNING)
                             message = recv_message
                         
                         if recv_message:
@@ -225,7 +231,8 @@ class Scapi:
                             try:
                                 message_type = message["message_type"]
                             except:
-                                message_type = "unknown"                        
+                                self.logger(f"{YELLOW}{BOLD}The data received from the server could not be read in as JSON data.{RESET}", type=Scapi.LogLevel.WARNING)
+                                message_type = "unknown"
                                 
                             if message_type == "user_message":
                                 username    = message["username"]
