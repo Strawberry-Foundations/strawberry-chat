@@ -47,6 +47,7 @@
 
 - SCAPI: Added Scapi.LogLevel.WARNING
 - SCAPI: Added stbchat_notification + stbchat_backend types for scapi
+- SCAPI: Improved Error Handling and Logging
 
 - OPTIMIZATION: Moved afk, unafk, dnd, undnd commands to status src file
 - OPTIMIZATION: Complete code optimization of client
