@@ -4,7 +4,7 @@ import socket
 
 from src.colors import *
 from src.db import Database
-from src.vars import role_colors
+from src.vars import role_colors, badge_list
 from src.functions import doesUserExist
 
 from init import stbexceptions, User, ClientSender, server_dir, log, debug_logger
@@ -87,6 +87,10 @@ def badge_command(socket: socket.socket, user: User, args: list, sender: ClientS
                 except:
                     sender.send(f"{RED + Colors.BOLD}Please pass a valid argument!{RESET + Colors.RESET}")
                     return
+                
+                if badge_to_add not in badge_list:
+                    sender.send(f"{RED + Colors.BOLD}Invalid badge!{RESET + Colors.RESET}")
+                    return
                     
                 cmd_db.execute("SELECT badges FROM users WHERE username = ?", (user.username,))
                 
@@ -109,9 +113,12 @@ def badge_command(socket: socket.socket, user: User, args: list, sender: ClientS
                     uname = args[1]
                     badge_to_add = args[2]
                     
-                    
                 except:
                     sender.send(f"{RED + Colors.BOLD}Please pass a valid argument!{RESET + Colors.RESET}")
+                    return
+                
+                if badge_to_add not in badge_list:
+                    sender.send(f"{RED + Colors.BOLD}Invalid badge!{RESET + Colors.RESET}")
                     return
                     
                 if not doesUserExist(uname):
