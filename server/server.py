@@ -984,7 +984,7 @@ def main():
                 
             def get_ratelimit_timeout(feat_enabled):
                 rlm = str(Networking.ratelimit_timeout)
-                if feat_enabled == True:
+                if feat_enabled:
                     match len(rlm):
                         case 1: return f"{RESET}({CYAN}{rlm}s{RESET})    "
                         case 2: return f"{RESET}({CYAN}{rlm}s{RESET})   "
@@ -999,7 +999,7 @@ def main():
             print(f"\n{Colors.BOLD}  {CYAN}* -------------- FEATURES -------------- *{RESET + Colors.RESET}")                
             print(f"{Colors.BOLD}  {CYAN}|{WHITE} *{YELLOW} Console Message Logging is {is_feature_enabled(enable_messages)}{CYAN}  |{RESET + Colors.RESET}")
             print(f"{Colors.BOLD}  {CYAN}|{WHITE} *{YELLOW} Debug Mode is {is_feature_enabled(debug_mode)}             {CYAN}  |{RESET + Colors.RESET}")
-            print(f"{Colors.BOLD}  {CYAN}|{WHITE} *{YELLOW} Ratelimit is {is_feature_enabled(Networking.ratelimit)}{get_ratelimit_timeout(is_feature_enabled(Networking.ratelimit))}        {CYAN}|{RESET + Colors.RESET}")
+            print(f"{Colors.BOLD}  {CYAN}|{WHITE} *{YELLOW} Ratelimit is {is_feature_enabled(Networking.ratelimit)}{get_ratelimit_timeout(Networking.ratelimit)}        {CYAN}|{RESET + Colors.RESET}")
             print(f"{Colors.BOLD}  {CYAN}* -------------------------------------- *{RESET + Colors.RESET}\n")
                 
                 
