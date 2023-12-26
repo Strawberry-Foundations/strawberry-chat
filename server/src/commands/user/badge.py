@@ -148,3 +148,74 @@ def badge_command(socket: socket.socket, user: User, args: list, sender: ClientS
         else:
             sender.send(f"{RED}Sorry, you do not have permissons for that.{RESET}")
             return
+        
+    elif cmd == "remove":
+        if user_role[0] == "admin":
+            if len(args) == 2:
+                try:
+                    badge_to_remove = args[1]
+                    
+                except:
+                    sender.send(f"{RED + Colors.BOLD}Please pass a valid argument!{RESET + Colors.RESET}")
+                    return
+                
+                if badge_to_remove not in badge_list:
+                    sender.send(f"{RED + Colors.BOLD}Invalid badge!{RESET + Colors.RESET}")
+                    return
+                    
+                cmd_db.execute("SELECT badges FROM users WHERE username = ?", (user.username,))
+                
+                user_badges = cmd_db.fetchone()[0]
+                
+                # Does the user have this badge?
+                if not badge_to_remove in user_badges:
+                    sender.send(f"{RED + Colors.BOLD}This badge is not assigned to your profile!{RESET + Colors.RESET}")
+                    return
+                
+                new_user_badges = user_badges.replace(badge_to_remove, "")
+                
+                cmd_db.execute("UPDATE users SET badges = ? WHERE username = ?", (new_user_badges, user.username))
+                cmd_db.commit()
+               
+                sender.send(f"{GREEN + Colors.BOLD}Removed badge '{badge_to_remove}' from your user profile{RESET + Colors.RESET}")
+            
+            elif len(args) == 3:
+                try:
+                    uname = args[1]
+                    badge_to_remove = args[2]
+                    
+                except:
+                    sender.send(f"{RED + Colors.BOLD}Please pass a valid argument!{RESET + Colors.RESET}")
+                    return
+                
+                if badge_to_remove not in badge_list:
+                    sender.send(f"{RED + Colors.BOLD}Invalid badge!{RESET + Colors.RESET}")
+                    return
+                    
+                if not doesUserExist(uname):
+                    sender.send(f"{RED + Colors.BOLD}Sorry, this user does not exist!{RESET + Colors.RESET}")
+                    return
+                
+                else: 
+                    cmd_db.execute("SELECT badges FROM users WHERE username = ?", (uname,))
+                
+                    user_badges = cmd_db.fetchone()[0]
+                    
+                    # Does the user have this badge?
+                    if not badge_to_remove in user_badges:
+                        sender.send(f"{RED + Colors.BOLD}This badge is not assigned to {uname}'s profile!{RESET + Colors.RESET}")
+                        return
+                    
+                    new_user_badges = user_badges.replace(badge_to_remove, "")
+                    
+                    cmd_db.execute("UPDATE users SET badges = ? WHERE username = ?", (new_user_badges, uname))
+                    cmd_db.commit()
+                    
+                    sender.send(f"{GREEN + Colors.BOLD}Removed badge '{badge_to_remove}' from {uname}'s profile{RESET + Colors.RESET}")
+                    
+            else:
+                sender.send(f"{RED + Colors.BOLD}Invalid command usage.{RESET + Colors.RESET}")
+                return
+        else:
+            sender.send(f"{RED}Sorry, you do not have permissons for that.{RESET}")
+            return
