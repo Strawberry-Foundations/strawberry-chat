@@ -44,4 +44,4 @@ security:
   banned_ips: []
 
 
-config_ver: 6
+config_ver: 7
