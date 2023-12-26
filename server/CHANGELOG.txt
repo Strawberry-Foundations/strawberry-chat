@@ -47,6 +47,7 @@
 - FIX: Fixed strange bug that will display wrong username
 - FIX: Fixed Kick Command: a bytes-like object is required, not 'str' (#117)
 - FIX: (Particially) Fixed "string indices must be integers, not 'str'" client issue
+- FIX: Fixes to database writer 
 
 - SCAPI: Added Scapi.LogLevel.WARNING
 - SCAPI: Added stbchat_notification + stbchat_backend types for scapi
