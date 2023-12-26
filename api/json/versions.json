@@ -18,7 +18,7 @@
 
         "scapi": {
             "bot": {
-                "stable": "0.14.0-stbmv2",
+                "stable": "0.15.0-stbmv2",
                 "dev": "-",
                 "canary": "-",
                 "legacy": "1.0.0-stbmv1"
