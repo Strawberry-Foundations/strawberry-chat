@@ -52,12 +52,12 @@ if config_ver != config_ver_yml:
 # Check if database file exists
 if os.path.exists(server_dir + "/users.db"):
     # Connect to database
-    _db = Database(driver=DatabaseConfig.driver)
+    db = Database(driver=DatabaseConfig.driver)
     
-    _open_cursor = _db.cursor
+    cursor = db.cursor
     
     if not test_mode:
-        if table_exists("users", _open_cursor):
+        if table_exists("users", cursor):
             print(f"{GREEN + Colors.BOLD}>>> {RESET}Connected to database")
         else:
             input_regen_database(type="corrupted")
@@ -139,9 +139,7 @@ def connection_thread(sock: socket.socket):
                     threading.Thread(target=client_thread, args=(client,)).start()
             
             else:
-                if address[0] in connection_count:
-                    connection_count[address[0]] += 1
-                    
+                if address[0] in connection_count:                    
                     if connection_count[address[0]] >= 10:
                         log.warning(f"IP address {address[0]} has reached its connection limit. Blocking IP address")
                         ignore_list[address[0]] = time.time()                
