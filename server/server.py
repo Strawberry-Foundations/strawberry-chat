@@ -253,6 +253,7 @@ def client_thread(client: socket.socket):
                 return
             
             client_cur = db.cursor
+            c = db.cursor
 
             client_cur.execute('SELECT role FROM users WHERE username = ?', (user.username,))    
             res = client_cur.fetchone()
@@ -351,8 +352,8 @@ def client_thread(client: socket.socket):
                         c.execute("SELECT msg_count FROM users WHERE username = ?", (user.username,))
                         msg_count = c.fetchone()[0] + 1
                         
-                        with db:
-                            db.execute("UPDATE users SET msg_count = ? WHERE username = ?", (msg_count, user.username))
+                        with db.connection:
+                            db.connection.execute("UPDATE users SET msg_count = ? WHERE username = ?", (msg_count, user.username))
                         
                     except Exception as e:
                         db.rollback()
