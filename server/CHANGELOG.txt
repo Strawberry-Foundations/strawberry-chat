@@ -49,6 +49,7 @@
 - FIX: (Particially) Fixed "string indices must be integers, not 'str'" client issue
 - FIX: Fixes to database writer 
 - FIX: Fixed connecting issue when connecting first time after ratelimit timeout removal
+- FIX: Fixed doubled counting of connection counter
 
 - SCAPI: Added Scapi.LogLevel.WARNING
 - SCAPI: Added stbchat_notification + stbchat_backend types for scapi
