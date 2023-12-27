@@ -347,7 +347,7 @@ def client_thread(client: socket.socket):
                     try:
                         broadcast(message, user.username)
                         
-                    except RuntimeError:
+                    except RuntimeError as e:
                         log.error(LogMessages.broadcast_error)
                         debug_logger(e, stbexceptions.communication_error)
                     
