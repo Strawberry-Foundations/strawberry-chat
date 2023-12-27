@@ -173,6 +173,9 @@ def client_thread(client: socket.socket):
     user    = User(client)
     address = addresses[client][0]
     
+    client_db    = Database(driver=DatabaseConfig.driver)
+    cursor       = client_db.cursor
+    
     # Static IP-banning
     if user.address in banned_ips:
         sender.send(f"{RED + Colors.BOLD}Sorry, you're not allowed to connect to this server.{Colors.RESET}")
