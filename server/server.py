@@ -54,7 +54,6 @@ if os.path.exists(server_dir + "/users.db"):
     # Connect to database
     _db = Database(driver=DatabaseConfig.driver)
     
-    db = sql.connect(server_dir + "/users.db", check_same_thread=False)
     _open_cursor = _db.cursor
     
     if not test_mode:
