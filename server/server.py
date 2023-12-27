@@ -629,7 +629,7 @@ This piece of code is well commented so that you understand what almost every li
 def clientLogin(client):
     sender      = ClientSender(client)
     logged_in   = False
-    login_cur   = db.cursor()
+    login_cur   = db.cursor
     
     
     welcome_message_base = f"{Colors.RESET + Colors.BOLD}Welcome to Strawberry Chat!{Colors.RESET}"
