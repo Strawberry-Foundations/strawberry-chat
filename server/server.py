@@ -58,13 +58,14 @@ if os.path.exists(server_dir + "/users.db"):
     db = Database(driver=DatabaseConfig.driver)
     cursor = db.cursor
     
-    if not test_mode:
-        if table_exists("users", cursor):
-            print(f"{GREEN + Colors.BOLD}>>> {RESET}Connected to database")
+    if DatabaseConfig.driver == "sqlite":
+        if not test_mode:
+            if table_exists("users", cursor):
+                print(f"{GREEN + Colors.BOLD}>>> {RESET}Connected to database")
+            else:
+                input_regen_database(type="corrupted")
         else:
-            input_regen_database(type="corrupted")
-    else:
-        regen_database(call_exit=False)
+            regen_database(call_exit=False)
         
     
 else:
