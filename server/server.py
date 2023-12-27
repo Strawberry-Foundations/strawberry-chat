@@ -252,12 +252,10 @@ def client_thread(client: socket.socket):
                 
                 return
             
-            client_cur = db.cursor()
+            client_cur = db.cursor
 
             client_cur.execute('SELECT role FROM users WHERE username = ?', (user.username,))    
             res = client_cur.fetchone()
-                
-            c = db.cursor()
             
             # Check if the message is too long
             try:
@@ -361,7 +359,7 @@ def client_thread(client: socket.socket):
                         log.error(LogMessages.sql_error)
                         debug_logger(e, stbexceptions.sql_error)
                         
-            c.close()            
+            # c.close()            
                 
         except Exception as e:
             log.error(LogMessages.client_side_error)
@@ -774,7 +772,7 @@ def clientLogin(client):
 
 def broadcast(message, sent_by="", format: StbCom = StbCom.PLAIN):    
     ansi_reset_count = 0 
-    c = db.cursor()
+    c = db.cursor
     
     try:
         if sent_by == "":
@@ -892,7 +890,7 @@ def broadcast(message, sent_by="", format: StbCom = StbCom.PLAIN):
                     else: pass
                 else: pass
                     
-        c.close()
+        # c.close()
                 
     except IOError as e:
         if e.errno == errno.EPIPE:
