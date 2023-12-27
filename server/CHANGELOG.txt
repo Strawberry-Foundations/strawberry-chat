@@ -48,6 +48,7 @@
 - FIX: Fixed Kick Command: a bytes-like object is required, not 'str' (#117)
 - FIX: (Particially) Fixed "string indices must be integers, not 'str'" client issue
 - FIX: Fixes to database writer 
+- FIX: Fixed connecting issue when connecting first time after ratelimit timeout removal
 
 - SCAPI: Added Scapi.LogLevel.WARNING
 - SCAPI: Added stbchat_notification + stbchat_backend types for scapi
