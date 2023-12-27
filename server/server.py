@@ -360,8 +360,10 @@ def client_thread(client: socket.socket):
                             db.execute("UPDATE users SET msg_count = ? WHERE username = ?", (msg_count, user.username))
                         
                     except Exception as e:
+                        db.rollback()
                         log.error(LogMessages.sql_error)
                         debug_logger(e, stbexceptions.sql_error)
+                        
             c.close()            
                 
         except Exception as e:
@@ -779,7 +781,7 @@ def broadcast(message, sent_by="", format: StbCom = StbCom.PLAIN):
     
     try:
         if sent_by == "":
-            for user in users:
+            for user in users.copy():
                 try:
                     json_builder = {
                         "message_type": StbCom.SYS_MSG,
@@ -801,7 +803,7 @@ def broadcast(message, sent_by="", format: StbCom = StbCom.PLAIN):
                     
 
         else:
-            for user in users:                
+            for user in users.copy():                
                 ansi_reset_count += 1 
                 
                 try: 
