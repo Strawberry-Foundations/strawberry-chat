@@ -253,8 +253,7 @@ def client_thread(client: socket.socket):
                 return
             
             client_cur = db.cursor
-            c = db.cursor
-
+            
             client_cur.execute('SELECT role FROM users WHERE username = ?', (user.username,))    
             res = client_cur.fetchone()
             
@@ -302,13 +301,13 @@ def client_thread(client: socket.socket):
                     continue
                 
                 try:
-                    c.execute('SELECT role FROM users WHERE username = ?', (user.username,))
+                    client_cur.execute('SELECT role FROM users WHERE username = ?', (user.username,))
 
                 except Exception as e:
                     log.error(LogMessages.sql_error)
                     debug_logger(e, stbexceptions.sql_error)
                     
-                user_role = c.fetchone()[0]
+                user_role = client_cur.fetchone()[0]
                 role = None
                 
                 match user_role:
@@ -349,8 +348,8 @@ def client_thread(client: socket.socket):
                     
                     # Message counter
                     try:
-                        c.execute("SELECT msg_count FROM users WHERE username = ?", (user.username,))
-                        msg_count = c.fetchone()[0] + 1
+                        client_curc.execute("SELECT msg_count FROM users WHERE username = ?", (user.username,))
+                        msg_count = client_cur.fetchone()[0] + 1
                         
                         with db.connection:
                             db.connection.execute("UPDATE users SET msg_count = ? WHERE username = ?", (msg_count, user.username))
