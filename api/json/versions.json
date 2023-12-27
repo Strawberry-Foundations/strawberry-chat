@@ -3,7 +3,7 @@
         "server": {
             "stable": "v1.9.0",
             "dev": "-",
-            "canary": "v1.10.0b3",
+            "canary": "v1.10.0b4",
             "legacy": "v1.8.2"
         },
     
