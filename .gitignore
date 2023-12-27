@@ -173,9 +173,10 @@ client/client
 server/users.db
 server/_users.db
 server/users.db.bak
+server/users.db.bak.bak
 server/users_unhashed.db
-server/database_test.py
 
+server/database_test.py
 server/blacklist.txt
 server/messages.txt
 server/config.yml
