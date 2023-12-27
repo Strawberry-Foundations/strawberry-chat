@@ -49,11 +49,13 @@ if config_ver != config_ver_yml:
     print(f"{RED + Colors.BOLD}ERROR: {RESET}You are using an old configuration file (v{config_ver_yml}). Please update your configuration file according to the current entries")
     exit()
 
+global db
+global cursor
+
 # Check if database file exists
 if os.path.exists(server_dir + "/users.db"):
     # Connect to database
     db = Database(driver=DatabaseConfig.driver)
-    
     cursor = db.cursor
     
     if not test_mode:
@@ -228,7 +230,7 @@ def client_thread(client: socket.socket):
         return
     
     time.sleep(0.1)
-    broadcast(f"{Colors.GRAY + Colors.BOLD}-->{Colors.RESET} {userRoleColor(user.username)}{user.username}{GREEN + Colors.BOLD} has joined the chat room!{RESET + Colors.RESET}")
+    broadcast(f"{Colors.GRAY + Colors.BOLD}-->{Colors.RESET} {userRoleColor(user.username)}{user.username}{GREEN + Colors.BOLD} has joined the chat room!{RESET + Colors.RESET}", cur=cursor)
 
     while True:
         try:
@@ -251,11 +253,9 @@ def client_thread(client: socket.socket):
                 sender.close(del_address=True, del_user=True, call_exit=True)
                 
                 return
-            
-            client_cur = db.cursor
-            
-            client_cur.execute('SELECT role FROM users WHERE username = ?', (user.username,))    
-            res = client_cur.fetchone()
+                    
+            cursor.execute('SELECT role FROM users WHERE username = ?', (user.username,))    
+            res = cursor.fetchone()
             
             # Check if the message is too long
             try:
@@ -273,8 +273,8 @@ def client_thread(client: socket.socket):
                 pass
 
             # Blacklisted Word System
-            client_cur.execute('SELECT role, enable_blacklisted_words FROM users WHERE username = ?', (user.username,))    
-            result = client_cur.fetchone()
+            cursor.execute('SELECT role, enable_blacklisted_words FROM users WHERE username = ?', (user.username,))    
+            result = cursor.fetchone()
             
             if not (result[0] == "admin" or result[0] == "bot" or result[1] == "false"):
                 for word in message.split():
@@ -301,13 +301,13 @@ def client_thread(client: socket.socket):
                     continue
                 
                 try:
-                    client_cur.execute('SELECT role FROM users WHERE username = ?', (user.username,))
+                    cursor.execute('SELECT role FROM users WHERE username = ?', (user.username,))
 
                 except Exception as e:
                     log.error(LogMessages.sql_error)
                     debug_logger(e, stbexceptions.sql_error)
                     
-                user_role = client_cur.fetchone()[0]
+                user_role = cursor.fetchone()[0]
                 role = None
                 
                 match user_role:
@@ -340,7 +340,7 @@ def client_thread(client: socket.socket):
                         log.info(f"{user.username} ({address}): {escape_ansi(message)}")
                     
                     try:
-                        broadcast(message, user.username)
+                        broadcast(message, user.username, cur=cursor)
                         
                     except RuntimeError as e:
                         log.error(LogMessages.broadcast_error)
@@ -348,8 +348,8 @@ def client_thread(client: socket.socket):
                     
                     # Message counter
                     try:
-                        client_curc.execute("SELECT msg_count FROM users WHERE username = ?", (user.username,))
-                        msg_count = client_cur.fetchone()[0] + 1
+                        cursor.execute("SELECT msg_count FROM users WHERE username = ?", (user.username,))
+                        msg_count = cursor.fetchone()[0] + 1
                         
                         with db.connection:
                             db.connection.execute("UPDATE users SET msg_count = ? WHERE username = ?", (msg_count, user.username))
@@ -375,7 +375,7 @@ def client_thread(client: socket.socket):
                 log.warning(LogMessages.stc_error)
                 debug_logger(e, stbexceptions.stc_error, type=StbTypes.WARNING)        
             
-            broadcast(f"{Colors.GRAY + Colors.BOLD}<--{Colors.RESET} {userRoleColor(user.username)}{user.username}{YELLOW + Colors.BOLD} has left the chat room!{RESET + Colors.RESET}")
+            broadcast(f"{Colors.GRAY + Colors.BOLD}<--{Colors.RESET} {userRoleColor(user.username)}{user.username}{YELLOW + Colors.BOLD} has left the chat room!{RESET + Colors.RESET}", cur=cursor)
             break
 
 def clientRegister(client: socket.socket, login_cur: sql.Connection, sender: ClientSender, wait: bool = False):    
@@ -627,7 +627,9 @@ This piece of code is well commented so that you understand what almost every li
 def clientLogin(client):
     sender      = ClientSender(client)
     logged_in   = False
-    login_cur   = db.cursor
+    
+    login_db    = Database(driver=DatabaseConfig.driver)
+    login_cur   = login_db.cursor
     
     
     welcome_message_base = f"{Colors.RESET + Colors.BOLD}Welcome to Strawberry Chat!{Colors.RESET}"
@@ -770,9 +772,8 @@ def clientLogin(client):
         else: sender.send(f"{RED + Colors.BOLD}User not found.\n{RESET + Colors.RESET}")
 
 
-def broadcast(message, sent_by="", format: StbCom = StbCom.PLAIN):    
+def broadcast(message, sent_by="", cur=None):    
     ansi_reset_count = 0 
-    c = db.cursor
     
     try:
         if sent_by == "":
@@ -802,8 +803,8 @@ def broadcast(message, sent_by="", format: StbCom = StbCom.PLAIN):
                 ansi_reset_count += 1 
                 
                 try: 
-                    c.execute('SELECT badge FROM users WHERE username = ?', (sent_by,))
-                    user_badge = c.fetchone()
+                    cur.execute('SELECT badge FROM users WHERE username = ?', (sent_by,))
+                    user_badge = cur.fetchone()
                
                     if user_badge[0] is not None: badge = user_badge[0]    
                     else: badge = ""
@@ -812,8 +813,8 @@ def broadcast(message, sent_by="", format: StbCom = StbCom.PLAIN):
                     log.error(LogMessages.badge_error + e)
                 
                 
-                c.execute('SELECT role FROM users WHERE username = ?', (sent_by,))
-                user_role = c.fetchone()
+                cur.execute('SELECT role FROM users WHERE username = ?', (sent_by,))
+                user_role = cur.fetchone()
                 
                 if user_role[0] != "bot":
                     message = message.strip("\n")
