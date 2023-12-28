@@ -6,7 +6,12 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+color-eyre = "0.6.2"
+lazy_static = "1.4.0"
+log = "0.4.20"
 rmp-serde = "1.1.2"
 serde = { version = "1.0.193", features = ["derive"] }
+stbchat = { version = "0.1.0", path = "../stbchat" }
 stblib = { git = "https://github.com/Strawberry-Foundations/stblib-rust", version = "0.2.10-2" }
 tokio = { version = "1.35.1", features = ["full"] }
+toml = "0.8.8"
