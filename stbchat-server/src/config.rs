@@ -3,7 +3,7 @@ use serde::Deserialize;
 
 lazy_static! {
     pub static ref CONFIG: Config =
-        { toml::from_str(include_str!("StrawberryChat.toml")).expect("Failed to parse config") };
+        toml::from_str(include_str!("StrawberryChat.toml")).expect("Failed to parse config");
 }
 
 #[derive(Deserialize)]
