@@ -3,28 +3,23 @@
 extern crate core;
 
 use log::{error, info};
-use tokio::net::{TcpListener, TcpStream};
+use tokio::net::TcpListener;
 use tokio::spawn;
-use tokio::sync::mpsc::{unbounded_channel, UnboundedReceiver, UnboundedSender};
+use tokio::sync::mpsc::unbounded_channel;
 
 use crate::config::CONFIG;
 use crate::connection::Connection;
 use crate::message::{MessageFromClient, MessageToClient};
+use crate::server_core::handle_client;
 
 mod config;
 mod connection;
 mod message;
-
-async fn handle_client(
-    stream: TcpStream,
-    rx: UnboundedReceiver<MessageToClient>,
-    tx: UnboundedSender<MessageFromClient>,
-) {
-    todo!();
-}
+mod server_core;
 
 #[tokio::main]
 async fn main() -> color_eyre::Result<()> {
+    simple_logger::init().unwrap();
     let listener = TcpListener::bind((CONFIG.bind.addr.clone(), CONFIG.bind.port)).await?;
     info!(
         "🍓 Strawberry Chat is running on {}:{}!",
