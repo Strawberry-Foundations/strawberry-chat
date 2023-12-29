@@ -1,6 +1,8 @@
 use serde::Deserialize;
 use serde_yaml::{from_str, Value};
 
+use crate::utilities;
+
 #[derive(Debug, Deserialize)]
 pub struct GlobalConfig {
     pub server: ServerConfig,
@@ -73,7 +75,16 @@ pub struct SecurityConfig {
 
 
 impl GlobalConfig {
-    pub fn new() -> Self {
-        Self
+    pub fn new(config_path: String) -> Self {
+        let cfg_content = utilities::open_config(&config_path);
+
+        let mut config: Self = from_str(&cfg_content).unwrap_or_else(|err| {
+            todo!(); // stblib logging (global.rs)
+            std::process::exit(1);
+        });
+
+        config.path = config_path;
+
+        config
     }
 }
