@@ -1,12 +1,16 @@
 use stbchat::user::User;
 
+#[derive(Debug)]
 pub enum MessageToClient {
-    UserMessage { user: User, content: String },
-    SystemMessage { content: String },
+    ReceiveUserMessage { user: User, content: String },
+    ReceiveSystemMessage { content: String },
+    Disconnect { reason: String },
 }
 
+#[derive(Debug)]
 pub enum MessageFromClient {
     Authenticated { user: User },
-    Message { content: String },
-    RunCommand { command: String, args: Vec<String> },
+    SentMessage { content: String },
+    RanCommand { command: String, args: Vec<String> },
+    RemoveMe,
 }

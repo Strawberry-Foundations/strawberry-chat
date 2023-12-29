@@ -4,7 +4,7 @@ use crate::user::User;
 use serde::{Deserialize, Serialize};
 
 /// A packet sent from the server to the client (S2C)
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 #[serde(tag = "packet_type")]
 pub enum ClientboundPacket {
     Disconnect { reason: String },
@@ -19,7 +19,7 @@ pub enum ClientboundPacket {
 }
 
 /// A packet sent from the client to the server (C2S)
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 #[serde(tag = "packet_type")]
 pub enum ServerboundPacket {
     // LOGIN
@@ -45,7 +45,7 @@ pub enum ServerboundPacket {
     },
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 #[repr(u8)]
 pub enum NameColor {
     Red,

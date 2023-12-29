@@ -1,8 +1,8 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct User {
-    name: String,
-    nick: String,
-    member_since: i32,
+    pub name: String,
+    pub nick: String,
+    pub member_since: i32,
 }
