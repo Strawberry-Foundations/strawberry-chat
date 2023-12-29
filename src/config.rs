@@ -1,5 +1,5 @@
 use serde::Deserialize;
-use serde_yaml::{from_str, Value};
+use serde_yaml::from_str;
 
 use crate::utilities;
 
