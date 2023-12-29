@@ -7,5 +7,6 @@ edition = "2021"
 
 [dependencies]
 stblib = { version = "0.2.10-2", path = "C:\\Users\\Julian\\Desktop\\stblib-rust" }
+lazy_static = "1.4.0"
 serde = { version = "1.0.193", features = ["derive"] }
 serde_yaml = "0.9.29"
