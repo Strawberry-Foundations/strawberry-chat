@@ -5,7 +5,7 @@ use lazy_static::lazy_static;
 use stblib::colors::{BOLD, C_RESET, GREEN, RED};
 use stblib::logging::formats::{LogFormat, LogFormatExt};
 
-use crate::config::GlobalConfig;
+use crate::system_core::config::GlobalConfig;
 use stblib::logging::Logger;
 
 pub const BASE_VERSION: &str = "1.11.0";
