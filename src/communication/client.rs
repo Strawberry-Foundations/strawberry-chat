@@ -2,8 +2,8 @@ use tokio::io::AsyncWriteExt;
 use tokio::net::TcpStream;
 
 use stblib::colors::{BOLD, C_RESET, RED};
-use crate::constants::log_messages::STC_ERROR;
 
+use crate::constants::log_messages::STC_ERROR;
 use crate::global::{CONFIG, LOGGER};
 use crate::system_core::user;
 
