@@ -34,3 +34,12 @@ pub fn get_ratelimit_timeout(feat_enabled: bool) -> String {
         "        ".to_string()
     }
 }
+
+pub fn runtime_all_addresses() -> String {
+    if CONFIG.server.address == "0.0.0.0" {
+        " (All addresses)".to_string()
+    }
+    else {
+        "".to_string()
+    }
+}
