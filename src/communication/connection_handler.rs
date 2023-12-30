@@ -1,24 +1,30 @@
 use std::collections::HashMap;
-use std::net::Ipv4Addr;
+use std::net::IpAddr;
+
+use stblib::utilities::unix_time;
+
 use tokio::io::AsyncWriteExt;
 use tokio::net::TcpListener;
+
 use crate::global::{CONFIG, LOGGER};
 
 pub async fn connection_handler(socket: TcpListener) {
-    let ignore_list: HashMap<Ipv4Addr, u32> = HashMap::new();
+    let ignore_list: HashMap<IpAddr, u64> = HashMap::new();
 
     loop {
-        let (mut client, _) = match socket.accept().await {
-            Ok((client, addr)) => (client, addr),
-            Err(_) => {
-                LOGGER.error("A connection error occured!");
+        let Ok((mut client, _)) = socket.accept().await else {
+                LOGGER.error("A connection error occurred!");
                 continue;
+            };
+
+        let client_addr= client.peer_addr().unwrap().ip();
+
+        if CONFIG.networking.ratelimit && ignore_list.contains_key(&client_addr) {
+            if !(unix_time() - ignore_list[&client_addr]) > u64::from(CONFIG.networking.ratelimit_timeout) {
+                LOGGER.info("%s (ratelimited) has connected");
             }
-        };
-
-        if CONFIG.networking.ratelimit {
-            if ignore_list.contains_key(client.peer_addr().unwrap()) {
-
+            else {
+                LOGGER.info("rlm removed");
             }
         }
 
