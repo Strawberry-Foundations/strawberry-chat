@@ -1,0 +1,27 @@
+pub struct SystemRegister {
+
+}
+
+address_left        = "%s has left"
+user_left           = "%s (%s) has left"
+queue_kick          = "%s got kicked out of the queue"
+queue_left          = "%s (%s) left the queue"
+queue_join          = "%s (%s) is now in the queue"
+connected           = "%s has connected"
+connected_rlm       = "%s (ratelimited) has connected"
+login               = "%s (%s) logged in"
+login_error         = "A login error with %s occured!"
+communication_error = "A communication error with %s (%s) occured!"
+connection_error    = "A connection error occured!"
+transmission_error  = "A message transmission error occurred."
+sql_error           = "An SQL error occured!"
+client_side_error   = "A client-side error occurred."
+stc_error           = "A socket-to-client exception occured"
+registration_error  = "A registration exception occured"
+invalid_sessions_w  = "You should kick some invalid sessions."
+rem_invalid_ses     = "Removed some invalid sessions."
+broadcast_error     = "A broadcasting error occurred."
+runtime_stop        = "Runtime has stopped."
+server_stop         = "Server stopped"
+badge_error         = "Something went wrong while... doing something with the badges?: "
+ratelimit_remoed    = "Ratelimit timeout for %s removed"
