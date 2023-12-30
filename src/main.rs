@@ -18,11 +18,11 @@ async fn main() -> Result<(), Box<dyn Error>> {
     let runtime_logger = Logger::new(
         stblib::logging::featureset::FeatureSet::new(),
         LogFormat {
-            info: "".to_string(),
+            info: String::new(),
             error: format!("{C_RESET}{BOLD}{RED}RUNTIME_ERROR{C_RESET} [%<message>%]"),
-            default: "".to_string(),
-            warning: "".to_string(),
-            critical: "".to_string(),
+            default: String::new(),
+            warning: String::new(),
+            critical: String::new(),
             extensions: LogFormatExt {
                 time_fmt: "%Y-%m-%d %H:%M".to_string(),
                 levelname_lowercase: false
@@ -33,7 +33,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     println!("{CYAN}{BOLD}* -- {CHAT_NAME} {} {CODENAME} ({SERVER_EDITION}) -- *{RESET}{C_RESET}", DEFAULT_VERSION.clone());
 
     let _socket = TcpListener::bind((CONFIG.server.address.clone(), CONFIG.server.port)).await.unwrap_or_else(|err| {
-        runtime_logger.panic(format!("{}", err).as_str());
+        runtime_logger.panic(format!("{}", err));
         unreachable!()
     });
 
