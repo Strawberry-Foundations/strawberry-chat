@@ -3,11 +3,11 @@
 #![allow(dead_code)]
 
 use std::error::Error;
-use stblib::colors::{BLUE, BOLD, C_RESET, CYAN, RED, RESET, YELLOW};
+use stblib::colors::{BOLD, C_RESET, CYAN, RED, RESET};
 use stblib::logging::formats::{LogFormat, LogFormatExt};
 use stblib::logging::Logger;
 use tokio::net::TcpListener;
-use crate::global::{CHAT_NAME, CODENAME, CONFIG, DEFAULT_VERSION, LOGGER, SERVER_EDITION};
+use crate::global::{CHAT_NAME, CODENAME, CONFIG, DEFAULT_VERSION, SERVER_EDITION};
 
 mod config;
 mod utilities;
@@ -32,7 +32,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
     println!("{CYAN}{BOLD}* -- {CHAT_NAME} {} {CODENAME} ({SERVER_EDITION}) -- *{RESET}{C_RESET}", DEFAULT_VERSION.clone());
 
-    let socket = TcpListener::bind((CONFIG.server.address.clone(), CONFIG.server.port)).await.unwrap_or_else(|err| {
+    let _socket = TcpListener::bind((CONFIG.server.address.clone(), CONFIG.server.port)).await.unwrap_or_else(|err| {
         runtime_logger.panic(format!("{}", err).as_str());
         unreachable!()
     });
