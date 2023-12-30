@@ -1,2 +1,2 @@
-pub mod log_parser;
+pub mod log;
 pub mod config;
