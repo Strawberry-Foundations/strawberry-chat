@@ -1,5 +1,6 @@
 use serde::Deserialize;
 use serde_yaml::from_str;
+use crate::global::LOGGER;
 
 use crate::utilities;
 
@@ -28,11 +29,11 @@ pub struct ServerConfig {
 
 #[derive(Debug, Deserialize)]
 pub struct Config {
-    pub max_message_length: u16,
-    pub max_users: u8,
-    pub max_registered_users: u8,
-    pub max_username_length: u8,
-    pub max_password_length: u8,
+    pub max_message_length: i16,
+    pub max_users: i8,
+    pub max_registered_users: i8,
+    pub max_username_length: i8,
+    pub max_password_length: i8,
     pub recv_allowed_bytes: u16,
 }
 
@@ -79,8 +80,8 @@ impl GlobalConfig {
         let cfg_content = utilities::open_config(&config_path);
 
         let mut config: Self = from_str(&cfg_content).unwrap_or_else(|err| {
-            todo!(); // stblib logging (global.rs)
-            std::process::exit(1);
+            LOGGER.panic(format!("Could not read configuration: {}", err).as_str());
+            unreachable!()
         });
 
         config.path = config_path;
