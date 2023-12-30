@@ -25,7 +25,7 @@ pub async fn connection_handler(socket: TcpListener) {
 
         let client_addr= client.peer_addr().unwrap().ip();
 
-        /// Ratelimit Feature
+        /// # Ratelimit Feature
         /// This feature prevents user from spamming connection streams to the server
         /// - Configurable ratelimit timeout (disallow connection to server for n seconds)
         /// - Stable and secure
