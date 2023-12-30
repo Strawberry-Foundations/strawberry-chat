@@ -10,3 +10,8 @@ stblib = "0.3.2"
 lazy_static = "1.4.0"
 serde = { version = "1.0.193", features = ["derive"] }
 serde_yaml = "0.9.29"
+
+[profile.release]
+opt-level = 'z'
+strip = true
+lto = true
