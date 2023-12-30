@@ -8,7 +8,7 @@ use crate::utilities;
 pub struct GlobalConfig {
     pub server: ServerConfig,
     pub config: Config,
-    pub network: NetworkConfig,
+    pub networking: NetworkConfig,
     pub flags: FlagConfig,
     pub database: DatabaseConfig,
     pub security: SecurityConfig,
@@ -30,10 +30,10 @@ pub struct ServerConfig {
 #[derive(Debug, Deserialize)]
 pub struct Config {
     pub max_message_length: i16,
-    pub max_users: i8,
-    pub max_registered_users: i8,
-    pub max_username_length: i8,
-    pub max_password_length: i8,
+    pub max_users: i16,
+    pub max_registered_users: i16,
+    pub max_username_length: u16,
+    pub max_password_length: u16,
     pub recv_allowed_bytes: u16,
 }
 
@@ -80,7 +80,7 @@ impl GlobalConfig {
         let cfg_content = utilities::open_config(&config_path);
 
         let mut config: Self = from_str(&cfg_content).unwrap_or_else(|err| {
-            LOGGER.panic(format!("Could not read configuration: {}", err).as_str());
+            LOGGER.panic_critical(format!("Could not read configuration: {}", err).as_str());
             unreachable!()
         });
 
