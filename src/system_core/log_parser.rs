@@ -1,5 +1,5 @@
 pub fn log_parser(log_message: &str, params: &[&dyn std::fmt::Display]) -> String {
-    let has_placeholders = log_message.contains("%");
+    let has_placeholders = log_message.contains('%');
     if has_placeholders {
         let mut formatted_message = log_message.to_string();
 
