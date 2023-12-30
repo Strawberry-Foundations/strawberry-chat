@@ -1,6 +1,8 @@
 use std::env;
 use std::path::{Path, PathBuf};
 use lazy_static::lazy_static;
+use stblib::colors::{BOLD, C_RESET, RED};
+use stblib::logging::formats::{LogFormat, LogFormatExt};
 
 use crate::config::GlobalConfig;
 use stblib::logging::Logger;
@@ -20,6 +22,21 @@ lazy_static! {
     pub static ref LOGGER: Logger = Logger::new(
         stblib::logging::featureset::FeatureSet::new(),
         stblib::logging::formats::strawberry_chat_fmt()
+    );
+
+    pub static ref RUNTIME_LOGGER: Logger = Logger::new(
+        stblib::logging::featureset::FeatureSet::new(),
+        LogFormat {
+            info: String::new(),
+            error: format!("{C_RESET}{BOLD}{RED}RUNTIME_ERROR{C_RESET} [%<message>%]"),
+            default: String::new(),
+            warning: String::new(),
+            critical: String::new(),
+            extensions: LogFormatExt {
+                time_fmt: "%Y-%m-%d %H:%M".to_string(),
+                levelname_lowercase: false
+            },
+        }
     );
 
     pub static ref CONFIG: GlobalConfig = {
