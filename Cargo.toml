@@ -12,6 +12,7 @@ tokio = { version = "1.35.1", features = ["full"] }
 lazy_static = "1.4.0"
 serde = { version = "1.0.193", features = ["derive"] }
 serde_yaml = "0.9.29"
+serde_json = "1.0.108"
 
 [profile.release]
 opt-level = 'z'
