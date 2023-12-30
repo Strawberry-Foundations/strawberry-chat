@@ -7,6 +7,8 @@ use std::error::Error;
 use stblib::colors::{BOLD, C_RESET, CYAN, ITALIC, MAGENTA, RESET};
 
 use tokio::net::TcpListener;
+use tokio::spawn;
+use crate::communication::connection_handler::connection_handler;
 
 use crate::global::{
     CHAT_NAME, CODENAME, CONFIG, DEFAULT_VERSION,
@@ -19,13 +21,14 @@ mod utilities;
 mod global;
 mod cli_wins;
 mod communication;
+mod core;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
     println!("{CYAN}{BOLD}* -- {CHAT_NAME} {} {CODENAME} ({SERVER_EDITION}) -- *{RESET}{C_RESET}", DEFAULT_VERSION.clone());
 
-    let _socket = TcpListener::bind((CONFIG.server.address.clone(), CONFIG.server.port)).await.unwrap_or_else(|err| {
-        RUNTIME_LOGGER.panic(format!("{}", err));
+    let socket = TcpListener::bind((CONFIG.server.address.clone(), CONFIG.server.port)).await.unwrap_or_else(|err| {
+        RUNTIME_LOGGER.panic(format!("{err}"));
         unreachable!()
     });
 
@@ -42,7 +45,8 @@ async fn main() -> Result<(), Box<dyn Error>> {
         )
     );
 
-
+    let connection_thread = spawn(connection_handler(socket));
+    connection_thread.await?;
 
     Ok(())
 }
