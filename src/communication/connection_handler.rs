@@ -11,7 +11,7 @@ use tokio::spawn;
 use crate::communication::client::client_handler;
 use crate::global::{CONFIG, LOGGER};
 use crate::system_core::log_parser::log_parser;
-use crate::system_core::log_messages::{CONNECTED, CONNECTED_RLM, CONNECTION_ERROR, RATELIMIT_REMOVED, REACHED_CON_LIMIT, STC_ERROR};
+use crate::constants::log_messages::{CONNECTED, CONNECTED_RLM, CONNECTION_ERROR, RATELIMIT_REMOVED, REACHED_CON_LIMIT, STC_ERROR};
 
 pub async fn connection_handler(socket: TcpListener) {
     let mut ignore_list: HashMap<IpAddr, u64> = HashMap::new();
