@@ -4,7 +4,7 @@
 
 use std::error::Error;
 
-use stblib::colors::{BOLD, C_RESET, CYAN, RESET};
+use stblib::colors::{BOLD, C_RESET, CYAN, ITALIC, MAGENTA, RESET};
 
 use tokio::net::TcpListener;
 
@@ -12,6 +12,7 @@ use crate::global::{
     CHAT_NAME, CODENAME, CONFIG, DEFAULT_VERSION,
     RUNTIME_LOGGER, SERVER_EDITION
 };
+use crate::utilities::runtime_all_addresses;
 
 mod config;
 mod utilities;
@@ -33,7 +34,12 @@ async fn main() -> Result<(), Box<dyn Error>> {
         cli_wins::online_mode::display();
     }
 
-
+    RUNTIME_LOGGER.info(
+        format!(
+            "Server is running on {ITALIC}{MAGENTA}{}:{}{C_RESET}{}",
+            CONFIG.server.address, CONFIG.server.port, runtime_all_addresses()
+        )
+    );
 
 
 
