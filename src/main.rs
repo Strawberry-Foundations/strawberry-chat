@@ -21,7 +21,7 @@ mod utilities;
 mod global;
 mod cli_wins;
 mod communication;
-mod core;
+mod system_core;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
