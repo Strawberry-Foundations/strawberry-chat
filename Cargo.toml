@@ -7,6 +7,8 @@ edition = "2021"
 
 [dependencies]
 stblib = "0.3.2"
+tokio = { version = "1.35.1", features = ["full"] }
+
 lazy_static = "1.4.0"
 serde = { version = "1.0.193", features = ["derive"] }
 serde_yaml = "0.9.29"
