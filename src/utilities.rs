@@ -40,6 +40,6 @@ pub fn runtime_all_addresses() -> String {
         " (All addresses)".to_string()
     }
     else {
-        "".to_string()
+        String::new()
     }
 }
