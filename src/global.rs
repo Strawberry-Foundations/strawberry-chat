@@ -27,7 +27,7 @@ lazy_static! {
         let mut config_path = format!("{exe_dir_str}/config.yml");
 
         if !Path::new(&config_path).exists() {
-            config_path = String::from("./config.yml")
+            config_path = String::from("./config.yml");
         }
 
         GlobalConfig::new(config_path)
