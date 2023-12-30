@@ -35,8 +35,14 @@ pub async fn connection_handler(socket: TcpListener) {
         if CONFIG.networking.ratelimit {
             // Check if ignore list contains the client's address
             if ignore_list.contains_key(&client_addr) {
-                // Check if user is still in ratelimit timeout
-                if !(unix_time() - ignore_list.get(&client_addr).unwrap()) > u64::from(CONFIG.networking.ratelimit_timeout) {
+                // Check if user is still in ratelimit timeout (If user is no longer in ratelimit timeout, remove user from the ignore_list
+                if (unix_time() - ignore_list.get(&client_addr).unwrap()) > u64::from(CONFIG.networking.ratelimit_timeout) {
+                    LOGGER.info(log_parser(RATELIMIT_REMOVED, &[&client_addr.to_string()]));
+                    ignore_list.remove(&client_addr);
+                }
+                    
+                // if user is still in ratelimit timeout, send message and close connection
+                else {
                     LOGGER.info(log_parser(CONNECTED_RLM, &[&client_addr.to_string(), ]));
 
                     client.write_all(
@@ -44,11 +50,7 @@ pub async fn connection_handler(socket: TcpListener) {
                     ).await.unwrap_or_else(|_| LOGGER.warning(STC_ERROR));
 
                     client.shutdown().await.unwrap_or_else(|_| LOGGER.error(STC_ERROR));
-                }
-                // If user is no longer in ratelimit timeout, remove user from the ignore_list
-                else {
-                    LOGGER.info(log_parser(RATELIMIT_REMOVED, &[&client_addr.to_string()]));
-                    ignore_list.remove(&client_addr);
+
                 }
             }
             // If user is not in ignore_list, check if user is already in connection_counter
