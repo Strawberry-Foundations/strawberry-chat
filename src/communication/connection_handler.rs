@@ -38,9 +38,13 @@ pub async fn connection_handler(socket: TcpListener) {
                 // Check if user is still in ratelimit timeout (If user is no longer in ratelimit timeout, remove user from the ignore_list
                 if (unix_time() - ignore_list.get(&client_addr).unwrap()) > u64::from(CONFIG.networking.ratelimit_timeout) {
                     LOGGER.info(log_parser(RATELIMIT_REMOVED, &[&client_addr.to_string()]));
+
                     ignore_list.remove(&client_addr);
+                    connection_counter.remove(&client_addr);
+
+                    spawn(client_handler(client)).await.expect("");
                 }
-                    
+
                 // if user is still in ratelimit timeout, send message and close connection
                 else {
                     LOGGER.info(log_parser(CONNECTED_RLM, &[&client_addr.to_string(), ]));
