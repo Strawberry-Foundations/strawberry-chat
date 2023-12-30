@@ -15,12 +15,12 @@ use crate::global::{
 };
 use crate::utilities::runtime_all_addresses;
 
-mod config;
 mod utilities;
 mod global;
 mod cli_wins;
 mod communication;
 mod system_core;
+mod constants;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
