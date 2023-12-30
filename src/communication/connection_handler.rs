@@ -9,14 +9,14 @@ use tokio::net::TcpListener;
 
 use crate::global::{CONFIG, LOGGER};
 use crate::system_core::log_parser::log_parser;
-use crate::system_core::log_messages::{CONNECTED, CONNECTED_RLM};
+use crate::system_core::log_messages::{CONNECTED, CONNECTED_RLM, CONNECTION_ERROR, RATELIMIT_REMOVED};
 
 pub async fn connection_handler(socket: TcpListener) {
     let ignore_list: HashMap<IpAddr, u64> = HashMap::new();
 
     loop {
         let Ok((mut client, _)) = socket.accept().await else {
-                LOGGER.error("A connection error occurred!");
+                LOGGER.error(CONNECTION_ERROR);
                 continue;
             };
 
@@ -33,7 +33,7 @@ pub async fn connection_handler(socket: TcpListener) {
                 });
             }
             else {
-                LOGGER.info("rlm removed");
+                LOGGER.info(log_parser(RATELIMIT_REMOVED, &[&client_addr.to_string()]));
             }
         }
         else {
