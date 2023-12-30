@@ -64,17 +64,15 @@ pub async fn connection_handler(socket: TcpListener) {
                 else {
                     LOGGER.info(log_parser(CONNECTED, &[&client_addr.to_string()]));
                     *connection_counter.entry(client_addr).or_insert(0) += 1;
+
+                    spawn(client_handler(client)).await.expect("");
                 }
             }
         }
         // else ratelimit feature is not enabled
         else {
             LOGGER.info(log_parser(CONNECTED, &[&client_addr.to_string()]));
-            spawn(client_handler()).await.expect("");
+            spawn(client_handler(client)).await.expect("");
         }
-
-        client.write_all(client.peer_addr().unwrap().to_string().as_bytes()).await.unwrap_or_else(|_| {
-           LOGGER.error("");
-        });
     }
 }
