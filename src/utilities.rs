@@ -1,8 +1,9 @@
 use std::fs;
+use crate::global::LOGGER;
 
 pub fn open_config(config_path: &str) -> String {
-    fs::read_to_string(config_path).unwrap_or_else(|err| {
-        todo!(); // stblib logging
-        std::process::exit(1);
+    fs::read_to_string(config_path).unwrap_or_else(|_| {
+        LOGGER.panic("Could not read your configuration as an string");
+        unreachable!()
     })
 }
