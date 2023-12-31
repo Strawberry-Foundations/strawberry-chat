@@ -7,7 +7,9 @@ use crate::system_core::user::UserObject;
 /// - Struct `SystemMessage`: `system_message` Data type
 /// - Struct `UserMessage`: `user_message` Data type
 /// - Struct `NotificationBackend`: `stbchat_notification` Data type
+/// - Struct `ClientBackend`: `stbchat_backend` Data type
 /// - Struct `MessageStruct`: general sub data type for all *message types
+/// - Struct `UserMetaStruct`: general sub data type for all meta-specific types
 
 pub struct Package {
     pub system: SystemMessage,
@@ -16,8 +18,14 @@ pub struct Package {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct MessageStruct {
-    pub content: String
+    pub content: String,
 }
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct UserMetaStruct {
+    pub username: String,
+}
+
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct SystemMessage {
@@ -44,6 +52,12 @@ pub struct NotificationBackend {
     pub avatar_url: String,
     pub content: String,
     pub bell: bool,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct ClientBackend {
+    pub message_type: String,
+    pub user_meta: UserMetaStruct,
 }
 
 
