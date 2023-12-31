@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 use crate::system_core::objects::NotificationObject;
-use crate::system_core::types::{LOGIN_EVENT, STBCHAT_BACKEND, STBCHAT_EVENT, STBCHAT_NOTIFICATION, SYSTEM_MESSAGE, USER_MESSAGE};
+use crate::system_core::types::{STBCHAT_BACKEND, STBCHAT_EVENT, STBCHAT_NOTIFICATION, SYSTEM_MESSAGE, USER_MESSAGE};
 use crate::system_core::user::UserObject;
 
 /// # Package Handling
