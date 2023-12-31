@@ -3,8 +3,9 @@ use tokio::net::TcpStream;
 
 use stblib::colors::{BOLD, C_RESET, RED};
 
-use crate::constants::log_messages::STC_ERROR;
+use crate::constants::log_messages::{LOGIN, STC_ERROR};
 use crate::global::{CONFIG, LOGGER};
+use crate::system_core::log::log_parser;
 use crate::system_core::login;
 use crate::system_core::user;
 
@@ -17,5 +18,6 @@ pub async fn client_handler(mut client: TcpStream) {
 
     let mut sender = user::ClientSender::new(client);
 
-    let _username = login::client_login(&mut sender).await;
+    let username = login::client_login(&mut sender).await;
+    LOGGER.info(log_parser(LOGIN, &[&username,]));
 }
