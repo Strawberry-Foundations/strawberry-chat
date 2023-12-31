@@ -146,7 +146,7 @@ impl UserMessage {
 
 /// # `NotificationBackend` Implementation
 /// - Implements the data type `stbchat_notification`
-    impl NotificationBackend {
+impl NotificationBackend {
     pub fn new() -> Self {
         Self {
             message_type: STBCHAT_NOTIFICATION.to_string(),
