@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use crate::system_core::objects::NotificationObject;
 use crate::system_core::types::{STBCHAT_NOTIFICATION, SYSTEM_MESSAGE, USER_MESSAGE};
 use crate::system_core::user::UserObject;
 
@@ -60,6 +61,8 @@ pub struct ClientBackend {
     pub user_meta: UserMetaStruct,
 }
 
+/// # Main Package Implementation
+/// - Implements System and User messages with one internal Object
 
 impl Package {
     pub fn new() -> Self {
@@ -85,6 +88,8 @@ impl Package {
     }
 }
 
+/// # `SystemMessage` Implementation
+/// - Implements the data type `system_message`
 impl SystemMessage {
     pub fn new() -> Self {
         Self {
@@ -101,6 +106,8 @@ impl SystemMessage {
     }
 }
 
+/// # `UserMessage` Implementation
+/// - Implements the data type `user_message`
 impl UserMessage {
     pub fn new() -> Self {
         Self {
@@ -130,6 +137,8 @@ impl UserMessage {
     }
 }
 
+/// # `NotificationBackend` Implementation
+/// - Implements the data type `stbchat_notification`
 impl NotificationBackend {
     pub fn new() -> Self {
         Self {
@@ -142,7 +151,12 @@ impl NotificationBackend {
         }
     }
 
-    pub fn write(&mut self, tite: &impl ToString, ) -> String {
+    pub fn write(&mut self, notification_object: NotificationObject, message: &impl ToString) -> String {
+        self.title      = notification_object.title;
+        self.username   = notification_object.username;
+        self.avatar_url = notification_object.avatar_url;
+        self.content    = message.to_string();
+        self.bell       = notification_object.bell;
 
         serde_json::to_string(self).unwrap()
     }
