@@ -1,5 +1,6 @@
 use serde::{Deserialize, Serialize};
 use crate::system_core::types::{SYSTEM_MESSAGE, USER_MESSAGE};
+use crate::system_core::user::UserObject;
 
 pub struct Package {
     pub system: SystemMessage,
@@ -17,7 +18,7 @@ pub struct UserMessage {
     pub message_type: String,
     pub username: String,
     pub nickname: String,
-    pub badge: String,
+    pub badge: char,
     pub role_color: String,
     pub avatar_url: String,
     pub message: MessageStruct,
@@ -27,15 +28,6 @@ pub struct UserMessage {
 pub struct MessageStruct {
     pub content: String
 }
-
-pub struct UserObject {
-    pub username: String,
-    pub nickname: String,
-    pub badge: String,
-    pub role_color: String,
-    pub avatar_url: String,
-}
-
 
 impl Package {
     pub fn new() -> Self {
@@ -50,7 +42,7 @@ impl Package {
                 message_type: USER_MESSAGE.to_string(),
                 username: String::new(),
                 nickname: String::new(),
-                badge: String::new(),
+                badge: '\x00',
                 role_color: String::new(),
                 avatar_url: String::new(),
                 message: MessageStruct {
@@ -83,7 +75,7 @@ impl UserMessage {
             message_type: USER_MESSAGE.to_string(),
             username: String::new(),
             nickname: String::new(),
-            badge: String::new(),
+            badge: '\x00',
             role_color: String::new(),
             avatar_url:  String::new(),
             message: MessageStruct {
