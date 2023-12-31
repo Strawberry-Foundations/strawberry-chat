@@ -2,9 +2,21 @@ use serde::{Deserialize, Serialize};
 use crate::system_core::types::{SYSTEM_MESSAGE, USER_MESSAGE};
 use crate::system_core::user::UserObject;
 
+/// # Package Handling
+/// - Struct `Package`: Package Object to create multiple packages at once
+/// - Struct `SystemMessage`: `system_message` Data type
+/// - Struct `UserMessage`: `user_message` Data type
+/// - Struct `NotificationBackend`: `stbchat_notification` Data type
+/// - Struct `MessageStruct`: general sub data type for all *message types
+
 pub struct Package {
     pub system: SystemMessage,
     pub user: UserMessage,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct MessageStruct {
+    pub content: String
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -25,9 +37,16 @@ pub struct UserMessage {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct MessageStruct {
-    pub content: String
+pub struct NotificationBackend {
+    pub message_type: String,
+    pub title: String,
+    pub username: String,
+    pub avatar_url: String,
+    pub content: String,
+    pub bell: bool,
 }
+
+
 
 impl Package {
     pub fn new() -> Self {
