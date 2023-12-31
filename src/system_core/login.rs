@@ -1,10 +1,11 @@
 use stblib::colors::{BOLD, C_RESET, MAGENTA, RED, RESET};
+use tokio::io::AsyncReadExt;
 
 use crate::system_core::packet::{EventBackend, Packet};
 use crate::system_core::types::LOGIN_EVENT;
 use crate::system_core::user::{ClientSender, UserObject};
 
-pub async fn client_login(sender: &mut ClientSender) {
+pub async fn client_login(sender: &mut ClientSender) -> String {
     let mut packet = Packet::new();
     let mut login_packet = EventBackend::new_predefined(&LOGIN_EVENT);
 
@@ -21,4 +22,9 @@ pub async fn client_login(sender: &mut ClientSender) {
     };
 
     sender.send(packet.user.write(user_object, &"Hi")).await;
+
+    let mut buffer = [0; 1024];
+
+    sender.socket.read(&mut buffer).await.unwrap();
+    String::from_utf8_lossy(&buffer[0..1]).to_string()
 }
