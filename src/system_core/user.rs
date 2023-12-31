@@ -12,6 +12,14 @@ pub struct ClientSender {
     pub address: IpAddr
 }
 
+pub struct UserObject {
+    pub username: String,
+    pub nickname: String,
+    pub badge: char,
+    pub role_color: String,
+    pub avatar_url: String,
+}
+
 impl ClientSender {
     pub fn new(client: TcpStream) -> Self {
         let addr = &client.peer_addr().unwrap().ip().clone();
