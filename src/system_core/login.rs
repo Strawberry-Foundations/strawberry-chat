@@ -6,7 +6,7 @@ use crate::system_core::user::ClientSender;
 pub async fn client_login(sender: &mut ClientSender) {
     let mut package = Package::new();
 
-    sender.send(package.system.write("s")).await;
+    sender.send(package.system.write(&"s")).await;
 
     sender.send(format!("{C_RESET}{BOLD}Welcome to Strawberry Chat!{C_RESET}")).await;
     ms_sleep(80);
