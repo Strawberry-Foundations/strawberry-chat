@@ -22,7 +22,7 @@ impl ClientSender {
         }
     }
 
-    pub async fn send(&mut self, message: impl ToString) {
+    pub async fn send<M: ToString + Send>(&mut self, message: M) {
         self.socket.write_all(
             message.to_string().as_bytes()).await.unwrap_or_else(
             |_| LOGGER.error(
