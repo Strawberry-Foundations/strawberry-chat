@@ -13,7 +13,7 @@ use crate::system_core::user::UserObject;
 /// - Struct `MessageStruct`: general sub data type for all *message types
 /// - Struct `UserMetaStruct`: general sub data type for all meta-specific types
 
-pub struct Package {
+pub struct Packet {
     pub system: SystemMessage,
     pub user: UserMessage,
 }
@@ -71,7 +71,7 @@ pub struct EventBackend {
 /// # Main Package Implementation
 /// - Implements System and User messages with one internal Object
 
-impl Package {
+impl Packet {
     pub fn new() -> Self {
         Self {
             system: SystemMessage {
