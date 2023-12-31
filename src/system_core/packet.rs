@@ -3,8 +3,8 @@ use crate::system_core::objects::NotificationObject;
 use crate::system_core::types::{STBCHAT_BACKEND, STBCHAT_EVENT, STBCHAT_NOTIFICATION, SYSTEM_MESSAGE, USER_MESSAGE};
 use crate::system_core::user::UserObject;
 
-/// # Package Handling
-/// - Struct `Package`: Package Object to create multiple packages at once
+/// # Packet Handling
+/// - Struct `Packet`: Packet Object to create multiple packets at once
 /// - Struct `SystemMessage`: `system_message` Data type
 /// - Struct `UserMessage`: `user_message` Data type
 /// - Struct `NotificationBackend`: `stbchat_notification` Data type
@@ -68,7 +68,7 @@ pub struct EventBackend {
     pub event_type: String,
 }
 
-/// # Main Package Implementation
+/// # Main Packet Implementation
 /// - Implements System and User messages with one internal Object
 
 impl Packet {
