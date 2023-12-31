@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 use crate::system_core::objects::NotificationObject;
-use crate::system_core::types::{STBCHAT_BACKEND, STBCHAT_NOTIFICATION, SYSTEM_MESSAGE, USER_MESSAGE};
+use crate::system_core::types::{LOGIN_EVENT, STBCHAT_BACKEND, STBCHAT_EVENT, STBCHAT_NOTIFICATION, SYSTEM_MESSAGE, USER_MESSAGE};
 use crate::system_core::user::UserObject;
 
 /// # Package Handling
@@ -9,6 +9,7 @@ use crate::system_core::user::UserObject;
 /// - Struct `UserMessage`: `user_message` Data type
 /// - Struct `NotificationBackend`: `stbchat_notification` Data type
 /// - Struct `ClientBackend`: `stbchat_backend` Data type
+/// - Struct `EventBackend`: `stbchat_event` Data type
 /// - Struct `MessageStruct`: general sub data type for all *message types
 /// - Struct `UserMetaStruct`: general sub data type for all meta-specific types
 
@@ -59,6 +60,12 @@ pub struct NotificationBackend {
 pub struct ClientBackend {
     pub message_type: String,
     pub user_meta: UserMetaStruct,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct EventBackend {
+    pub message_type: String,
+    pub event_type: String,
 }
 
 /// # Main Package Implementation
@@ -176,6 +183,23 @@ impl ClientBackend {
 
     pub fn write(&mut self, username: &impl ToString) -> String {
         self.user_meta.username = username.to_string();
+
+        serde_json::to_string(self).unwrap()
+    }
+}
+
+/// # `EventBackend` Implementation
+/// - Implements the data type `stbchat_event`
+impl EventBackend {
+    pub fn new() -> Self {
+        Self {
+            message_type: STBCHAT_EVENT.to_string(),
+            event_type: String::new(),
+        }
+    }
+
+    pub fn write(&mut self, event: &impl ToString) -> String {
+        self.event_type = event.to_string();
 
         serde_json::to_string(self).unwrap()
     }
