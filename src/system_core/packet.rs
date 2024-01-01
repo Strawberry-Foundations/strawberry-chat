@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use tokio::io::{AsyncWrite, AsyncWriteExt};
 use crate::system_core::objects::NotificationObject;
 use crate::system_core::types::{STBCHAT_BACKEND, STBCHAT_EVENT, STBCHAT_NOTIFICATION, SYSTEM_MESSAGE, USER_MESSAGE};
 use crate::system_core::user::UserObject;
@@ -68,137 +69,92 @@ pub struct EventBackend {
     pub event_type: String,
 }
 
-/// # Main Packet Implementation
-/// - Implements System and User messages with one internal Object
-
-impl Packet {
-    pub fn new() -> Self {
-        Self {
-            system: SystemMessage {
-                message_type: SYSTEM_MESSAGE.to_string(),
-                message: MessageStruct {
-                    content: String::new()
-                }
-            },
-            user: UserMessage {
-                message_type: USER_MESSAGE.to_string(),
-                username: String::new(),
-                nickname: String::new(),
-                badge: '\x00',
-                role_color: String::new(),
-                avatar_url: String::new(),
-                message: MessageStruct {
-                    content: String::new()
-                },
-            },
-        }
-    }
-}
-
 /// # `SystemMessage` Implementation
 /// - Implements the data type `system_message`
 impl SystemMessage {
-    pub fn new() -> Self {
+    pub fn new<M: ToString>(content: &M) -> Self {
         Self {
             message_type: SYSTEM_MESSAGE.to_string(),
             message: MessageStruct {
-                content: String::new()
+                content: content.to_string()
             }
         }
     }
 
-    pub fn write(&mut self, message: &impl ToString) -> String {
-        self.message.content = message.to_string();
-        serde_json::to_string(self).unwrap()
+    pub async fn write<W: AsyncWrite + Unpin>(&mut self, target: &mut W) -> tokio::io::Result<()> {
+        target.write_all(serde_json::to_string(self).unwrap().as_bytes()).await
     }
 }
 
 /// # `UserMessage` Implementation
 /// - Implements the data type `user_message`
 impl UserMessage {
-    pub fn new() -> Self {
+    pub fn new<M: ToString>(author: UserObject, message: &M) -> Self {
         Self {
             message_type: USER_MESSAGE.to_string(),
-            username: String::new(),
-            nickname: String::new(),
-            badge: '\x00',
-            role_color: String::new(),
-            avatar_url:  String::new(),
+            username: author.username,
+            nickname: author.nickname,
+            badge: author.badge,
+            role_color: author.role_color,
+            avatar_url: author.avatar_url,
             message: MessageStruct {
-                content: String::new()
+                content: message.to_string()
             },
         }
     }
 
-    pub fn write(&mut self, user_object: UserObject, message: &impl ToString) -> String {
-        self.username   = user_object.username;
-        self.nickname   = user_object.nickname;
-        self.badge      = user_object.badge;
-        self.role_color = user_object.role_color;
-        self.avatar_url = user_object.avatar_url;
-
-        self.message.content = message.to_string();
-
-
-        serde_json::to_string(self).unwrap()
+    pub async fn write<W: AsyncWrite + Unpin>(&mut self, target: &mut W) -> tokio::io::Result<()> {
+        target.write_all(serde_json::to_string(self).unwrap().as_bytes()).await
     }
 }
 
 /// # `NotificationBackend` Implementation
 /// - Implements the data type `stbchat_notification`
 impl NotificationBackend {
-    pub fn new() -> Self {
+    pub fn new<M: ToString>(notfication: NotificationObject, message: &M) -> Self {
         Self {
             message_type: STBCHAT_NOTIFICATION.to_string(),
-            title: String::new(),
-            username: String::new(),
-            avatar_url: String::new(),
-            content: String::new(),
-            bell: false,
+            title: notfication.title,
+            username: notfication.username,
+            avatar_url: notfication.avatar_url,
+            content: message.to_string(),
+            bell: notfication.bell,
         }
     }
 
-    pub fn write(&mut self, notification_object: NotificationObject, message: &impl ToString) -> String {
-        self.title      = notification_object.title;
-        self.username   = notification_object.username;
-        self.avatar_url = notification_object.avatar_url;
-        self.content    = message.to_string();
-        self.bell       = notification_object.bell;
-
-        serde_json::to_string(self).unwrap()
+    pub async fn write<W: AsyncWrite + Unpin>(&mut self, target: &mut W) -> tokio::io::Result<()> {
+        target.write_all(serde_json::to_string(self).unwrap().as_bytes()).await
     }
 }
 
 /// # `ClientBackend` Implementation
 /// - Implements the data type `stbchat_backend`
 impl ClientBackend {
-    pub fn new() -> Self {
+    pub fn new<U: ToString>(username: &U) -> Self {
         Self {
             message_type: STBCHAT_BACKEND.to_string(),
             user_meta: UserMetaStruct {
-                username: String::new(),
+                username: username.to_string(),
             },
         }
     }
 
-    pub fn write(&mut self, username: &impl ToString) -> String {
-        self.user_meta.username = username.to_string();
-
-        serde_json::to_string(self).unwrap()
+    pub async fn write<W: AsyncWrite + Unpin>(&mut self, target: &mut W) -> tokio::io::Result<()> {
+        target.write_all(serde_json::to_string(self).unwrap().as_bytes()).await
     }
 }
 
 /// # `EventBackend` Implementation
 /// - Implements the data type `stbchat_event`
 impl EventBackend {
-    pub fn new() -> Self {
+    pub fn new<E: ToString>(event: &E) -> Self {
         Self {
             message_type: STBCHAT_EVENT.to_string(),
-            event_type: String::new(),
+            event_type: event.to_string(),
         }
     }
 
-    pub fn new_predefined(event: &impl ToString) -> Self {
+    pub fn new_predefined<E: ToString>(event: &E) -> Self {
         Self {
             message_type: STBCHAT_EVENT.to_string(),
             event_type: event.to_string(),
@@ -209,9 +165,7 @@ impl EventBackend {
         serde_json::to_string(self).unwrap()
     }
 
-    pub fn write(&mut self, event: &impl ToString) -> String {
-        self.event_type = event.to_string();
-
-        serde_json::to_string(self).unwrap()
+    pub async fn write<W: AsyncWrite + Unpin>(&mut self, target: &mut W) -> tokio::io::Result<()> {
+        target.write_all(serde_json::to_string(self).unwrap().as_bytes()).await
     }
 }

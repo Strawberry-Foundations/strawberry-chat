@@ -7,7 +7,6 @@ use crate::constants::log_messages::{LOGIN, STC_ERROR};
 use crate::global::{CONFIG, LOGGER};
 use crate::system_core::log::log_parser;
 use crate::system_core::login;
-use crate::system_core::user;
 
 pub async fn client_handler(mut client: TcpStream) {
     if CONFIG.security.banned_ips.contains(&client.peer_addr().unwrap().ip().clone().to_string()) {
@@ -16,8 +15,7 @@ pub async fn client_handler(mut client: TcpStream) {
         return
     }
 
-    let mut sender = user::ClientSender::new(client);
 
-    let username = login::client_login(&mut sender).await;
+    let username = login::client_login(&mut client).await;
     LOGGER.info(log_parser(LOGIN, &[&username,]));
 }
