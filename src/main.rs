@@ -3,16 +3,13 @@
 
 use std::error::Error;
 
-use stblib::colors::{BOLD, C_RESET, CYAN, ITALIC, MAGENTA, RESET};
-
 use tokio::net::TcpListener;
 use tokio::spawn;
-use crate::communication::connection_handler::connection_handler;
 
-use crate::global::{
-    CHAT_NAME, CODENAME, CONFIG, DEFAULT_VERSION,
-    RUNTIME_LOGGER, SERVER_EDITION
-};
+use stblib::colors::{BOLD, C_RESET, CYAN, ITALIC, MAGENTA, RESET};
+
+use crate::communication::connection_handler::connection_handler;
+use crate::global::{CHAT_NAME, CODENAME, CONFIG, DEFAULT_VERSION, RUNTIME_LOGGER, SERVER_EDITION};
 use crate::utilities::runtime_all_addresses;
 
 mod utilities;
