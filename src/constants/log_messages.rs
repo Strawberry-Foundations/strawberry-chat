@@ -1,9 +1,10 @@
+pub const CONNECTED: &str           = "%s has connected";
+pub const DISCONNECTED: &str        = "%s has disconnected";
 pub const ADDRESS_LEFT: &str        = "%s has left";
 pub const USER_LEFT: &str           = "%s (%s) has left";
 pub const QUEUE_KICK: &str          = "%s got kicked out of the queue";
 pub const QUEUE_LEFT: &str          = "%s (%s) left the queue";
 pub const QUEUE_JOIN: &str          = "%s (%s) is now in the queue";
-pub const CONNECTED: &str           = "%s has connected";
 pub const CONNECTED_RLM: &str       = "%s (ratelimited) has connected";
 pub const LOGIN: &str               = "%s (%s) logged in";
 pub const LOGIN_ERROR: &str         = "A login error with %s occurred!";
