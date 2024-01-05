@@ -8,3 +8,6 @@ pub const STBCHAT_REGISTER: &str = "stbchat_register";
 pub const STBCHAT_EVENT: &str = "stbchat_event";
 
 pub const LOGIN_EVENT: &str = "event.login";
+
+pub const CRTLCODE_CLIENT_EXIT: &str = "crtl.client.exit";
+pub const NULL: &str = "0";
