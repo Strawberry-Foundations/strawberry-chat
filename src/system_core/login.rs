@@ -1,6 +1,11 @@
-use stblib::colors::{BOLD, C_RESET, MAGENTA, RED, RESET};
+/// # Login Handler
+/// This module handles incoming clients sent over from the client thread
+/// - Will handle the full-login
+
 use tokio::io::AsyncReadExt;
 use tokio::net::TcpStream;
+
+use stblib::colors::{BOLD, C_RESET, MAGENTA, RED, RESET};
 
 use crate::system_core::packet::{EventBackend, SystemMessage, UserMessage};
 use crate::system_core::types::LOGIN_EVENT;
