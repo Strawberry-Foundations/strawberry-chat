@@ -4,3 +4,17 @@ pub struct NotificationObject {
     pub avatar_url: String,
     pub bell: bool
 }
+
+pub struct ClientLoginCredentialsPacket {
+    pub username: String,
+    pub password: String,
+}
+
+impl ClientLoginCredentialsPacket {
+    pub const fn new() -> ClientLoginCredentialsPacket {
+        Self {
+            username: String::new(),
+            password: String::new(),
+        }
+    }
+}
