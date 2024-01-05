@@ -111,14 +111,14 @@ impl UserMessage {
 /// # `NotificationBackend` Implementation
 /// - Implements the data type `stbchat_notification`
 impl NotificationBackend {
-    pub fn new<M: ToString>(notfication: NotificationObject, message: &M) -> Self {
+    pub fn new<M: ToString>(notification: NotificationObject, message: &M) -> Self {
         Self {
             message_type: STBCHAT_NOTIFICATION.to_string(),
-            title: notfication.title,
-            username: notfication.username,
-            avatar_url: notfication.avatar_url,
+            title: notification.title,
+            username: notification.username,
+            avatar_url: notification.avatar_url,
             content: message.to_string(),
-            bell: notfication.bell,
+            bell: notification.bell,
         }
     }
 
