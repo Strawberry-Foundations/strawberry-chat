@@ -1,30 +1,37 @@
+#![allow(clippy::needless_if)]
+
 /// # Login Handler
 /// This module handles incoming clients sent over from the client thread
 /// - Will handle the full-login
 
-use tokio::io::AsyncReadExt;
 use tokio::net::TcpStream;
+
+use serde_json::{Deserializer, Value};
 
 use stblib::colors::{BOLD, C_RESET, MAGENTA, RED, RESET};
 
+use crate::system_core::objects::ClientLoginCredentialsPacket;
 use crate::system_core::packet::{EventBackend, SystemMessage, UserMessage};
 use crate::system_core::types::LOGIN_EVENT;
 use crate::system_core::user::UserObject;
 
 pub async fn client_login(stream: &mut TcpStream) -> String {
+    let std_stream = stream.into_std().unwrap();
+    let mut stream = TcpStream::from_std(std_stream.try_clone().unwrap()).unwrap();
+
     let mut login_packet = EventBackend::new(&LOGIN_EVENT);
 
     // TODO: replace unwraps with logger errors
     SystemMessage::new(&format!("{C_RESET}{BOLD}Welcome to Strawberry Chat!{C_RESET}"))
-        .write(stream)
+        .write(&mut stream)
         .await
         .unwrap();
     SystemMessage::new(&format!("{C_RESET}{BOLD}New here? Type '{MAGENTA}Register{RESET}' to register! You want to leave? Type '{MAGENTA}Exit{RESET}' {C_RESET}"))
-        .write(stream)
+        .write(&mut stream)
         .await
         .unwrap();
 
-    login_packet.write(stream).await.unwrap();
+    login_packet.write(&mut stream).await.unwrap();
 
     let user_object = UserObject {
         username: "julian".to_string(),
@@ -35,15 +42,37 @@ pub async fn client_login(stream: &mut TcpStream) -> String {
     };
 
     UserMessage::new(user_object, &"Hi :)")
-        .write(stream)
+        .write(&mut stream)
         .await
         .unwrap();
 
-    let mut buffer = [0; 1024];
+    let json_iter = Deserializer::from_reader(std_stream).into_iter::<Value>();
+    let mut client_credentials = ClientLoginCredentialsPacket::new();
 
-    let n = stream.read(&mut buffer).await.unwrap_or({
-        0
-    });
+    for json in json_iter {
+        let msg = match json {
+            Ok(j) => j,
+            Err(e) => {
+                eprintln!("Failed to deserialize json: {e}");
+                continue
+            },
+        };
 
-    String::from_utf8_lossy(&buffer[0..n]).to_string()
+        match msg["packet_type"].as_str() {
+            Some("stbchat.event") => {
+                match msg["event.login"].as_str() {
+                    Some("") => {
+
+
+                    },
+                    _ => { }
+                }
+
+            },
+            _ => { }
+
+        }
+    }
+
+   "".to_string()
 }
