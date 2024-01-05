@@ -154,13 +154,6 @@ impl EventBackend {
         }
     }
 
-    pub fn new_predefined<E: ToString>(event: &E) -> Self {
-        Self {
-            message_type: STBCHAT_EVENT.to_string(),
-            event_type: event.to_string(),
-        }
-    }
-
     pub fn push(&mut self) -> String {
         serde_json::to_string(self).unwrap()
     }
