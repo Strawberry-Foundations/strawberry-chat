@@ -23,7 +23,6 @@ pub async fn client_handler(mut client: TcpStream) {
         return
     }
 
-
     let username = login::client_login(&mut client).await;
 
     if username == NULL || username == CRTLCODE_CLIENT_EXIT {
