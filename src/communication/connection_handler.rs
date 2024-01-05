@@ -1,12 +1,18 @@
+/// # Connection Handler
+/// This module will handle all incoming connections
+/// - Accepts incoming connections and then sends them to the client thread after a few checks
+/// - Will handle connection rate-limiting
+/// - Will NOT handle login & client-specific things
+
 use std::collections::HashMap;
 use std::net::IpAddr;
-
-use stblib::colors::{BOLD, C_RESET, RED};
-use stblib::utilities::unix_time;
 
 use tokio::io::AsyncWriteExt;
 use tokio::net::TcpListener;
 use tokio::spawn;
+
+use stblib::colors::{BOLD, C_RESET, RED};
+use stblib::utilities::unix_time;
 
 use crate::communication::client::client_handler;
 use crate::global::{CONFIG, LOGGER};
