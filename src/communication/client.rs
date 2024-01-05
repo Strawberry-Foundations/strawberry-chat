@@ -1,3 +1,7 @@
+/// # Client Handler
+/// This module handles incoming clients sent over from the connection thread
+/// - Handles all client-specific things (login, commands, broadcasting)
+
 use tokio::io::AsyncWriteExt;
 use tokio::net::TcpStream;
 
