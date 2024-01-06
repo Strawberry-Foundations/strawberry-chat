@@ -43,9 +43,8 @@ pub async fn client_login(stream: &mut TcpStream) -> String {
         .await
         .unwrap();
 
-    let (rstream, wstream) = tokio::io::split(stream);
-
-    let json_iter = Deserializer::from_reader(r).into_iter::<Value>();
+    /*
+    let json_iter = Deserializer::from_reader().into_iter::<Value>();
     let mut client_credentials = ClientLoginCredentialsPacket::new();
 
     for json in json_iter {
@@ -59,6 +58,7 @@ pub async fn client_login(stream: &mut TcpStream) -> String {
 
         match msg["packet_type"].as_str() {
             Some("stbchat.event") => {
+                println!("Test");
                 match msg["event.login"].as_str() {
                     Some("") => {
 
@@ -71,7 +71,7 @@ pub async fn client_login(stream: &mut TcpStream) -> String {
             _ => { }
 
         }
-    }
+    } */
 
    "".to_string()
 }
