@@ -18,6 +18,7 @@ mod cli_wins;
 mod communication;
 mod system_core;
 mod constants;
+mod deserializer;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
