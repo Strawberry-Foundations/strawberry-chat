@@ -8,13 +8,12 @@ use tokio::net::TcpStream;
 
 use serde_json::Value;
 
-use stblib::colors::{BOLD, C_RESET, MAGENTA, RED, RESET};
+use stblib::colors::{BOLD, C_RESET, MAGENTA, RESET};
 use crate::system_core::deserializer::JsonStreamDeserializer;
 
 use crate::system_core::objects::ClientLoginCredentialsPacket;
-use crate::system_core::packet::{EventBackend, SystemMessage, UserMessage};
+use crate::system_core::packet::{EventBackend, SystemMessage};
 use crate::system_core::types::LOGIN_EVENT;
-use crate::system_core::user::UserObject;
 
 pub async fn client_login(stream: &mut TcpStream) -> String {
     let mut login_packet = EventBackend::new(&LOGIN_EVENT);
