@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 /// # Client Handler
 /// This module handles incoming clients sent over from the connection thread
 /// - Handles all client-specific things (login, commands, broadcasting)
@@ -5,12 +6,13 @@
 use tokio::io::AsyncWriteExt;
 use tokio::net::TcpStream;
 
-use stblib::colors::{BOLD, C_RESET, RED};
+use stblib::colors::{BOLD, C_RESET, CYAN, RED};
 
 use crate::constants::log_messages::{DISCONNECTED, LOGIN, LOGIN_ERROR, STC_ERROR};
-use crate::global::{CONFIG, LOGGER};
+use crate::global::{CONFIG, LOGGER, REGISTRY};
 use crate::system_core::log::log_parser;
 use crate::system_core::login;
+use crate::system_core::packet::SystemMessage;
 use crate::system_core::types::{CRTLCODE_CLIENT_EXIT, NULL};
 
 pub async fn client_handler(mut client: TcpStream) {
@@ -31,5 +33,31 @@ pub async fn client_handler(mut client: TcpStream) {
         return
     }
 
+    println!("{:?}", client);
+
+    REGISTRY.users.write().await.push(username.clone());
+    REGISTRY.clients.write().await.push((&mut client, username.clone()));
+
+
+    let users_len = REGISTRY.users.read().await.len();
+
     LOGGER.info(log_parser(LOGIN, &[&username, &client_addr]));
+
+    SystemMessage::new(&format!("{BOLD}{CYAN}Welcome back {username}! Nice to see you!{C_RESET}"))
+        .write(&mut client)
+        .await
+        .unwrap();
+
+    let online_users_str =
+        if users_len == 1 { format!("there is {users_len} user") }
+        else { format!("there are {users_len} users") };
+
+    SystemMessage::new(&format!("{BOLD}{CYAN}Currently there {online_users_str} online. For help use /help!{C_RESET}"))
+        .write(&mut client)
+        .await
+        .unwrap();
+
+
+
+
 }
