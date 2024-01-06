@@ -8,6 +8,7 @@ use stblib::colors::{BOLD, C_RESET, GREEN, RED};
 use stblib::logging::formats::{LogFormat, LogFormatExt};
 
 use crate::system_core::config::GlobalConfig;
+use crate::system_core::registry::Registry;
 
 
 pub const BASE_VERSION: &str = "1.11.0";
@@ -71,4 +72,6 @@ lazy_static! {
         "{}_{UPDATE_CHANNEL}-{CODENAME_SHORT}-rst_stmb{STMB_VER}",
         DEFAULT_VERSION.clone()
     );
+
+    pub static ref REGISTRY: Registry<'static> = Registry::new();
 }
