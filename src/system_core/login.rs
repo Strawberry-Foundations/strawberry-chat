@@ -31,19 +31,6 @@ pub async fn client_login(stream: &mut TcpStream) -> String {
 
     login_packet.write(stream).await.unwrap();
 
-    let user_object = UserObject {
-        username: "julian".to_string(),
-        nickname: "Julian The Great".to_string(),
-        badge: '👑',
-        role_color: format!("{BOLD}{RED}"),
-        avatar_url: "https://media.discordapp.net/attachments/874284875618844766/1175912845641265242/WhatsApp_Bild_2023-08-18_um_19.55.41_1.jpg".to_string(),
-    };
-
-    UserMessage::new(user_object, &"Hi :)")
-        .write(stream)
-        .await
-        .unwrap();
-
     let mut deserializer = JsonStreamDeserializer::from_read(stream);
     let mut client_credentials = ClientLoginCredentialsPacket::new();
 
@@ -59,6 +46,7 @@ pub async fn client_login(stream: &mut TcpStream) -> String {
                     Some("event.login") => {
                         client_credentials.username = msg["credentials"]["username"].as_str().unwrap().to_string();
                         client_credentials.password = msg["credentials"]["password"].as_str().unwrap().to_string();
+                        break
                     }
                     _ => println!("{msg}")
                 }
@@ -69,5 +57,5 @@ pub async fn client_login(stream: &mut TcpStream) -> String {
     }
 
 
-   "".to_string()
+   client_credentials.username
 }
