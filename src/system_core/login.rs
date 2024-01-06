@@ -6,9 +6,10 @@
 
 use tokio::net::TcpStream;
 
-use serde_json::{Deserializer, Value};
+use serde_json::Value;
 
 use stblib::colors::{BOLD, C_RESET, MAGENTA, RED, RESET};
+use crate::system_core::deserializer::JsonStreamDeserializer;
 
 use crate::system_core::objects::ClientLoginCredentialsPacket;
 use crate::system_core::packet::{EventBackend, SystemMessage, UserMessage};
@@ -43,35 +44,30 @@ pub async fn client_login(stream: &mut TcpStream) -> String {
         .await
         .unwrap();
 
-    /*
-    let json_iter = Deserializer::from_reader().into_iter::<Value>();
+    let mut deserializer = JsonStreamDeserializer::from_read(stream);
     let mut client_credentials = ClientLoginCredentialsPacket::new();
 
-    for json in json_iter {
-        let msg = match json {
-            Ok(j) => j,
-            Err(e) => {
-                eprintln!("Failed to deserialize json: {e}");
-                continue
-            },
+    loop {
+        let Ok(msg) = deserializer.next::<Value>().await else {
+            continue
         };
 
         match msg["packet_type"].as_str() {
             Some("stbchat.event") => {
-                println!("Test");
-                match msg["event.login"].as_str() {
-                    Some("") => {
 
-
-                    },
-                    _ => { }
+                match msg["event_type"].as_str() {
+                    Some("event.login") => {
+                        client_credentials.username = msg["credentials"]["username"].as_str().unwrap().to_string();
+                        client_credentials.password = msg["credentials"]["password"].as_str().unwrap().to_string();
+                    }
+                    _ => println!("{msg}")
                 }
 
-            },
-            _ => { }
-
+            }
+            _ => println!("{msg}")
         }
-    } */
+    }
+
 
    "".to_string()
 }
