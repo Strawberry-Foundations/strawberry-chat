@@ -5,3 +5,4 @@ pub mod login;
 pub mod packet;
 pub mod types;
 pub mod objects;
+mod deserializer;
