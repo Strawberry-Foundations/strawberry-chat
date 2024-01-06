@@ -1,4 +1,4 @@
-#[derive(Clone)]
+#[derive(Clone, Default)]
 pub struct UserObject {
     pub username: String,
     pub nickname: String,

@@ -72,6 +72,4 @@ lazy_static! {
         "{}_{UPDATE_CHANNEL}-{CODENAME_SHORT}-rst_stmb{STMB_VER}",
         DEFAULT_VERSION.clone()
     );
-
-    pub static ref REGISTRY: Registry<'static> = Registry::new();
 }

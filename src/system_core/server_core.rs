@@ -7,6 +7,10 @@ use std::net::SocketAddr;
 use tokio::sync::mpsc::{unbounded_channel, UnboundedReceiver, UnboundedSender};
 use tokio::sync::RwLock;
 
+pub async fn get_users_len() -> usize {
+    CLIENTS.read().await.len()
+}
+
 pub async fn register_connection(
     peer: SocketAddr,
 ) -> (

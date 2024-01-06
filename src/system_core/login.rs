@@ -14,8 +14,10 @@ use crate::system_core::deserializer::JsonStreamDeserializer;
 use crate::system_core::objects::ClientLoginCredentialsPacket;
 use crate::system_core::packet::{EventBackend, SystemMessage};
 use crate::system_core::types::LOGIN_EVENT;
+use crate::system_core::user::UserObject;
 
-pub async fn client_login(stream: &mut TcpStream) -> String {
+/// Returns None if the client disconnected
+pub async fn client_login(stream: &mut TcpStream) -> Option<UserObject> {
     let mut login_packet = EventBackend::new(&LOGIN_EVENT);
 
     // TODO: replace unwraps with logger errors
@@ -40,7 +42,6 @@ pub async fn client_login(stream: &mut TcpStream) -> String {
 
         match msg["packet_type"].as_str() {
             Some("stbchat.event") => {
-
                 match msg["event_type"].as_str() {
                     Some("event.login") => {
                         client_credentials.username = msg["credentials"]["username"].as_str().unwrap().to_string();
@@ -49,12 +50,15 @@ pub async fn client_login(stream: &mut TcpStream) -> String {
                     }
                     _ => println!("{msg}")
                 }
-
             }
             _ => println!("{msg}")
         }
     }
 
-
-   client_credentials.username
+    Some(
+        UserObject {
+           username: client_credentials.username,
+           ..Default::default()
+        }
+    )
 }
