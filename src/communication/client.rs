@@ -18,11 +18,7 @@ use crate::system_core::message::{MessageToClient, MessageToServer};
 use crate::system_core::packet::SystemMessage;
 use crate::system_core::server_core::get_users_len;
 
-pub async fn client_handler(
-    mut client: TcpStream,
-    rx: UnboundedReceiver<MessageToClient>,
-    tx: UnboundedSender<MessageToServer>
-) {
+pub async fn client_handler(mut client: TcpStream, rx: UnboundedReceiver<MessageToClient>, tx: UnboundedSender<MessageToServer>) {
     let client_addr = &client.peer_addr().unwrap().ip().clone().to_string();
 
     if CONFIG.security.banned_ips.contains(client_addr) {
@@ -33,9 +29,9 @@ pub async fn client_handler(
     }
 
     let Some(user) = login::client_login(&mut client).await else {
-            tx.send(MessageToServer::RemoveMe).unwrap();
-            return;
-        };
+        tx.send(MessageToServer::RemoveMe).unwrap();
+        return;
+    };
 
     if user.username.is_empty() {
         LOGGER.error(log_parser(LOGIN_ERROR, &[&client_addr]));
@@ -58,7 +54,9 @@ pub async fn client_handler(
         .write(&mut client)
         .await
         .unwrap();
+
     let (r_client, w_client) = split(client);
+
     let mut deser = JsonStreamDeserializer::from_read(r_client);
     loop {
         // C->S
