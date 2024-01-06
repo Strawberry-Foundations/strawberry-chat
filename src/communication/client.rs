@@ -5,9 +5,9 @@
 use std::time::Duration;
 use tokio::io::{AsyncWriteExt, split};
 use tokio::net::TcpStream;
+use tokio::sync::mpsc::{UnboundedReceiver, UnboundedSender};
 
 use stblib::colors::{BOLD, C_RESET, CYAN, RED};
-use tokio::sync::mpsc::{UnboundedReceiver, UnboundedSender};
 
 use crate::constants::log_messages::{DISCONNECTED, LOGIN, LOGIN_ERROR, STC_ERROR};
 use crate::global::{CONFIG, LOGGER};
