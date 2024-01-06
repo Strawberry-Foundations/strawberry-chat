@@ -5,4 +5,5 @@ pub mod login;
 pub mod packet;
 pub mod types;
 pub mod objects;
-mod deserializer;
+pub mod deserializer;
+pub mod registry;
