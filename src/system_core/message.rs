@@ -2,6 +2,7 @@
 
 use crate::system_core::user::UserObject;
 
+#[derive(Clone)]
 pub enum MessageToClient {
     UserMessage {
         author: UserObject,
@@ -10,6 +11,9 @@ pub enum MessageToClient {
 }
 
 pub enum MessageToServer {
+    Authorize {
+        user: UserObject
+    },
     Message {
         content: String
     },
