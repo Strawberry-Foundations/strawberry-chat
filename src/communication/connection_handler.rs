@@ -1,8 +1,8 @@
-/// # Connection Handler
-/// This module will handle all incoming connections
-/// - Accepts incoming connections and then sends them to the client thread after a few checks
-/// - Will handle connection rate-limiting
-/// - Will NOT handle login & client-specific things
+//! # Connection Handler
+//! This module will handle all incoming connections
+//! - Accepts incoming connections and then sends them to the client thread after a few checks
+//! - Will handle connection rate-limiting
+//! - Will NOT handle login & client-specific things
 
 use std::collections::HashMap;
 use std::net::IpAddr;
