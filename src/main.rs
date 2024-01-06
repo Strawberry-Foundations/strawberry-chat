@@ -41,8 +41,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
         )
     );
 
-    let connection_thread = spawn(connection_handler(socket));
-    connection_thread.await?;
+    connection_handler(socket).await;
 
     Ok(())
 }

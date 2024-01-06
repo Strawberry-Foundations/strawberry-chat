@@ -18,6 +18,7 @@ use crate::communication::client::client_handler;
 use crate::global::{CONFIG, LOGGER};
 use crate::system_core::log::log_parser;
 use crate::constants::log_messages::{CONNECTED, CONNECTED_RLM, CONNECTION_ERROR, RATELIMIT_REMOVED, REACHED_CON_LIMIT, STC_ERROR};
+use crate::system_core::server_core::register_connection;
 
 pub async fn connection_handler(socket: TcpListener) {
     let mut ignore_list: HashMap<IpAddr, u64> = HashMap::new();
@@ -33,7 +34,8 @@ pub async fn connection_handler(socket: TcpListener) {
 
         if !CONFIG.networking.ratelimit {
             LOGGER.info(log_parser(CONNECTED, &[&client_addr.to_string()]));
-            spawn(client_handler(client)).await.expect("");
+            let (tx, rx) = register_connection(client.peer_addr().unwrap()).await;
+            spawn(client_handler(client, rx, tx)).await.expect("");
             continue;
         }
 
@@ -44,7 +46,19 @@ pub async fn connection_handler(socket: TcpListener) {
         /// - Spam protection is activated from 10 connections
         let mut allow_connection = true;
         // Check if ignore list contains the client's address
-        if ignore_list.contains_key(&client_addr) {
+        if let std::collections::hash_map::Entry::Vacant(e) = ignore_list.entry(client_addr) {
+            // If connection counter of user is higher or equals to 10, disallow connection to the server
+            if connection_counter.contains_key(&client_addr) && connection_counter[&client_addr] >= 10 {
+                LOGGER.warning(log_parser(REACHED_CON_LIMIT, &[&client_addr.to_string()]));
+                e.insert(unix_time());
+                allow_connection = false;
+            }
+            // Else continue connection
+            else {
+                LOGGER.info(log_parser(CONNECTED, &[&client_addr.to_string()]));
+                *connection_counter.entry(client_addr).or_insert(0) += 1;
+            }
+        } else {
             // Check if user is still in ratelimit timeout (If user is no longer in ratelimit timeout, remove user from the ignore_list
             if (unix_time() - ignore_list.get(&client_addr).unwrap()) > u64::from(CONFIG.networking.ratelimit_timeout) {
                 LOGGER.info(log_parser(RATELIMIT_REMOVED, &[&client_addr.to_string()]));
@@ -61,27 +75,13 @@ pub async fn connection_handler(socket: TcpListener) {
                     format!("{RED}{BOLD}You have been ratelimited due to spam activity. Please try again later{C_RESET}").as_bytes()
                 ).await.unwrap_or_else(|_| LOGGER.warning(STC_ERROR));
 
-                allow_connection = false
-            }
-        }
-        // If user is not in ignore_list, check if user is already in connection_counter
-        else {
-            // If connection counter of user is higher or equals to 10, disallow connection to the server
-            if connection_counter.contains_key(&client_addr) && connection_counter[&client_addr] >= 10 {
-                LOGGER.warning(log_parser(REACHED_CON_LIMIT, &[&client_addr.to_string()]));
-                ignore_list.insert(client_addr, unix_time());
                 allow_connection = false;
-            }
-            // Else continue connection
-            else {
-                LOGGER.info(log_parser(CONNECTED, &[&client_addr.to_string()]));
-                *connection_counter.entry(client_addr).or_insert(0) += 1;
             }
         }
 
-        match allow_connection {
-            true => spawn(client_handler(client)).await.expect(""),
-            false => client.shutdown().await.unwrap_or_else(|_| LOGGER.error(STC_ERROR)),
-        }
+        if allow_connection {
+            let (tx, rx) = register_connection(client.peer_addr().unwrap()).await;
+            spawn(client_handler(client, rx, tx)).await.expect("");
+        } else { client.shutdown().await.unwrap_or_else(|_| LOGGER.error(STC_ERROR)) }
     }
 }

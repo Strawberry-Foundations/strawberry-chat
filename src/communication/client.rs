@@ -7,15 +7,21 @@ use tokio::io::AsyncWriteExt;
 use tokio::net::TcpStream;
 
 use stblib::colors::{BOLD, C_RESET, CYAN, RED};
+use tokio::sync::mpsc::{UnboundedReceiver, UnboundedSender};
 
 use crate::constants::log_messages::{DISCONNECTED, LOGIN, LOGIN_ERROR, STC_ERROR};
 use crate::global::{CONFIG, LOGGER, REGISTRY};
 use crate::system_core::log::log_parser;
 use crate::system_core::login;
+use crate::system_core::message::{MessageToClient, MessageToServer};
 use crate::system_core::packet::SystemMessage;
 use crate::system_core::types::{CRTLCODE_CLIENT_EXIT, NULL};
 
-pub async fn client_handler(mut client: TcpStream) {
+pub async fn client_handler(
+    mut client: TcpStream,
+    incoming: UnboundedReceiver<MessageToClient>,
+    outgoing: UnboundedSender<MessageToServer>
+) {
     let client_addr = &client.peer_addr().unwrap().ip().clone().to_string();
 
     if CONFIG.security.banned_ips.contains(client_addr) {
@@ -32,12 +38,6 @@ pub async fn client_handler(mut client: TcpStream) {
         client.shutdown().await.unwrap_or_else(|_| LOGGER.error(STC_ERROR));
         return
     }
-
-    println!("{:?}", client);
-
-    REGISTRY.users.write().await.push(username.clone());
-    REGISTRY.clients.write().await.push((&mut client, username.clone()));
-
 
     let users_len = REGISTRY.users.read().await.len();
 
