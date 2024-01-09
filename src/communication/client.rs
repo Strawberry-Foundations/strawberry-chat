@@ -63,11 +63,15 @@ pub async fn client_handler(mut client: TcpStream, rx: UnboundedReceiver<Message
         return;
     };
 
+
     if user.username.is_empty() {
         LOGGER.error(log_parser(LOGIN_ERROR, &[&client_addr]));
         client.shutdown().await.unwrap_or_else(|_| LOGGER.error(STC_ERROR));
         return
     }
+
+    tx.send(MessageToServer::Authorize { user: user.clone() }).unwrap();
+
 
     LOGGER.info(log_parser(LOGIN, &[&user.username, &client_addr]));
     SystemMessage::new(&format!("{BOLD}{CYAN}Welcome back {}! Nice to see you!{C_RESET}", user.username))
@@ -77,13 +81,14 @@ pub async fn client_handler(mut client: TcpStream, rx: UnboundedReceiver<Message
 
     let users_len = get_users_len().await;
     let online_users_str =
-        if users_len == 1 { format!("there is {users_len} user") }
-        else { format!("there are {users_len} users") };
+        if users_len == 1 { format!("is {users_len} user") }
+        else { format!("are {users_len} users") };
 
     SystemMessage::new(&format!("{BOLD}{CYAN}Currently there {online_users_str} online. For help use /help!{C_RESET}"))
         .write(&mut client)
         .await
         .unwrap();
+
     let (r_client, w_client) = split(client);
     let s2c = spawn(client_handler_s2c(rx, w_client));
     let c2s = spawn(client_handler_c2s(tx, r_client));
