@@ -1,31 +1,47 @@
-language: en_US
-update_channel: "stable"
-detect_same_system_messages: true
-message_format: default
-enable_notifications: true
-enable_terminal_bell: true
-experimental_debug_mode: false
-extreme_debug_mode: false
-recv_allowed_bytes: 8192
-config_ver: 5
+server:
+  address: "0.0.0.0"
+  port: 8080
+  name: "Official Strawberry Chat Server"
+  description: "This is the official chat server for Strawberry Chat!"
+  edition_key: "somekey"
+  update_channel: "canary"
+
+config:
+  max_message_length: 256
+  max_users: -1
+  max_registered_users: -1
+  max_username_length: 32
+  max_password_length: 256
+  recv_allowed_bytes: 8192
 
 networking:
-  online_mode: false
-  keep_alive: true
-  latency_mode: false
-  latency_mode_time: 1
+  ratelimit: true
+  ratelimit_timeout: 15
 
-autoserver:
-  enabled: false
-  server_id: 2
+flags:
+  enable_messages: true
+  enable_queue: true
+  debug_mode: true
+  online_mode: true
+  admins_wait_queue: false
+  bots_wait_queue: true
+  special_messages: false
 
-server:
-  0:
-    name: test
-    address: localhost
-    port: 8080
-    type: Main (1)
-    autologin: false
-    credentials:
-      username: test
-      password: test
+database:
+  driver: sqlite              # Available values: sqlite, mysql
+  check_same_thread: false    # only for sqlite
+  
+  host: localhost
+  port: 3006
+  user: admin
+  password: admin
+  database_name: data
+  database_table: chat_data
+
+security:
+  require_signing: false
+  signing_key: none
+  banned_ips: []
+
+
+config_ver: 7
