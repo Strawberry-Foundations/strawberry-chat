@@ -1,0 +1,31 @@
+language: en_US
+update_channel: "stable"
+detect_same_system_messages: true
+message_format: default
+enable_notifications: true
+enable_terminal_bell: true
+experimental_debug_mode: false
+extreme_debug_mode: false
+recv_allowed_bytes: 8192
+config_ver: 5
+
+networking:
+  online_mode: false
+  keep_alive: true
+  latency_mode: false
+  latency_mode_time: 1
+
+autoserver:
+  enabled: false
+  server_id: 2
+
+server:
+  0:
+    name: test
+    address: localhost
+    port: 8080
+    type: Main (1)
+    autologin: false
+    credentials:
+      username: test
+      password: test
