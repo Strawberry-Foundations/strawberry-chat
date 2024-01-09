@@ -39,7 +39,6 @@ async fn client_handler_s2c(mut rx: UnboundedReceiver<MessageToClient>, mut w_st
 
 async fn client_handler_c2s(tx: UnboundedSender<MessageToServer>, mut r_stream: ReadHalf<TcpStream>) {
     let mut buffer = [0u8; 4096];
-    println!("aaaa");
     loop {
         // TODO: Replace unwraps with logger errors + RemoveMe
 

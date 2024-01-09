@@ -29,7 +29,6 @@ pub async fn connection_handler(socket: TcpListener) {
             LOGGER.error(CONNECTION_ERROR);
             continue;
         };
-        println!("fffff");
 
         let client_addr= client.peer_addr().unwrap().ip();
 
