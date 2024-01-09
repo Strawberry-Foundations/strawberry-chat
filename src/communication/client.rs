@@ -3,25 +3,50 @@
 //! - Handles all client-specific things (login, commands, broadcasting)
 
 use std::time::Duration;
-use tokio::io::{AsyncWriteExt, ReadHalf, split, WriteHalf};
+use tokio::io::{AsyncReadExt, AsyncWriteExt, ReadHalf, split, WriteHalf};
 use tokio::net::TcpStream;
 use tokio::sync::mpsc::{UnboundedReceiver, UnboundedSender};
 
 use stblib::colors::{BOLD, C_RESET, CYAN, RED};
-use tokio::spawn;
+use tokio::{select, spawn};
 
 use crate::constants::log_messages::{DISCONNECTED, LOGIN, LOGIN_ERROR, STC_ERROR};
 use crate::global::{CONFIG, LOGGER};
-use crate::system_core::deserializer::JsonStreamDeserializer;
 use crate::system_core::log::log_parser;
 use crate::system_core::login;
 use crate::system_core::message::{MessageToClient, MessageToServer};
-use crate::system_core::packet::SystemMessage;
+use crate::system_core::packet::{SystemMessage, UserMessage};
 use crate::system_core::server_core::get_users_len;
 
-async fn client_handler_s2c(rx: UnboundedReceiver<MessageToClient>, w_stream: WriteHalf<TcpStream>) { todo!() }
+// This function should NOT panic!!
+async fn client_handler_s2c(mut rx: UnboundedReceiver<MessageToClient>, mut w_stream: WriteHalf<TcpStream>) {
+    loop {
+        let msg = rx.recv().await.expect("Error reading from channel");
+        match msg {
+            // TODO: Replace unwraps with LoggerErrors
 
-async fn client_handler_c2s(tx: UnboundedSender<MessageToServer>, r_stream: ReadHalf<TcpStream>) { todo!() }
+            MessageToClient::UserMessage { author, content } => {
+                UserMessage::new(author.clone(), &content)
+                    .write(&mut w_stream)
+                    .await
+                    .unwrap();
+            }
+        }
+    }
+}
+
+async fn client_handler_c2s(tx: UnboundedSender<MessageToServer>, mut r_stream: ReadHalf<TcpStream>) {
+    let mut buffer = [0u8; 4096];
+    loop {
+        // TODO: Replace unwraps with logger errors + RemoveMe
+
+        let n = r_stream.read(&mut buffer).await.unwrap();
+        if n == 0 {
+            tx.send(MessageToServer::RemoveMe).unwrap();
+            return;
+        }
+    }
+}
 
 pub async fn client_handler(mut client: TcpStream, rx: UnboundedReceiver<MessageToClient>, tx: UnboundedSender<MessageToServer>) {
     let client_addr = &client.peer_addr().unwrap().ip().clone().to_string();
@@ -59,8 +84,11 @@ pub async fn client_handler(mut client: TcpStream, rx: UnboundedReceiver<Message
         .write(&mut client)
         .await
         .unwrap();
-
     let (r_client, w_client) = split(client);
-    spawn(client_handler_s2c(rx, w_client));
-    spawn(client_handler_c2s(tx, r_client));
+    let s2c = spawn(client_handler_s2c(rx, w_client));
+    let c2s = spawn(client_handler_c2s(tx, r_client));
+    select! {
+        _ = s2c => println!("C->S to {client_addr} closed"),
+        _ = c2s => println!("S->C to {client_addr} closed - that should not have happened, oops!"),
+    }
 }
