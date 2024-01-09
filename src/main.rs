@@ -6,9 +6,11 @@ use std::error::Error;
 use tokio::net::TcpListener;
 
 use stblib::colors::{BOLD, C_RESET, CYAN, ITALIC, MAGENTA, RESET};
+use tokio::spawn;
 
 use crate::communication::connection_handler::connection_handler;
 use crate::global::{CHAT_NAME, CODENAME, CONFIG, DEFAULT_VERSION, RUNTIME_LOGGER, SERVER_EDITION};
+use crate::system_core::server_core::core_thread;
 use crate::utilities::runtime_all_addresses;
 
 mod utilities;
@@ -40,6 +42,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
         )
     );
 
+    spawn(core_thread());
     connection_handler(socket).await;
 
     Ok(())

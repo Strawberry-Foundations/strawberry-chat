@@ -29,13 +29,14 @@ pub async fn connection_handler(socket: TcpListener) {
             LOGGER.error(CONNECTION_ERROR);
             continue;
         };
+        println!("fffff");
 
         let client_addr= client.peer_addr().unwrap().ip();
 
         if !CONFIG.networking.ratelimit {
             LOGGER.info(log_parser(CONNECTED, &[&client_addr.to_string()]));
             let (tx, rx) = register_connection(client.peer_addr().unwrap()).await;
-            spawn(client_handler(client, rx, tx)).await.expect("");
+            spawn(client_handler(client, rx, tx));
             continue;
         }
 
@@ -81,7 +82,7 @@ pub async fn connection_handler(socket: TcpListener) {
 
         if allow_connection {
             let (tx, rx) = register_connection(client.peer_addr().unwrap()).await;
-            spawn(client_handler(client, rx, tx)).await.expect("");
+            spawn(client_handler(client, rx, tx));
         } else { client.shutdown().await.unwrap_or_else(|_| LOGGER.error(STC_ERROR)) }
     }
 }

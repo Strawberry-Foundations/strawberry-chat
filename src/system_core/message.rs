@@ -2,7 +2,7 @@
 
 use crate::system_core::user::UserObject;
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub enum MessageToClient {
     UserMessage {
         author: UserObject,

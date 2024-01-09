@@ -4,8 +4,10 @@ use crate::system_core::message::{MessageToClient, MessageToServer};
 use crate::system_core::user::UserObject;
 use lazy_static::lazy_static;
 use std::net::SocketAddr;
+use std::time::Duration;
 use tokio::sync::mpsc::{unbounded_channel, UnboundedReceiver, UnboundedSender};
 use tokio::sync::RwLock;
+use tokio::time::sleep;
 
 pub async fn get_users_len() -> usize {
     CLIENTS.read().await.len()
@@ -30,6 +32,7 @@ pub async fn register_connection(
     (ts_tx, tc_rx)
 }
 
+#[derive(Debug)]
 enum Event {
     Authorize {
         idx: usize,
@@ -90,6 +93,7 @@ pub async fn core_thread() {
                 }
             }
         }
+        sleep(Duration::from_millis(50)).await;
     }
 }
 

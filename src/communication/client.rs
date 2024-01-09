@@ -21,7 +21,9 @@ use crate::system_core::server_core::get_users_len;
 // This function should NOT panic!!
 async fn client_handler_s2c(mut rx: UnboundedReceiver<MessageToClient>, mut w_stream: WriteHalf<TcpStream>) {
     loop {
-        let msg = rx.recv().await.expect("Error reading from channel");
+        let Some(msg) = rx.recv().await else {
+            return;
+        };
         match msg {
             // TODO: Replace unwraps with LoggerErrors
 
@@ -37,6 +39,7 @@ async fn client_handler_s2c(mut rx: UnboundedReceiver<MessageToClient>, mut w_st
 
 async fn client_handler_c2s(tx: UnboundedSender<MessageToServer>, mut r_stream: ReadHalf<TcpStream>) {
     let mut buffer = [0u8; 4096];
+    println!("aaaa");
     loop {
         // TODO: Replace unwraps with logger errors + RemoveMe
 
@@ -45,10 +48,13 @@ async fn client_handler_c2s(tx: UnboundedSender<MessageToServer>, mut r_stream: 
             tx.send(MessageToServer::RemoveMe).unwrap();
             return;
         }
+        let content = String::from_utf8_lossy(&buffer[..n]).to_string();
+        tx.send(MessageToServer::Message { content }).unwrap();
     }
 }
 
 pub async fn client_handler(mut client: TcpStream, rx: UnboundedReceiver<MessageToClient>, tx: UnboundedSender<MessageToServer>) {
+    println!("Handling {}", client.peer_addr().unwrap());
     let client_addr = &client.peer_addr().unwrap().ip().clone().to_string();
 
     if CONFIG.security.banned_ips.contains(client_addr) {
