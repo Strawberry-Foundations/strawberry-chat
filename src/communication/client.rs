@@ -93,7 +93,7 @@ pub async fn client_handler(mut client: TcpStream, rx: UnboundedReceiver<Message
     let s2c = spawn(client_handler_s2c(rx, w_client));
     let c2s = spawn(client_handler_c2s(tx, r_client));
     select! {
-        _ = s2c => println!("C->S to {client_addr} closed"),
-        _ = c2s => println!("S->C to {client_addr} closed - that should not have happened, oops!"),
+        _ = s2c => println!("S->C to {client_addr} closed - that should not have happened, oops!"),
+        _ = c2s => println!("C->S to {client_addr} closed"),
     }
 }
