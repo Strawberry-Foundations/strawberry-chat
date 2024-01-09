@@ -3,11 +3,12 @@
 //! - Handles all client-specific things (login, commands, broadcasting)
 
 use std::time::Duration;
-use tokio::io::{AsyncWriteExt, split};
+use tokio::io::{AsyncWriteExt, ReadHalf, split, WriteHalf};
 use tokio::net::TcpStream;
 use tokio::sync::mpsc::{UnboundedReceiver, UnboundedSender};
 
 use stblib::colors::{BOLD, C_RESET, CYAN, RED};
+use tokio::spawn;
 
 use crate::constants::log_messages::{DISCONNECTED, LOGIN, LOGIN_ERROR, STC_ERROR};
 use crate::global::{CONFIG, LOGGER};
@@ -17,6 +18,10 @@ use crate::system_core::login;
 use crate::system_core::message::{MessageToClient, MessageToServer};
 use crate::system_core::packet::SystemMessage;
 use crate::system_core::server_core::get_users_len;
+
+async fn client_handler_s2c(rx: UnboundedReceiver<MessageToClient>, w_stream: WriteHalf<TcpStream>) { todo!() }
+
+async fn client_handler_c2s(tx: UnboundedSender<MessageToServer>, r_stream: ReadHalf<TcpStream>) { todo!() }
 
 pub async fn client_handler(mut client: TcpStream, rx: UnboundedReceiver<MessageToClient>, tx: UnboundedSender<MessageToServer>) {
     let client_addr = &client.peer_addr().unwrap().ip().clone().to_string();
@@ -56,13 +61,6 @@ pub async fn client_handler(mut client: TcpStream, rx: UnboundedReceiver<Message
         .unwrap();
 
     let (r_client, w_client) = split(client);
-
-    let mut deser = JsonStreamDeserializer::from_read(r_client);
-    loop {
-        // C->S
-        let msg = tokio::time::timeout(
-            Duration::from_millis(10),
-            deser.next::<serde_json::Value>()
-        ).await;
-    }
+    spawn(client_handler_s2c(rx, w_client));
+    spawn(client_handler_c2s(tx, r_client));
 }
