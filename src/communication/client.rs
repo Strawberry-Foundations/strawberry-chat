@@ -96,7 +96,7 @@ pub async fn client_handler(mut client: TcpStream, rx: UnboundedReceiver<Message
     }
 
     tx.send(MessageToServer::Authorize { user: user.clone() }).unwrap();
-
+    sleep(Duration::from_millis(110)).await;
 
     LOGGER.info(log_parser(LOGIN, &[&user.username, &client_addr]));
     SystemMessage::new(&format!("Welcome back {}! Nice to see you!", user.username).bold().cyan())
