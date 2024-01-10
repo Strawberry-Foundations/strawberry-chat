@@ -2,10 +2,7 @@ use crate::system_core::commands;
 
 pub fn example_command() -> commands::Command {
     fn logic(ctx: &commands::Context) -> Result<String, String> {
-        Ok({
-            format!("Username: {}", ctx.executor.username);
-            format!("Args: {:?}", ctx.args)
-        })
+        Ok(format!("\n  Username: {}\n  Args: {:?}", ctx.executor.username, ctx.args))
     }
 
     commands::Command {
