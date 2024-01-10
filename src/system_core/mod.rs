@@ -9,4 +9,4 @@ pub mod deserializer;
 pub mod registry;
 pub mod message;
 pub mod server_core;
-mod commands;
+pub mod commands;
