@@ -2,13 +2,12 @@
 //! This module handles incoming clients sent over from the connection thread
 //! - Handles all client-specific things (login, commands, broadcasting)
 
-use std::time::Duration;
 use tokio::io::{AsyncReadExt, AsyncWriteExt, ReadHalf, split, WriteHalf};
 use tokio::net::TcpStream;
 use tokio::sync::mpsc::{UnboundedReceiver, UnboundedSender};
+use tokio::{select, spawn};
 
 use stblib::colors::{BOLD, C_RESET, CYAN, RED};
-use tokio::{select, spawn};
 
 use crate::constants::log_messages::{DISCONNECTED, LOGIN, LOGIN_ERROR, STC_ERROR};
 use crate::global::{CONFIG, LOGGER};
