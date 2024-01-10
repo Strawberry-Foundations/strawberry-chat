@@ -11,7 +11,7 @@ pub struct ClientLoginCredentialsPacket {
 }
 
 impl ClientLoginCredentialsPacket {
-    pub const fn new() -> ClientLoginCredentialsPacket {
+    pub const fn new() -> Self {
         Self {
             username: String::new(),
             password: String::new(),
