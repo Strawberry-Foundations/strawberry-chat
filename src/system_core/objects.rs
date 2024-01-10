@@ -1,3 +1,4 @@
+// Object for sending Notifications
 pub struct NotificationObject {
     pub title: String,
     pub username: String,
@@ -5,6 +6,7 @@ pub struct NotificationObject {
     pub bell: bool
 }
 
+// Server-side object/packet for understanding the received login packet from the client
 pub struct ClientLoginCredentialsPacket {
     pub username: String,
     pub password: String,
@@ -17,4 +19,14 @@ impl ClientLoginCredentialsPacket {
             password: String::new(),
         }
     }
+}
+
+// General User Object for all types of user-specified code
+#[derive(Clone, Default, Debug)]
+pub struct UserObject {
+    pub username: String,
+    pub nickname: String,
+    pub badge: char,
+    pub role_color: String,
+    pub avatar_url: String,
 }
