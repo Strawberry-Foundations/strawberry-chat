@@ -30,7 +30,7 @@ fn get_commands() -> Vec<Command> {
     cmds
 }
 
-pub async fn run_command(name: String, args: Vec<String>, conn: &mut Connection) {
+pub async fn run_command(name: String, args: Vec<String>, conn: &Connection) {
     let res = exec_command(name, args, conn).await;
     match res {
         Ok(text) => conn.tx.send(
@@ -47,7 +47,7 @@ pub async fn run_command(name: String, args: Vec<String>, conn: &mut Connection)
     };
 }
 
-async fn exec_command(name: String, args: Vec<String>, conn: &mut Connection) -> Result<String, String> {
+async fn exec_command(name: String, args: Vec<String>, conn: &Connection) -> Result<String, String> {
     let Some(cmd) = get_commands().into_iter().find(|cmd| cmd.name == name) else {
         return Err(String::from("Command not found"))
     };
