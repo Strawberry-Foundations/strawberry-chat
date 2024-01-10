@@ -2,11 +2,10 @@
 #![allow(clippy::module_name_repetitions, clippy::should_implement_trait, clippy::struct_excessive_bools, dead_code, unused_doc_comments, clippy::missing_const_for_fn)]
 
 use std::error::Error;
-
 use tokio::net::TcpListener;
+use tokio::spawn;
 
 use stblib::colors::{BOLD, C_RESET, CYAN, ITALIC, MAGENTA, RESET};
-use tokio::spawn;
 
 use crate::communication::connection_handler::connection_handler;
 use crate::global::{CHAT_NAME, CODENAME, CONFIG, DEFAULT_VERSION, RUNTIME_LOGGER, SERVER_EDITION};
@@ -19,6 +18,7 @@ mod cli_wins;
 mod communication;
 mod system_core;
 mod constants;
+mod commands;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
