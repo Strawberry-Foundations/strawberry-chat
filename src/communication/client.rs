@@ -10,7 +10,7 @@ use tokio::sync::mpsc::{UnboundedReceiver, UnboundedSender};
 use tokio::{select, spawn};
 use tokio::time::sleep;
 
-use crate::constants::log_messages::{DISCONNECTED, LOGIN, LOGIN_ERROR, STC_ERROR};
+use crate::constants::log_messages::{ADDRESS_LEFT, DISCONNECTED, LOGIN, LOGIN_ERROR, STC_ERROR};
 use crate::global::{CONFIG, LOGGER};
 use crate::system_core::log::log_parser;
 use crate::system_core::login;
@@ -118,7 +118,7 @@ pub async fn client_handler(mut client: TcpStream, rx: UnboundedReceiver<Message
     let s2c = spawn(client_handler_s2c(rx, w_client));
     let c2s = spawn(client_handler_c2s(tx, r_client));
     select! {
-        _ = s2c => println!("S->C to {client_addr} closed - that should not have happened, oops!"),
-        _ = c2s => println!("C->S to {client_addr} closed"),
+        _ = s2c => LOGGER.error(log_parser(STC_ERROR, &[&client_addr])),
+        _ = c2s => LOGGER.info(log_parser(ADDRESS_LEFT, &[&client_addr])),
     }
 }
