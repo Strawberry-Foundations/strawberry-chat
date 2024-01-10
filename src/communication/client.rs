@@ -2,12 +2,11 @@
 //! This module handles incoming clients sent over from the connection thread
 //! - Handles all client-specific things (login, commands, broadcasting)
 
+use owo_colors::OwoColorize;
 use tokio::io::{AsyncReadExt, AsyncWriteExt, ReadHalf, split, WriteHalf};
 use tokio::net::TcpStream;
 use tokio::sync::mpsc::{UnboundedReceiver, UnboundedSender};
 use tokio::{select, spawn};
-
-use stblib::colors::{BOLD, C_RESET, CYAN, RED};
 
 use crate::constants::log_messages::{DISCONNECTED, LOGIN, LOGIN_ERROR, STC_ERROR};
 use crate::global::{CONFIG, LOGGER};
@@ -74,7 +73,7 @@ pub async fn client_handler(mut client: TcpStream, rx: UnboundedReceiver<Message
     let client_addr = &client.peer_addr().unwrap().ip().clone().to_string();
 
     if CONFIG.security.banned_ips.contains(client_addr) {
-        client.write_all(format!("{RED}{BOLD}Sorry, you're not allowed to connect to this server.{C_RESET}").as_bytes()).await.expect("");
+        client.write_all("Sorry, you're not allowed to connect to this server.".red().bold().to_string().as_bytes()).await.expect("");
         client.shutdown().await.unwrap_or_else(|_| LOGGER.error(STC_ERROR));
         LOGGER.info(log_parser(DISCONNECTED, &[&client_addr]));
         return
@@ -96,7 +95,7 @@ pub async fn client_handler(mut client: TcpStream, rx: UnboundedReceiver<Message
 
 
     LOGGER.info(log_parser(LOGIN, &[&user.username, &client_addr]));
-    SystemMessage::new(&format!("{BOLD}{CYAN}Welcome back {}! Nice to see you!{C_RESET}", user.username))
+    SystemMessage::new(&format!("Welcome back {}! Nice to see you!", user.username).bold().cyan())
         .write(&mut client)
         .await
         .unwrap();
@@ -106,7 +105,7 @@ pub async fn client_handler(mut client: TcpStream, rx: UnboundedReceiver<Message
         if users_len == 1 { format!("is {users_len} user") }
         else { format!("are {users_len} users") };
 
-    SystemMessage::new(&format!("{BOLD}{CYAN}Currently there {online_users_str} online. For help use /help!{C_RESET}"))
+    SystemMessage::new(&format!("Currently there {online_users_str} online. For help use /help!").bold().cyan())
         .write(&mut client)
         .await
         .unwrap();
