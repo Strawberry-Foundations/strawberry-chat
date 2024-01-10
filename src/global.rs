@@ -8,12 +8,11 @@ use stblib::colors::{BOLD, C_RESET, GREEN, RED};
 use stblib::logging::formats::{LogFormat, LogFormatExt};
 
 use crate::system_core::config::GlobalConfig;
-use crate::system_core::registry::Registry;
 
 
 pub const BASE_VERSION: &str = "1.11.0";
 pub const ADDITION_VER: &str = "a1";
-pub const STMB_VER: &str = "3";
+pub const STBM_VER: &str = "3";
 
 pub const CODENAME: &str = "Vanilla Cake";
 pub const CODENAME_SHORT: &str = "vacakes";
@@ -69,7 +68,7 @@ lazy_static! {
     pub static ref VERSION: String = format!("{}", DEFAULT_VERSION.clone());
 
     pub static ref EXT_VERSION: String = format!(
-        "{}_{UPDATE_CHANNEL}-{CODENAME_SHORT}-rst_stmb{STMB_VER}",
+        "{}_{UPDATE_CHANNEL}-{CODENAME_SHORT}-rst_stbm{STBM_VER}",
         DEFAULT_VERSION.clone()
     );
 }
