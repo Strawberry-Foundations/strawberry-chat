@@ -23,4 +23,3 @@ pub const SERVER_STOP: &str         = "Server stopped";
 pub const BADGE_ERROR: &str         = "Something went wrong while... doing something with the badges?: ";
 pub const RATELIMIT_REMOVED: &str   = "Ratelimit timeout for %s removed";
 pub const REACHED_CON_LIMIT: &str   = "IP address %s has reached its connection limit. Blocking IP address";
-pub const HANDLING_ADDR: &str       = "Handling %s";
