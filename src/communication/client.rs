@@ -65,7 +65,8 @@ async fn client_handler_c2s(tx: UnboundedSender<MessageToServer>, mut r_stream: 
             }).unwrap();
             continue;
         }
-        tx.send(MessageToServer::Message { content }).unwrap();
+
+        if content != "[#<keepalive.event.sent>]" { tx.send(MessageToServer::Message { content }).unwrap() };
     }
 }
 
