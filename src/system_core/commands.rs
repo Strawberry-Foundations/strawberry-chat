@@ -22,7 +22,7 @@ pub struct Command {
 }
 
 fn get_commands() -> Vec<Command> {
-    let mut cmds = vec![
+    let cmds = vec![
         hello_command(),
         crate::commands::etc::test_command::example_command(),
     ];
