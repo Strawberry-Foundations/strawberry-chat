@@ -52,8 +52,6 @@ async fn client_handler_c2s(tx: UnboundedSender<MessageToServer>, mut r_stream: 
 }
 
 pub async fn client_handler(mut client: TcpStream, rx: UnboundedReceiver<MessageToClient>, tx: UnboundedSender<MessageToServer>) {
-    LOGGER.info(log_parser(HANDLING_ADDR, &[&client.peer_addr().unwrap()]));
-
     let client_addr = &client.peer_addr().unwrap().ip().clone().to_string();
 
     if CONFIG.security.banned_ips.contains(client_addr) {
