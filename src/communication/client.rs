@@ -9,7 +9,7 @@ use tokio::{select, spawn};
 
 use stblib::colors::{BOLD, C_RESET, CYAN, RED};
 
-use crate::constants::log_messages::{DISCONNECTED, HANDLING_ADDR, LOGIN, LOGIN_ERROR, STC_ERROR};
+use crate::constants::log_messages::{DISCONNECTED, LOGIN, LOGIN_ERROR, STC_ERROR};
 use crate::global::{CONFIG, LOGGER};
 use crate::system_core::log::log_parser;
 use crate::system_core::login;
