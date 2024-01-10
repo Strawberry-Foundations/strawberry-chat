@@ -1,7 +1,7 @@
 //! This handles communication between clients and the server
 
 use crate::system_core::message::{MessageToClient, MessageToServer};
-use crate::system_core::user::UserObject;
+use crate::system_core::objects::UserObject;
 use lazy_static::lazy_static;
 use std::net::SocketAddr;
 use std::time::Duration;
