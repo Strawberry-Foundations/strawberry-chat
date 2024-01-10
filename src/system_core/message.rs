@@ -6,7 +6,10 @@ use crate::system_core::user::UserObject;
 pub enum MessageToClient {
     UserMessage {
         author: UserObject,
-        content: String
+        content: String,
+    },
+    SystemMessage {
+        content: String,
     }
 }
 
@@ -16,6 +19,10 @@ pub enum MessageToServer {
     },
     Message {
         content: String
+    },
+    RunCommand {
+        name: String,
+        args: Vec<String>
     },
     RemoveMe
 }

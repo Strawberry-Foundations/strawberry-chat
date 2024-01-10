@@ -14,7 +14,7 @@ use crate::global::{CONFIG, LOGGER};
 use crate::system_core::log::log_parser;
 use crate::system_core::login;
 use crate::system_core::message::{MessageToClient, MessageToServer};
-use crate::system_core::packet::{SystemMessage, UserMessage};
+use crate::system_core::packet::{SystemMessage as SystemMessagePacket, SystemMessage, UserMessage as UserMessagePacket};
 use crate::system_core::server_core::get_users_len;
 
 // This function should NOT panic!!
@@ -27,7 +27,13 @@ async fn client_handler_s2c(mut rx: UnboundedReceiver<MessageToClient>, mut w_st
             // TODO: Replace unwraps with LoggerErrors
 
             MessageToClient::UserMessage { author, content } => {
-                UserMessage::new(author.clone(), &content)
+                UserMessagePacket::new(author.clone(), &content)
+                    .write(&mut w_stream)
+                    .await
+                    .unwrap();
+            },
+            MessageToClient::SystemMessage { content } => {
+                SystemMessagePacket::new(&content)
                     .write(&mut w_stream)
                     .await
                     .unwrap();
@@ -42,17 +48,25 @@ async fn client_handler_c2s(tx: UnboundedSender<MessageToServer>, mut r_stream: 
         // TODO: Replace unwraps with logger errors + RemoveMe
 
         let n = r_stream.read(&mut buffer).await.unwrap();
-
         if n == 0 {
             tx.send(MessageToServer::RemoveMe).unwrap();
             return;
         }
+        let content = String::from_utf8_lossy(&buffer[..n]).trim().to_string();
+        if content.starts_with('/') && content.len() > 1 {
+            let parts: Vec<String> = content[1..].split_ascii_whitespace().map(String::from).collect();
+            if &parts[0] == "exit" {
+                tx.send(MessageToServer::RemoveMe).unwrap();
+                return;
+            }
+            tx.send(MessageToServer::RunCommand {
+                name: parts[0].to_string(),
+                args: parts[1..].to_vec(),
+            }).unwrap();
+            continue;
+        }
 
-        let content = String::from_utf8_lossy(&buffer[..n]).to_string();
-
-        if content.as_str() == "[#<keepalive.event.sent>]" { continue; }
-
-        tx.send(MessageToServer::Message { content }).unwrap();
+        if content != "[#<keepalive.event.sent>]" { tx.send(MessageToServer::Message { content }).unwrap() };
     }
 }
 
