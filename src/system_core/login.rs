@@ -13,7 +13,7 @@ use crate::system_core::deserializer::JsonStreamDeserializer;
 use crate::system_core::objects::ClientLoginCredentialsPacket;
 use crate::system_core::packet::{EventBackend, SystemMessage};
 use crate::system_core::types::LOGIN_EVENT;
-use crate::system_core::user::UserObject;
+use crate::system_core::objects::UserObject;
 
 /// Returns None if the client disconnected
 pub async fn client_login(stream: &mut TcpStream) -> Option<UserObject> {
