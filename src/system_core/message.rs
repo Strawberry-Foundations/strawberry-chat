@@ -10,7 +10,8 @@ pub enum MessageToClient {
     },
     SystemMessage {
         content: String,
-    }
+    },
+    Shutdown
 }
 
 pub enum MessageToServer {

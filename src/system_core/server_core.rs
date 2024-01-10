@@ -92,6 +92,7 @@ pub async fn core_thread() {
                 }
                 Event::Remove => {
                     CLIENTS.write().await.get_mut(i).unwrap().disconnect();
+
                 },
                 Event::RunCommand { name, args } => {
                     run_command(name, args, CLIENTS.write().await.get_mut(i).unwrap()).await;
@@ -126,6 +127,7 @@ impl Connection {
     }
 
     pub fn disconnect(&mut self) {
+        self.tx.send(MessageToClient::Shutdown).unwrap();
         self.state = State::Disconnected;
     }
 }

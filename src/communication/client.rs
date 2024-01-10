@@ -2,11 +2,13 @@
 //! This module handles incoming clients sent over from the connection thread
 //! - Handles all client-specific things (login, commands, broadcasting)
 
+use std::time::Duration;
 use owo_colors::OwoColorize;
 use tokio::io::{AsyncReadExt, AsyncWriteExt, ReadHalf, split, WriteHalf};
 use tokio::net::TcpStream;
 use tokio::sync::mpsc::{UnboundedReceiver, UnboundedSender};
 use tokio::{select, spawn};
+use tokio::time::sleep;
 
 use crate::constants::log_messages::{DISCONNECTED, LOGIN, LOGIN_ERROR, STC_ERROR};
 use crate::global::{CONFIG, LOGGER};
@@ -36,7 +38,8 @@ async fn client_handler_s2c(mut rx: UnboundedReceiver<MessageToClient>, mut w_st
                     .write(&mut w_stream)
                     .await
                     .unwrap();
-            }
+            },
+            MessageToClient::Shutdown => w_stream.shutdown().await.unwrap(),
         }
     }
 }
@@ -56,6 +59,7 @@ async fn client_handler_c2s(tx: UnboundedSender<MessageToServer>, mut r_stream: 
             let parts: Vec<String> = content[1..].split_ascii_whitespace().map(String::from).collect();
             if &parts[0] == "exit" {
                 tx.send(MessageToServer::RemoveMe).unwrap();
+                sleep(Duration::from_millis(120)).await; // Wait for stream to shut down
                 return;
             }
             tx.send(MessageToServer::RunCommand {
