@@ -9,7 +9,7 @@ use tokio::{select, spawn};
 
 use stblib::colors::{BOLD, C_RESET, CYAN, RED};
 
-use crate::constants::log_messages::{DISCONNECTED, LOGIN, LOGIN_ERROR, STC_ERROR};
+use crate::constants::log_messages::{DISCONNECTED, HANDLING_ADDR, LOGIN, LOGIN_ERROR, STC_ERROR};
 use crate::global::{CONFIG, LOGGER};
 use crate::system_core::log::log_parser;
 use crate::system_core::login;
@@ -52,7 +52,8 @@ async fn client_handler_c2s(tx: UnboundedSender<MessageToServer>, mut r_stream: 
 }
 
 pub async fn client_handler(mut client: TcpStream, rx: UnboundedReceiver<MessageToClient>, tx: UnboundedSender<MessageToServer>) {
-    println!("Handling {}", client.peer_addr().unwrap());
+    LOGGER.info(log_parser(HANDLING_ADDR, &[&client.peer_addr().unwrap()]));
+
     let client_addr = &client.peer_addr().unwrap().ip().clone().to_string();
 
     if CONFIG.security.banned_ips.contains(client_addr) {
