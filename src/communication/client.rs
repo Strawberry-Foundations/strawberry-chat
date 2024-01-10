@@ -42,11 +42,16 @@ async fn client_handler_c2s(tx: UnboundedSender<MessageToServer>, mut r_stream: 
         // TODO: Replace unwraps with logger errors + RemoveMe
 
         let n = r_stream.read(&mut buffer).await.unwrap();
+
         if n == 0 {
             tx.send(MessageToServer::RemoveMe).unwrap();
             return;
         }
+
         let content = String::from_utf8_lossy(&buffer[..n]).to_string();
+
+        if content.as_str() == "[#<keepalive.event.sent>]" { continue; }
+
         tx.send(MessageToServer::Message { content }).unwrap();
     }
 }
