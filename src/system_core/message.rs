@@ -1,6 +1,6 @@
 //! Contains messages sent internally
 
-use crate::system_core::user::UserObject;
+use crate::system_core::objects::UserObject;
 
 #[derive(Clone, Debug)]
 pub enum MessageToClient {
