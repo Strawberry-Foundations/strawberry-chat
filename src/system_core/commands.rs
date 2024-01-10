@@ -22,7 +22,7 @@ pub struct Command {
 }
 
 fn get_commands() -> Vec<Command> {
-    let cmds = vec![
+    let mut cmds = vec![
         hello_command()
     ];
 
@@ -51,9 +51,8 @@ async fn exec_command(name: String, args: Vec<String>, conn: &mut Connection) ->
         return Err(String::from("Command not found"))
     };
 
-    let user = match conn.get_user() {
-        Some(user) => user,
-        None => return Err(String::from("You need to authorize to run commands!"))
+    let Some(user) = conn.get_user() else {
+        return Err(String::from("You need to authorize to run commands!"))
     };
 
     (cmd.handler)(
