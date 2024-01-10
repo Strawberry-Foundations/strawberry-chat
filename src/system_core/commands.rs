@@ -10,8 +10,8 @@ pub type BoxFuture<T> = std::pin::Pin<Box<dyn std::future::Future<Output = T> + 
 
 pub struct Context {
     /// The user who executed the command
-    executor: UserObject,
-    args: Vec<String>,
+    pub executor: UserObject,
+    pub args: Vec<String>,
 }
 
 #[derive(Hash, PartialEq, Eq)]
