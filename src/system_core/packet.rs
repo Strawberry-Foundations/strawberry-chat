@@ -1,3 +1,4 @@
+#![allow(clippy::future_not_send)]
 use tokio::io::{AsyncWrite, AsyncWriteExt};
 
 use serde::{Deserialize, Serialize};
