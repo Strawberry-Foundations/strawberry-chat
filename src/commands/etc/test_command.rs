@@ -1,5 +1,5 @@
 use crate::system_core::commands;
-use crate::system_core::message::MessageToClient;
+// use crate::system_core::message::MessageToClient;
 
 pub fn example_command() -> commands::Command {
     fn logic(ctx: &commands::Context) -> Result<String, String> {
