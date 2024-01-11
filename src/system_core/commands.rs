@@ -1,6 +1,11 @@
+//! # Command System for Strawberry Chat (Rusty Edition)
+//!
 #![allow(clippy::unnecessary_wraps)]
 
+
+use tokio::sync::mpsc::UnboundedSender;
 use owo_colors::OwoColorize;
+
 use crate::system_core::message::MessageToClient;
 use crate::system_core::server_core::Connection;
 use crate::system_core::objects::UserObject;
@@ -8,18 +13,22 @@ use crate::system_core::objects::UserObject;
 // 'static borrow from https://github.com/serenity-rs/poise/blob/c5a4fc862e22166c8933e7e11727c577bb93067d/src/lib.rs#L439
 pub type BoxFuture<T> = std::pin::Pin<Box<dyn std::future::Future<Output = T> + Send>>;
 
-pub struct Context {
-    /// The user who executed the command
-    pub executor: UserObject,
-    pub args: Vec<String>,
-}
-
+// Main Struct for Command Builder
 #[derive(Hash, PartialEq, Eq)]
 pub struct Command {
     pub name: String,
     pub description: String,
     pub handler: fn(Context) -> BoxFuture<Result<String, String>>
 }
+
+
+pub struct Context {
+    /// The user who executed the command
+    pub executor: UserObject,
+    pub args: Vec<String>,
+    pub tx_channel: UnboundedSender<MessageToClient>
+}
+
 
 fn get_commands() -> Vec<Command> {
     let cmds = vec![
@@ -60,6 +69,8 @@ async fn exec_command(name: String, args: Vec<String>, conn: &Connection) -> Res
         Context {
             executor: user,
             args,
+            tx_channel: conn.tx.clone()
+
         }
     ).await
 }
