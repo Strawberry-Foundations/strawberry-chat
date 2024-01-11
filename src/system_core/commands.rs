@@ -1,5 +1,23 @@
 //! # Command System for Strawberry Chat (Rusty Edition)
+//! The Strawberry Chat (Rusty Edition) command system is complex and large.
+//! It includes a context-based parameter system. With this system, commands still have to be registered manually.
+//! A simple context-based command can look like this:
+//! ```
+//! fn hello_command() -> Command {
+//!     fn logic(_: Context) -> Result<Option<String>, String> {
+//!         Ok(Some("Hello, World!".to_string()))
+//!     }
 //!
+//!     Command {
+//!         name: "hello".to_string(),
+//!         description: "prints 'Hello, World'".to_string(),
+//!         handler: |ctx| Box::pin(async move {
+//!             logic(ctx)
+//!         }),
+//!     }
+//! }
+//! ```
+
 #![allow(clippy::unnecessary_wraps)]
 
 
