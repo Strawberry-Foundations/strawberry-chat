@@ -18,7 +18,7 @@ pub type BoxFuture<T> = std::pin::Pin<Box<dyn std::future::Future<Output = T> + 
 pub struct Command {
     pub name: String,
     pub description: String,
-    pub handler: fn(Context) -> BoxFuture<Result<String, String>>
+    pub handler: fn(Context) -> BoxFuture<Result<Option<String>, String>>
 }
 
 
@@ -40,14 +40,14 @@ fn get_commands() -> Vec<Command> {
 }
 
 pub async fn run_command(name: String, args: Vec<String>, conn: &Connection) {
-    let res = exec_command(name, args, conn).await;
+    let res = exec_command(name, args, conn).await; // exec_command returnt Result<Option<String>, String>
     match res {
-        Ok(text) => conn.tx.send(
+        Ok(Some(text)) => conn.tx.send(
             MessageToClient::SystemMessage {
                 content: text
             }
         ).unwrap(),
-
+        Ok(None) => {},
         Err(e) => conn.tx.send(
             MessageToClient::SystemMessage {
                 content: format!("Error running command: {e}").red().to_string()
@@ -56,7 +56,7 @@ pub async fn run_command(name: String, args: Vec<String>, conn: &Connection) {
     };
 }
 
-async fn exec_command(name: String, args: Vec<String>, conn: &Connection) -> Result<String, String> {
+async fn exec_command(name: String, args: Vec<String>, conn: &Connection) -> Result<Option<String>, String> {
     let Some(cmd) = get_commands().into_iter().find(|cmd| cmd.name == name) else {
         return Err(String::from("Command not found"))
     };
@@ -76,8 +76,8 @@ async fn exec_command(name: String, args: Vec<String>, conn: &Connection) -> Res
 }
 
 fn hello_command() -> Command {
-    fn logic(_: Context) -> Result<String, String> {
-        Ok("Hello, World!".to_string())
+    fn logic(_: Context) -> Result<Option<String>, String> {
+        Ok(Some("Hello, World!".to_string()))
     }
 
     Command {
