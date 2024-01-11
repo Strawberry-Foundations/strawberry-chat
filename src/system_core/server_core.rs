@@ -42,6 +42,9 @@ enum Event {
         author: UserObject,
         content: String,
     },
+    SystemMessage {
+        content: String,
+    },
     Remove,
     RunCommand {
         name: String,
@@ -58,13 +61,16 @@ async fn get_events() -> Vec<(Event, usize)> {
         if let Some(event) = match conn.rx.try_recv() {
             Ok(MessageToServer::Authorize { user }) => {
                 Some(Event::Authorize { user })
-            }
+            },
             Ok(MessageToServer::Message { content }) => {
                 conn.get_user().map(|author| Event::UserMessage { author, content })
-            }
+            },
+            Ok(MessageToServer::Broadcast { content }) => {
+                conn.get_user().map(|_| Event::SystemMessage { content })
+            },
             Ok(MessageToServer::RemoveMe) => {
                 Some(Event::Remove)
-            }
+            },
             Ok(MessageToServer::RunCommand { name, args }) => {
                 Some(Event::RunCommand { name, args })
             },
@@ -95,7 +101,7 @@ pub async fn core_thread() {
                 },
                 Event::UserMessage { author, content } => {
                     send_to_all(MessageToClient::UserMessage { author, content }, true).await;
-                }
+                },
                 Event::Remove => {
                     CLIENTS.write().await.get_mut(i).unwrap().disconnect();
 
@@ -109,6 +115,9 @@ pub async fn core_thread() {
                     }).unwrap();
 
                     CLIENTS.write().await.get_mut(i).unwrap().disconnect();
+                },
+                Event::SystemMessage { content } => {
+                    send_to_all(MessageToClient::SystemMessage { content }, true).await;
                 }
             }
         }
