@@ -1,5 +1,6 @@
 use std::env;
 use std::path::{Path, PathBuf};
+use std::string::ToString;
 
 use lazy_static::lazy_static;
 
@@ -8,7 +9,7 @@ use stblib::colors::{BOLD, C_RESET, GREEN, RED};
 use stblib::logging::formats::{LogFormat, LogFormatExt};
 
 use crate::system_core::config::GlobalConfig;
-
+use crate::communication::protocol::MessageVerification;
 
 pub const BASE_VERSION: &str = "1.11.0";
 pub const ADDITION_VER: &str = "a1";
@@ -71,4 +72,6 @@ lazy_static! {
         "{}_{UPDATE_CHANNEL}-{CODENAME_SHORT}-rst_stbm{STBM_VER}",
         DEFAULT_VERSION.clone()
     );
+
+    pub static ref MESSAGE_VERIFICATOR: MessageVerification = MessageVerification::new();
 }
