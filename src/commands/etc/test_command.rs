@@ -1,10 +1,11 @@
 use crate::system_core::commands;
-// use crate::system_core::message::MessageToClient;
+use crate::system_core::message::MessageToClient;
 
 pub fn example_command() -> commands::Command {
     fn logic(ctx: &commands::Context) -> Result<Option<String>, String> {
-        // ctx.tx_channel.send(MessageToClient::SystemMessage { content: "Hello".into() }).unwrap();
-        Ok(Some(format!("\n  Username: {}\n  Args: {:?}", ctx.executor.username, ctx.args)))
+        ctx.tx_channel.send(MessageToClient::SystemMessage { content: format!("Username: {}", ctx.executor.username) }).unwrap();
+        ctx.tx_channel.send(MessageToClient::SystemMessage { content: format!("Args: {:?}", ctx.args) }).unwrap();
+        Ok(None)
     }
 
     commands::Command {
