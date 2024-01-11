@@ -4,6 +4,7 @@
 
 use std::time::Duration;
 use owo_colors::OwoColorize;
+use stblib::colors::{BOLD, C_RESET, YELLOW};
 use tokio::io::{AsyncReadExt, AsyncWriteExt, ReadHalf, split, WriteHalf};
 use tokio::net::TcpStream;
 use tokio::sync::mpsc::{UnboundedReceiver, UnboundedSender};
@@ -67,6 +68,12 @@ async fn client_handler_c2s(tx: UnboundedSender<MessageToServer>, mut r_stream: 
                 args: parts[1..].to_vec(),
             }).unwrap();
             continue;
+        }
+
+        if MESSAGE_VERIFICATOR.blocked_words.blacklisted_words.contains(&content.as_str()) {
+            tx.send(MessageToServer::ClientDisconnect {
+                reason: format!("{YELLOW}{BOLD}Please be friendlier in the chat. Rejoin when you feel ready!{C_RESET}")
+            }).unwrap();
         }
 
         if !MESSAGE_VERIFICATOR.blocked_words.content_block.contains(&content.as_str()) { tx.send(MessageToServer::Message { content }).unwrap() };
