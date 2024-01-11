@@ -11,7 +11,7 @@ use tokio::{select, spawn};
 use tokio::time::sleep;
 
 use crate::constants::log_messages::{ADDRESS_LEFT, DISCONNECTED, LOGIN, LOGIN_ERROR, STC_ERROR};
-use crate::global::{CONFIG, LOGGER, MESSAGE_VERIFICATOR};
+use crate::global::{CONFIG, LOGGER};
 use crate::system_core::log::log_parser;
 use crate::system_core::login;
 use crate::system_core::message::{MessageToClient, MessageToServer};
@@ -69,7 +69,7 @@ async fn client_handler_c2s(tx: UnboundedSender<MessageToServer>, mut r_stream: 
             continue;
         }
 
-        if MESSAGE_VERIFICATOR.blocked_words.content_block.contains(&content.as_str()) { tx.send(MessageToServer::Message { content }).unwrap() };
+        if content != "[#<keepalive.event.sent>]" { tx.send(MessageToServer::Message { content }).unwrap() };
     }
 }
 
