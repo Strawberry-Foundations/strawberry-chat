@@ -36,23 +36,26 @@ pub async fn register_connection(
 #[derive(Debug)]
 enum Event {
     Authorize {
-        user: UserObject
+        user: UserObject,
     },
     UserMessage {
         author: UserObject,
-        content: String
+        content: String,
     },
     Remove,
     RunCommand {
         name: String,
         args: Vec<String>,
     },
+    ClientShutdownR {
+        reason: String,
+    }
 }
 
 async fn get_events() -> Vec<(Event, usize)> {
     let mut events = vec![];
     CLIENTS.write().await.iter_mut().enumerate().for_each(|(i, conn)| {
-        if let Some(ev) = match conn.rx.try_recv() {
+        if let Some(event) = match conn.rx.try_recv() {
             Ok(MessageToServer::Authorize { user }) => {
                 Some(Event::Authorize { user })
             }
@@ -64,10 +67,13 @@ async fn get_events() -> Vec<(Event, usize)> {
             }
             Ok(MessageToServer::RunCommand { name, args }) => {
                 Some(Event::RunCommand { name, args })
-            }
+            },
+            Ok(MessageToServer::ClientDisconnect { reason }) => {
+                Some(Event::ClientShutdownR { reason })
+            },
             _ => None
         } {
-            events.push((ev, i));
+            events.push((event, i));
         }
     });
     events
@@ -96,6 +102,13 @@ pub async fn core_thread() {
                 },
                 Event::RunCommand { name, args } => {
                     run_command(name, args, CLIENTS.write().await.get_mut(i).unwrap()).await;
+                },
+                Event::ClientShutdownR { reason } => {
+                    CLIENTS.write().await.get_mut(i).unwrap().tx.send(MessageToClient::SystemMessage {
+                        content: reason
+                    }).unwrap();
+
+                    CLIENTS.write().await.get_mut(i).unwrap().disconnect();
                 }
             }
         }
