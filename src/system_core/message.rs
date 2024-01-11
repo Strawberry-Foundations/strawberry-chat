@@ -21,6 +21,9 @@ pub enum MessageToServer {
     Message {
         content: String
     },
+    Broadcast {
+        content: String
+    },
     RunCommand {
         name: String,
         args: Vec<String>
