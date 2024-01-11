@@ -4,12 +4,14 @@
 
 use std::time::Duration;
 use owo_colors::OwoColorize;
-use stblib::colors::{BOLD, C_RESET, YELLOW};
+
 use tokio::io::{AsyncReadExt, AsyncWriteExt, ReadHalf, split, WriteHalf};
 use tokio::net::TcpStream;
 use tokio::sync::mpsc::{UnboundedReceiver, UnboundedSender};
 use tokio::{select, spawn};
 use tokio::time::sleep;
+
+use stblib::colors::{BOLD, C_RESET, GRAY, GREEN, YELLOW};
 
 use crate::constants::log_messages::{ADDRESS_LEFT, DISCONNECTED, LOGIN, LOGIN_ERROR, STC_ERROR};
 use crate::global::{CONFIG, LOGGER, MESSAGE_VERIFICATOR};
@@ -120,6 +122,10 @@ pub async fn client_handler(mut client: TcpStream, rx: UnboundedReceiver<Message
         .write(&mut client)
         .await
         .unwrap();
+
+    tx.send(MessageToServer::Broadcast {
+        content: format!("{GRAY}{BOLD}-->{C_RESET} {}{}{GREEN}{BOLD} has joined the chat room!{C_RESET}", user.role_color, user.username)
+    }).unwrap();
 
     let (r_client, w_client) = split(client);
     let s2c = spawn(client_handler_s2c(rx, w_client));
