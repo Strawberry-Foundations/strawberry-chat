@@ -1,7 +1,9 @@
 use crate::system_core::commands;
+use crate::system_core::message::MessageToClient;
 
 pub fn example_command() -> commands::Command {
     fn logic(ctx: &commands::Context) -> Result<String, String> {
+        // ctx.tx_channel.send(MessageToClient::SystemMessage { content: "Hello".into() }).unwrap();
         Ok(format!("\n  Username: {}\n  Args: {:?}", ctx.executor.username, ctx.args))
     }
 
