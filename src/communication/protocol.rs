@@ -19,7 +19,7 @@ impl MessageVerification {
     pub fn new() -> Self {
         Self {
             blocked_words: BlockedWords {
-                blacklisted_words: vec![],
+                blacklisted_words: vec!["gullideckel"],
                 content_block: vec!["[#<keepalive.event.sent>]"],
             }
         }
