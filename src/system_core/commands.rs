@@ -31,19 +31,32 @@ use crate::system_core::objects::UserObject;
 // 'static borrow from https://github.com/serenity-rs/poise/blob/c5a4fc862e22166c8933e7e11727c577bb93067d/src/lib.rs#L439
 pub type BoxFuture<T> = std::pin::Pin<Box<dyn std::future::Future<Output = T> + Send>>;
 
-// Main Struct for Command Builder
 #[derive(Hash, PartialEq, Eq)]
+/// # Command struct
+/// The command struct is the basic part for programming a command.
+/// It contains information such as the name, the description and the logic (the function) of the command.
 pub struct Command {
+    /// Name of command (execution name, e.g. test -> /test)
     pub name: String,
+
+    /// Description of command
     pub description: String,
+
+    /// Logic of command (function)
     pub handler: fn(Context) -> BoxFuture<Result<Option<String>, String>>
 }
 
-
+/// # Context struct
+/// The context struct contains all context-related information that the command requires for execution.
+/// This includes user information such as user name, badge, ... and the arguments that the user has specified.
 pub struct Context {
     /// The user who executed the command
     pub executor: UserObject,
+
+    /// Arguments that the executor passed
     pub args: Vec<String>,
+
+    /// Target channel of user
     pub tx_channel: UnboundedSender<MessageToClient>
 }
 
@@ -58,7 +71,7 @@ fn get_commands() -> Vec<Command> {
 }
 
 pub async fn run_command(name: String, args: Vec<String>, conn: &Connection) {
-    let res = exec_command(name, args, conn).await; // exec_command returnt Result<Option<String>, String>
+    let res = exec_command(name, args, conn).await;
     match res {
         Ok(Some(text)) => conn.tx.send(
             MessageToClient::SystemMessage {
