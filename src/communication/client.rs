@@ -69,7 +69,7 @@ async fn client_handler_c2s(tx: UnboundedSender<MessageToServer>, mut r_stream: 
             continue;
         }
 
-        if MESSAGE_VERIFICATOR.blocked_words.content_block.contains(&"[#<keepalive.event.sent>]") { tx.send(MessageToServer::Message { content }).unwrap() };
+        if MESSAGE_VERIFICATOR.blocked_words.content_block.contains(&content.as_str()) { tx.send(MessageToServer::Message { content }).unwrap() };
     }
 }
 
