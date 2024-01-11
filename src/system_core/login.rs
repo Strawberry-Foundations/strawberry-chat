@@ -9,7 +9,7 @@ use tokio::net::TcpStream;
 
 use serde_json::Value;
 
-use crate::system_core::deserializer::JsonStreamDeserializer;
+use crate::communication::protocol::JsonStreamDeserializer;
 use crate::system_core::objects::ClientLoginCredentialsPacket;
 use crate::system_core::packet::{EventBackend, SystemMessage};
 use crate::system_core::types::LOGIN_EVENT;
