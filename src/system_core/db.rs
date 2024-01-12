@@ -56,7 +56,7 @@ lazy_static! {
 }
 
 pub async fn add_user(name: String, password: String) -> Result</* User created? */ bool, sqlx::Error> {
-    if sqlx::query("SELECT * FROM stbchat_users WHERE name=$1")
+    if sqlx::query("SELECT * FROM users WHERE name=$1")
         .bind(&name)
         .fetch_optional(&DATABASE.clone())
         .await
@@ -65,7 +65,7 @@ pub async fn add_user(name: String, password: String) -> Result</* User created?
     {
         return Ok(false);
     };
-    sqlx::query("INSERT INTO stbchat_users (name, permission_level, password) VALUES ($1, 0, $2)")
+    sqlx::query("INSERT INTO users (name, permission_level, password) VALUES ($1, 0, $2)")
         .bind(&name)
         .bind(sha512_hash(password))
         .execute(&DATABASE.clone())
@@ -75,7 +75,7 @@ pub async fn add_user(name: String, password: String) -> Result</* User created?
 
 pub async fn check_login(name: String, password: String) -> Result<bool, sqlx::Error> {
     let Some(user) =
-        sqlx::query_as::<_, DatabaseRecord>("SELECT * FROM stbchat_users WHERE name=$1")
+        sqlx::query_as::<_, DatabaseRecord>("SELECT * FROM users WHERE name=$1")
             .bind(&name)
             .fetch_optional(&DATABASE.clone())
             .await?
