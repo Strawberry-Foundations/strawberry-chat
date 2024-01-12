@@ -14,10 +14,10 @@ use crate::communication::protocol::JsonStreamDeserializer;
 use crate::system_core::objects::ClientLoginCredentialsPacket;
 use crate::system_core::packet::{EventBackend, SystemMessage};
 use crate::system_core::types::LOGIN_EVENT;
-use crate::system_core::objects::UserObject;
+use crate::system_core::objects::User;
 
 /// Returns None if the client disconnected
-pub async fn client_login(stream: &mut TcpStream) -> Option<UserObject> {
+pub async fn client_login(stream: &mut TcpStream) -> Option<User> {
     let mut login_packet = EventBackend::new(&LOGIN_EVENT);
 
     // TODO: replace unwraps with logger errors
@@ -59,7 +59,7 @@ pub async fn client_login(stream: &mut TcpStream) -> Option<UserObject> {
         }
     }
 
-    Some(UserObject {
+    Some(User {
         username: client_credentials.username.clone(),
         nickname: client_credentials.username,
         badge: '💀',

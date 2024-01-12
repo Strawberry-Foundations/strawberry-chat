@@ -1,7 +1,7 @@
 //! This handles communication between clients and the server
 
 use crate::system_core::message::{MessageToClient, MessageToServer};
-use crate::system_core::objects::UserObject;
+use crate::system_core::objects::User;
 use lazy_static::lazy_static;
 use std::net::SocketAddr;
 use std::time::Duration;
@@ -38,10 +38,10 @@ pub async fn register_connection(
 #[derive(Debug)]
 enum Event {
     Authorize {
-        user: UserObject,
+        user: User,
     },
     UserMessage {
-        author: UserObject,
+        author: User,
         content: String,
     },
     SystemMessage {
@@ -134,7 +134,7 @@ pub struct Connection {
 }
 
 impl Connection {
-    pub fn auth(&mut self, user: &UserObject) {
+    pub fn auth(&mut self, user: &User) {
         self.state = State::Authorized(user.clone());
     }
 
@@ -142,7 +142,7 @@ impl Connection {
         matches!(self.state, State::Authorized(_))
     }
 
-    pub fn get_user(&self) -> Option<UserObject> {
+    pub fn get_user(&self) -> Option<User> {
         match &self.state {
             State::Authorized(user) => Some(user.clone()),
             _ => None,
@@ -158,7 +158,7 @@ impl Connection {
 #[derive(PartialEq)]
 pub enum State {
     Unauthorized,
-    Authorized(UserObject),
+    Authorized(User),
     Disconnected,
 }
 

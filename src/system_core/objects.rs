@@ -23,7 +23,7 @@ impl ClientLoginCredentialsPacket {
 
 // General User Object for all types of user-specified code
 #[derive(Clone, Default, Debug, PartialEq)]
-pub struct UserObject {
+pub struct User {
     pub username: String,
     pub nickname: String,
     pub badge: char,

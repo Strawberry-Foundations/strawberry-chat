@@ -1,11 +1,11 @@
 //! Contains messages sent internally
 
-use crate::system_core::objects::UserObject;
+use crate::system_core::objects::User;
 
 #[derive(Clone, Debug)]
 pub enum MessageToClient {
     UserMessage {
-        author: UserObject,
+        author: User,
         content: String,
     },
     SystemMessage {
@@ -16,7 +16,7 @@ pub enum MessageToClient {
 
 pub enum MessageToServer {
     Authorize {
-        user: UserObject
+        user: User
     },
     Message {
         content: String

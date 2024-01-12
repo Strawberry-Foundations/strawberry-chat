@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::system_core::objects::NotificationObject;
 use crate::system_core::types::{STBCHAT_BACKEND, STBCHAT_EVENT, STBCHAT_NOTIFICATION, SYSTEM_MESSAGE, USER_MESSAGE};
-use crate::system_core::objects::UserObject;
+use crate::system_core::objects::User;
 
 /// # Packet Handling
 /// - Struct `Packet`: Packet Object to create multiple packets at once
@@ -92,7 +92,7 @@ impl SystemMessage {
 /// # `UserMessage` Implementation
 /// - Implements the data type `user_message`
 impl UserMessage {
-    pub fn new<M: ToString>(author: UserObject, message: &M) -> Self {
+    pub fn new<M: ToString>(author: User, message: &M) -> Self {
         Self {
             message_type: USER_MESSAGE.to_string(),
             username: author.username,
