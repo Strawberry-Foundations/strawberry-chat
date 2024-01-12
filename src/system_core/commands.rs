@@ -21,7 +21,7 @@
 #![allow(clippy::unnecessary_wraps)]
 
 
-use tokio::sync::mpsc::UnboundedSender;
+use tokio::sync::mpsc::{Sender, UnboundedSender};
 use owo_colors::OwoColorize;
 
 use crate::system_core::message::MessageToClient;
@@ -57,7 +57,7 @@ pub struct Context {
     pub args: Vec<String>,
 
     /// Target channel of user
-    pub tx_channel: UnboundedSender<MessageToClient>
+    pub tx_channel: Sender<MessageToClient>
 }
 
 
@@ -77,13 +77,13 @@ pub async fn run_command(name: String, args: Vec<String>, conn: &Connection) {
             MessageToClient::SystemMessage {
                 content: text
             }
-        ).unwrap(),
+        ).await.unwrap(),
         Ok(None) => {},
         Err(e) => conn.tx.send(
             MessageToClient::SystemMessage {
                 content: format!("Error running command: {e}").red().to_string()
             }
-        ).unwrap()
+        ).await.unwrap()
     };
 }
 

@@ -7,7 +7,7 @@ use owo_colors::OwoColorize;
 
 use tokio::io::{AsyncReadExt, AsyncWriteExt, ReadHalf, split, WriteHalf};
 use tokio::net::TcpStream;
-use tokio::sync::mpsc::{UnboundedReceiver, UnboundedSender};
+use tokio::sync::mpsc::{Receiver, Sender};
 use tokio::{select, spawn};
 use tokio::time::sleep;
 
@@ -22,7 +22,7 @@ use crate::system_core::packet::{SystemMessage as SystemMessagePacket, SystemMes
 use crate::system_core::server_core::get_users_len;
 
 // This function should NOT panic!!
-async fn client_handler_s2c(mut rx: UnboundedReceiver<MessageToClient>, mut w_stream: WriteHalf<TcpStream>) {
+async fn client_handler_s2c(mut rx: Receiver<MessageToClient>, mut w_stream: WriteHalf<TcpStream>) {
     loop {
         let Some(msg) = rx.recv().await else {
             return;
@@ -47,42 +47,42 @@ async fn client_handler_s2c(mut rx: UnboundedReceiver<MessageToClient>, mut w_st
     }
 }
 
-async fn client_handler_c2s(tx: UnboundedSender<MessageToServer>, mut r_stream: ReadHalf<TcpStream>) {
+async fn client_handler_c2s(tx: Sender<MessageToServer>, mut r_stream: ReadHalf<TcpStream>) {
     let mut buffer = [0u8; 4096];
     loop {
         // TODO: Replace unwraps with logger errors + RemoveMe
 
         let n = r_stream.read(&mut buffer).await.unwrap();
         if n == 0 {
-            tx.send(MessageToServer::RemoveMe).unwrap();
+            tx.send(MessageToServer::RemoveMe).await.unwrap();
             return;
         }
         let content = String::from_utf8_lossy(&buffer[..n]).trim().to_string();
         if content.starts_with('/') && content.len() > 1 {
             let parts: Vec<String> = content[1..].split_ascii_whitespace().map(String::from).collect();
             if &parts[0] == "exit" {
-                tx.send(MessageToServer::RemoveMe).unwrap();
+                tx.send(MessageToServer::RemoveMe).await.unwrap();
                 sleep(Duration::from_millis(120)).await; // Wait for stream to shut down
                 return;
             }
             tx.send(MessageToServer::RunCommand {
                 name: parts[0].to_string(),
                 args: parts[1..].to_vec(),
-            }).unwrap();
+            }).await.unwrap();
             continue;
         }
 
         if MESSAGE_VERIFICATOR.blocked_words.blacklisted_words.contains(&content.as_str()) {
             tx.send(MessageToServer::ClientDisconnect {
                 reason: format!("{YELLOW}{BOLD}Please be friendlier in the chat. Rejoin when you feel ready!{C_RESET}")
-            }).unwrap();
+            }).await.unwrap();
         }
 
-        if !MESSAGE_VERIFICATOR.blocked_words.content_block.contains(&content.as_str()) { tx.send(MessageToServer::Message { content }).unwrap() };
+        if !MESSAGE_VERIFICATOR.blocked_words.content_block.contains(&content.as_str()) { tx.send(MessageToServer::Message { content }).await.unwrap() };
     }
 }
 
-pub async fn client_handler(mut client: TcpStream, rx: UnboundedReceiver<MessageToClient>, tx: UnboundedSender<MessageToServer>) {
+pub async fn client_handler(mut client: TcpStream, rx: Receiver<MessageToClient>, tx: Sender<MessageToServer>) {
     let client_addr = &client.peer_addr().unwrap().ip().clone().to_string();
 
     if CONFIG.security.banned_ips.contains(client_addr) {
@@ -93,7 +93,7 @@ pub async fn client_handler(mut client: TcpStream, rx: UnboundedReceiver<Message
     }
 
     let Some(user) = login::client_login(&mut client).await else {
-        tx.send(MessageToServer::RemoveMe).unwrap();
+        tx.send(MessageToServer::RemoveMe).await.unwrap();
         return;
     };
 
@@ -104,7 +104,7 @@ pub async fn client_handler(mut client: TcpStream, rx: UnboundedReceiver<Message
         return
     }
 
-    tx.send(MessageToServer::Authorize { user: user.clone() }).unwrap();
+    tx.send(MessageToServer::Authorize { user: user.clone() }).await.unwrap();
     sleep(Duration::from_millis(110)).await;
 
     LOGGER.info(log_parser(LOGIN, &[&user.username, &client_addr]));
@@ -125,7 +125,7 @@ pub async fn client_handler(mut client: TcpStream, rx: UnboundedReceiver<Message
 
     tx.send(MessageToServer::Broadcast {
         content: format!("{GRAY}{BOLD}-->{C_RESET} {}{}{GREEN}{BOLD} has joined the chat room!{C_RESET}", user.role_color, user.username)
-    }).unwrap();
+    }).await.unwrap();
 
     let (r_client, w_client) = split(client);
     let s2c = spawn(client_handler_s2c(rx, w_client));

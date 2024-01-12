@@ -5,10 +5,12 @@ use crate::system_core::objects::UserObject;
 use lazy_static::lazy_static;
 use std::net::SocketAddr;
 use std::time::Duration;
-use tokio::sync::mpsc::{unbounded_channel, UnboundedReceiver, UnboundedSender};
+use tokio::sync::mpsc::{channel, Receiver, Sender};
 use tokio::sync::RwLock;
 use tokio::time::sleep;
 use crate::system_core::commands::run_command;
+
+const CHANNEL_BUFFER: usize = 10;
 
 pub async fn get_users_len() -> usize {
     CLIENTS.read().await.iter().filter(|c| c.is_auth()).count()
@@ -17,11 +19,11 @@ pub async fn get_users_len() -> usize {
 pub async fn register_connection(
     peer: SocketAddr,
 ) -> (
-    UnboundedSender<MessageToServer>,
-    UnboundedReceiver<MessageToClient>,
+    Sender<MessageToServer>,
+    Receiver<MessageToClient>,
 ) {
-    let (tc_tx, tc_rx) = unbounded_channel::<MessageToClient>();
-    let (ts_tx, ts_rx) = unbounded_channel::<MessageToServer>();
+    let (tc_tx, tc_rx) = channel::<MessageToClient>(CHANNEL_BUFFER);
+    let (ts_tx, ts_rx) = channel::<MessageToServer>(CHANNEL_BUFFER);
     CLIENTS.write().await.push(
         Connection {
             state: State::Unauthorized,
@@ -86,9 +88,9 @@ async fn get_events() -> Vec<(Event, usize)> {
 }
 
 async fn send_to_all(what: MessageToClient, authed_only: bool) {
-    CLIENTS.write().await.iter_mut().filter(|conn| !authed_only || conn.is_auth()).for_each(|conn| {
-        conn.tx.send(what.clone()).unwrap();
-    });
+    for conn in CLIENTS.write().await.iter_mut().filter(|conn| !authed_only || conn.is_auth()) {
+        conn.tx.send(what.clone()).await.unwrap();
+    }
 }
 
 pub async fn core_thread() {
@@ -103,7 +105,7 @@ pub async fn core_thread() {
                     send_to_all(MessageToClient::UserMessage { author, content }, true).await;
                 },
                 Event::Remove => {
-                    CLIENTS.write().await.get_mut(i).unwrap().disconnect();
+                    CLIENTS.write().await.get_mut(i).unwrap().disconnect().await;
 
                 },
                 Event::RunCommand { name, args } => {
@@ -112,9 +114,9 @@ pub async fn core_thread() {
                 Event::ClientShutdownR { reason } => {
                     CLIENTS.write().await.get_mut(i).unwrap().tx.send(MessageToClient::SystemMessage {
                         content: reason
-                    }).unwrap();
+                    }).await.unwrap();
 
-                    CLIENTS.write().await.get_mut(i).unwrap().disconnect();
+                    CLIENTS.write().await.get_mut(i).unwrap().disconnect().await;
                 },
                 Event::SystemMessage { content } => {
                     send_to_all(MessageToClient::SystemMessage { content }, true).await;
@@ -127,8 +129,8 @@ pub async fn core_thread() {
 
 pub struct Connection {
     pub state: State,
-    pub tx: UnboundedSender<MessageToClient>,
-    pub rx: UnboundedReceiver<MessageToServer>,
+    pub tx: Sender<MessageToClient>,
+    pub rx: Receiver<MessageToServer>,
     pub peer_addr: SocketAddr,
 }
 
@@ -148,8 +150,8 @@ impl Connection {
         }
     }
 
-    pub fn disconnect(&mut self) {
-        self.tx.send(MessageToClient::Shutdown).unwrap();
+    pub async fn disconnect(&mut self) {
+        self.tx.send(MessageToClient::Shutdown).await.unwrap();
         self.state = State::Disconnected;
     }
 }
