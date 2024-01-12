@@ -1,4 +1,3 @@
-#![feature(thread_id_value)]
 #![warn(clippy::all, clippy::nursery, clippy::pedantic)]
 #![allow(clippy::module_name_repetitions, clippy::should_implement_trait, clippy::struct_excessive_bools, dead_code, unused_doc_comments, clippy::missing_const_for_fn)]
 
