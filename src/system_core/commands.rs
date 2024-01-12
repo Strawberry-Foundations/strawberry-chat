@@ -21,7 +21,7 @@
 #![allow(clippy::unnecessary_wraps)]
 
 
-use tokio::sync::mpsc::{Sender, UnboundedSender};
+use tokio::sync::mpsc::Sender;
 use owo_colors::OwoColorize;
 
 use crate::system_core::message::MessageToClient;
