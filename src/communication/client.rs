@@ -2,6 +2,7 @@
 //! This module handles incoming clients sent over from the connection thread
 //! - Handles all client-specific things (login, commands, broadcasting)
 
+use std::net::IpAddr;
 use std::time::Duration;
 use owo_colors::OwoColorize;
 
@@ -11,9 +12,10 @@ use tokio::sync::mpsc::{Receiver, Sender};
 use tokio::{select, spawn};
 use tokio::time::sleep;
 
-use stblib::colors::{BOLD, C_RESET, GRAY, GREEN, YELLOW};
+use stblib::colors::{BOLD, C_RESET, GRAY, GREEN};
+use crate::communication::protocol::MessageAction;
 
-use crate::constants::log_messages::{ADDRESS_LEFT, DISCONNECTED, LOGIN, LOGIN_ERROR, STC_ERROR};
+use crate::constants::log_messages::{ADDRESS_LEFT, DISCONNECTED, LOGIN, LOGIN_ERROR, S2C_ERROR};
 use crate::global::{CONFIG, LOGGER, MESSAGE_VERIFICATOR};
 use crate::system_core::log::log_parser;
 use crate::system_core::login;
@@ -21,21 +23,23 @@ use crate::system_core::message::{MessageToClient, MessageToServer};
 use crate::system_core::packet::{SystemMessage as SystemMessagePacket, SystemMessage, UserMessage as UserMessagePacket};
 use crate::system_core::server_core::get_users_len;
 
-// This function should NOT panic!!
-async fn client_handler_s2c(mut rx: Receiver<MessageToClient>, mut w_stream: WriteHalf<TcpStream>) {
+async fn client_handler_s2c(mut rx: Receiver<MessageToClient>, mut w_stream: WriteHalf<TcpStream>, peer_addr: IpAddr) {
     loop {
         let Some(msg) = rx.recv().await else {
+            LOGGER.warning(format!("[S -> {peer_addr}] Channel was closed, closing"));
             return;
         };
         match msg {
             MessageToClient::UserMessage { author, content } => {
                 if let Err(e) = UserMessagePacket::new(author.clone(), &content).write(&mut w_stream).await {
-                    LOGGER.error(format!("Failed to send a packet: {e}"));
+                    LOGGER.error(format!("[S -> {peer_addr}] Failed to send a packet: {e}"));
+                    return;
                 }
             },
             MessageToClient::SystemMessage { content } => {
                 if let Err(e) = SystemMessagePacket::new(&content).write(&mut w_stream).await {
-                    LOGGER.error(format!("Failed to send a packet: {e}"));
+                    LOGGER.error(format!("[S -> {peer_addr}] Failed to send a packet: {e}"));
+                    return;
                 }
             },
             MessageToClient::Shutdown => { let _ = w_stream.shutdown().await; },
@@ -43,14 +47,14 @@ async fn client_handler_s2c(mut rx: Receiver<MessageToClient>, mut w_stream: Wri
     }
 }
 
-async fn client_handler_c2s(tx: Sender<MessageToServer>, mut r_stream: ReadHalf<TcpStream>) {
+async fn client_handler_c2s(tx: Sender<MessageToServer>, mut r_stream: ReadHalf<TcpStream>, peer_addr: IpAddr) {
     let mut buffer = [0u8; 4096];
     loop {
         // TODO: Replace unwraps with logger errors + RemoveMe
 
         let Ok(n) = r_stream.read(&mut buffer).await else { return };
         if n == 0 {
-            tx.send(MessageToServer::RemoveMe).await.unwrap();
+            let _ = tx.send(MessageToServer::RemoveMe).await;
             return;
         }
         let content = String::from_utf8_lossy(&buffer[..n]).trim().to_string();
@@ -58,7 +62,7 @@ async fn client_handler_c2s(tx: Sender<MessageToServer>, mut r_stream: ReadHalf<
             let parts: Vec<String> = content[1..].split_ascii_whitespace().map(String::from).collect();
             if &parts[0] == "exit" {
                 tx.send(MessageToServer::RemoveMe).await.unwrap();
-                sleep(Duration::from_millis(120)).await; // Wait for stream to shut down
+                LOGGER.info(format!("[{peer_addr} -> S] Client exited using /exit"));
                 return;
             }
             tx.send(MessageToServer::RunCommand {
@@ -67,43 +71,49 @@ async fn client_handler_c2s(tx: Sender<MessageToServer>, mut r_stream: ReadHalf<
             }).await.unwrap();
             continue;
         }
+        let action = MESSAGE_VERIFICATOR.check(&content);
 
-        if MESSAGE_VERIFICATOR.blocked_words.blacklisted_words.contains(&content.as_str()) {
-            tx.send(MessageToServer::ClientDisconnect {
-                reason: format!("{YELLOW}{BOLD}Please be friendlier in the chat. Rejoin when you feel ready!{C_RESET}")
-            }).await.unwrap();
+        match action {
+            MessageAction::Kick => {
+                tx.send(MessageToServer::ClientDisconnect {
+                    reason: "Please be friendlier in the chat. Rejoin when you feel ready!".yellow().bold().to_string()
+                }).await.unwrap();
+                LOGGER.info(format!("[{peer_addr} -> S] Client was disconnected. Reason: Used blacklisted word"));
+            },
+            MessageAction::Hide => {},
+            MessageAction::Allow => tx.send(MessageToServer::Message { content }).await.unwrap(),
         }
-
-        if !MESSAGE_VERIFICATOR.blocked_words.content_block.contains(&content.as_str()) { tx.send(MessageToServer::Message { content }).await.unwrap() };
     }
 }
 
 pub async fn client_handler(mut client: TcpStream, rx: Receiver<MessageToClient>, tx: Sender<MessageToServer>) {
-    let client_addr = &client.peer_addr().unwrap().ip().clone().to_string();
+    let peer_addr = client.peer_addr().unwrap().ip();
 
-    if CONFIG.security.banned_ips.contains(client_addr) {
+    if CONFIG.security.banned_ips.contains(&peer_addr.to_string()) {
+        LOGGER.info(format!("[{peer_addr}] Client was disconnection. Reason: IP banned"));
         client.write_all("Sorry, you're not allowed to connect to this server.".red().bold().to_string().as_bytes()).await.expect("");
-        client.shutdown().await.unwrap_or_else(|_| LOGGER.error(STC_ERROR));
-        LOGGER.info(log_parser(DISCONNECTED, &[&client_addr]));
+        client.shutdown().await.unwrap_or_else(|_| LOGGER.error(S2C_ERROR));
+        LOGGER.info(log_parser(DISCONNECTED, &[&peer_addr]));
         return
     }
 
     let Some(user) = login::client_login(&mut client).await else {
         tx.send(MessageToServer::RemoveMe).await.unwrap();
+        LOGGER.warning(format!("[{peer_addr}] Client connection during login"));
         return;
     };
 
 
     if user.username.is_empty() {
-        LOGGER.error(log_parser(LOGIN_ERROR, &[&client_addr]));
-        client.shutdown().await.unwrap_or_else(|_| LOGGER.error(STC_ERROR));
+        LOGGER.error(log_parser(LOGIN_ERROR, &[&peer_addr]));
+        client.shutdown().await.unwrap_or_else(|_| LOGGER.error(S2C_ERROR));
         return
     }
 
     tx.send(MessageToServer::Authorize { user: user.clone() }).await.unwrap();
     sleep(Duration::from_millis(110)).await;
 
-    LOGGER.info(log_parser(LOGIN, &[&user.username, &client_addr]));
+    LOGGER.info(log_parser(LOGIN, &[&user.username, &peer_addr]));
     SystemMessage::new(&format!("Welcome back {}! Nice to see you!", user.username).bold().cyan())
         .write(&mut client)
         .await
@@ -124,10 +134,10 @@ pub async fn client_handler(mut client: TcpStream, rx: Receiver<MessageToClient>
     }).await.unwrap();
 
     let (r_client, w_client) = split(client);
-    let s2c = spawn(client_handler_s2c(rx, w_client));
-    let c2s = spawn(client_handler_c2s(tx, r_client));
+    let s2c = spawn(client_handler_s2c(rx, w_client, peer_addr));
+    let c2s = spawn(client_handler_c2s(tx, r_client, peer_addr));
     select! {
-        _ = s2c => LOGGER.error(log_parser(STC_ERROR, &[&client_addr])),
-        _ = c2s => LOGGER.info(log_parser(ADDRESS_LEFT, &[&client_addr])),
+        _ = c2s => LOGGER.info(log_parser(ADDRESS_LEFT, &[&peer_addr])),
+        _ = s2c => LOGGER.info(log_parser(ADDRESS_LEFT, &[&peer_addr])),
     }
 }

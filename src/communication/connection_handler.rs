@@ -17,7 +17,7 @@ use stblib::utilities::unix_time;
 use crate::communication::client::client_handler;
 use crate::global::{CONFIG, LOGGER};
 use crate::system_core::log::log_parser;
-use crate::constants::log_messages::{CONNECTED, CONNECTED_RLM, CONNECTION_ERROR, RATELIMIT_REMOVED, REACHED_CON_LIMIT, STC_ERROR};
+use crate::constants::log_messages::{CONNECTED, CONNECTED_RLM, CONNECTION_ERROR, RATELIMIT_REMOVED, REACHED_CON_LIMIT, S2C_ERROR};
 use crate::system_core::server_core::register_connection;
 
 pub async fn connection_handler(socket: TcpListener) {
@@ -73,7 +73,7 @@ pub async fn connection_handler(socket: TcpListener) {
 
                 client.write_all(
                     format!("{RED}{BOLD}You have been ratelimited due to spam activity. Please try again later{C_RESET}").as_bytes()
-                ).await.unwrap_or_else(|_| LOGGER.warning(STC_ERROR));
+                ).await.unwrap_or_else(|_| LOGGER.warning(S2C_ERROR));
 
                 allow_connection = false;
             }
@@ -82,6 +82,6 @@ pub async fn connection_handler(socket: TcpListener) {
         if allow_connection {
             let (tx, rx) = register_connection(client.peer_addr().unwrap()).await;
             spawn(client_handler(client, rx, tx));
-        } else { client.shutdown().await.unwrap_or_else(|_| LOGGER.error(STC_ERROR)) }
+        } else { client.shutdown().await.unwrap_or_else(|_| LOGGER.error(S2C_ERROR)) }
     }
 }

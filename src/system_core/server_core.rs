@@ -4,10 +4,8 @@ use crate::system_core::message::{MessageToClient, MessageToServer};
 use crate::system_core::objects::UserObject;
 use lazy_static::lazy_static;
 use std::net::SocketAddr;
-use std::time::Duration;
 use tokio::sync::mpsc::{channel, Receiver, Sender};
 use tokio::sync::RwLock;
-use tokio::time::sleep;
 use crate::system_core::commands::run_command;
 
 const CHANNEL_BUFFER: usize = 10;
@@ -89,7 +87,7 @@ async fn get_events() -> Vec<(Event, usize)> {
 
 async fn send_to_all(what: MessageToClient, authed_only: bool) {
     for conn in CLIENTS.write().await.iter_mut().filter(|conn| !authed_only || conn.is_auth()) {
-        conn.tx.send(what.clone()).await.unwrap();
+        let _ = conn.tx.send(what.clone()).await;
     }
 }
 
@@ -106,7 +104,6 @@ pub async fn core_thread() {
                 },
                 Event::Remove => {
                     CLIENTS.write().await.get_mut(i).unwrap().disconnect().await;
-
                 },
                 Event::RunCommand { name, args } => {
                     run_command(name, args, CLIENTS.write().await.get_mut(i).unwrap()).await;
@@ -115,7 +112,6 @@ pub async fn core_thread() {
                     CLIENTS.write().await.get_mut(i).unwrap().tx.send(MessageToClient::SystemMessage {
                         content: reason
                     }).await.unwrap();
-
                     CLIENTS.write().await.get_mut(i).unwrap().disconnect().await;
                 },
                 Event::SystemMessage { content } => {
@@ -123,7 +119,7 @@ pub async fn core_thread() {
                 }
             }
         }
-        sleep(Duration::from_millis(50)).await;
+        CLIENTS.write().await.retain(|c| c.state != State::Disconnected);
     }
 }
 
@@ -156,6 +152,7 @@ impl Connection {
     }
 }
 
+#[derive(PartialEq)]
 pub enum State {
     Unauthorized,
     Authorized(UserObject),
