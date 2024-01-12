@@ -1,8 +1,9 @@
 use futures::executor::block_on;
 use lazy_static::lazy_static;
 use sha2::{Digest, Sha512};
-use sqlx::postgres::PgPoolOptions;
-use sqlx::{Executor, FromRow, Pool, Postgres};
+use sqlx::mysql::MySqlPool;
+use sqlx::{Executor, FromRow, Pool, MySql};
+use crate::global::CONFIG;
 
 fn sha512_hash(text: String) -> String {
     let hash = Sha512::digest(text.as_bytes());
@@ -23,23 +24,38 @@ pub struct DatabaseRecord {
 }
 
 lazy_static! {
-    static ref DATABASE: Pool<Postgres> = block_on(async {
-        let db_url = env!("DB_URL");
-        let db = PgPoolOptions::new()
-            .connect(db_url)
-            .await
-            .expect("Failed to connect to database");
-        db.execute("CREATE TABLE IF NOT EXISTS stbchat_users (name text, nick text, permission_level integer, password text);")
-            .await
-            .expect("Failed to execute query");
+    static ref DATABASE: Pool<MySql> = block_on(async {
+        let db_url = format!(
+            "mysql://{}:{}@{}/{}",
+            CONFIG.database.user, CONFIG.database.password, CONFIG.database.host, CONFIG.database.database_name
+        );
+
+        let db = MySqlPool::connect(db_url.as_str()).await.expect("Failed to connect to database");
+
+        db.execute("CREATE TABLE users (
+        user_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+        username TEXT NOT NULL, password TEXT NOT NULL,
+        nickname TEXT DEFAULT '',
+        description TEXT DEFAULT '',
+        badge TEXT DEFAULT '',
+        badges TEXT DEFAULT '',
+        avatar_url TEXT NOT NULL DEFAULT '',
+        role TEXT NOT NULL, role_color TEXT NOT NULL,
+        enable_blacklisted_words TEXT NOT NULL,
+        account_enabled TEXT NOT NULL,
+        enable_dms TEXT NOT NULL,
+        muted TEXT NOT NULL,
+        strawberry_id TEXT DEFAULT '',
+        discord_name TEXT DEFAULT '',
+        msg_count INT NOT NULL,
+        creation_date INT NOT NULL,
+	    blocked_users TEXT DEFAULT '');").await.expect("Failed to execute query");
+
         db
     });
 }
 
-pub async fn add_user(
-    name: String,
-    password: String,
-) -> Result</* User created? */ bool, sqlx::Error> {
+pub async fn add_user(name: String, password: String) -> Result</* User created? */ bool, sqlx::Error> {
     if sqlx::query("SELECT * FROM stbchat_users WHERE name=$1")
         .bind(&name)
         .fetch_optional(&DATABASE.clone())

@@ -9,7 +9,6 @@ use stblib::colors::{BOLD, C_RESET, CYAN, ITALIC, MAGENTA, RESET};
 
 use crate::communication::connection_handler::connection_handler;
 use crate::global::{CHAT_NAME, CODENAME, CONFIG, DEFAULT_VERSION, RUNTIME_LOGGER, SERVER_EDITION};
-use crate::system_core::db::{add_user, check_login};
 use crate::system_core::server_core::core_thread;
 use crate::utilities::runtime_all_addresses;
 
