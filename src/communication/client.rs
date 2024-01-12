@@ -28,21 +28,17 @@ async fn client_handler_s2c(mut rx: Receiver<MessageToClient>, mut w_stream: Wri
             return;
         };
         match msg {
-            // TODO: Replace unwraps with LoggerErrors
-
             MessageToClient::UserMessage { author, content } => {
-                UserMessagePacket::new(author.clone(), &content)
-                    .write(&mut w_stream)
-                    .await
-                    .unwrap();
+                if let Err(e) = UserMessagePacket::new(author.clone(), &content).write(&mut w_stream).await {
+                    LOGGER.error(format!("Failed to send a packet: {e}"));
+                }
             },
             MessageToClient::SystemMessage { content } => {
-                SystemMessagePacket::new(&content)
-                    .write(&mut w_stream)
-                    .await
-                    .unwrap();
+                if let Err(e) = SystemMessagePacket::new(&content).write(&mut w_stream).await {
+                    LOGGER.error(format!("Failed to send a packet: {e}"));
+                }
             },
-            MessageToClient::Shutdown => w_stream.shutdown().await.unwrap(),
+            MessageToClient::Shutdown => { let _ = w_stream.shutdown().await; },
         }
     }
 }
@@ -52,7 +48,7 @@ async fn client_handler_c2s(tx: Sender<MessageToServer>, mut r_stream: ReadHalf<
     loop {
         // TODO: Replace unwraps with logger errors + RemoveMe
 
-        let n = r_stream.read(&mut buffer).await.unwrap();
+        let Ok(n) = r_stream.read(&mut buffer).await else { return };
         if n == 0 {
             tx.send(MessageToServer::RemoveMe).await.unwrap();
             return;
