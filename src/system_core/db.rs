@@ -24,7 +24,7 @@ pub struct DatabaseRecord {
 }
 
 lazy_static! {
-    static ref DATABASE: Pool<MySql> = block_on(async {
+    pub static ref DATABASE: Pool<MySql> = block_on(async {
         let db_url = format!(
             "mysql://{}:{}@{}/{}",
             CONFIG.database.user, CONFIG.database.password, CONFIG.database.host, CONFIG.database.database_name
