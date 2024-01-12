@@ -4,8 +4,10 @@ use crate::system_core::message::{MessageToClient, MessageToServer};
 use crate::system_core::objects::UserObject;
 use lazy_static::lazy_static;
 use std::net::SocketAddr;
+use std::time::Duration;
 use tokio::sync::mpsc::{channel, Receiver, Sender};
 use tokio::sync::RwLock;
+use tokio::time::sleep;
 use crate::system_core::commands::run_command;
 
 const CHANNEL_BUFFER: usize = 10;
@@ -120,6 +122,7 @@ pub async fn core_thread() {
             }
         }
         CLIENTS.write().await.retain(|c| c.state != State::Disconnected);
+        sleep(Duration::from_millis(60)).await;
     }
 }
 
