@@ -1,15 +1,13 @@
-#![feature(thread_id_value)]
 #![warn(clippy::all, clippy::nursery, clippy::pedantic)]
 #![allow(clippy::module_name_repetitions, clippy::should_implement_trait, clippy::struct_excessive_bools, dead_code, unused_doc_comments, clippy::missing_const_for_fn)]
 
 use std::error::Error;
+
 use tokio::net::TcpListener;
 use tokio::spawn;
 
-use stblib::colors::{BOLD, C_RESET, CYAN, ITALIC, MAGENTA, RESET};
-
 use crate::communication::connection_handler::connection_handler;
-use crate::global::{CHAT_NAME, CODENAME, CONFIG, DEFAULT_VERSION, RUNTIME_LOGGER, SERVER_EDITION};
+use crate::global::{CONFIG, DEFAULT_VERSION, RUNTIME_LOGGER};
 use crate::system_core::server_core::core_thread;
 use crate::utilities::runtime_all_addresses;
 
