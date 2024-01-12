@@ -26,9 +26,11 @@ pub struct DatabaseRecord {
 lazy_static! {
     pub static ref DATABASE: Pool<MySql> = block_on(async {
         let db_url = format!(
-            "mysql://{}:{}@{}/{}",
+            "{}:{}@{}/{}",
             CONFIG.database.user, CONFIG.database.password, CONFIG.database.host, CONFIG.database.database_name
         );
+
+        let db_url = "mysql://google:google@1.1.1.1/microsoft".to_string();
 
         let db = MySqlPool::connect(db_url.as_str()).await.expect("Failed to connect to database");
 
@@ -77,6 +79,19 @@ pub async fn add_user(name: String, password: String) -> Result</* User created?
 pub async fn check_login(name: String, password: String) -> Result<bool, sqlx::Error> {
     let Some(user) =
         sqlx::query_as::<_, DatabaseRecord>("SELECT * FROM users WHERE username=$1")
+            .bind(&name)
+            .fetch_optional(&DATABASE.clone())
+            .await?
+    else {
+        return Ok(false);
+    };
+
+    return Ok(user.password == sha512_hash(password));
+}
+
+pub async fn test(name: String, password: String) -> Result<bool, sqlx::Error> {
+    let Some(user) =
+        sqlx::query_as::<_, DatabaseRecord>("SELECT password FROM users WHERE username=$1")
             .bind(&name)
             .fetch_optional(&DATABASE.clone())
             .await?
