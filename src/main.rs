@@ -11,7 +11,7 @@ use crate::communication::connection_handler::connection_handler;
 use crate::database::db::DATABASE;
 use crate::global::{CHAT_NAME, CODENAME, CONFIG, DEFAULT_VERSION, RUNTIME_LOGGER, SERVER_EDITION};
 use crate::system_core::server_core::core_thread;
-use crate::utilities::runtime_all_addresses;
+use crate::utilities::{delete_last_line, runtime_all_addresses};
 
 mod utilities;
 mod global;
@@ -40,7 +40,8 @@ async fn main() -> Result<(), Box<dyn Error>> {
     RUNTIME_LOGGER.default(format!("Connecting to database on address {}", CONFIG.database.host));
     let _ = DATABASE.connection.clone();
 
-    RUNTIME_LOGGER.default("Connected");
+    delete_last_line();
+    RUNTIME_LOGGER.default(format!("Connected to {}", CONFIG.database.host));
 
 
     RUNTIME_LOGGER.info(
