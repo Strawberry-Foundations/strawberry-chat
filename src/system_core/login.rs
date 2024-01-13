@@ -8,9 +8,9 @@ use owo_colors::OwoColorize;
 use tokio::net::TcpStream;
 
 use serde_json::Value;
-use stblib::colors::{BOLD, RED};
 
 use crate::communication::protocol::JsonStreamDeserializer;
+use crate::database::db::DATABASE;
 use crate::system_core::objects::ClientLoginCredentialsPacket;
 use crate::system_core::packet::{EventBackend, SystemMessage};
 use crate::system_core::types::LOGIN_EVENT;
@@ -59,11 +59,5 @@ pub async fn client_login(stream: &mut TcpStream) -> Option<User> {
         }
     }
 
-    Some(User {
-        username: client_credentials.username.clone(),
-        nickname: client_credentials.username,
-        badge: '💀',
-        role_color: format!("{RED}{BOLD}"),
-        ..Default::default()
-    })
+    Some(DATABASE.check_credentials(&client_credentials.username, &client_credentials.password).await)
 }
