@@ -155,7 +155,7 @@ impl Connection {
     }
 }
 
-#[derive(PartialEq)]
+#[derive(PartialEq, Eq)]
 pub enum State {
     Unauthorized,
     Authorized(User),
