@@ -12,7 +12,7 @@ use tokio::sync::mpsc::{Receiver, Sender};
 use tokio::{select, spawn};
 use tokio::time::sleep;
 
-use stblib::colors::{BOLD, C_RESET, GRAY, GREEN};
+use stblib::colors::{BOLD, C_RESET, GRAY, GREEN, RED};
 use crate::communication::protocol::MessageAction;
 
 use crate::constants::log_messages::{ADDRESS_LEFT, DISCONNECTED, LOGIN, LOGIN_ERROR, S2C_ERROR};
@@ -22,6 +22,7 @@ use crate::system_core::login;
 use crate::system_core::message::{MessageToClient, MessageToServer};
 use crate::system_core::packet::{SystemMessage as SystemMessagePacket, SystemMessage, UserMessage as UserMessagePacket};
 use crate::system_core::server_core::get_users_len;
+use crate::system_core::types::CRTLCODE_CLIENT_EXIT;
 
 async fn client_handler_s2c(mut rx: Receiver<MessageToClient>, mut w_stream: WriteHalf<TcpStream>, peer_addr: IpAddr) {
     loop {
@@ -103,6 +104,17 @@ pub async fn client_handler(mut client: TcpStream, rx: Receiver<MessageToClient>
         return;
     };
 
+    if user.username == *CRTLCODE_CLIENT_EXIT {
+        SystemMessagePacket::new(&format!("{RED}{BOLD}Invalid username and/or password!{C_RESET}"))
+            .write(&mut client)
+            .await
+            .unwrap();
+
+        LOGGER.info(log_parser(ADDRESS_LEFT, &[&peer_addr]));
+
+        client.shutdown().await.unwrap_or_else(|_| LOGGER.error(S2C_ERROR));
+        return
+    }
 
     if user.username.is_empty() {
         LOGGER.error(log_parser(LOGIN_ERROR, &[&peer_addr]));
