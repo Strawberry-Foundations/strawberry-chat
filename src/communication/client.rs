@@ -15,7 +15,7 @@ use tokio::time::sleep;
 use stblib::colors::{BOLD, C_RESET, GRAY, GREEN, RED};
 use crate::communication::protocol::MessageAction;
 
-use crate::constants::log_messages::{ADDRESS_LEFT, DISCONNECTED, LOGIN, LOGIN_ERROR, S2C_ERROR};
+use crate::constants::log_messages::{ADDRESS_LEFT, CLIENT_KICKED, DISCONNECTED, LOGIN, LOGIN_ERROR, S2C_ERROR};
 use crate::global::{CONFIG, LOGGER, MESSAGE_VERIFICATOR};
 use crate::system_core::log::log_parser;
 use crate::system_core::login;
@@ -27,7 +27,6 @@ use crate::system_core::types::CRTLCODE_CLIENT_EXIT;
 async fn client_handler_s2c(mut rx: Receiver<MessageToClient>, mut w_stream: WriteHalf<TcpStream>, peer_addr: IpAddr) {
     loop {
         let Some(msg) = rx.recv().await else {
-            LOGGER.warning(format!("[S -> {peer_addr}] Channel was closed, closing"));
             return;
         };
         match msg {
@@ -58,28 +57,34 @@ async fn client_handler_c2s(tx: Sender<MessageToServer>, mut r_stream: ReadHalf<
             let _ = tx.send(MessageToServer::RemoveMe).await;
             return;
         }
+
         let content = String::from_utf8_lossy(&buffer[..n]).trim().to_string();
+
         if content.starts_with('/') && content.len() > 1 {
             let parts: Vec<String> = content[1..].split_ascii_whitespace().map(String::from).collect();
+
             if &parts[0] == "exit" {
                 tx.send(MessageToServer::RemoveMe).await.unwrap();
                 LOGGER.info(format!("[{peer_addr} -> S] Client exited using /exit"));
                 return;
             }
+
             tx.send(MessageToServer::RunCommand {
                 name: parts[0].to_string(),
                 args: parts[1..].to_vec(),
             }).await.unwrap();
             continue;
         }
-        let action = MESSAGE_VERIFICATOR.check(&content);
+
+        let action = MESSAGE_VERIFICATOR.check(&content.to_lowercase());
 
         match action {
             MessageAction::Kick => {
                 tx.send(MessageToServer::ClientDisconnect {
                     reason: "Please be friendlier in the chat. Rejoin when you feel ready!".yellow().bold().to_string()
                 }).await.unwrap();
-                LOGGER.info(format!("[{peer_addr} -> S] Client was disconnected. Reason: Used blacklisted word"));
+
+                LOGGER.info(log_parser(CLIENT_KICKED, &[&peer_addr, &"Used blacklisted word"]));
             },
             MessageAction::Hide => {},
             MessageAction::Allow => tx.send(MessageToServer::Message { content }).await.unwrap(),
