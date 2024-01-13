@@ -2,6 +2,7 @@
 #![allow(clippy::module_name_repetitions, clippy::should_implement_trait, clippy::struct_excessive_bools, dead_code, unused_doc_comments, clippy::missing_const_for_fn)]
 
 use std::error::Error;
+use sqlx::{MySql, Pool};
 use tokio::net::TcpListener;
 use tokio::spawn;
 
@@ -9,6 +10,7 @@ use stblib::colors::{BOLD, C_RESET, CYAN, ITALIC, MAGENTA, RESET};
 
 use crate::communication::connection_handler::connection_handler;
 use crate::global::{CHAT_NAME, CODENAME, CONFIG, DEFAULT_VERSION, RUNTIME_LOGGER, SERVER_EDITION};
+use crate::system_core::db::DATABASE;
 use crate::system_core::server_core::core_thread;
 use crate::utilities::runtime_all_addresses;
 
@@ -20,8 +22,14 @@ mod system_core;
 mod constants;
 mod commands;
 
+fn init_db() -> Pool<MySql>{
+    DATABASE.clone()
+}
+
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
+    init_db();
+
     println!("{CYAN}{BOLD}* -- {CHAT_NAME} {} {CODENAME} ({SERVER_EDITION}) -- *{RESET}{C_RESET}", DEFAULT_VERSION.clone());
 
     let socket = TcpListener::bind((CONFIG.server.address.clone(), CONFIG.server.port)).await.unwrap_or_else(|err| {

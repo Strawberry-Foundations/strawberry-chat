@@ -1,8 +1,8 @@
 use futures::executor::block_on;
 use lazy_static::lazy_static;
 use sha2::{Digest, Sha512};
-use sqlx::mysql::MySqlPool;
-use sqlx::{Executor, FromRow, Pool, MySql};
+use sqlx::mysql::{MySqlConnectOptions, MySqlPool};
+use sqlx::{Executor, FromRow, Pool, MySql, ConnectOptions};
 use crate::global::CONFIG;
 
 fn sha512_hash(text: String) -> String {
@@ -26,11 +26,9 @@ pub struct DatabaseRecord {
 lazy_static! {
     pub static ref DATABASE: Pool<MySql> = block_on(async {
         let db_url = format!(
-            "{}:{}@{}/{}",
-            CONFIG.database.user, CONFIG.database.password, CONFIG.database.host, CONFIG.database.database_name
+            "mysql://{}:{}@{}:{}/{}",
+            CONFIG.database.user, CONFIG.database.password, CONFIG.database.host, CONFIG.database.port, CONFIG.database.database_name
         );
-
-        let db_url = "mysql://google:google@1.1.1.1/microsoft".to_string();
 
         let db = MySqlPool::connect(db_url.as_str()).await.expect("Failed to connect to database");
 
