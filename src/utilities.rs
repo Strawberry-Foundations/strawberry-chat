@@ -1,5 +1,8 @@
 use std::fs;
+use std::io::{self, Write};
+
 use stblib::colors::{CYAN, GREEN, RED, RESET};
+
 use crate::global::{CONFIG, LOGGER};
 
 pub fn open_config(config_path: &str) -> String {
@@ -42,4 +45,10 @@ pub fn runtime_all_addresses() -> String {
     else {
         String::new()
     }
+}
+
+pub fn delete_last_line() {
+    print!("\x1b[1A");
+    print!("\x1b[2K");
+    io::stdout().flush().unwrap();
 }
