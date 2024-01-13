@@ -11,7 +11,6 @@ use serde_json::Value;
 use stblib::colors::{BOLD, RED};
 
 use crate::communication::protocol::JsonStreamDeserializer;
-use crate::system_core::db::test;
 use crate::system_core::objects::ClientLoginCredentialsPacket;
 use crate::system_core::packet::{EventBackend, SystemMessage};
 use crate::system_core::types::LOGIN_EVENT;
@@ -59,8 +58,6 @@ pub async fn client_login(stream: &mut TcpStream) -> Option<User> {
             _ => println!("{msg}"),
         }
     }
-
-    let a = test("Juliandev02".to_string(), "test".to_string()).await.unwrap();
 
     Some(User {
         username: client_credentials.username.clone(),
