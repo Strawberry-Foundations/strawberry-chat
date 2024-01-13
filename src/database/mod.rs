@@ -61,12 +61,12 @@ impl Database {
             .fetch_all(&self.connection)
             .await.expect("err");
 
-        // let badge: String = data.first().unwrap().get("nickname");
+        let badge: String = data.first().unwrap().get("nickname");
         let nickname: String = data.first().unwrap().get("nickname");
 
         user.username   = data.first().unwrap().get("username");
         user.nickname   = data.first().unwrap().get("nickname");
-        user.badge      = '💀'; //badge.parse().unwrap();
+        user.badge      = badge.parse().unwrap_or('💀');
         user.role_color = format!("{RED}{BOLD}"); // data.first().unwrap().get("role_color");
         user.avatar_url = data.first().unwrap().get("avatar_url");
 
