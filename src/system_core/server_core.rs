@@ -35,8 +35,8 @@ pub async fn get_users_len() -> usize {
     CLIENTS.read().await.iter().filter(|c| c.is_auth()).count()
 }
 
-pub async fn get_online_users() -> RwLockReadGuard<'static, Vec<Connection>> {
-    CLIENTS.read().await
+pub async fn get_online_usernames() -> Vec<String> {
+    CLIENTS.read().await.iter().filter_map(|c| c.get_user().map(|u| u.username)).collect()
 }
 
 pub async fn register_connection(
@@ -132,7 +132,7 @@ pub async fn core_thread() {
                     CLIENTS.write().await.get_mut(i).unwrap().disconnect().await;
                 },
                 Event::RunCommand { name, args } => {
-                    run_command(name, args, CLIENTS.write().await.get_mut(i).unwrap()).await;
+                    run_command(name, args, CLIENTS.read().await.get(i).unwrap()).await;
                 },
                 Event::ClientShutdownR { reason } => {
                     CLIENTS.write().await.get_mut(i).unwrap().tx.send(MessageToClient::SystemMessage {

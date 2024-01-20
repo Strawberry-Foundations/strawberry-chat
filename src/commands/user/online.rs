@@ -3,6 +3,7 @@ use stblib::colors::{BOLD, C_RESET, CYAN, GREEN, UNDERLINE};
 use crate::global::CONFIG;
 use crate::system_core::{commands, CORE};
 use crate::system_core::message::MessageToClient;
+use crate::system_core::server_core::get_online_usernames;
 // use crate::system_core::server_core::{get_online_users};
 
 pub fn online() -> commands::Command {
@@ -14,8 +15,7 @@ pub fn online() -> commands::Command {
         };
 
         let message = format!("{GREEN}{BOLD}{UNDERLINE}Users who are currently online ({online_users}){C_RESET}
-        {BOLD}->{C_RESET} {CYAN}{}{C_RESET}
-        ", "" // get_online_users().await.iter().filter_map(|c| c.get_user().map(|u| u.username)).collect::<Vec<String>>().join(", ")
+        {BOLD}->{C_RESET} {CYAN}{}{C_RESET}", get_online_usernames().await.join(", ")
         );
 
         ctx.tx_channel.send(MessageToClient::SystemMessage {
