@@ -39,6 +39,9 @@ pub struct Command {
     /// Name of command (execution name, e.g. test -> /test)
     pub name: String,
 
+    /// Aliases for commands
+    pub aliases: Vec<&'static str>,
+
     /// Description of command
     pub description: String,
 
@@ -65,6 +68,7 @@ fn get_commands() -> Vec<Command> {
     let cmds = vec![
         hello_command(),
         crate::commands::etc::test_command::example_command(),
+        crate::commands::default::server_info::server_info(),
     ];
 
     cmds
@@ -88,7 +92,7 @@ pub async fn run_command(name: String, args: Vec<String>, conn: &Connection) {
 }
 
 async fn exec_command(name: String, args: Vec<String>, conn: &Connection) -> Result<Option<String>, String> {
-    let Some(cmd) = get_commands().into_iter().find(|cmd| cmd.name == name) else {
+    let Some(cmd) = get_commands().into_iter().find(|cmd| cmd.name == name || cmd.aliases.contains(&name.as_str())) else {
         return Err(String::from("Command not found"))
     };
 
@@ -113,6 +117,7 @@ fn hello_command() -> Command {
 
     Command {
         name: "hello".to_string(),
+        aliases: vec![],
         description: "prints 'Hello, World'".to_string(),
         handler: |ctx| Box::pin(async move {
             logic(ctx)
