@@ -28,6 +28,8 @@ flags:
   special_messages: false
 
 database:
+  driver: mysql       # Available drivers: mysql
+
   host: localhost
   port: 3006
   user: admin
