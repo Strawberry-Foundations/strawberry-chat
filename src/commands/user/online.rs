@@ -10,9 +10,9 @@ pub fn online() -> commands::Command {
         println!("Test #1");
 
         let online_users = if CONFIG.config.max_users == -1 {
-            format!("{}", get_users_len().await)
+            format!("{}", "get_users_len().await")
         } else {
-            format!("{}/{}", get_users_len().await, CONFIG.config.max_users)
+            format!("{}/{}", "get_users_len().await", CONFIG.config.max_users)
         };
 
         println!("Test #2: {online_users}");
