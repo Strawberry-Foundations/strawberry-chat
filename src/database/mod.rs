@@ -1,12 +1,13 @@
 pub mod db;
 
 use sqlx::{MySql, MySqlPool, Pool, Row};
-use stblib::colors::{BOLD, RED};
+
 use crate::constants::log_messages::SQL_CONNECTION_ERROR;
 use crate::global::{RUNTIME_LOGGER};
 use crate::system_core::log::log_parser;
 use crate::system_core::objects::User;
 use crate::system_core::types::CRTLCODE_CLIENT_EXIT;
+use crate::utilities::role_color_parser;
 
 pub struct Database {
     pub connection: Pool<MySql>
@@ -66,7 +67,7 @@ impl Database {
         user.username   = data.first().unwrap().get("username");
         user.nickname   = data.first().unwrap().get("nickname");
         user.badge      = data.first().unwrap().get("badge");
-        user.role_color = format!("{RED}{BOLD}"); // data.first().unwrap().get("role_color");
+        user.role_color = role_color_parser(data.first().unwrap().get("role_color"));
         user.avatar_url = data.first().unwrap().get("avatar_url");
 
         if nickname.is_empty(){
