@@ -21,6 +21,7 @@ mod system_core;
 mod constants;
 mod commands;
 mod database;
+mod security;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
