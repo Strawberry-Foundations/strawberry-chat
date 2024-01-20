@@ -18,7 +18,7 @@ use crate::security::automod::MessageAction;
 use crate::constants::log_messages::{ADDRESS_LEFT, CLIENT_KICKED, DISCONNECTED, LOGIN, LOGIN_ERROR, S2C_ERROR};
 use crate::global::{CONFIG, LOGGER, MESSAGE_VERIFICATOR};
 use crate::system_core::log::log_parser;
-use crate::system_core::login;
+use crate::system_core::{CORE, login};
 use crate::system_core::message::{MessageToClient, MessageToServer};
 use crate::system_core::packet::{SystemMessage as SystemMessagePacket, SystemMessage, UserMessage as UserMessagePacket};
 use crate::system_core::server_core::get_users_len;
@@ -135,6 +135,8 @@ pub async fn client_handler(mut client: TcpStream, rx: Receiver<MessageToClient>
         .write(&mut client)
         .await
         .unwrap();
+
+    CORE.write().await.add_connection();
 
     let users_len = get_users_len().await;
     let online_users_str =
