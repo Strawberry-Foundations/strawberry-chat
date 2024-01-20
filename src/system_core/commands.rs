@@ -23,6 +23,7 @@
 
 use tokio::sync::mpsc::Sender;
 use owo_colors::OwoColorize;
+use crate::system_core::commands;
 
 use crate::system_core::message::MessageToClient;
 use crate::system_core::server_core::Connection;
@@ -30,6 +31,7 @@ use crate::system_core::objects::User;
 
 // 'static borrow from https://github.com/serenity-rs/poise/blob/c5a4fc862e22166c8933e7e11727c577bb93067d/src/lib.rs#L439
 pub type BoxFuture<T> = std::pin::Pin<Box<dyn std::future::Future<Output = T> + Send>>;
+pub type CommandResponse = Result<Option<String>, String>;
 
 #[derive(Hash, PartialEq, Eq)]
 /// # Command struct
@@ -111,7 +113,7 @@ async fn exec_command(name: String, args: Vec<String>, conn: &Connection) -> Res
 }
 
 fn hello_command() -> Command {
-    fn logic(_: Context) -> Result<Option<String>, String> {
+    fn logic(_: Context) -> CommandResponse {
         Ok(Some("Hello, World!".to_string()))
     }
 
