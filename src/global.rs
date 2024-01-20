@@ -46,12 +46,10 @@ lazy_static! {
     pub static ref CONFIG: GlobalConfig = {
         let exe_path = env::current_exe().unwrap_or_else(|_| {
             LOGGER.panic("Could not get your Strawberry Chat Runtime Executable");
-            unreachable!()
         });
 
         let exe_dir = exe_path.parent().unwrap_or_else(|| {
             LOGGER.panic("Could not get directory of your Strawberry Chat Runtime Executable");
-            unreachable!()
         });
 
         let exe_dir_str = PathBuf::from(exe_dir).display().to_string();

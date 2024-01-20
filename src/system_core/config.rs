@@ -79,7 +79,6 @@ impl GlobalConfig {
 
         let mut config: Self = from_str(&cfg_content).unwrap_or_else(|err| {
             LOGGER.panic_critical(format!("Could not read configuration: {err}"));
-            unreachable!()
         });
 
         config.path = config_path;

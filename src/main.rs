@@ -28,7 +28,6 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
     let socket = TcpListener::bind((CONFIG.server.address.clone(), CONFIG.server.port)).await.unwrap_or_else(|err| {
         RUNTIME_LOGGER.panic(format!("{err}"));
-        unreachable!()
     });
 
     cli_wins::feature::display();
