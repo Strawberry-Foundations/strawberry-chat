@@ -10,6 +10,7 @@ pub fn example_command() -> commands::Command {
 
     commands::Command {
         name: "test".to_string(),
+        aliases: vec![],
         description: "Example command".to_string(),
         handler: |ctx| Box::pin(async move {
             logic(&ctx).await
