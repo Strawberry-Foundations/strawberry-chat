@@ -3,7 +3,7 @@ use stblib::colors::{BOLD, C_RESET, CYAN, GREEN, UNDERLINE};
 use crate::global::CONFIG;
 use crate::system_core::{commands, CORE};
 use crate::system_core::message::MessageToClient;
-use crate::system_core::server_core::{get_online_users, get_users_len};
+// use crate::system_core::server_core::{get_online_users};
 
 pub fn online() -> commands::Command {
     async fn logic(ctx: &commands::Context) -> commands::CommandResponse {
