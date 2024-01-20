@@ -1,7 +1,7 @@
 use std::fs;
 use std::io::{self, Write};
 
-use stblib::colors::{CYAN, GREEN, RED, RESET};
+use stblib::colors::{BOLD, CYAN, GREEN, RED, RESET};
 
 use crate::global::{CONFIG, LOGGER};
 
@@ -51,4 +51,11 @@ pub fn delete_last_line() {
     print!("\x1b[1A");
     print!("\x1b[2K");
     io::stdout().flush().unwrap();
+}
+
+pub fn role_color_parser(color: &str) -> String {
+    match color {
+        "bred" => format!("{RED}{BOLD}"),
+        _ => String::new()
+    }
 }
