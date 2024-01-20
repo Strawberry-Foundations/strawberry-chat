@@ -44,7 +44,7 @@ pub struct UserMessage {
     pub message_type: String,
     pub username: String,
     pub nickname: String,
-    pub badge: char,
+    pub badge: String,
     pub role_color: String,
     pub avatar_url: String,
     pub message: MessageStruct,
