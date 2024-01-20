@@ -4,9 +4,10 @@
 //! This module handles incoming clients sent over from the client thread
 //! - Will handle the full-login
 
-use owo_colors::OwoColorize;
 use tokio::net::TcpStream;
 
+use stblib::colors::{BOLD, C_RESET, MAGENTA, RESET};
+use owo_colors::OwoColorize;
 use serde_json::Value;
 
 use crate::communication::protocol::JsonStreamDeserializer;
@@ -26,9 +27,7 @@ pub async fn client_login(stream: &mut TcpStream) -> Option<User> {
         .await
         .unwrap();
     SystemMessage::new(&format!(
-        "New here? Type '{}' to register! You want to leave? Type '{}'",
-        "Register".magenta(),
-        "Exit".magenta()
+            "{BOLD}New here? Type '{MAGENTA}Register{RESET}' to register! You want to leave? Type '{MAGENTA}Exit{RESET}'{C_RESET}"
     ))
     .write(stream)
     .await
