@@ -28,9 +28,6 @@ flags:
   special_messages: false
 
 database:
-  driver: sqlite              # Available values: sqlite, mysql
-  check_same_thread: false    # only for sqlite
-  
   host: localhost
   port: 3006
   user: admin
