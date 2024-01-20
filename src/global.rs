@@ -9,7 +9,7 @@ use stblib::colors::{BLUE, BOLD, C_RESET, GREEN, RED};
 use stblib::logging::formats::{LogFormat, LogFormatExt};
 
 use crate::system_core::config::GlobalConfig;
-use crate::system_core::automod::MessageVerificatior;
+use crate::communication::protocol::MessageVerificatior;
 
 pub const BASE_VERSION: &str = "1.11.0";
 pub const ADDITION_VER: &str = "a2";
@@ -21,6 +21,8 @@ pub const CODENAME_SHORT: &str = "vacakes";
 pub const CHAT_NAME: &str = "Strawberry Chat";
 pub const UPDATE_CHANNEL: &str = "canary";
 pub const SERVER_EDITION: &str = "Rusty Edition";
+
+pub const AUTHORS: &[&str; 3] = &["Juliandev02", "matteodev8", "Paddyk45"];
 
 lazy_static! {
     pub static ref LOGGER: Logger = Logger::new(

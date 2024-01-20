@@ -70,6 +70,7 @@ fn get_commands() -> Vec<Command> {
         hello_command(),
         crate::commands::etc::test_command::example_command(),
         crate::commands::default::server_info::server_info(),
+        crate::commands::default::about::about(),
     ];
 
     cmds

@@ -7,4 +7,3 @@ pub mod objects;
 pub mod message;
 pub mod server_core;
 pub mod commands;
-mod automod;

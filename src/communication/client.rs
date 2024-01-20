@@ -13,7 +13,7 @@ use tokio::{select, spawn};
 use tokio::time::sleep;
 
 use stblib::colors::{BOLD, C_RESET, GRAY, GREEN, RED};
-use crate::system_core::automod::MessageAction;
+use crate::communication::protocol::MessageAction;
 
 use crate::constants::log_messages::{ADDRESS_LEFT, CLIENT_KICKED, DISCONNECTED, LOGIN, LOGIN_ERROR, S2C_ERROR};
 use crate::global::{CONFIG, LOGGER, MESSAGE_VERIFICATOR};

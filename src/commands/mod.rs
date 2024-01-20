@@ -6,4 +6,5 @@ pub mod etc {
 
 pub mod default {
     pub mod server_info;
+    pub mod about;
 }
