@@ -65,6 +65,12 @@ pub struct Context {
     pub tx_channel: Sender<MessageToClient>
 }
 
+pub enum CommandCategory {
+    General,
+    User,
+    System,
+    Admin
+}
 
 fn get_commands() -> Vec<Command> {
     let cmds = vec![
