@@ -78,6 +78,7 @@ fn get_commands() -> Vec<Command> {
         crate::commands::etc::test_command::example_command(),
         crate::commands::default::server_info::server_info(),
         crate::commands::default::about::about(),
+        crate::commands::user::online::online(),
     ];
 
     cmds
