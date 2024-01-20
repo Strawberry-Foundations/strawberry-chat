@@ -12,7 +12,7 @@ use crate::system_core::config::GlobalConfig;
 use crate::communication::protocol::MessageVerificatior;
 
 pub const BASE_VERSION: &str = "1.11.0";
-pub const ADDITION_VER: &str = "a1";
+pub const ADDITION_VER: &str = "a2";
 pub const STBM_VER: &str = "3";
 
 pub const CODENAME: &str = "Vanilla Cake";
