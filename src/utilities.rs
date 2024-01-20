@@ -55,7 +55,10 @@ pub fn delete_last_line() {
 
 pub fn role_color_parser(color: &str) -> String {
     match color {
+        "red" => RED.to_string(),
+        "green" => GREEN.to_string(),
         "bred" => format!("{RED}{BOLD}"),
+        "bgreen" => format!("{GREEN}{BOLD}"),
         _ => String::new()
     }
 }
