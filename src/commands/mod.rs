@@ -8,3 +8,7 @@ pub mod default {
     pub mod server_info;
     pub mod about;
 }
+
+pub mod user {
+    pub mod online;
+}
