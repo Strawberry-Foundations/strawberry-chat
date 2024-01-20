@@ -57,7 +57,6 @@ pub struct FlagConfig {
 #[derive(Debug, Deserialize)]
 pub struct DatabaseConfig {
     pub driver: String,
-    pub check_same_thread: bool,
     pub host: String,
     pub port: u16,
     pub user: String,
