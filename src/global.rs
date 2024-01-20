@@ -9,7 +9,7 @@ use stblib::colors::{BLUE, BOLD, C_RESET, GREEN, RED};
 use stblib::logging::formats::{LogFormat, LogFormatExt};
 
 use crate::system_core::config::GlobalConfig;
-use crate::communication::protocol::MessageVerificatior;
+use crate::security::automod::MessageVerification;
 
 pub const BASE_VERSION: &str = "1.11.0";
 pub const ADDITION_VER: &str = "a2";
@@ -73,5 +73,5 @@ lazy_static! {
         DEFAULT_VERSION.clone()
     );
 
-    pub static ref MESSAGE_VERIFICATOR: MessageVerificatior = MessageVerificatior::new();
+    pub static ref MESSAGE_VERIFICATOR: MessageVerification = MessageVerification::new();
 }
