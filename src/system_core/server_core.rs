@@ -4,7 +4,7 @@ use std::net::SocketAddr;
 use std::time::Duration;
 
 use tokio::sync::mpsc::{channel, Receiver, Sender};
-use tokio::sync::{RwLock, RwLockReadGuard};
+use tokio::sync::RwLock;
 use tokio::time::sleep;
 
 use lazy_static::lazy_static;
