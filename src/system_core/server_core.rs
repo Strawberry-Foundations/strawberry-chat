@@ -4,7 +4,7 @@ use std::net::SocketAddr;
 use std::time::Duration;
 
 use tokio::sync::mpsc::{channel, Receiver, Sender};
-use tokio::sync::RwLock;
+use tokio::sync::{RwLock, RwLockReadGuard};
 use tokio::time::sleep;
 
 use lazy_static::lazy_static;
@@ -17,6 +17,10 @@ const CHANNEL_BUFFER: usize = 10;
 
 pub async fn get_users_len() -> usize {
     CLIENTS.read().await.iter().filter(|c| c.is_auth()).count()
+}
+
+pub async fn get_online_users() -> RwLockReadGuard<'static, Vec<Connection>> {
+    CLIENTS.read().await
 }
 
 pub async fn register_connection(
