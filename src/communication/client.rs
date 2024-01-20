@@ -4,7 +4,6 @@
 
 use std::net::IpAddr;
 use std::time::Duration;
-use owo_colors::OwoColorize;
 
 use tokio::io::{AsyncReadExt, AsyncWriteExt, ReadHalf, split, WriteHalf};
 use tokio::net::TcpStream;
@@ -13,8 +12,9 @@ use tokio::{select, spawn};
 use tokio::time::sleep;
 
 use stblib::colors::{BOLD, C_RESET, GRAY, GREEN, RED};
-use crate::security::automod::MessageAction;
+use owo_colors::OwoColorize;
 
+use crate::security::automod::MessageAction;
 use crate::constants::log_messages::{ADDRESS_LEFT, CLIENT_KICKED, DISCONNECTED, LOGIN, LOGIN_ERROR, S2C_ERROR};
 use crate::global::{CONFIG, LOGGER, MESSAGE_VERIFICATOR};
 use crate::system_core::log::log_parser;
