@@ -4,12 +4,13 @@
 //! A simple context-based command can look like this:
 //! ```
 //! fn hello_command() -> Command {
-//!     fn logic(_: Context) -> Result<Option<String>, String> {
+//!     fn logic(_: Context) -> CommandResponse {
 //!         Ok(Some("Hello, World!".to_string()))
 //!     }
 //!
-//!     Command {
+//!    Command {
 //!         name: "hello".to_string(),
+//!         aliases: vec![],
 //!         description: "prints 'Hello, World'".to_string(),
 //!         handler: |ctx| Box::pin(async move {
 //!             logic(ctx)
