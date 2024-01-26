@@ -33,10 +33,10 @@ use crate::system_core::objects::User;
 pub type BoxFuture<T> = std::pin::Pin<Box<dyn std::future::Future<Output = T> + Send>>;
 pub type CommandResponse = Result<Option<String>, String>;
 
-#[derive(Hash, PartialEq, Eq)]
 /// # Command struct
 /// The command struct is the basic part for programming a command.
 /// It contains information such as the name, the description and the logic (the function) of the command.
+#[derive(Hash, PartialEq, Eq)]
 pub struct Command {
     /// Name of command (execution name, e.g. test -> /test)
     pub name: String,
@@ -48,7 +48,10 @@ pub struct Command {
     pub description: String,
 
     /// Logic of command (function)
-    pub handler: fn(Context) -> BoxFuture<Result<Option<String>, String>>
+    pub handler: fn(Context) -> BoxFuture<Result<Option<String>, String>>,
+
+    /// Category of command
+    pub category: CommandCategory
 }
 
 /// # Context struct
@@ -65,24 +68,36 @@ pub struct Context {
     pub tx_channel: Sender<MessageToClient>
 }
 
+#[derive(Hash, PartialEq, Eq)]
 pub enum CommandCategory {
+    Default,
+    Etc,
     General,
     User,
     System,
     Admin
 }
 
-fn get_commands() -> Vec<Command> {
+pub fn get_commands() -> Vec<Command> {
     let cmds = vec![
         hello_command(),
-        crate::commands::etc::test_command::example_command(),
-        crate::commands::default::server_info::server_info(),
+        crate::commands::default::help::help(),
         crate::commands::default::about::about(),
+        crate::commands::default::server_info::server_info(),
+        crate::commands::etc::test_command::example_command(),
         crate::commands::user::online::online(),
     ];
 
     cmds
 }
+
+pub fn get_commands_category(command_category: &CommandCategory) -> Vec<Command> {
+    get_commands()
+        .into_iter()
+        .filter(|cmd| cmd.category == *command_category)
+        .collect()
+}
+
 
 pub async fn run_command(name: String, args: Vec<String>, conn: &Connection) {
     let res = exec_command(name, args, conn).await;
@@ -129,6 +144,7 @@ fn hello_command() -> Command {
         name: "hello".to_string(),
         aliases: vec![],
         description: "prints 'Hello, World'".to_string(),
+        category: CommandCategory::Etc,
         handler: |ctx| Box::pin(async move {
             logic(ctx)
         }),
