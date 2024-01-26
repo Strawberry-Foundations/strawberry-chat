@@ -2,6 +2,7 @@ use stblib::colors::{BLUE, BOLD, C_RESET, GREEN, RESET, UNDERLINE};
 
 use crate::global::{AUTHORS, CHAT_NAME, CODENAME, DEFAULT_VERSION, EXT_VERSION, SERVER_EDITION};
 use crate::system_core::commands;
+use crate::system_core::commands::CommandCategory;
 use crate::system_core::message::MessageToClient;
 
 pub fn about() -> commands::Command {
@@ -24,6 +25,7 @@ pub fn about() -> commands::Command {
         name: "about".to_string(),
         aliases: vec![],
         description: "Shows about description for Strawberry Chat".to_string(),
+        category: CommandCategory::Default,
         handler: |ctx| Box::pin(async move {
             logic(&ctx).await
         }),
