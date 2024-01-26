@@ -53,7 +53,7 @@ pub struct Command {
 
 /// # Context struct
 /// The context struct contains all context-related information that the command requires for execution.
-/// This includes user information such as user name, badge, ... and the arguments that the user has specified.
+/// This includes user information such as username, badge, ... and the arguments that the user has specified.
 pub struct Context {
     /// The user who executed the command
     pub executor: User,
@@ -95,7 +95,7 @@ pub async fn run_command(name: String, args: Vec<String>, conn: &Connection) {
         Ok(None) => {},
         Err(e) => conn.tx.send(
             MessageToClient::SystemMessage {
-                content: format!("Error running command: {e}").red().to_string()
+                content: e.to_string().red().to_string()
             }
         ).await.unwrap()
     };
@@ -103,7 +103,7 @@ pub async fn run_command(name: String, args: Vec<String>, conn: &Connection) {
 
 async fn exec_command(name: String, args: Vec<String>, conn: &Connection) -> Result<Option<String>, String> {
     let Some(cmd) = get_commands().into_iter().find(|cmd| cmd.name == name || cmd.aliases.contains(&name.as_str())) else {
-        return Err(String::from("Command not found"))
+        return Err(format!("Command '{name}' not found"))
     };
 
     let Some(user) = conn.get_user() else {
