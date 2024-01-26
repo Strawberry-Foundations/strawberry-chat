@@ -1,4 +1,5 @@
 use crate::system_core::commands;
+use crate::system_core::commands::CommandCategory;
 use crate::system_core::message::MessageToClient;
 
 pub fn example_command() -> commands::Command {
@@ -12,6 +13,7 @@ pub fn example_command() -> commands::Command {
         name: "test".to_string(),
         aliases: vec![],
         description: "Example command".to_string(),
+        category: CommandCategory::Etc,
         handler: |ctx| Box::pin(async move {
             logic(&ctx).await
         }),
