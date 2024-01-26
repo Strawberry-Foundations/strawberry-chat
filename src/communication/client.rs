@@ -59,7 +59,7 @@ async fn client_handler_c2s(tx: Sender<MessageToServer>, mut r_stream: ReadHalf<
         }
 
         let content = String::from_utf8_lossy(&buffer[..n]).trim().to_string();
-
+        let content = strip_ansi_escapes::strip_str(content);
         if content.starts_with('/') && content.len() > 1 {
             let parts: Vec<String> = content[1..].split_ascii_whitespace().map(String::from).collect();
 
