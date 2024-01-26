@@ -2,6 +2,7 @@ use stblib::colors::{BOLD, C_RESET, CYAN, GREEN, UNDERLINE};
 
 use crate::global::CONFIG;
 use crate::system_core::{commands, CORE};
+use crate::system_core::commands::CommandCategory;
 use crate::system_core::message::MessageToClient;
 use crate::system_core::server_core::get_online_usernames;
 // use crate::system_core::server_core::{get_online_users};
@@ -29,6 +30,7 @@ pub fn online() -> commands::Command {
         name: "online".to_string(),
         aliases: vec![],
         description: "Shows online users".to_string(),
+        category: CommandCategory::User,
         handler: |ctx| Box::pin(async move {
             logic(&ctx).await
         }),
