@@ -69,7 +69,7 @@ lazy_static! {
     pub static ref VERSION: String = format!("{}", DEFAULT_VERSION.clone());
 
     pub static ref EXT_VERSION: String = format!(
-        "{}_{UPDATE_CHANNEL}-{CODENAME_SHORT}-rst_stbm{STBM_VER}",
+        "{}_{UPDATE_CHANNEL}-{CODENAME_SHORT}-rst_stbcv{STBM_VER}",
         DEFAULT_VERSION.clone()
     );
 
