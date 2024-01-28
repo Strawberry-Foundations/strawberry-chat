@@ -10,7 +10,7 @@ pub fn about() -> commands::Command {
         let message = format!("{GREEN}{BOLD}{UNDERLINE}About {CHAT_NAME}{C_RESET}
         {BLUE}{BOLD}Thank you for using {CHAT_NAME}!{C_RESET}
         {BLUE}{BOLD}Version:{RESET} {} {CODENAME} ({SERVER_EDITION}) ({}){RESET}{C_RESET}
-        {BLUE}{BOLD}Author:{RESET} {} {CODENAME} {RESET}{C_RESET}",
+        {BLUE}{BOLD}Author:{RESET} {} {RESET}{C_RESET}",
         DEFAULT_VERSION.clone(), EXT_VERSION.clone(), AUTHORS.join(", "));
 
 
