@@ -1,9 +1,13 @@
 #![allow(unused_imports)]
 #![allow(unused_variables)]
 
+//! # Command-Line Windows
+//! Command-Line Windows is a library to create nice but simple little command line windows.
+//! **WARNING**: This is experimental
+//! This might get moved to stblib in the future
+
 use stblib::colors::*;
 
-// warning this is experimental
 pub fn print_window(txt: &str) {
     let margin = if txt.len() % 2 == 0 { "  " } else { " " };
 
