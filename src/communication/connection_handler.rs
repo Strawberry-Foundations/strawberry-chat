@@ -6,6 +6,7 @@
 
 use std::collections::HashMap;
 use std::net::IpAddr;
+use std::os::unix::net::SocketAddr;
 
 use tokio::io::AsyncWriteExt;
 use tokio::net::TcpListener;
@@ -34,7 +35,10 @@ pub async fn connection_handler(socket: TcpListener) {
 
         if !CONFIG.networking.ratelimit {
             LOGGER.info(log_parser(CONNECTED, &[&client_addr.to_string()]));
-            let (tx, rx) = register_connection(client.peer_addr().unwrap()).await;
+            let Ok(peer_addr) = client.peer_addr() else { return };
+
+            let (tx, rx) = register_connection(peer_addr).await;
+
             spawn(client_handler(client, rx, tx));
             continue;
         }
