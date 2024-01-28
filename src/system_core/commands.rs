@@ -12,6 +12,7 @@
 //!         name: "hello".to_string(),
 //!         aliases: vec![],
 //!         description: "prints 'Hello, World'".to_string(),
+//!         category: CommandCategory::Etc,
 //!         handler: |ctx| Box::pin(async move {
 //!             logic(ctx)
 //!         }),
@@ -48,7 +49,7 @@ pub struct Command {
     pub description: String,
 
     /// Logic of command (function)
-    pub handler: fn(Context) -> BoxFuture<Result<Option<String>, String>>,
+    pub handler: fn(Context) -> BoxFuture<CommandResponse>,
 
     /// Category of command
     pub category: CommandCategory
