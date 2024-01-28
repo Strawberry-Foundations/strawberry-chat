@@ -6,7 +6,6 @@
 
 use std::collections::HashMap;
 use std::net::IpAddr;
-use std::os::unix::net::SocketAddr;
 
 use tokio::io::AsyncWriteExt;
 use tokio::net::TcpListener;
