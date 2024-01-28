@@ -24,6 +24,7 @@
 
 use tokio::sync::mpsc::Sender;
 use owo_colors::OwoColorize;
+use crate::commands::command_registry;
 
 use crate::system_core::message::MessageToClient;
 use crate::system_core::server_core::Connection;
@@ -80,16 +81,7 @@ pub enum CommandCategory {
 }
 
 pub fn get_commands() -> Vec<Command> {
-    let cmds = vec![
-        hello_command(),
-        crate::commands::default::help::help(),
-        crate::commands::default::about::about(),
-        crate::commands::default::server_info::server_info(),
-        crate::commands::etc::test_command::example_command(),
-        crate::commands::user::online::online(),
-    ];
-
-    cmds
+    command_registry()
 }
 
 pub fn get_commands_category(command_category: &CommandCategory) -> Vec<Command> {
