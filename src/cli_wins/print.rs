@@ -5,6 +5,15 @@
 //! Command-Line Windows is a library to create nice but simple little command line windows.
 //! **WARNING**: This is experimental
 //! This might get moved to stblib in the future
+//!
+//! This could look like this:
+//! ```
+//! * ------------ Hello World ------------ *
+//! | -> Hey! Whats up?                     |
+//! | * This is just a test.                |
+//! * ------------------------------------- *
+//! ```
+
 
 use stblib::colors::*;
 
