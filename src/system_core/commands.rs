@@ -12,6 +12,7 @@
 //!         name: "hello".to_string(),
 //!         aliases: vec![],
 //!         description: "prints 'Hello, World'".to_string(),
+//!         category: CommandCategory::Etc,
 //!         handler: |ctx| Box::pin(async move {
 //!             logic(ctx)
 //!         }),
