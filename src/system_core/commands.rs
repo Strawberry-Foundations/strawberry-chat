@@ -80,12 +80,8 @@ pub enum CommandCategory {
     Admin
 }
 
-pub fn get_commands() -> Vec<Command> {
-    command_registry()
-}
-
 pub fn get_commands_category(command_category: &CommandCategory) -> Vec<Command> {
-    get_commands()
+    command_registry()
         .into_iter()
         .filter(|cmd| cmd.category == *command_category)
         .collect()
@@ -110,7 +106,7 @@ pub async fn run_command(name: String, args: Vec<String>, conn: &Connection) {
 }
 
 async fn exec_command(name: String, args: Vec<String>, conn: &Connection) -> Result<Option<String>, String> {
-    let Some(cmd) = get_commands().into_iter().find(|cmd| cmd.name == name || cmd.aliases.contains(&name.as_str())) else {
+    let Some(cmd) = command_registry().into_iter().find(|cmd| cmd.name == name || cmd.aliases.contains(&name.as_str())) else {
         return Err(format!("Command '{name}' not found"))
     };
 
