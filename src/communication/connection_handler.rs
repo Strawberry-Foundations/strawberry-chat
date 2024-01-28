@@ -35,8 +35,6 @@ pub async fn connection_handler(socket: TcpListener) {
             Err(_) => continue
         };
 
-        let client_addr= client.peer_addr().unwrap().ip();
-
         if !CONFIG.networking.ratelimit {
             LOGGER.info(log_parser(CONNECTED, &[&client_addr.to_string()]));
             let Ok(peer_addr) = client.peer_addr() else { continue };
