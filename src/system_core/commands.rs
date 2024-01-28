@@ -49,7 +49,7 @@ pub struct Command {
     pub description: String,
 
     /// Logic of command (function)
-    pub handler: fn(Context) -> BoxFuture<Result<Option<String>, String>>,
+    pub handler: fn(Context) -> BoxFuture<CommandResponse>,
 
     /// Category of command
     pub category: CommandCategory
