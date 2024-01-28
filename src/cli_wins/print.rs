@@ -1,12 +1,11 @@
+#![allow(unused_imports)]
+#![allow(unused_variables)]
+
 use stblib::colors::*;
 
 // warning this is experimental
 pub fn print_window(txt: &str) {
-    let mut margin: &str = " ";
-
-    if txt.len() % 2 == 0 {
-        margin = "  ";
-    }
+    let margin = if txt.len() % 2 == 0 { "  " } else { " " };
 
     print!(" *");
     for txt in 0..(txt.len() + 5) {
