@@ -25,7 +25,7 @@ impl MessageVerification {
             return MessageAction::Hide;
         }
 
-        if content.is_empty() {
+        if content.trim().is_empty() {
             return MessageAction::Hide;
         }
 
