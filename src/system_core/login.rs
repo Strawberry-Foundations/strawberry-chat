@@ -6,12 +6,12 @@
 
 use tokio::net::TcpStream;
 
-use stblib::colors::{BOLD, C_RESET, MAGENTA, RESET};
-use owo_colors::OwoColorize;
+use stblib::colors::{BOLD, C_RESET};
 use serde_json::Value;
 
 use crate::communication::protocol::JsonStreamDeserializer;
 use crate::database::db::DATABASE;
+use crate::global::CONFIG;
 use crate::system_core::objects::ClientLoginCredentialsPacket;
 use crate::system_core::packet::{EventBackend, SystemMessage};
 use crate::system_core::types::LOGIN_EVENT;
@@ -22,16 +22,10 @@ pub async fn client_login(stream: &mut TcpStream) -> Option<User> {
     let mut login_packet = EventBackend::new(&LOGIN_EVENT);
 
     // TODO: replace unwraps with logger errors
-    SystemMessage::new(&"Welcome to Strawberry Chat!".bold())
+    SystemMessage::new(&format!("{BOLD}Welcome to {}!{C_RESET}", CONFIG.server.title))
         .write(stream)
         .await
         .unwrap();
-    SystemMessage::new(&format!(
-            "{BOLD}New here? Type '{MAGENTA}Register{RESET}' to register! You want to leave? Type '{MAGENTA}Exit{RESET}'{C_RESET}"
-    ))
-    .write(stream)
-    .await
-    .unwrap();
 
     login_packet.write(stream).await.unwrap();
 
