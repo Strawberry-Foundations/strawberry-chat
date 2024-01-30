@@ -1,4 +1,4 @@
-#![allow(unused_imports, unused_variables)]
+#![allow(unused_imports, unused_variables, clippy::wildcard_imports, clippy::needless_pass_by_value)]
 
 //! # Command-Line Windows
 //! Command-Line Windows is a library to create nice but simple little command line windows.
@@ -65,7 +65,7 @@ impl Constructor {
 }
 
 impl WindowBuilder {
-    pub fn new(title: impl ToString, border_color: impl ToString) -> Self {
+    pub fn new(title: &impl ToString, border_color: &impl ToString) -> Self {
         Self {
             title: title.to_string(),
             property_border_color: border_color.to_string(),
