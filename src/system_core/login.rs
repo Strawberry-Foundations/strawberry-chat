@@ -56,7 +56,7 @@ pub async fn client_login(stream: &mut TcpStream) -> Option<(UserAccount, User)>
         }
     }
 
-    let account = DATABASE.check_credentials(&client_credentials.username, &client_credentials.password).await;
+    let mut account = DATABASE.check_credentials(&client_credentials.username, &client_credentials.password).await;
 
     if !account.account_enabled {
         SystemMessage::new(&format!("{RED}{BOLD}Your account was disabled by an administrator.{C_RESET}"))
@@ -67,6 +67,8 @@ pub async fn client_login(stream: &mut TcpStream) -> Option<(UserAccount, User)>
         LOGGER.info(log_parser(DISCONNECTED, &[&deserializer.reader.peer_addr().unwrap().ip().to_string()]));
 
         deserializer.reader.shutdown().await.unwrap_or_else(|_| LOGGER.error(S2C_ERROR));
+
+        account.ok = false;
     }
 
     if !CONFIG.flags.enable_queue
@@ -81,6 +83,8 @@ pub async fn client_login(stream: &mut TcpStream) -> Option<(UserAccount, User)>
         LOGGER.info(log_parser(DISCONNECTED, &[&deserializer.reader.peer_addr().unwrap().ip().to_string()]));
 
         deserializer.reader.shutdown().await.unwrap_or_else(|_| LOGGER.error(S2C_ERROR));
+
+        account.ok = false;
     }
 
     Some((account.clone(), account.user))
