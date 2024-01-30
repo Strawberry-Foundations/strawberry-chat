@@ -1,7 +1,8 @@
 server:
   address: "0.0.0.0"
   port: 8080
-  name: "Official Strawberry Chat Server"
+  name: "Strawberry Chat Server"
+  title: "Julian's Strawberry Chat"
   description: "This is the official chat server for Strawberry Chat!"
   edition_key: "somekey"
   update_channel: "canary"
@@ -43,4 +44,4 @@ security:
   banned_ips: []
 
 
-config_ver: 7
+config_ver: 8
