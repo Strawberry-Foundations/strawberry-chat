@@ -11,9 +11,10 @@ use serde_json::Value;
 use tokio::io::AsyncWriteExt;
 
 use crate::communication::protocol::JsonStreamDeserializer;
-use crate::constants::log_messages::S2C_ERROR;
+use crate::constants::log_messages::{DISCONNECTED, S2C_ERROR};
 use crate::database::db::DATABASE;
 use crate::global::{CONFIG, LOGGER};
+use crate::system_core::log::log_parser;
 use crate::system_core::objects::{ClientLoginCredentialsPacket, UserAccount};
 use crate::system_core::packet::{EventBackend, SystemMessage};
 use crate::system_core::types::LOGIN_EVENT;
@@ -61,6 +62,8 @@ pub async fn client_login(stream: &mut TcpStream) -> Option<(UserAccount, User)>
             .write(deserializer.reader)
             .await
             .unwrap();
+
+        LOGGER.info(log_parser(DISCONNECTED, &[&deserializer.reader.peer_addr().unwrap().ip().to_string()]));
 
         deserializer.reader.shutdown().await.unwrap_or_else(|_| LOGGER.error(S2C_ERROR));
     }
