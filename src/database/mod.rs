@@ -24,28 +24,24 @@ impl Database {
         }
     }
 
-    pub async fn check_credentials(&self, username: &String, password: &String) -> (User, UserAccount) {
+    pub async fn check_credentials(&self, username: &String, password: &String) -> UserAccount {
         let row  = sqlx::query("SELECT username, password FROM users WHERE username = ?")
             .bind(username)
             .fetch_all(&self.connection)
             .await.expect("err");
 
         if row.is_empty() {
-            return (User {
-                username: CRTLCODE_CLIENT_EXIT.to_string(),
-                nickname: String::new(),
+            return UserAccount {
                 ..Default::default()
-            }, UserAccount::default())
+            }
         }
 
         let db_password: String = row.first().unwrap().get("password");
 
         if &db_password != password {
-            return (User {
-                username: CRTLCODE_CLIENT_EXIT.to_string(),
-                nickname: String::new(),
+            return UserAccount {
                 ..Default::default()
-            }, UserAccount::default())
+            }
         }
 
         let mut user = User {
@@ -56,7 +52,7 @@ impl Database {
             avatar_url: String::new(),
         };
 
-        let data = sqlx::query("SELECT username, nickname, badge, role_color, avatar_url FROM users WHERE username = ?")
+        let data = sqlx::query("SELECT * FROM users WHERE username = ?")
             .bind(username)
             .fetch_all(&self.connection)
             .await.expect("err");
@@ -76,32 +72,28 @@ impl Database {
             user.nickname = data.first().unwrap().get("nickname");
         }
 
-        let udata = sqlx::query("SELECT * FROM users WHERE username = ?")
-            .bind(username)
-            .fetch_all(&self.connection)
-            .await.expect("err");
-
-        let user_obj_db = UserAccount {
-            user_id: udata.first().unwrap().get("user_id"),
-            username: udata.first().unwrap().get("username"),
-            password: udata.first().unwrap().get("password"),
-            nickname: udata.first().unwrap().get("nickname"),
-            description: udata.first().unwrap().get("description"),
-            badge: udata.first().unwrap().get("badge"),
-            badges: udata.first().unwrap().get("badges"),
-            avatar_url: udata.first().unwrap().get("avatar_url"),
-            role: udata.first().unwrap().get("role"),
-            role_color: udata.first().unwrap().get("role_color"),
-            enable_blacklisted_words: udata.first().unwrap().get("enable_blacklisted_words"),
-            account_enabled: udata.first().unwrap().get("account_enabled"),
-            enable_dms: udata.first().unwrap().get("enable_dms"),
-            muted: udata.first().unwrap().get("muted"),
-            strawberry_id: udata.first().unwrap().get("strawberry_id"),
-            discord_name: udata.first().unwrap().get("discord_name"),
-            msg_count: udata.first().unwrap().get("msg_count"),
-            creation_date: udata.first().unwrap().get("creation_date"),
+        let user_account = UserAccount {
+            user_id: data.first().unwrap().get("user_id"),
+            username: data.first().unwrap().get("username"),
+            password: data.first().unwrap().get("password"),
+            nickname: data.first().unwrap().get("nickname"),
+            description: data.first().unwrap().get("description"),
+            badge: data.first().unwrap().get("badge"),
+            badges: data.first().unwrap().get("badges"),
+            avatar_url: data.first().unwrap().get("avatar_url"),
+            role: data.first().unwrap().get("role"),
+            role_color: data.first().unwrap().get("role_color"),
+            enable_blacklisted_words: data.first().unwrap().get("enable_blacklisted_words"),
+            account_enabled: data.first().unwrap().get("account_enabled"),
+            enable_dms: data.first().unwrap().get("enable_dms"),
+            muted: data.first().unwrap().get("muted"),
+            strawberry_id: data.first().unwrap().get("strawberry_id"),
+            discord_name: data.first().unwrap().get("discord_name"),
+            msg_count: data.first().unwrap().get("msg_count"),
+            creation_date: data.first().unwrap().get("creation_date"),
+            user
         };
 
-        (user, user_obj_db)
+        user_account
     }
 }
