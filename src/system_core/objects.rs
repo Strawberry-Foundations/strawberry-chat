@@ -32,7 +32,7 @@ pub struct User {
 }
 
 #[derive(Clone, Default, Debug, PartialEq, Eq)]
-pub struct UserObjDatabase {
+pub struct UserAccount {
     pub user_id: i32,
     pub username: String,
     pub password: String,
