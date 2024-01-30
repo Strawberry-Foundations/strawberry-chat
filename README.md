@@ -33,8 +33,8 @@ With v2 of the standard, we implemented JSON to provide more options for how the
 Security is an important part when it comes to internet programs. As of January 30, 2024, there is still NO password hashing for the Rust rewrite.
 In the following table you can see our security features and the corresponding versions:
 
-|          | Password Hashing | TLS | Automoderation | IP Blocking | Ratelimit |
-|----------|------------------|-----|----------------|-------------|-----------|
+| Version | Password Hashing | TLS | Automoderation | IP Blocking | Ratelimit |
+|---------|------------------|-----|----------------|-------------|-----------|
 | `v1.8`  | ✅                | ❌  | ➖             | ❌          | ❌        |
 | `v1.9`  | ✅                | ❌  | ➖             | ❌          | ❌        |
 | `v1.10` | ✅                | ❌  | ➖             | ✅          | ✅        |
