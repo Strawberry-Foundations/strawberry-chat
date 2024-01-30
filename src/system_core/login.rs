@@ -6,19 +6,21 @@
 
 use tokio::net::TcpStream;
 
-use stblib::colors::{BOLD, C_RESET};
+use stblib::colors::{BOLD, C_RESET, RED};
 use serde_json::Value;
+use tokio::io::AsyncWriteExt;
 
 use crate::communication::protocol::JsonStreamDeserializer;
+use crate::constants::log_messages::S2C_ERROR;
 use crate::database::db::DATABASE;
-use crate::global::CONFIG;
-use crate::system_core::objects::ClientLoginCredentialsPacket;
+use crate::global::{CONFIG, LOGGER};
+use crate::system_core::objects::{ClientLoginCredentialsPacket, UserAccount};
 use crate::system_core::packet::{EventBackend, SystemMessage};
 use crate::system_core::types::LOGIN_EVENT;
 use crate::system_core::objects::User;
 
 /// Returns None if the client disconnected
-pub async fn client_login(stream: &mut TcpStream) -> Option<User> {
+pub async fn client_login(stream: &mut TcpStream) -> Option<UserAccount> {
     let mut login_packet = EventBackend::new(&LOGIN_EVENT);
 
     // TODO: replace unwraps with logger errors
@@ -52,5 +54,16 @@ pub async fn client_login(stream: &mut TcpStream) -> Option<User> {
         }
     }
 
-    Some(DATABASE.check_credentials(&client_credentials.username, &client_credentials.password).await)
+    let (user, user_obj) = DATABASE.check_credentials(&client_credentials.username, &client_credentials.password).await;
+
+    if !user_obj.account_enabled {
+        SystemMessage::new(&format!("{RED}{BOLD}Your account was disabled by an administrator.{C_RESET}"))
+            .write(deserializer.reader)
+            .await
+            .unwrap();
+
+        deserializer.reader.shutdown().await.unwrap_or_else(|_| LOGGER.error(S2C_ERROR));
+    }
+
+    Some(user_obj)
 }
