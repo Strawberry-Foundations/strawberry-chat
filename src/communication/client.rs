@@ -13,7 +13,7 @@ use tokio::time::sleep;
 use stblib::colors::{BOLD, C_RESET, GRAY, GREEN, RED};
 use owo_colors::OwoColorize;
 
-use crate::constants::log_messages::{ADDRESS_LEFT, DISCONNECTED, LOGIN, LOGIN_ERROR, S2C_ERROR};
+use crate::constants::log_messages::{ADDRESS_LEFT, LOGIN, LOGIN_ERROR, S2C_ERROR};
 use crate::global::{CONFIG, LOGGER};
 use crate::system_core::log::log_parser;
 use crate::system_core::{CORE, login};
@@ -28,10 +28,14 @@ pub async fn client_handler(mut client: TcpStream, rx: Receiver<MessageToClient>
     let peer_addr = client.peer_addr().unwrap().ip();
 
     if CONFIG.security.banned_ips.contains(&peer_addr.to_string()) {
-        LOGGER.info(format!("[{peer_addr}] Client was disconnection. Reason: IP banned"));
-        client.write_all("Sorry, you're not allowed to connect to this server.".red().bold().to_string().as_bytes()).await.expect("");
+        LOGGER.info(format!("{peer_addr} was disconnection. Reason: IP banned"));
+
+        SystemMessagePacket::new(&format!("{RED}{BOLD}Sorry, you're not allowed to connect to this server.{C_RESET}"))
+            .write(&mut client)
+            .await
+            .unwrap();
+
         client.shutdown().await.unwrap_or_else(|_| LOGGER.error(S2C_ERROR));
-        LOGGER.info(log_parser(DISCONNECTED, &[&peer_addr]));
         return
     }
 
