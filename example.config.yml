@@ -1,0 +1,47 @@
+server:
+  address: "0.0.0.0"
+  port: 8080
+  name: "Strawberry Chat Server"
+  title: "Julian's Strawberry Chat"
+  description: "This is the official chat server for Strawberry Chat!"
+  edition_key: "somekey"
+  update_channel: "canary"
+
+config:
+  max_message_length: 256
+  max_users: -1
+  max_registered_users: -1
+  max_username_length: 32
+  max_password_length: 256
+  recv_allowed_bytes: 8192
+
+networking:
+  ratelimit: true
+  ratelimit_timeout: 15
+
+flags:
+  enable_messages: true
+  enable_queue: true
+  debug_mode: true
+  online_mode: true
+  admins_wait_queue: false
+  bots_wait_queue: true
+  special_messages: false
+
+database:
+  driver: mysql       # Available drivers: mysql
+
+  host: localhost
+  port: 3006
+  user: admin
+  password: admin
+  database_name: data
+  database_table: chat_data
+
+security:
+  require_signing: false
+  signing_key: none
+  banned_ips: []
+
+
+config_ver: 8
