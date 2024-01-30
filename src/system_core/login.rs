@@ -14,13 +14,13 @@ use crate::communication::protocol::JsonStreamDeserializer;
 use crate::constants::log_messages::S2C_ERROR;
 use crate::database::db::DATABASE;
 use crate::global::{CONFIG, LOGGER};
-use crate::system_core::objects::{ClientLoginCredentialsPacket, UserAccount};
+use crate::system_core::objects::ClientLoginCredentialsPacket;
 use crate::system_core::packet::{EventBackend, SystemMessage};
 use crate::system_core::types::LOGIN_EVENT;
 use crate::system_core::objects::User;
 
 /// Returns None if the client disconnected
-pub async fn client_login(stream: &mut TcpStream) -> Option<UserAccount> {
+pub async fn client_login(stream: &mut TcpStream) -> Option<User> {
     let mut login_packet = EventBackend::new(&LOGIN_EVENT);
 
     // TODO: replace unwraps with logger errors
@@ -54,9 +54,9 @@ pub async fn client_login(stream: &mut TcpStream) -> Option<UserAccount> {
         }
     }
 
-    let (user, user_obj) = DATABASE.check_credentials(&client_credentials.username, &client_credentials.password).await;
+    let account = DATABASE.check_credentials(&client_credentials.username, &client_credentials.password).await;
 
-    if !user_obj.account_enabled {
+    if !account.account_enabled {
         SystemMessage::new(&format!("{RED}{BOLD}Your account was disabled by an administrator.{C_RESET}"))
             .write(deserializer.reader)
             .await
@@ -65,5 +65,5 @@ pub async fn client_login(stream: &mut TcpStream) -> Option<UserAccount> {
         deserializer.reader.shutdown().await.unwrap_or_else(|_| LOGGER.error(S2C_ERROR));
     }
 
-    Some(user_obj)
+    Some(account.user)
 }
