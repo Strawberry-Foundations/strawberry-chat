@@ -6,7 +6,6 @@ use tokio::net::TcpListener;
 use tokio::spawn;
 
 use stblib::colors::{BOLD, C_RESET, CYAN, ITALIC, MAGENTA, RESET};
-// use crate::cli_wins::print::print_window;
 
 use crate::communication::connection_handler::connection_handler;
 use crate::database::db::DATABASE;
@@ -27,8 +26,6 @@ mod security;
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
     println!("{CYAN}{BOLD}* -- {CHAT_NAME} {} {CODENAME} ({SERVER_EDITION}) -- *{RESET}{C_RESET}", DEFAULT_VERSION.clone());
-
-    // print_window("AB");
 
     let constructor = cli_wins::constructor::Constructor::new("Test", cli_wins::constructor::ConstructorOptions {
         debug_mode: true
