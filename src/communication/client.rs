@@ -53,7 +53,7 @@ pub async fn client_handler(mut client: TcpStream, rx: Receiver<MessageToClient>
 
     /// # Core (feat): Account Ok Status
     /// Checks if the account is after all the login things in a "good" status
-    if !account.account_enabled {
+    if !account.account_enabled || !account.ok {
         return
     }
 
