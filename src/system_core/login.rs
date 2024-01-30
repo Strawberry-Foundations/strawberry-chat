@@ -6,7 +6,7 @@
 
 use tokio::net::TcpStream;
 
-use stblib::colors::{BOLD, C_RESET, RED};
+use stblib::colors::{BOLD, C_RESET, RED, YELLOW};
 use serde_json::Value;
 use tokio::io::AsyncWriteExt;
 
@@ -19,6 +19,7 @@ use crate::system_core::objects::{ClientLoginCredentialsPacket, UserAccount};
 use crate::system_core::packet::{EventBackend, SystemMessage};
 use crate::system_core::types::LOGIN_EVENT;
 use crate::system_core::objects::User;
+use crate::system_core::server_core::get_online_usernames;
 
 /// Returns None if the client disconnected
 pub async fn client_login(stream: &mut TcpStream) -> Option<(UserAccount, User)> {
@@ -59,6 +60,20 @@ pub async fn client_login(stream: &mut TcpStream) -> Option<(UserAccount, User)>
 
     if !account.account_enabled {
         SystemMessage::new(&format!("{RED}{BOLD}Your account was disabled by an administrator.{C_RESET}"))
+            .write(deserializer.reader)
+            .await
+            .unwrap();
+
+        LOGGER.info(log_parser(DISCONNECTED, &[&deserializer.reader.peer_addr().unwrap().ip().to_string()]));
+
+        deserializer.reader.shutdown().await.unwrap_or_else(|_| LOGGER.error(S2C_ERROR));
+    }
+
+    if !CONFIG.flags.enable_queue
+        && CONFIG.config.max_users != -1
+        && i16::try_from(get_online_usernames().await.len()).unwrap_or(CONFIG.config.max_users) >= CONFIG.config.max_users {
+
+        SystemMessage::new(&format!("{YELLOW}{BOLD}Sorry, Server is full!{C_RESET}"))
             .write(deserializer.reader)
             .await
             .unwrap();
