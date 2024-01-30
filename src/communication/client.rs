@@ -36,13 +36,15 @@ pub async fn client_handler(mut client: TcpStream, rx: Receiver<MessageToClient>
             .unwrap();
 
         client.shutdown().await.unwrap_or_else(|_| LOGGER.error(S2C_ERROR));
+
         return
     }
 
     let Some(user) = login::client_login(&mut client).await else {
         tx.send(MessageToServer::RemoveMe).await.unwrap();
         LOGGER.warning(format!("[{peer_addr}] Client connection during login"));
-        return;
+
+        return
     };
 
     if user.username == *CRTLCODE_CLIENT_EXIT {
@@ -54,12 +56,14 @@ pub async fn client_handler(mut client: TcpStream, rx: Receiver<MessageToClient>
         LOGGER.info(log_parser(ADDRESS_LEFT, &[&peer_addr]));
 
         client.shutdown().await.unwrap_or_else(|_| LOGGER.error(S2C_ERROR));
+
         return
     }
 
     if user.username.is_empty() {
         LOGGER.error(log_parser(LOGIN_ERROR, &[&peer_addr]));
         client.shutdown().await.unwrap_or_else(|_| LOGGER.error(S2C_ERROR));
+
         return
     }
 
