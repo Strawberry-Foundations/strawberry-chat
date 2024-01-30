@@ -42,13 +42,18 @@ pub async fn client_handler(mut client: TcpStream, rx: Receiver<MessageToClient>
         return
     }
 
+    /// # Core (feat): Client Login
+    /// Basic feature to verify that you are you (yes)
     let Some(user) = login::client_login(&mut client).await else {
         tx.send(MessageToServer::RemoveMe).await.unwrap();
-        LOGGER.warning(format!("[{peer_addr}] Client connection during login"));
+        LOGGER.warning(format!("{peer_addr} connection during login"));
 
         return
     };
 
+    /// # Core (feat): Client Username Verification
+    /// Checks if the user is successfully logged in, if not, the value of `user.username` will be `CRTLCODE_CLIENT_EXIT`
+    /// This code will check if the username is `CRTLCODE_CLIENT_EXIT`
     if user.username == *CRTLCODE_CLIENT_EXIT {
         SystemMessagePacket::new(&format!("{RED}{BOLD}Invalid username and/or password!{C_RESET}"))
             .write(&mut client)
@@ -62,6 +67,8 @@ pub async fn client_handler(mut client: TcpStream, rx: Receiver<MessageToClient>
         return
     }
 
+    /// # Core (ext): Client Username Verification
+    /// Checks if username is empty in case something gone wrong while logging in
     if user.username.is_empty() {
         LOGGER.error(log_parser(LOGIN_ERROR, &[&peer_addr]));
         client.shutdown().await.unwrap_or_else(|_| LOGGER.error(S2C_ERROR));
