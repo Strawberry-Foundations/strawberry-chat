@@ -12,7 +12,7 @@ use crate::system_core::config::GlobalConfig;
 use crate::security::automod::MessageVerification;
 
 pub const BASE_VERSION: &str = "1.11.0";
-pub const ADDITION_VER: &str = "a3";
+pub const ADDITION_VER: &str = "a4";
 pub const STBM_VER: &str = "3";
 
 pub const CODENAME: &str = "Vanilla Cake";
@@ -22,7 +22,7 @@ pub const CHAT_NAME: &str = "Strawberry Chat";
 pub const UPDATE_CHANNEL: &str = "canary";
 pub const SERVER_EDITION: &str = "Rusty Edition";
 
-pub const AUTHORS: &[&str; 3] = &["Juliandev02", "matteodev8", "Paddyk45"];
+pub const AUTHORS: &[&str; 3] = &["Juliandev02", "Paddyk45", "matteodev8"];
 
 lazy_static! {
     pub static ref LOGGER: Logger = Logger::new(
