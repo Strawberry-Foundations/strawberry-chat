@@ -86,6 +86,20 @@ pub async fn client_login(stream: &mut TcpStream) -> Option<(UserAccount, User)>
 
         account.ok = false;
     }
+    else {
+        SystemMessage::new(&format!("{YELLOW}{BOLD}Queue is currently not implemented - Server is full!{C_RESET}"))
+            .write(deserializer.reader)
+            .await
+            .unwrap();
+
+        LOGGER.info(log_parser(DISCONNECTED, &[&deserializer.reader.peer_addr().unwrap().ip().to_string()]));
+
+        account.ok = false;
+
+        deserializer.reader.shutdown().await.unwrap_or_else(|_| LOGGER.error(S2C_ERROR));
+
+    }
+
 
     Some((account.clone(), account.user))
 }
