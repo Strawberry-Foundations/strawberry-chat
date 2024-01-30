@@ -22,6 +22,7 @@ pub struct ServerConfig {
     pub address: String,
     pub port: u16,
     pub name: String,
+    pub title: String,
     pub description: String,
     pub edition_key: String,
     pub update_channel: String,
