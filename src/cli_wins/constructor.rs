@@ -27,6 +27,7 @@ pub struct ConstructorOptions {
 
 pub struct Constructor {
     pub title: String,
+    pub border_color: String,
     pub options: ConstructorOptions
 }
 
@@ -35,8 +36,10 @@ pub struct WindowBuilder {
     pub title: String,
     pub label: String,
     pub property_header: String,
+    pub property_border_color: String,
     pub property_footer: String,
     pub property_label: String,
+    pub property_label_color: String,
 }
 
 pub struct Window {
@@ -45,33 +48,40 @@ pub struct Window {
 
 impl Constructor {
     #![allow(clippy::needless_pass_by_value)]
-    pub fn new(title: impl ToString, constructor_options: ConstructorOptions) -> Self {
+    pub fn new(title: impl ToString, border_color: impl ToString, constructor_options: ConstructorOptions) -> Self {
         Self {
             title: title.to_string(),
+            border_color: border_color.to_string(),
             options: constructor_options
         }
     }
 
     pub fn builder(&self) -> WindowBuilder {
-        WindowBuilder::new(&self.title)
+        WindowBuilder::new(
+            &self.title,
+            &self.border_color,
+        )
     }
 }
 
 impl WindowBuilder {
-    pub fn new(title: impl ToString) -> Self {
+    pub fn new(title: impl ToString, border_color: impl ToString) -> Self {
         Self {
             title: title.to_string(),
+            property_border_color: border_color.to_string(),
             ..Default::default()
         }
     }
 
-    pub fn label(&self, label: impl ToString) -> Self {
+    pub fn label(&self, label: impl ToString, color: impl ToString) -> Self {
         Self {
             title: self.title.clone(),
             label: label.to_string(),
             property_header: self.property_header.clone(),
+            property_border_color: self.property_border_color.clone(),
             property_footer: self.property_footer.clone(),
             property_label: self.property_label.clone(),
+            property_label_color: color.to_string(),
         }
     }
 
@@ -80,6 +90,8 @@ impl WindowBuilder {
         let mut footer = String::new();
         let mut label = String::new();
 
+
+        write!(header, "{}", self.property_border_color).unwrap();
         write!(header, " * ").unwrap();
 
         for _ in 0..(((self.label.len() - self.title.len()) / 2) - 1) {
@@ -103,8 +115,6 @@ impl WindowBuilder {
             }
         };
 
-
-
         write!(header, " * ").unwrap();
 
         write!(label, " | ").unwrap();
@@ -113,7 +123,7 @@ impl WindowBuilder {
             write!(label, "-").unwrap();
         }
 
-        write!(label, "{}", self.label).unwrap();
+        write!(label, "{}{}{C_RESET}{}", self.property_label_color, self.label, self.property_border_color).unwrap();
 
         write!(label, " |").unwrap();
 
