@@ -80,7 +80,6 @@ impl WindowBuilder {
         let mut footer = String::new();
         let mut label = String::new();
 
-
         write!(header, " * ").unwrap();
 
         for _ in 0..(((self.label.len() - self.title.len()) / 2) - 1) {
@@ -91,13 +90,15 @@ impl WindowBuilder {
 
         let sub_len = usize::from(self.title.len() % 2 == 0);
         let sub_len_2 = usize::from(self.label.len() % 2 != 0);
+        let sub_len_3 = usize::from(self.title.len() < self.label.len());
+
 
         if self.label.len() % 2 == 0 {
             for _ in 0..((((self.label.len() - self.title.len()) / 2) - sub_len) - sub_len_2) {
                 write!(header, "-").unwrap();
             }
         } else {
-            for _ in 0..((((self.label.len() - self.title.len()) / 2) + 1) - sub_len_2) {
+            for _ in 0..(((((self.label.len() - self.title.len()) / 2) + 1) - sub_len_2) - sub_len_3) {
                 write!(header, "-").unwrap();
             }
         };
