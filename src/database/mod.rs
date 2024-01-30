@@ -31,17 +31,13 @@ impl Database {
             .await.expect("err");
 
         if row.is_empty() {
-            return UserAccount {
-                ..Default::default()
-            }
+            return UserAccount::default()
         }
 
         let db_password: String = row.first().unwrap().get("password");
 
         if &db_password != password {
-            return UserAccount {
-                ..Default::default()
-            }
+            return UserAccount::default()
         }
 
         let mut user = User {
@@ -91,6 +87,7 @@ impl Database {
             discord_name: data.first().unwrap().get("discord_name"),
             msg_count: data.first().unwrap().get("msg_count"),
             creation_date: data.first().unwrap().get("creation_date"),
+            ok: data.first().unwrap().get("account_enabled"),
             user
         };
 
