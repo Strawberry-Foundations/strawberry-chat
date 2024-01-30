@@ -51,4 +51,5 @@ pub struct UserAccount {
     pub discord_name: String,
     pub msg_count: i32,
     pub creation_date: i32,
+    pub user: User,
 }
