@@ -91,8 +91,7 @@ impl Database {
             discord_name: data.first().unwrap().get("discord_name"),
             msg_count: data.first().unwrap().get("msg_count"),
             creation_date: data.first().unwrap().get("creation_date"),
-            user,
-            ok: true
+            user
         };
 
         user_account
