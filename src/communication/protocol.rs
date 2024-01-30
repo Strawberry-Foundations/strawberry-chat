@@ -2,7 +2,7 @@ use serde::de::DeserializeOwned;
 use tokio::io::{AsyncRead, AsyncReadExt};
 
 pub struct JsonStreamDeserializer<R: AsyncRead + Unpin> {
-    reader: R
+    pub reader: R
 }
 
 impl<R: AsyncRead + Unpin + Send> JsonStreamDeserializer<R> {
