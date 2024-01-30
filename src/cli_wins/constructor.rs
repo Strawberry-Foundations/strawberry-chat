@@ -1,5 +1,4 @@
-#![allow(unused_imports)]
-#![allow(unused_variables)]
+#![allow(unused_imports, unused_variables)]
 
 //! # Command-Line Windows
 //! Command-Line Windows is a library to create nice but simple little command line windows.
