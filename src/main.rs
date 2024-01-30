@@ -5,7 +5,7 @@ use std::error::Error;
 use tokio::net::TcpListener;
 use tokio::spawn;
 
-use stblib::colors::{BOLD, C_RESET, CYAN, ITALIC, MAGENTA, RESET};
+use stblib::colors::{BOLD, C_RESET, CYAN, ITALIC, MAGENTA, RESET, YELLOW};
 
 use crate::communication::connection_handler::connection_handler;
 use crate::database::db::DATABASE;
@@ -27,12 +27,12 @@ mod security;
 async fn main() -> Result<(), Box<dyn Error>> {
     println!("{CYAN}{BOLD}* -- {CHAT_NAME} {} {CODENAME} ({SERVER_EDITION}) -- *{RESET}{C_RESET}", DEFAULT_VERSION.clone());
 
-    let constructor = cli_wins::constructor::Constructor::new("Test", cli_wins::constructor::ConstructorOptions {
+    let constructor = cli_wins::constructor::Constructor::new("EXPERIMENTAL SOFTWARE", YELLOW,cli_wins::constructor::ConstructorOptions {
         debug_mode: true
     });
 
     let window = constructor.builder()
-        .label("Just a test! But it works.")
+        .label("Strawberry Chat Rusty is in an unstable state and can therefore crash.", format!("{BOLD}{YELLOW}"))
         .build();
 
     window.show();
