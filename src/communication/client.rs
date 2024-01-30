@@ -27,6 +27,8 @@ use crate::communication::handlers::{client_incoming, client_outgoing};
 pub async fn client_handler(mut client: TcpStream, rx: Receiver<MessageToClient>, tx: Sender<MessageToServer>) {
     let peer_addr = client.peer_addr().unwrap().ip();
 
+    /// # Security: IP-Banning
+    /// Security feature for banning specific & static IP addresses
     if CONFIG.security.banned_ips.contains(&peer_addr.to_string()) {
         LOGGER.info(format!("{peer_addr} was disconnection. Reason: IP banned"));
 
