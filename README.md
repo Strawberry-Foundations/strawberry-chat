@@ -30,10 +30,22 @@ In the beginning, communication only took place via pure strings (if you can rea
 With v2 of the standard, we implemented JSON to provide more options for how the client can represent a message. We are currently developing v3, which goes in both directions - server & client send JSON. 
 
 ## Security
-Security is an important part when it comes to internet programs. As of January 30, 2024, there is still NO password hashing for the Rust rewrite
+Security is an important part when it comes to internet programs. As of January 30, 2024, there is still NO password hashing for the Rust rewrite.
+In the following table you can see our security features and the corresponding versions:
 
+|          | Password Hashing | TLS | Automoderation | IP Blocking | Ratelimit |
+|----------|------------------|-----|----------------|-------------|-----------|
+| `v1.8`  | ✅                | ❌  | ➖             | ❌          | ❌        |
+| `v1.9`  | ✅                | ❌  | ➖             | ❌          | ❌        |
+| `v1.10` | ✅                | ❌  | ➖             | ✅          | ✅        |
+| `v1.11` | ❌                | ❌  | ✅             | ✅          | ✅        |
 
+**Legend**
+| ✅        | ❌            | ➖                    | 
+|-----------|---------------|-----------------------|
+| Supported | Not supported | Particially supported |
 
+## Side Notes
 ### Config
 Copy `./example.config.yml` to `./target/{RELEASE_TYPE}/config.yml` (Or to the same directory as the executable) 
 and change values as needed
