@@ -86,7 +86,9 @@ pub async fn client_login(stream: &mut TcpStream) -> Option<(UserAccount, User)>
 
         account.ok = false;
     }
-    else {
+    else if CONFIG.config.max_users != -1
+        && i16::try_from(get_online_usernames().await.len()).unwrap_or(CONFIG.config.max_users) >= CONFIG.config.max_users {
+
         SystemMessage::new(&format!("{YELLOW}{BOLD}Queue is currently not implemented - Server is full!{C_RESET}"))
             .write(deserializer.reader)
             .await
@@ -97,7 +99,6 @@ pub async fn client_login(stream: &mut TcpStream) -> Option<(UserAccount, User)>
         account.ok = false;
 
         deserializer.reader.shutdown().await.unwrap_or_else(|_| LOGGER.error(S2C_ERROR));
-
     }
 
 
