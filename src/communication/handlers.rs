@@ -12,6 +12,7 @@ use crate::security::verification::MessageAction;
 use crate::system_core::log::log_parser;
 use crate::system_core::message::{MessageToClient, MessageToServer};
 use crate::system_core::objects::User;
+use crate::system_core::string::StbString;
 
 pub async fn client_incoming(tx: Sender<MessageToServer>, mut r_stream: ReadHalf<TcpStream>, peer_addr: IpAddr, user: User) {
     let mut buffer = [0u8; 4096];
@@ -27,6 +28,7 @@ pub async fn client_incoming(tx: Sender<MessageToServer>, mut r_stream: ReadHalf
 
         let content = String::from_utf8_lossy(&buffer[..n]).trim().to_string();
         let content = strip_ansi_escapes::strip_str(content);
+
         if content.starts_with('/') && content.len() > 1 {
             let parts: Vec<String> = content[1..].split_ascii_whitespace().map(String::from).collect();
 
@@ -64,9 +66,12 @@ pub async fn client_outgoing(mut rx: Receiver<MessageToClient>, mut w_stream: Wr
         let Some(msg) = rx.recv().await else {
             return;
         };
+
         match msg {
             MessageToClient::UserMessage { author, content } => {
-                if let Err(e) = crate::system_core::packet::UserMessage::new(author.clone(), &content).write(&mut w_stream).await {
+                let content = StbString::from_str(content).apply_htpf();
+
+                if let Err(e) = crate::system_core::packet::UserMessage::new(author.clone(), &content.to_string()).write(&mut w_stream).await {
                     LOGGER.error(format!("[S -> {peer_addr}] Failed to send a packet: {e}"));
                     return;
                 }
