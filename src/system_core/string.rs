@@ -1,11 +1,12 @@
 use stblib::colors::{BLUE, BOLD, CYAN, GREEN, MAGENTA, RED, RESET, UNDERLINE, WHITE, YELLOW};
-use chrono::{Utc, Local, Datelike, Timelike};
+use chrono::{Utc, Local};
 
 pub struct StbString {
     pub string: String
 }
 
 impl StbString {
+    #[allow(clippy::needless_pass_by_value)]
     pub fn from_str(string: impl ToString) -> Self {
         Self {
             string: string.to_string(),
