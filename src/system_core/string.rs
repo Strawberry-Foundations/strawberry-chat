@@ -24,12 +24,12 @@ impl StbString {
             .replace("#reset", RESET)
             .replace("#bold", BOLD)
             .replace("#underline", UNDERLINE)
-            .replace("#today", &Utc::today().format("%Y-%m-%d").to_string())
+            .replace("#today", &Utc::now().format("%Y-%m-%d").to_string())
             .replace("#curtime", &Local::now().format("%H:%M").to_string())
-            .replace("#month", &Utc::today().format("%m").to_string())
+            .replace("#month", &Utc::now().format("%m").to_string())
             .replace("#fullmonth", &Local::now().format("%h").to_string())
             .replace("#ftoday", &Local::now().format("%A, %d. %h %Y").to_string())
-            .replace("#tomorrow", &(Utc::today() + chrono::Duration::days(1)).format("%Y-%m-%d").to_string())
+            .replace("#tomorrow", &(Utc::now() + chrono::Duration::days(1)).format("%Y-%m-%d").to_string())
             .replace("#ftomorrow", &(Local::now() + chrono::Duration::days(1)).format("%A, %d. %h %Y").to_string());
 
         ;
