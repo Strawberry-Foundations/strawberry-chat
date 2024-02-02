@@ -11,7 +11,7 @@ use serde_json::Value;
 use tokio::io::AsyncWriteExt;
 
 use crate::communication::protocol::JsonStreamDeserializer;
-use crate::constants::log_messages::{DISCONNECTED, S2C_ERROR};
+use crate::constants::log_messages::{ADDRESS_LEFT, DISCONNECTED, S2C_ERROR};
 use crate::database::db::DATABASE;
 use crate::global::{CONFIG, LOGGER};
 use crate::system_core::log::log_parser;
@@ -56,7 +56,20 @@ pub async fn client_login(stream: &mut TcpStream) -> Option<(UserAccount, User)>
         }
     }
 
-    let mut account = DATABASE.check_credentials(&client_credentials.username, &client_credentials.password).await;
+    let (mut account, login_success) = DATABASE.check_credentials(&client_credentials.username, &client_credentials.password).await;
+
+    if !login_success {
+        SystemMessage::new(&format!("{RED}{BOLD}Invalid username and/or password!{C_RESET}"))
+            .write(deserializer.reader)
+            .await
+            .unwrap();
+
+        LOGGER.info(log_parser(ADDRESS_LEFT, &[&deserializer.reader.peer_addr().unwrap().ip().to_string()]));
+
+        deserializer.reader.shutdown().await.unwrap_or_else(|_| LOGGER.error(S2C_ERROR));
+
+        account.ok = false;
+    }
 
     if !account.account_enabled {
         SystemMessage::new(&format!("{RED}{BOLD}Your account was disabled by an administrator.{C_RESET}"))
@@ -96,9 +109,9 @@ pub async fn client_login(stream: &mut TcpStream) -> Option<(UserAccount, User)>
 
         LOGGER.info(log_parser(DISCONNECTED, &[&deserializer.reader.peer_addr().unwrap().ip().to_string()]));
 
-        account.ok = false;
-
         deserializer.reader.shutdown().await.unwrap_or_else(|_| LOGGER.error(S2C_ERROR));
+
+        account.ok = false;
     }
 
 
