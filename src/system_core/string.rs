@@ -32,7 +32,7 @@ impl StbString {
             .replace("#fullmonth", &Local::now().format("%h").to_string())
             .replace("#ftoday", &Local::now().format("%A, %d. %h %Y").to_string())
             .replace("#tomorrow", &(Utc::now() + chrono::Duration::days(1)).format("%Y-%m-%d").to_string())
-        .replace("#ftomorrow", &(Local::now() + chrono::Duration::days(1)).format("%A, %d. %h %Y").to_string());
+            .replace("#ftomorrow", &(Local::now() + chrono::Duration::days(1)).format("%A, %d. %h %Y").to_string());
 
         self
     }
