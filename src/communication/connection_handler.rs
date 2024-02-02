@@ -82,7 +82,10 @@ pub async fn connection_handler(socket: TcpListener) {
                     format!("{RED}{BOLD}You have been ratelimited due to spam activity. Please try again later{C_RESET}").as_bytes()
                 ).await.unwrap_or_else(|_| LOGGER.warning(format!("{S2C_ERROR} (com::conn::#82)")));
 
-                allow_connection = false;
+                // allow_connection = false;
+
+                client.shutdown().await.unwrap_or(());
+                continue;
             }
         }
 
