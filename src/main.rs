@@ -9,7 +9,7 @@ use stblib::colors::{BOLD, C_RESET, CYAN, ITALIC, MAGENTA, RESET, YELLOW};
 
 use crate::communication::connection_handler::connection_handler;
 use crate::database::db::DATABASE;
-use crate::global::{CHAT_NAME, CODENAME, CONFIG, DEFAULT_VERSION, RUNTIME_LOGGER, SERVER_EDITION};
+use crate::global::{CHAT_NAME, CODENAME, CONFIG, DEFAULT_VERSION, ONLINE_MODE, RUNTIME_LOGGER, SERVER_EDITION};
 use crate::system_core::server_core::core_thread;
 use crate::utilities::{delete_last_line, runtime_all_addresses};
 
@@ -46,6 +46,8 @@ async fn main() -> Result<(), Box<dyn Error>> {
     if !CONFIG.flags.online_mode {
         cli_wins::online_mode::display();
     }
+
+    ONLINE_MODE.auth().await;
 
     RUNTIME_LOGGER.default(format!("Connecting to database on address {}", CONFIG.database.host));
     let _ = DATABASE.connection.clone();
