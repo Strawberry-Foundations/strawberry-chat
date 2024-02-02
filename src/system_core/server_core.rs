@@ -39,6 +39,10 @@ pub async fn get_online_usernames() -> Vec<String> {
     CLIENTS.read().await.iter().filter_map(|c| c.get_user().map(|u| u.username)).collect()
 }
 
+pub async fn get_online_users() -> Vec<User> {
+    CLIENTS.read().await.iter().filter_map(Connection::get_user).collect()
+}
+
 pub async fn register_connection(peer: SocketAddr) -> (Sender<MessageToServer>, Receiver<MessageToClient>, ) {
     let (tc_tx, tc_rx) = channel::<MessageToClient>(CHANNEL_BUFFER);
     let (ts_tx, ts_rx) = channel::<MessageToServer>(CHANNEL_BUFFER);
