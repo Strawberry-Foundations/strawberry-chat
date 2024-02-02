@@ -83,6 +83,7 @@ enum Event {
 
 async fn get_events() -> Vec<(Event, usize)> {
     let mut events = vec![];
+
     CLIENTS.write().await.iter_mut().enumerate().for_each(|(i, conn)| {
         if let Some(event) = match conn.rx.try_recv() {
             Ok(MessageToServer::Authorize { user }) => {
@@ -146,7 +147,7 @@ pub async fn core_thread() {
                 }
             }
         }
-        CLIENTS.write().await.retain(|c| c.state != State::Disconnected);
+        // CLIENTS.write().await.retain(|c| c.state != State::Disconnected);
         sleep(Duration::from_millis(60)).await;
     }
 }
