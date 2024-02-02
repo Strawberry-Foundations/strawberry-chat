@@ -5,7 +5,7 @@ use std::string::ToString;
 use lazy_static::lazy_static;
 
 use stblib::logging::Logger;
-use stblib::colors::{BLUE, BOLD, C_RESET, GREEN, RED};
+use stblib::colors::{BLUE, BOLD, C_RESET, GREEN, RED, YELLOW};
 use stblib::logging::formats::{LogFormat, LogFormatExt};
 
 use crate::system_core::config::GlobalConfig;
@@ -36,10 +36,10 @@ lazy_static! {
     pub static ref RUNTIME_LOGGER: Logger = Logger::new(
         stblib::logging::featureset::FeatureSet::new(),
         LogFormat {
-            info: format!("{C_RESET}{BOLD}{GREEN}STARTUP{C_RESET} [%<message>%]"),
+            info: format!("{C_RESET}{BOLD}{GREEN}STARTUP{C_RESET}  [%<message>%]"),
             error: format!("{C_RESET}{BOLD}{RED}RUNTIME_ERROR{C_RESET} [%<message>%]"),
             default: format!("{C_RESET}{BOLD}{BLUE}DATABASE{C_RESET} [%<message>%]"),
-            warning: String::new(),
+            warning: format!("{C_RESET}{BOLD}{YELLOW}WARNING{C_RESET} [%<message>%]"),
             critical: String::new(),
             extensions: LogFormatExt {
                 time_fmt: "%Y-%m-%d %H:%M".to_string(),
