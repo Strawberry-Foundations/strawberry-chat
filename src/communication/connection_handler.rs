@@ -51,6 +51,7 @@ pub async fn connection_handler(socket: TcpListener) {
         /// - Stable and secure
         /// - Spam protection is activated from 10 connections
         let mut allow_connection = true;
+
         // Check if ignore list contains the client's address
         if let std::collections::hash_map::Entry::Vacant(e) = ignore_list.entry(client_addr) {
             // If connection counter of user is higher or equals to 10, disallow connection to the server
@@ -89,9 +90,7 @@ pub async fn connection_handler(socket: TcpListener) {
             let (tx, rx) = register_connection(client.peer_addr().unwrap()).await;
             spawn(client_handler(client, rx, tx));
         } else {
-            client.shutdown().await.unwrap_or_else(|_| LOGGER.error(
-                format!("{S2C_ERROR} (com::conn::#91)"))
-            );
+            client.shutdown().await.unwrap_or(());
         }
     }
 }
