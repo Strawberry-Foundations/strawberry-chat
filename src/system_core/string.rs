@@ -37,13 +37,18 @@ impl StbString {
         self
     }
 
+    #[allow(clippy::needless_collect)]
     pub async fn check_for_mention(mut self) -> Self {
-        for user in &get_online_usernames().await {
-            #[allow(clippy::needless_collect)]
-            let msg_split= self.string.split(' ').collect::<Vec<&str>>();
+        let string_lower = self.string.to_lowercase();
+        let msg_split= string_lower.split(' ').collect::<Vec<&str>>();
 
+        println!("{string_lower}");
+
+        for user in &get_online_usernames().await {
             if msg_split.contains(&&*format!("@{}", user.to_lowercase())) {
-                self.string = self.string.replace(&format!("@{}", user.to_lowercase()), &format!("{BACK_MAGENTA}{BOLD}@{user}{C_RESET}"));
+                self.string = self.string
+                    .replace(&format!("@{}", user.to_lowercase()), &format!("{BACK_MAGENTA}{BOLD}@{user}{C_RESET}"))
+                    .replace(&format!("@{user}"), &format!("{BACK_MAGENTA}{BOLD}@{user}{C_RESET}"));
             }
         }
         self
