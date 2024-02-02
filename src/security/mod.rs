@@ -1,2 +1,2 @@
 pub mod verification;
-mod online_mode;
+pub mod online_mode;
