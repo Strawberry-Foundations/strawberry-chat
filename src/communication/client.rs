@@ -37,7 +37,7 @@ pub async fn client_handler(mut client: TcpStream, rx: Receiver<MessageToClient>
             .await
             .unwrap();
 
-        client.shutdown().await.unwrap_or_else(|_| LOGGER.error(S2C_ERROR));
+        client.shutdown().await.unwrap_or_else(|_| LOGGER.error(format!("{S2C_ERROR} (com::client::#40)")));
 
         return
     }
@@ -68,7 +68,7 @@ pub async fn client_handler(mut client: TcpStream, rx: Receiver<MessageToClient>
 
         LOGGER.info(log_parser(ADDRESS_LEFT, &[&peer_addr]));
 
-        client.shutdown().await.unwrap_or_else(|_| LOGGER.error(S2C_ERROR));
+        client.shutdown().await.unwrap_or_else(|_| LOGGER.error(format!("{S2C_ERROR} (com::client::#71)")));
 
         return
     }
@@ -77,7 +77,7 @@ pub async fn client_handler(mut client: TcpStream, rx: Receiver<MessageToClient>
     /// Checks if username is empty in case something gone wrong while logging in
     if user.username.is_empty() {
         LOGGER.error(log_parser(LOGIN_ERROR, &[&peer_addr]));
-        client.shutdown().await.unwrap_or_else(|_| LOGGER.error(S2C_ERROR));
+        client.shutdown().await.unwrap_or_else(|_| LOGGER.error(format!("{S2C_ERROR} (com::client::#80)")));
 
         return
     }
