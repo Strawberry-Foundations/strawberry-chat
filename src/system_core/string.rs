@@ -42,8 +42,6 @@ impl StbString {
         let string_lower = self.string.to_lowercase();
         let msg_split= string_lower.split(' ').collect::<Vec<&str>>();
 
-        println!("{string_lower}");
-
         for user in &get_online_usernames().await {
             if msg_split.contains(&&*format!("@{}", user.to_lowercase())) {
                 self.string = self.string
