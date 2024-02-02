@@ -79,7 +79,7 @@ pub async fn connection_handler(socket: TcpListener) {
 
                 client.write_all(
                     format!("{RED}{BOLD}You have been ratelimited due to spam activity. Please try again later{C_RESET}").as_bytes()
-                ).await.unwrap_or_else(|_| LOGGER.warning(S2C_ERROR));
+                ).await.unwrap_or_else(|_| LOGGER.warning(format!("{S2C_ERROR} (com::conn::#82)")));
 
                 allow_connection = false;
             }
@@ -88,6 +88,6 @@ pub async fn connection_handler(socket: TcpListener) {
         if allow_connection {
             let (tx, rx) = register_connection(client.peer_addr().unwrap()).await;
             spawn(client_handler(client, rx, tx));
-        } else { client.shutdown().await.unwrap_or_else(|_| LOGGER.error(S2C_ERROR)) }
+        } else { client.shutdown().await.unwrap_or_else(|_| LOGGER.error(format!("{S2C_ERROR} (com::conn::#91)"))) }
     }
 }
