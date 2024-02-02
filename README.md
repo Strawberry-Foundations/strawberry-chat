@@ -2,8 +2,8 @@
   <h1>
     <a href="https://strawberryfoundations.xyz/strawberry-chat">Strawberry Chat</a>
     💬
-  <h1>
-  The universal chatting platform for (not just) your terminal!
+  </h1>
+  <h2>The universal chatting platform for (not just) your terminal!</h2>
   <br><br>
 
   ![Latest Stable Release](https://img.shields.io/badge/dynamic/json?url=https://api.strawberryfoundations.xyz/v1/versions&query=%24.stbchat.server.stable&label=Latest%20Stable%20Release&color=success)
@@ -22,7 +22,7 @@ Strawberry Chat is a simple chat platform based on Rust Async Tcp Streams. It al
 Also don't mind looking at our documentation! https://developers.strawberryfoundations.xyz/
 
 ## Why?
-I wanted to program a "small" chat app because I had always been interested in microcomputing and bare bone technologies such as pure Tcp sockets. At the time I started, I only knew Python. Due to the size and features of Strawberry Chat, Strawberry Chat was rewritten in a faster and safer language, Rust. Strawberry Chat is not intended to be a replacement for conventional chat platforms - it is more of an addition to have fun. 
+I wanted to program a "small" chat app because I had always been interested in microcomputer and bare-bones technologies such as pure Tcp sockets. At the time I started, I only knew Python. Due to the size and features of Strawberry Chat, Strawberry Chat was rewritten in a faster and safer language, Rust. Strawberry Chat is not intended to be a replacement for conventional chat platforms - it is more of an addition to have fun. 
 
 ## How does Strawberry Chat work?
 I can't explain everything in detail now, it might end up in our [Developer documentation](https://developers.strawberryfoundations.xyz/), but Strawberry Chat works by simply communicating via Tcp sockets - similar to IRC, except we have our own transport format. <br>
@@ -33,17 +33,17 @@ With v2 of the standard, we implemented JSON to provide more options for how the
 Security is an important part when it comes to internet programs. As of January 30, 2024, there is still NO password hashing for the Rust rewrite.
 In the following table you can see our security features and the corresponding versions:
 
-| Version | Password Hashing  | TLS | Automoderation | IP Blocking | Ratelimit | Login Verification | Msg Verification | 
-|---------|-------------------|-----|----------------|-------------|-----------|--------------------|------------------|
-| `v1.8`  | ✅                | ❌  | ➖             | ❌          | ❌        | ❌                 | ❌               |
-| `v1.9`  | ✅                | ❌  | ➖             | ❌          | ❌        | ❌                 | ❌               |
-| `v1.10` | ✅                | ❌  | ➖             | ✅          | ✅        | ❌                 | ❌               |
-| `v1.11` | ❌                | ❌  | ✅             | ✅          | ✅        | ✅                 | ✅               |
+| Version | Password Hashing | TLS | Automoderation | IP Blocking | Ratelimit | Login Verification | Msg Verification | 
+|---------|------------------|-----|----------------|-------------|-----------|--------------------|------------------|
+| `v1.8`  | ✅                | ❌   | ➖              | ❌           | ❌         | ❌                  | ❌                |
+| `v1.9`  | ✅                | ❌   | ➖              | ❌           | ❌         | ❌                  | ❌                |
+| `v1.10` | ✅                | ❌   | ➖              | ✅           | ✅         | ❌                  | ❌                |
+| `v1.11` | ❌                | ❌   | ✅              | ✅           | ✅         | ✅                  | ✅                |
 
 **Legend**
 | ✅        | ❌            | ➖                    | 
 |-----------|---------------|-----------------------|
-| Supported | Not supported | Particially supported |
+| Supported | Not supported | Partially supported |
 
 ## Side Notes
 ### Config
