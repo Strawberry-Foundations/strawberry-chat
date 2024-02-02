@@ -79,7 +79,7 @@ pub async fn connection_handler(socket: TcpListener) {
             else {
                 LOGGER.info(log_parser(CONNECTED_RLM, &[&client_addr.to_string(), ]));
 
-                SystemMessage::new(format!("{RED}{BOLD}You have been ratelimited due to spam activity. Please try again later{C_RESET}"))
+                SystemMessage::new(&format!("{RED}{BOLD}You have been ratelimited due to spam activity. Please try again later{C_RESET}"))
                     .write(&mut client)
                     .await
                     .unwrap_or_else(|_| LOGGER.warning(format!("{S2C_ERROR} (com::conn::#85)")));
