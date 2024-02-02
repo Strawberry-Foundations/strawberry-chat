@@ -69,7 +69,7 @@ pub async fn client_outgoing(mut rx: Receiver<MessageToClient>, mut w_stream: Wr
 
         match msg {
             MessageToClient::UserMessage { author, content } => {
-                let content = StbString::from_str(content).apply_htpf();
+                let content = StbString::from_str(content).apply_htpf().check_for_mention().await;
 
                 if let Err(e) = crate::system_core::packet::UserMessage::new(author.clone(), &content.to_string()).write(&mut w_stream).await {
                     LOGGER.error(format!("[S -> {peer_addr}] Failed to send a packet: {e}"));
