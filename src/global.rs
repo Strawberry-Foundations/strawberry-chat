@@ -78,5 +78,5 @@ lazy_static! {
 
     pub static ref MESSAGE_VERIFICATOR: MessageVerification = MessageVerification::new();
 
-    pub static ref ONLINE_MODE: OnlineMode = OnlineMode::new();
+    pub static ref ONLINE_MODE: OnlineMode = OnlineMode::new(CONFIG.flags.online_mode);
 }
