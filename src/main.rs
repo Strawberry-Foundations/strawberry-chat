@@ -63,8 +63,8 @@ async fn main() -> Result<(), Box<dyn Error>> {
         )
     );
 
-    spawn(core_thread());
-    connection_handler(socket).await;
+    spawn(connection_handler(socket));
+    core_thread().await;
 
     Ok(())
 }
