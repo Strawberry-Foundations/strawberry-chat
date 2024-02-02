@@ -22,7 +22,7 @@ impl OnlineMode {
             let client = Client::new();
 
             let Ok(response) = client.get(format!("{API}utils/user/ip")).send().await else {
-                LOGGER.error("Could not send request to Strawberry API");
+                RUNTIME_LOGGER.warning("Could not send request to Strawberry API");
                 return
             };
 
@@ -33,8 +33,11 @@ impl OnlineMode {
                 RUNTIME_LOGGER.info(format!("Connected to Strawberry API with IP {}", json["ip"].as_str().unwrap()));
             }
             else {
-                LOGGER.error("Error while connecting to Strawberry API");
+                RUNTIME_LOGGER.warning("Error while connecting to Strawberry API");
             }
+        }
+        else {
+            RUNTIME_LOGGER.warning("Online Mode is disabled");
         }
     }
 }
