@@ -1,5 +1,5 @@
 use reqwest::Client;
-use crate::global::{API, LOGGER, RUNTIME_LOGGER};
+use crate::global::{API, RUNTIME_LOGGER};
 
 
 #[derive(Default)]
