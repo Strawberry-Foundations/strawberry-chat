@@ -18,6 +18,7 @@ use crate::communication::client::client_handler;
 use crate::global::{CONFIG, LOGGER};
 use crate::system_core::log::log_parser;
 use crate::constants::log_messages::{CONNECTED, CONNECTED_RLM, CONNECTION_ERROR, RATELIMIT_REMOVED, REACHED_CON_LIMIT, S2C_ERROR};
+use crate::system_core::packet::SystemMessage;
 use crate::system_core::server_core::register_connection;
 
 pub async fn connection_handler(socket: TcpListener) {
@@ -78,14 +79,15 @@ pub async fn connection_handler(socket: TcpListener) {
             else {
                 LOGGER.info(log_parser(CONNECTED_RLM, &[&client_addr.to_string(), ]));
 
-                client.write_all(
-                    format!("{RED}{BOLD}You have been ratelimited due to spam activity. Please try again later{C_RESET}").as_bytes()
-                ).await.unwrap_or_else(|_| LOGGER.warning(format!("{S2C_ERROR} (com::conn::#82)")));
+                SystemMessage::new(format!("{RED}{BOLD}You have been ratelimited due to spam activity. Please try again later{C_RESET}"))
+                    .write(&mut client)
+                    .await
+                    .unwrap_or_else(|_| LOGGER.warning(format!("{S2C_ERROR} (com::conn::#85)")));
 
-                // allow_connection = false;
+                allow_connection = false;
 
-                client.shutdown().await.unwrap_or(());
-                continue;
+                /* client.shutdown().await.unwrap_or(());
+                continue; */
             }
         }
 
