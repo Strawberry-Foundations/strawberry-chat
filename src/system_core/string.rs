@@ -1,6 +1,6 @@
 use stblib::colors::{BACK_MAGENTA, BLUE, BOLD, C_RESET, CYAN, GREEN, MAGENTA, RED, RESET, UNDERLINE, WHITE, YELLOW};
 use chrono::{Utc, Local};
-use crate::system_core::server_core::get_online_usernames;
+use crate::system_core::server_core::get_online_users;
 
 pub struct StbString {
     pub string: String
@@ -42,11 +42,11 @@ impl StbString {
         let string_lower = self.string.to_lowercase();
         let msg_split= string_lower.split(' ').collect::<Vec<&str>>();
 
-        for user in &get_online_usernames().await {
-            if msg_split.contains(&&*format!("@{}", user.to_lowercase())) {
+        for user in &get_online_users().await {
+            if msg_split.contains(&&*format!("@{}", user.username.to_lowercase())) {
                 self.string = self.string
-                    .replace(&format!("@{}", user.to_lowercase()), &format!("{BACK_MAGENTA}{BOLD}@{user}{C_RESET}"))
-                    .replace(&format!("@{user}"), &format!("{BACK_MAGENTA}{BOLD}@{user}{C_RESET}"));
+                    .replace(&format!("@{}", user.username.to_lowercase()), &format!("{BACK_MAGENTA}{BOLD}@{}{C_RESET}", user.nickname))
+                    .replace(&format!("@{}", user.username), &format!("{BACK_MAGENTA}{BOLD}@{}{C_RESET}", user.nickname));
             }
         }
         self
