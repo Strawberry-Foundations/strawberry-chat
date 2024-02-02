@@ -117,6 +117,5 @@ pub async fn client_login(stream: &mut TcpStream) -> Option<(UserAccount, User)>
         account.ok = false;
     }
 
-
     Some((account.clone(), account.user))
 }
