@@ -11,6 +11,8 @@ use stblib::logging::formats::{LogFormat, LogFormatExt};
 use crate::system_core::config::GlobalConfig;
 use crate::security::verification::MessageVerification;
 
+pub const API: &str = "https://api.strawberryfoundations.xyz/v1/";
+
 pub const BASE_VERSION: &str = "1.11.0";
 pub const ADDITION_VER: &str = "a5";
 pub const STBM_VER: &str = "3";
