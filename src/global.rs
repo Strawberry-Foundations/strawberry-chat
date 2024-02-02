@@ -10,6 +10,7 @@ use stblib::logging::formats::{LogFormat, LogFormatExt};
 
 use crate::system_core::config::GlobalConfig;
 use crate::security::verification::MessageVerification;
+use crate::security::online_mode::OnlineMode;
 
 pub const API: &str = "https://api.strawberryfoundations.xyz/v1/";
 
@@ -76,4 +77,6 @@ lazy_static! {
     );
 
     pub static ref MESSAGE_VERIFICATOR: MessageVerification = MessageVerification::new();
+
+    pub static ref ONLINE_MODE: OnlineMode = OnlineMode::new();
 }
