@@ -24,20 +24,20 @@ impl Database {
         }
     }
 
-    pub async fn check_credentials(&self, username: &String, password: &String) -> UserAccount {
+    pub async fn check_credentials(&self, username: &String, password: &String) -> (UserAccount, bool) {
         let row  = sqlx::query("SELECT username, password FROM users WHERE username = ?")
             .bind(username)
             .fetch_all(&self.connection)
             .await.expect("err");
 
         if row.is_empty() {
-            return UserAccount::default()
+            return (UserAccount::default(), false)
         }
 
         let db_password: String = row.first().unwrap().get("password");
 
         if &db_password != password {
-            return UserAccount::default()
+            return (UserAccount::default(), false)
         }
 
         let mut user = User {
@@ -91,6 +91,6 @@ impl Database {
             user
         };
 
-        user_account
+        (user_account, true)
     }
 }
