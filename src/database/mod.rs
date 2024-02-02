@@ -25,7 +25,7 @@ impl Database {
     }
 
     pub async fn check_credentials(&self, username: &String, password: &String) -> (UserAccount, bool) {
-        let row  = sqlx::query("SELECT username, password FROM users WHERE username = ?")
+        let row = sqlx::query("SELECT username, password FROM users WHERE username = ?")
             .bind(username)
             .fetch_all(&self.connection)
             .await.expect("err");
