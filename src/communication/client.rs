@@ -45,8 +45,11 @@ pub async fn client_handler(mut client: TcpStream, rx: Receiver<MessageToClient>
     /// # Core (feat): Client Login
     /// Basic feature to verify that you are you (yes)
     let Some((account, user)) = login::client_login(&mut client).await else {
-        tx.send(MessageToServer::RemoveMe).await.unwrap();
-        LOGGER.warning(format!("{peer_addr} connection during login"));
+        tx.send(MessageToServer::RemoveMe).await.unwrap(); // <--- stbbugs::20240202--1: Calls Exception when leaving stbchat while login screen
+
+        tokio::time::sleep(Duration::from_millis(140)).await;
+
+        LOGGER.warning(format!("Error logging in {peer_addr}, connection to the client was disconnected"));
 
         return
     };
