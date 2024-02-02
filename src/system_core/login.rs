@@ -71,7 +71,7 @@ pub async fn client_login(stream: &mut TcpStream) -> Option<(UserAccount, User)>
         account.ok = false;
     }
 
-    if !account.account_enabled {
+    if !account.account_enabled && login_success {
         SystemMessage::new(&format!("{RED}{BOLD}Your account was disabled by an administrator.{C_RESET}"))
             .write(deserializer.reader)
             .await
