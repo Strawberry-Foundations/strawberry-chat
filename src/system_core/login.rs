@@ -41,7 +41,7 @@ pub async fn client_login(stream: &mut TcpStream) -> Option<(UserAccount, User)>
 
     loop {
         let Ok(msg) = deserializer.next::<Value>().await else {
-            continue;
+            return None;
         };
 
         match msg["packet_type"].as_str() {
