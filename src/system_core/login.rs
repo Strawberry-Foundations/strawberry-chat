@@ -31,7 +31,10 @@ pub async fn client_login(stream: &mut TcpStream) -> Option<(UserAccount, User)>
         .await
         .unwrap();
 
-    login_packet.write(stream).await.unwrap();
+    match login_packet.write(stream).await {
+        Ok(()) => { },
+        Err(_) => stream.shutdown().await.unwrap_or(())
+    };
 
     let mut deserializer = JsonStreamDeserializer::from_read(stream);
     let mut client_credentials = ClientLoginCredentialsPacket::new();
@@ -66,7 +69,7 @@ pub async fn client_login(stream: &mut TcpStream) -> Option<(UserAccount, User)>
 
         LOGGER.info(log_parser(ADDRESS_LEFT, &[&deserializer.reader.peer_addr().unwrap().ip().to_string()]));
 
-        deserializer.reader.shutdown().await.unwrap_or_else(|_| LOGGER.error(S2C_ERROR));
+        deserializer.reader.shutdown().await.unwrap_or_else(|_| LOGGER.error(format!("{S2C_ERROR} (core::login::#72)")));
 
         account.ok = false;
     }
@@ -79,7 +82,7 @@ pub async fn client_login(stream: &mut TcpStream) -> Option<(UserAccount, User)>
 
         LOGGER.info(log_parser(DISCONNECTED, &[&deserializer.reader.peer_addr().unwrap().ip().to_string()]));
 
-        deserializer.reader.shutdown().await.unwrap_or_else(|_| LOGGER.error(S2C_ERROR));
+        deserializer.reader.shutdown().await.unwrap_or_else(|_| LOGGER.error(format!("{S2C_ERROR} (core::login::#85)")));
 
         account.ok = false;
     }
@@ -95,7 +98,7 @@ pub async fn client_login(stream: &mut TcpStream) -> Option<(UserAccount, User)>
 
         LOGGER.info(log_parser(DISCONNECTED, &[&deserializer.reader.peer_addr().unwrap().ip().to_string()]));
 
-        deserializer.reader.shutdown().await.unwrap_or_else(|_| LOGGER.error(S2C_ERROR));
+        deserializer.reader.shutdown().await.unwrap_or_else(|_| LOGGER.error(format!("{S2C_ERROR} (core::login::#101)")));
 
         account.ok = false;
     }
@@ -109,7 +112,7 @@ pub async fn client_login(stream: &mut TcpStream) -> Option<(UserAccount, User)>
 
         LOGGER.info(log_parser(DISCONNECTED, &[&deserializer.reader.peer_addr().unwrap().ip().to_string()]));
 
-        deserializer.reader.shutdown().await.unwrap_or_else(|_| LOGGER.error(S2C_ERROR));
+        deserializer.reader.shutdown().await.unwrap_or_else(|_| LOGGER.error(format!("{S2C_ERROR} (core::login::#115)")));
 
         account.ok = false;
     }
