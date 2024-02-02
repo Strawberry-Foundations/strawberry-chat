@@ -147,7 +147,7 @@ pub async fn core_thread() {
                 }
             }
         }
-        // CLIENTS.write().await.retain(|c| c.state != State::Disconnected);
+        CLIENTS.write().await.retain(|c| c.state != State::Disconnected);
         sleep(Duration::from_millis(60)).await;
     }
 }
