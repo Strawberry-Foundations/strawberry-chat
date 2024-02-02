@@ -40,7 +40,7 @@ impl StbString {
     #[allow(clippy::needless_collect)]
     pub async fn check_for_mention(mut self) -> Self {
         let string_lower = self.string.to_lowercase();
-        let msg_split= string_lower.split(' ').collect::<Vec<&str>>();
+        let msg_split = string_lower.split(' ').collect::<Vec<&str>>();
 
         for user in &get_online_users().await {
             if msg_split.contains(&&*format!("@{}", user.username.to_lowercase())) {
