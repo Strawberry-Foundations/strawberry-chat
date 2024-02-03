@@ -21,7 +21,7 @@ use crate::constants::log_messages::{CONNECTED, CONNECTED_RLM, CONNECTION_ERROR,
 use crate::system_core::packet::SystemMessage;
 use crate::system_core::server_core::register_connection;
 
-pub async fn connection_handler(socket: TcpListener) {
+pub async fn connection_handler(socket: TcpListener) -> ! {
     let mut ignore_list: HashMap<IpAddr, u64> = HashMap::new();
     let mut connection_counter: HashMap<IpAddr, u8> = HashMap::new();
 
