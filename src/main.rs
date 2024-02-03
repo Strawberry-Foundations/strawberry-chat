@@ -1,7 +1,6 @@
 #![warn(clippy::all, clippy::nursery, clippy::pedantic)]
 #![allow(clippy::module_name_repetitions, clippy::should_implement_trait, clippy::struct_excessive_bools, dead_code, unused_doc_comments, clippy::missing_const_for_fn)]
 
-use std::error::Error;
 use tokio::net::TcpListener;
 use tokio::spawn;
 
@@ -24,7 +23,7 @@ mod database;
 mod security;
 
 #[tokio::main]
-async fn main() -> Result<(), Box<dyn Error>> {
+async fn main(){
     println!("{CYAN}{BOLD}* -- {CHAT_NAME} {} {CODENAME} ({SERVER_EDITION}) -- *{RESET}{C_RESET}", DEFAULT_VERSION.clone());
 
     let constructor = cli_wins::constructor::Constructor::new("EXPERIMENTAL SOFTWARE", YELLOW,cli_wins::constructor::ConstructorOptions {
@@ -65,6 +64,4 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
     spawn(connection_handler(socket));
     core_thread().await;
-
-    Ok(())
 }
