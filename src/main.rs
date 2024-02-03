@@ -28,7 +28,7 @@ mod security;
 async fn main(){
     println!("{CYAN}{BOLD}* -- {CHAT_NAME} {} {CODENAME} ({SERVER_EDITION}) -- *{RESET}{C_RESET}", DEFAULT_VERSION.clone());
 
-    let constructor = cli_wins::constructor::Constructor::new("EXPERIMENTAL SOFTWARE", YELLOW,cli_wins::constructor::ConstructorOptions {
+    let constructor = cli_wins::constructor::Constructor::new("EXPERIMENTAL SOFTWARE", YELLOW, cli_wins::constructor::ConstructorOptions {
         debug_mode: true
     });
 
