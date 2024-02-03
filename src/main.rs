@@ -33,7 +33,7 @@ async fn main(){
     });
 
     let window = constructor.builder()
-        .label("Strawberry Chat Rusty is in an unstable state and can contain bugs", format!("{BOLD}{YELLOW}"))
+        .label("Strawberry Chat Rusty is in an unstable state and may contain bugs", format!("{BOLD}{YELLOW}"))
         .build();
 
     window.show();
