@@ -1,5 +1,7 @@
 #![warn(clippy::all, clippy::nursery, clippy::pedantic)]
-#![allow(clippy::module_name_repetitions, clippy::should_implement_trait, clippy::struct_excessive_bools, dead_code, unused_doc_comments, clippy::missing_const_for_fn)]
+#![allow(clippy::module_name_repetitions, clippy::struct_excessive_bools, dead_code, unused_doc_comments, clippy::missing_const_for_fn)]
+
+// Removed: clippy::should_implement_trait,
 
 use tokio::net::TcpListener;
 use tokio::spawn;
