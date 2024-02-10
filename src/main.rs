@@ -3,15 +3,20 @@
 
 // Removed: clippy::should_implement_trait,
 
+use std::cell::OnceCell;
+use std::sync::{Mutex, OnceLock};
 use tokio::net::TcpListener;
 use tokio::spawn;
 
 use stblib::colors::{BOLD, C_RESET, CYAN, ITALIC, MAGENTA, RESET, YELLOW};
+use tokio::sync::mpsc::channel;
+use tokio::task::JoinHandle;
 
 use crate::communication::connection_handler::connection_handler;
 use crate::database::db::DATABASE;
 use crate::global::{CHAT_NAME, CODENAME, CONFIG, DEFAULT_VERSION, ONLINE_MODE, RUNTIME_LOGGER, SERVER_EDITION};
 use crate::system_core::server_core::core_thread;
+use crate::system_core::watchdog::watchdog_thread;
 use crate::utilities::{delete_last_line, runtime_all_addresses};
 
 mod utilities;
@@ -23,6 +28,8 @@ mod constants;
 mod commands;
 mod database;
 mod security;
+
+pub static CORE_HANDLE: OnceLock<Mutex<JoinHandle<()>>> = OnceLock::new();
 
 #[tokio::main]
 async fn main(){
@@ -64,6 +71,9 @@ async fn main(){
         )
     );
 
+    let (wd_tx, wd_rx) = channel::<()>(1);
     spawn(connection_handler(socket));
-    core_thread().await;
+    spawn(watchdog_thread(wd_rx));
+    CORE_HANDLE.set(Mutex::new(spawn(core_thread(wd_tx)))).unwrap();
+    std::thread::park();
 }

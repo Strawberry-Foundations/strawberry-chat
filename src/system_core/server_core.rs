@@ -1,7 +1,7 @@
 //! This handles communication between clients and the server
 
 use std::net::SocketAddr;
-use std::time::Duration;
+use std::time::{Duration, SystemTime, UNIX_EPOCH};
 
 use tokio::sync::mpsc::{channel, Receiver, Sender};
 use tokio::sync::RwLock;
@@ -119,8 +119,9 @@ async fn send_to_all(what: MessageToClient, authed_only: bool) {
     }
 }
 
-pub async fn core_thread() {
+pub async fn core_thread(watchdog_tx: Sender<()>) {
     loop {
+        let _ = watchdog_tx.try_send(());
         let events = get_events().await;
         for (event, i) in events {
             match event {
