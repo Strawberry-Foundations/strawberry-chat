@@ -5,6 +5,7 @@ use tokio::net::TcpStream;
 use tokio::sync::mpsc::{Receiver, Sender};
 
 use owo_colors::OwoColorize;
+use tokio::io;
 use stbchat::net::{IncomingPacketStream, OutgoingPacketStream};
 use stbchat::object::User;
 use stbchat::packet::{ClientboundPacket, MessageStruct, ServerboundPacket};
@@ -27,6 +28,11 @@ pub async fn client_incoming(
         let msg = match r_stream.read::<ServerboundPacket>().await {
             Ok(ServerboundPacket::Message { message }) => message.content,
             Err(e) => {
+                if matches!(e.downcast_ref::<io::Error>().map(io::Error::kind), Some(io::ErrorKind::UnexpectedEof) | Some(io::ErrorKind::ConnectionReset)) {
+                    tx.send(MessageToServer::RemoveMe).await.unwrap();
+                    LOGGER.info(log_parser(USER_LEFT, &[&user.username, &peer_addr]));
+                    break;
+                }
                 LOGGER.warning(format!("[{peer_addr} -> S] Failed to read packet: {e}"));
                 break;
             }

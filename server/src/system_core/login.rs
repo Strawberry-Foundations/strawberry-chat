@@ -47,7 +47,7 @@ pub async fn client_login(
             ServerboundPacket::Message { .. } => continue,
         };
     }
-    println!("creds: {} :: {}", creds.0, creds.1);
+
     let (mut account, login_success) = DATABASE.check_credentials(&creds.0, &creds.1).await;
 
     if !login_success {
