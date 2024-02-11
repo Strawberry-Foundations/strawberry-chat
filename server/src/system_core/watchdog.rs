@@ -16,7 +16,7 @@ pub async fn watchdog_thread(mut rx: Receiver<()>) {
             CORE_HANDLE.get().unwrap().lock().unwrap().abort();
             let (wd_tx, wd_rx) = channel::<()>(1);
             rx = wd_rx;
-            *CORE_HANDLE.get().unwrap().lock().unwrap() = spawn(core_thread(wd_tx))
+            *CORE_HANDLE.get().unwrap().lock().unwrap() = spawn(core_thread(wd_tx));
         }
     }
 }

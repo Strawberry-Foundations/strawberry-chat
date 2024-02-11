@@ -1,6 +1,6 @@
 //! Contains messages sent internally
 
-use crate::system_core::objects::User;
+use stbchat::object::User;
 
 #[derive(Clone, Debug)]
 pub enum MessageToClient {
