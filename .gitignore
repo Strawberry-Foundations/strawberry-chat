@@ -2,7 +2,7 @@
 .idea
 
 # Rust-specific files
-/target
+**/target
 Cargo.lock
 
 # Source files
