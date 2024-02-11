@@ -28,10 +28,10 @@ pub enum ClientboundPacket {
         content: String,
         bell: bool,
     },
-    #[serde(rename = "stbchat_backend")]
-    BackendMessage {
+    #[serde(rename = "stbchat_event")]
+    Event {
         event_type: String,
-    }
+    },
 }
 
 #[derive(Serialize, Deserialize)]

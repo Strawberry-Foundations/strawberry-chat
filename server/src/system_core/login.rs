@@ -32,6 +32,12 @@ pub async fn client_login(
         ClientboundPacket::SystemMessage { message: MessageStruct::new(format!("{BOLD}Welcome to {}!{C_RESET}", CONFIG.server.title)) }
     ).await.expect("Failed to write packet");
 
+    w_client.write(
+        ClientboundPacket::Event {
+            event_type: "event.login".to_string()
+        }
+    ).await.expect("Failed to write packet");
+
     let creds;
     loop {
         let Ok(packet) = r_client.read::<ServerboundPacket>().await else {
