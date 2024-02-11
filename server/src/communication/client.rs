@@ -13,7 +13,7 @@ use tokio::time::sleep;
 use stblib::colors::{BOLD, C_RESET, GRAY, GREEN, RED};
 use owo_colors::OwoColorize;
 use stbchat::net::{IncomingPacketStream, OutgoingPacketStream};
-use stbchat::packet::{ClientboundPacket, MessageStruct};
+use stbchat::packet::{ClientboundPacket, Message};
 
 use crate::constants::log_messages::{ADDRESS_LEFT, LOGIN, LOGIN_ERROR, S2C_ERROR};
 use crate::global::{CONFIG, LOGGER};
@@ -36,7 +36,7 @@ pub async fn client_handler(client: TcpStream, rx: Receiver<MessageToClient>, tx
         LOGGER.info(format!("{peer_addr} was disconnection. Reason: IP banned"));
         w_client.write(
             ClientboundPacket::SystemMessage {
-            message: MessageStruct::new(format!("{RED}{BOLD}Sorry, you're not allowed to connect to this server.{C_RESET}"))
+            message: Message::new(format!("{RED}{BOLD}Sorry, you're not allowed to connect to this server.{C_RESET}"))
             }
         ).await.expect("Failed to write packet");
 
@@ -69,7 +69,7 @@ pub async fn client_handler(client: TcpStream, rx: Receiver<MessageToClient>, tx
     if user.username == *CRTLCODE_CLIENT_EXIT {
         w_client.write(
             ClientboundPacket::SystemMessage {
-                message: MessageStruct::new(format!("{RED}{BOLD}Invalid username and/or password!{C_RESET}"))
+                message: Message::new(format!("{RED}{BOLD}Invalid username and/or password!{C_RESET}"))
             }
         ).await.expect("Failed to write packet");
 
@@ -95,7 +95,7 @@ pub async fn client_handler(client: TcpStream, rx: Receiver<MessageToClient>, tx
     LOGGER.info(log_parser(LOGIN, &[&user.username, &peer_addr]));
     w_client.write(
         ClientboundPacket::SystemMessage {
-            message: MessageStruct::new(format!("Welcome back {}! Nice to see you!", user.username).bold().cyan())
+            message: Message::new(format!("Welcome back {}! Nice to see you!", user.username).bold().cyan())
         }
     ).await.expect("Failed to write packet");
 
@@ -108,7 +108,7 @@ pub async fn client_handler(client: TcpStream, rx: Receiver<MessageToClient>, tx
 
     w_client.write(
         ClientboundPacket::SystemMessage {
-            message: MessageStruct::new(format!("Currently there {online_users_str} online. For help use /help!").bold().cyan())
+            message: Message::new(format!("Currently there {online_users_str} online. For help use /help!").bold().cyan())
         }
     ).await.expect("Failed to write packet");
 

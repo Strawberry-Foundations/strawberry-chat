@@ -6,19 +6,19 @@ use crate::object::User;
 /// # A packet sent from the server to the client (S -> C)
 /// - `SystemMessage`: A message sent from the system
 /// - `UserMessage`: A message sent from a user
-/// - `NotificationBackend`: Tells the client to show a notification
-/// - `ClientBackend`: Data type
+/// - `Notification`: Tells the client to show a notification
+/// - `Backend`: Sends the username to the client
 #[derive(Serialize, Deserialize)]
 #[serde(tag = "packet_type")]
 pub enum ClientboundPacket {
     #[serde(rename = "system_message")]
     SystemMessage {
-        message: MessageStruct
+        message: Message
     },
     #[serde(rename = "user_message")]
     UserMessage {
         author: User,
-        message: MessageStruct,
+        message: Message,
     },
     #[serde(rename = "notification_backend")]
     Notification {
@@ -32,6 +32,10 @@ pub enum ClientboundPacket {
     Event {
         event_type: String,
     },
+    #[serde(rename = "stbchat_backend")]
+    Backend {
+        user_meta: UserMeta
+    }
 }
 
 #[derive(Serialize, Deserialize)]
@@ -42,22 +46,22 @@ pub enum ServerboundPacket {
         password: String
     },
     Message {
-        message: MessageStruct
+        message: Message
     }
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct MessageStruct {
+pub struct Message {
     pub content: String,
 }
 
-impl MessageStruct {
+impl Message {
     pub fn new(msg: impl ToString) -> Self {
         Self { content: msg.to_string() }
     }
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct UserMetaStruct {
+pub struct UserMeta {
     pub username: String,
 }

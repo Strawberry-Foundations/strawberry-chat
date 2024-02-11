@@ -8,7 +8,7 @@ use owo_colors::OwoColorize;
 use tokio::io;
 use stbchat::net::{IncomingPacketStream, OutgoingPacketStream};
 use stbchat::object::User;
-use stbchat::packet::{ClientboundPacket, MessageStruct, ServerboundPacket};
+use stbchat::packet::{ClientboundPacket, Message, ServerboundPacket};
 
 use crate::constants::log_messages::{CLIENT_KICKED, USER_LEFT};
 use crate::global::{LOGGER, MESSAGE_VERIFICATOR};
@@ -105,7 +105,7 @@ pub async fn client_outgoing(
 
                 if let Err(e) = w_stream.write(ClientboundPacket::UserMessage {
                     author,
-                    message: MessageStruct::new(content.string),
+                    message: Message::new(content.string),
                 }).await {
                     LOGGER.error(format!("[S -> {peer_addr}] Failed to send a packet: {e}"));
                     return;
@@ -114,7 +114,7 @@ pub async fn client_outgoing(
             MessageToClient::SystemMessage { content } => {
                 if let Err(e) = w_stream
                     .write(ClientboundPacket::SystemMessage {
-                        message: MessageStruct::new(content),
+                        message: Message::new(content),
                     })
                     .await
                 {

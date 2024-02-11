@@ -8,7 +8,7 @@ use std::net::IpAddr;
 
 use stbchat::net::{IncomingPacketStream, OutgoingPacketStream};
 use stbchat::object::User;
-use stbchat::packet::{ClientboundPacket, MessageStruct, ServerboundPacket};
+use stbchat::packet::{ClientboundPacket, Message, ServerboundPacket};
 use tokio::net::TcpStream;
 
 use stblib::colors::{BOLD, C_RESET, RED, YELLOW};
@@ -29,7 +29,7 @@ pub async fn client_login(
 ) -> Option<(UserAccount, User)> {
     // TODO: replace unwraps with logger errors
     w_client.write(
-        ClientboundPacket::SystemMessage { message: MessageStruct::new(format!("{BOLD}Welcome to {}!{C_RESET}", CONFIG.server.title)) }
+        ClientboundPacket::SystemMessage { message: Message::new(format!("{BOLD}Welcome to {}!{C_RESET}", CONFIG.server.title)) }
     ).await.expect("Failed to write packet");
 
     w_client.write(
@@ -59,7 +59,7 @@ pub async fn client_login(
     if !login_success {
         w_client.write(
             ClientboundPacket::SystemMessage {
-                message: MessageStruct::new(format!("{RED}{BOLD}Invalid username and/or password!{C_RESET}"))
+                message: Message::new(format!("{RED}{BOLD}Invalid username and/or password!{C_RESET}"))
             }
         ).await.expect("Failed to write packet");
 
@@ -73,7 +73,7 @@ pub async fn client_login(
     if !account.account_enabled && login_success {
         w_client.write(
             ClientboundPacket::SystemMessage {
-                message: MessageStruct::new(format!("{RED}{BOLD}Your account was disabled by an administrator.{C_RESET}"))
+                message: Message::new(format!("{RED}{BOLD}Your account was disabled by an administrator.{C_RESET}"))
             }
         ).await.expect("Failed to write packet");
         LOGGER.info(log_parser(DISCONNECTED, &[&peer_addr]));
@@ -89,7 +89,7 @@ pub async fn client_login(
         
         w_client.write(
             ClientboundPacket::SystemMessage {
-                message: MessageStruct::new(format!("{YELLOW}{BOLD}Sorry, Server is full!{C_RESET}"))
+                message: Message::new(format!("{YELLOW}{BOLD}Sorry, Server is full!{C_RESET}"))
             }
         ).await.expect("Failed to write packet");
 
@@ -103,7 +103,7 @@ pub async fn client_login(
         && i16::try_from(get_online_usernames().await.len()).unwrap_or(CONFIG.config.max_users) >= CONFIG.config.max_users {
         w_client.write(
             ClientboundPacket::SystemMessage {
-                message: MessageStruct::new(format!("{YELLOW}{BOLD}Queue is currently not implemented - Server is full!{C_RESET}"))
+                message: Message::new(format!("{YELLOW}{BOLD}Queue is currently not implemented - Server is full!{C_RESET}"))
             }
         ).await.expect("Failed to write packet");
 

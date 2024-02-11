@@ -14,7 +14,7 @@ use tokio::spawn;
 use stblib::utilities::unix_time;
 use stblib::colors::{BOLD, C_RESET, RED};
 use stbchat::net::OutgoingPacketStream;
-use stbchat::packet::{ClientboundPacket, MessageStruct};
+use stbchat::packet::{ClientboundPacket, Message};
 
 use crate::communication::client::client_handler;
 use crate::global::{CONFIG, LOGGER};
@@ -82,7 +82,7 @@ pub async fn connection_handler(socket: TcpListener) {
                 let mut s = OutgoingPacketStream::wrap(client);
                 s.write(
                         ClientboundPacket::SystemMessage {
-                            message: MessageStruct::new(format!("{RED}{BOLD}You have been ratelimited due to spam activity. Please try again later{C_RESET}"))
+                            message: Message::new(format!("{RED}{BOLD}You have been ratelimited due to spam activity. Please try again later{C_RESET}"))
                         }
                     )
                     .await.expect("Failed to write to stream");
