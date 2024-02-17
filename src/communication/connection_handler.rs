@@ -13,15 +13,17 @@ use tokio::spawn;
 
 use stblib::utilities::unix_time;
 use stblib::colors::{BOLD, C_RESET, RED};
+use stblib::stbm::stbchat::net::OutgoingPacketStream;
+use stblib::stbm::stbchat::packet::ClientsidePacket;
+use stblib::stbm::stbchat::object::Message;
 
 use crate::communication::client::client_handler;
 use crate::global::{CONFIG, LOGGER};
 use crate::system_core::log::log_parser;
-use crate::constants::log_messages::{CONNECTED, CONNECTED_RLM, CONNECTION_ERROR, RATELIMIT_REMOVED, REACHED_CON_LIMIT, S2C_ERROR};
-use crate::system_core::packet::SystemMessage;
+use crate::constants::log_messages::{CONNECTED, CONNECTED_RLM, CONNECTION_ERROR, RATELIMIT_REMOVED, REACHED_CON_LIMIT};
 use crate::system_core::server_core::register_connection;
 
-pub async fn connection_handler(socket: TcpListener) -> ! {
+pub async fn connection_handler(socket: TcpListener) {
     let mut ignore_list: HashMap<IpAddr, u64> = HashMap::new();
     let mut connection_counter: HashMap<IpAddr, u8> = HashMap::new();
 
@@ -78,16 +80,16 @@ pub async fn connection_handler(socket: TcpListener) -> ! {
             // if user is still in ratelimit timeout, send message and close connection
             else {
                 LOGGER.info(log_parser(CONNECTED_RLM, &[&client_addr.to_string(), ]));
-
-                SystemMessage::new(&format!("{RED}{BOLD}You have been ratelimited due to spam activity. Please try again later{C_RESET}"))
-                    .write(&mut client)
-                    .await
-                    .unwrap_or_else(|_| LOGGER.warning(format!("{S2C_ERROR} (com::conn::#85)")));
+                let mut s = OutgoingPacketStream::wrap(client);
+                s.write(
+                    ClientsidePacket::SystemMessage {
+                        message: Message::new(format!("{RED}{BOLD}You have been ratelimited due to spam activity. Please try again later{C_RESET}"))
+                    }
+                )
+                    .await.expect("Failed to write to stream");
 
                 allow_connection = false;
-
-                /* client.shutdown().await.unwrap_or(());
-                continue; */
+                client = s.unwrap();
             }
         }
 
