@@ -2,7 +2,7 @@ use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;
 
 pub fn panic_command() -> commands::Command {
-    async fn logic(_: &commands::Context) -> commands::CommandResponse {
+    fn logic(_: &commands::Context) -> commands::CommandResponse {
         panic!();
     }
 
@@ -12,7 +12,7 @@ pub fn panic_command() -> commands::Command {
         description: "Panics the core thread - DEBUG ONLY".to_string(),
         category: CommandCategory::Etc,
         handler: |ctx| Box::pin(async move {
-            logic(&ctx).await
+            logic(&ctx)
         }),
     }
 }
