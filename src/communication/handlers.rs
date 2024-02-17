@@ -8,7 +8,7 @@ use owo_colors::OwoColorize;
 
 use stblib::stbm::stbchat::net::{IncomingPacketStream, OutgoingPacketStream};
 use stblib::stbm::stbchat::object::{User, Message};
-use stblib::stbm::stbchat::packet::{ClientsidePacket, ServersidePacket};
+use stblib::stbm::stbchat::packet::{ClientPacket, ServerPacket};
 
 use crate::constants::log_messages::{CLIENT_KICKED, USER_LEFT};
 use crate::global::{LOGGER, MESSAGE_VERIFICATOR};
@@ -25,8 +25,8 @@ pub async fn client_incoming(
 ) {
     loop {
         // TODO: Replace unwraps with logger errors + RemoveMe
-        let msg = match r_stream.read::<ServersidePacket>().await {
-            Ok(ServersidePacket::Message { message }) => message.content,
+        let msg = match r_stream.read::<ServerPacket>().await {
+            Ok(ServerPacket::Message { message }) => message.content,
             Err(e) => {
                 LOGGER.warning(format!("Failed to read packet, received from {peer_addr}: {e}"));
                 break;
@@ -98,7 +98,7 @@ pub async fn client_outgoing(
                     .check_for_mention()
                     .await;
 
-                if let Err(e) = w_stream.write(ClientsidePacket::UserMessage {
+                if let Err(e) = w_stream.write(ClientPacket::UserMessage {
                     author,
                     message: Message::new(content.string),
                 }).await {
@@ -108,7 +108,7 @@ pub async fn client_outgoing(
             }
             MessageToClient::SystemMessage { content } => {
                 if let Err(e) = w_stream
-                    .write(ClientsidePacket::SystemMessage {
+                    .write(ClientPacket::SystemMessage {
                         message: Message::new(content),
                     })
                     .await
