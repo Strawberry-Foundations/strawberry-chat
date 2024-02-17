@@ -33,6 +33,12 @@ pub async fn client_login(w_client: &mut OutgoingPacketStream<WriteHalf<TcpStrea
         }
     ).await.expect("Failed to write packet");
 
+    w_client.write(
+        ClientsidePacket::Event {
+            event_type: String::from("event.login")
+        }
+    ).await.expect("Failed to write packet");
+
     let creds;
     loop {
         let Ok(packet) = r_client.read::<ServersidePacket>().await else {
@@ -48,7 +54,7 @@ pub async fn client_login(w_client: &mut OutgoingPacketStream<WriteHalf<TcpStrea
             ServersidePacket::Message { .. } => continue,
         };
     }
-    println!("creds: {} :: {}", creds.0, creds.1);
+
     let (mut account, login_success) = DATABASE.check_credentials(&creds.0, &creds.1).await;
 
     if !login_success {
