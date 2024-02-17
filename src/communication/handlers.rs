@@ -17,10 +17,14 @@ use crate::system_core::log::log_parser;
 use crate::system_core::message::{MessageToClient, MessageToServer};
 use crate::system_core::string::StbString;
 
-pub async fn client_incoming(tx: Sender<MessageToServer>, mut r_stream: IncomingPacketStream<TcpStream>, peer_addr: IpAddr, user: User) {
+pub async fn client_incoming(
+    tx: Sender<MessageToServer>,
+    mut r_stream: IncomingPacketStream<ReadHalf<TcpStream>>,
+    peer_addr: IpAddr,
+    user: User,
+) {
     loop {
         // TODO: Replace unwraps with logger errors + RemoveMe
-
         let msg = match r_stream.read::<ServersidePacket>().await {
             Ok(ServersidePacket::Message { message }) => message.content,
             Err(e) => {
@@ -33,7 +37,10 @@ pub async fn client_incoming(tx: Sender<MessageToServer>, mut r_stream: Incoming
         let content = strip_ansi_escapes::strip_str(msg);
 
         if content.starts_with('/') && content.len() > 1 {
-            let parts: Vec<String> = content[1..].split_ascii_whitespace().map(String::from).collect();
+            let parts: Vec<String> = content[1..]
+                .split_ascii_whitespace()
+                .map(String::from)
+                .collect();
 
             if &parts[0] == "exit" {
                 tx.send(MessageToServer::RemoveMe).await.unwrap();
@@ -44,7 +51,9 @@ pub async fn client_incoming(tx: Sender<MessageToServer>, mut r_stream: Incoming
             tx.send(MessageToServer::RunCommand {
                 name: parts[0].to_string(),
                 args: parts[1..].to_vec(),
-            }).await.unwrap();
+            })
+                .await
+                .unwrap();
             continue;
         }
 
@@ -53,18 +62,30 @@ pub async fn client_incoming(tx: Sender<MessageToServer>, mut r_stream: Incoming
         match action {
             MessageAction::Kick => {
                 tx.send(MessageToServer::ClientDisconnect {
-                    reason: "Please be friendlier in the chat. Rejoin when you feel ready!".yellow().bold().to_string()
-                }).await.unwrap();
+                    reason: "Please be friendlier in the chat. Rejoin when you feel ready!"
+                        .yellow()
+                        .bold()
+                        .to_string(),
+                })
+                    .await
+                    .unwrap();
 
-                LOGGER.info(log_parser(CLIENT_KICKED, &[&peer_addr, &"Used blacklisted word"]));
-            },
-            MessageAction::Hide => {},
+                LOGGER.info(log_parser(
+                    CLIENT_KICKED,
+                    &[&peer_addr, &"Used blacklisted word"],
+                ));
+            }
+            MessageAction::Hide => {}
             MessageAction::Allow => tx.send(MessageToServer::Message { content }).await.unwrap(),
         }
     }
 }
 
-pub async fn client_outgoing(mut rx: Receiver<MessageToClient>, mut w_stream: WriteHalf<TcpStream>, peer_addr: IpAddr) {
+pub async fn client_outgoing(
+    mut rx: Receiver<MessageToClient>,
+    mut w_stream: OutgoingPacketStream<WriteHalf<TcpStream>>,
+    peer_addr: IpAddr,
+) {
     loop {
         let Some(msg) = rx.recv().await else {
             return;
@@ -72,20 +93,34 @@ pub async fn client_outgoing(mut rx: Receiver<MessageToClient>, mut w_stream: Wr
 
         match msg {
             MessageToClient::UserMessage { author, content } => {
-                let content = StbString::from_str(content).apply_htpf().check_for_mention().await;
+                let content = StbString::from_str(content)
+                    .apply_htpf()
+                    .check_for_mention()
+                    .await;
 
-                if let Err(e) = crate::system_core::packet::UserMessage::new(author.clone(), &content.to_string()).write(&mut w_stream).await {
+                if let Err(e) = w_stream.write(ClientsidePacket::UserMessage {
+                    author,
+                    message: Message::new(content.string),
+                }).await {
                     LOGGER.error(format!("[S -> {peer_addr}] Failed to send a packet: {e}"));
                     return;
                 }
-            },
+            }
             MessageToClient::SystemMessage { content } => {
-                if let Err(e) = crate::system_core::packet::SystemMessage::new(&content).write(&mut w_stream).await {
+                if let Err(e) = w_stream
+                    .write(ClientsidePacket::SystemMessage {
+                        message: Message::new(content),
+                    })
+                    .await
+                {
                     LOGGER.error(format!("[S -> {peer_addr}] Failed to send a packet: {e}"));
                     return;
                 }
-            },
-            MessageToClient::Shutdown => { let _ = w_stream.shutdown().await; },
+            }
+            MessageToClient::Shutdown => {
+                let _ = w_stream.unwrap().shutdown().await;
+                return;
+            }
         }
     }
 }
