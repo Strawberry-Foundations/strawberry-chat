@@ -24,11 +24,11 @@
 
 use tokio::sync::mpsc::Sender;
 use owo_colors::OwoColorize;
-use crate::commands::command_registry;
+use stblib::stbm::stbchat::object::User;
 
+use crate::commands::command_registry;
 use crate::system_core::message::MessageToClient;
 use crate::system_core::server_core::Connection;
-use crate::system_core::objects::User;
 
 
 // 'static borrow from https://github.com/serenity-rs/poise/blob/c5a4fc862e22166c8933e7e11727c577bb93067d/src/lib.rs#L439
