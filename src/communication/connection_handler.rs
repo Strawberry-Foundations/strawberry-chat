@@ -14,7 +14,7 @@ use tokio::spawn;
 use stblib::utilities::unix_time;
 use stblib::colors::{BOLD, C_RESET, RED};
 use stblib::stbm::stbchat::net::OutgoingPacketStream;
-use stblib::stbm::stbchat::packet::ClientsidePacket;
+use stblib::stbm::stbchat::packet::ClientPacket;
 use stblib::stbm::stbchat::object::Message;
 
 use crate::communication::client::client_handler;
@@ -82,7 +82,7 @@ pub async fn connection_handler(socket: TcpListener) {
                 LOGGER.info(log_parser(CONNECTED_RLM, &[&client_addr.to_string(), ]));
                 let mut s = OutgoingPacketStream::wrap(client);
                 s.write(
-                    ClientsidePacket::SystemMessage {
+                    ClientPacket::SystemMessage {
                         message: Message::new(format!("{RED}{BOLD}You have been ratelimited due to spam activity. Please try again later{C_RESET}"))
                     }
                 )
