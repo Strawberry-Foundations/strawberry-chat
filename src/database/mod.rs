@@ -1,6 +1,7 @@
 pub mod db;
 
 use sqlx::{MySql, MySqlPool, Pool, Row};
+use argon2::{Argon2, PasswordHash, PasswordVerifier};
 use stblib::stbm::stbchat::object::User;
 
 use crate::constants::log_messages::SQL_CONNECTION_ERROR;
@@ -25,7 +26,15 @@ impl Database {
         }
     }
 
-    pub async fn check_credentials(&self, username: &String, password: &String) -> (UserAccount, bool) {
+    pub fn verify_password(stored_password: &str, entered_password: &String) -> bool {
+        let hash = PasswordHash::new(stored_password).unwrap();
+
+        let password: &[u8] = entered_password.as_bytes();
+
+        Argon2::default().verify_password(password, &hash).is_ok()
+    }
+
+    pub async fn check_credentials(&self, username: &String, entered_password: &String) -> (UserAccount, bool) {
         let row = sqlx::query("SELECT username, password FROM users WHERE username = ?")
             .bind(username)
             .fetch_all(&self.connection)
@@ -35,9 +44,9 @@ impl Database {
             return (UserAccount::default(), false)
         }
 
-        let db_password: String = row.first().unwrap().get("password");
+        let stored_password: String = row.first().unwrap().get("password");
 
-        if &db_password != password {
+        if !Self::verify_password(stored_password.as_str(), entered_password) {
             return (UserAccount::default(), false)
         }
 
