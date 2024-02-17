@@ -1,7 +1,7 @@
 use std::fs;
 use std::io::{self, Write};
 
-use stblib::colors::{BOLD, CYAN, GREEN, RED, RESET};
+use stblib::colors::{BLUE, BOLD, CYAN, GREEN, MAGENTA, RED, RESET, YELLOW};
 
 use crate::global::{CONFIG, LOGGER};
 
@@ -56,8 +56,17 @@ pub fn role_color_parser(color: &str) -> String {
     match color {
         "red" => RED.to_string(),
         "green" => GREEN.to_string(),
+        "yellow" => YELLOW.to_string(),
+        "blue" => BLUE.to_string(),
+        "magenta" => MAGENTA.to_string(),
+        "cyan" => CYAN.to_string(),
+
         "bred" => format!("{RED}{BOLD}"),
         "bgreen" => format!("{GREEN}{BOLD}"),
+        "byellow" => format!("{YELLOW}{BOLD}"),
+        "bblue" => format!("{BLUE}{BOLD}"),
+        "bmagenta" => format!("{MAGENTA}{BOLD}"),
+        "bcyan" => format!("{CYAN}{BOLD}"),
         _ => String::new()
     }
 }
