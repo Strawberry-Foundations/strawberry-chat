@@ -3,7 +3,6 @@
 
 // Removed: clippy::should_implement_trait,
 
-use std::cell::OnceCell;
 use std::sync::{Mutex, OnceLock};
 use tokio::net::TcpListener;
 use tokio::spawn;
