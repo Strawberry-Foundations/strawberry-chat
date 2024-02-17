@@ -11,7 +11,7 @@ use tokio::{select, spawn};
 use tokio::time::sleep;
 
 use stblib::stbm::stbchat::net::{IncomingPacketStream, OutgoingPacketStream};
-use stblib::stbm::stbchat::packet::{ServersidePacket, ClientsidePacket};
+use stblib::stbm::stbchat::packet::{ClientsidePacket};
 use stblib::colors::{BOLD, C_RESET, GRAY, GREEN, RED};
 
 use owo_colors::OwoColorize;
@@ -27,7 +27,7 @@ use crate::system_core::types::CRTLCODE_CLIENT_EXIT;
 use crate::communication::handlers::{client_incoming, client_outgoing};
 
 
-pub async fn client_handler(mut client: TcpStream, rx: Receiver<MessageToClient>, tx: Sender<MessageToServer>) {
+pub async fn client_handler(client: TcpStream, rx: Receiver<MessageToClient>, tx: Sender<MessageToServer>) {
     let peer_addr = client.peer_addr().unwrap().ip();
 
     let (r_client, w_client) = split(client);
