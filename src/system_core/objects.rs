@@ -1,3 +1,5 @@
+use stblib::stbm::stbchat::object::User;
+
 // Object for sending Notifications
 pub struct NotificationObject {
     pub title: String,
@@ -19,16 +21,6 @@ impl ClientLoginCredentialsPacket {
             password: String::new(),
         }
     }
-}
-
-// General User Object for all types of user-specified code
-#[derive(Clone, Default, Debug, PartialEq, Eq)]
-pub struct User {
-    pub username: String,
-    pub nickname: String,
-    pub badge: String,
-    pub role_color: String,
-    pub avatar_url: String,
 }
 
 #[derive(Clone, Default, Debug, PartialEq, Eq)]
