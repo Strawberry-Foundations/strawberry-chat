@@ -30,7 +30,7 @@ In the beginning, communication only took place via pure strings (if you can rea
 With v2 of the standard, we implemented JSON to provide more options for how the client can represent a message. We are currently developing v3, which goes in both directions - server & client send JSON. 
 
 ## Security
-Security is an important part when it comes to internet programs. As of January 30, 2024, there is still NO password hashing for the Rust rewrite.
+Security is an important part when it comes to internet programs.
 In the following table you can see our security features and the corresponding versions:
 
 | Version | Password Hashing | TLS | Automoderation | IP Blocking | Ratelimit | Login Verification | Msg Verification | 
@@ -38,7 +38,7 @@ In the following table you can see our security features and the corresponding v
 | `v1.8`  | ✅                | ❌   | ➖              | ❌           | ❌         | ❌                  | ❌                |
 | `v1.9`  | ✅                | ❌   | ➖              | ❌           | ❌         | ❌                  | ❌                |
 | `v1.10` | ✅                | ❌   | ➖              | ✅           | ✅         | ❌                  | ❌                |
-| `v1.11` | ❌                | ❌   | ✅              | ✅           | ✅         | ✅                  | ✅                |
+| `v1.11` | ✅                | ❌   | ✅              | ✅           | ✅         | ✅                  | ✅                |
 
 **Legend**
 | ✅        | ❌            | ➖                    | 
