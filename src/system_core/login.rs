@@ -11,7 +11,7 @@ use tokio::io::{AsyncWriteExt, ReadHalf, WriteHalf};
 
 use stblib::stbm::stbchat::net::{IncomingPacketStream, OutgoingPacketStream};
 use stblib::stbm::stbchat::object::{User, Message};
-use stblib::stbm::stbchat::packet::{ClientsidePacket, ServersidePacket};
+use stblib::stbm::stbchat::packet::{ClientPacket, ServerPacket};
 use stblib::colors::{BOLD, C_RESET, RED, YELLOW};
 
 use crate::constants::log_messages::{ADDRESS_LEFT, DISCONNECTED, S2C_ERROR};
@@ -28,30 +28,30 @@ pub async fn client_login(w_client: &mut OutgoingPacketStream<WriteHalf<TcpStrea
 ) -> Option<(UserAccount, User)> {
     // TODO: replace unwraps with logger errors
     w_client.write(
-        ClientsidePacket::SystemMessage {
+        ClientPacket::SystemMessage {
             message: Message::new(format!("{BOLD}Welcome to {}!{C_RESET}", CONFIG.server.title))
         }
     ).await.expect("Failed to write packet");
 
     w_client.write(
-        ClientsidePacket::Event {
+        ClientPacket::Event {
             event_type: String::from("event.login")
         }
     ).await.expect("Failed to write packet");
 
     let creds;
     loop {
-        let Ok(packet) = r_client.read::<ServersidePacket>().await else {
+        let Ok(packet) = r_client.read::<ServerPacket>().await else {
             println!("Failed to read packet");
             return None;
         };
 
         match packet {
-            ServersidePacket::Login { username, password } => {
+            ServerPacket::Login { username, password } => {
                 creds = (username, password);
                 break;
             }
-            ServersidePacket::Message { .. } => continue,
+            ServerPacket::Message { .. } => continue,
         };
     }
 
@@ -59,7 +59,7 @@ pub async fn client_login(w_client: &mut OutgoingPacketStream<WriteHalf<TcpStrea
 
     if !login_success {
         w_client.write(
-            ClientsidePacket::SystemMessage {
+            ClientPacket::SystemMessage {
                 message: Message::new(format!("{RED}{BOLD}Invalid username and/or password!{C_RESET}"))
             }
         ).await.expect("Failed to write packet");
@@ -73,7 +73,7 @@ pub async fn client_login(w_client: &mut OutgoingPacketStream<WriteHalf<TcpStrea
 
     if !account.account_enabled && login_success {
         w_client.write(
-            ClientsidePacket::SystemMessage {
+            ClientPacket::SystemMessage {
                 message: Message::new(format!("{RED}{BOLD}Your account was disabled by an administrator.{C_RESET}"))
             }
         ).await.expect("Failed to write packet");
@@ -89,7 +89,7 @@ pub async fn client_login(w_client: &mut OutgoingPacketStream<WriteHalf<TcpStrea
         && i16::try_from(get_online_usernames().await.len()).unwrap_or(CONFIG.config.max_users) >= CONFIG.config.max_users {
 
         w_client.write(
-            ClientsidePacket::SystemMessage {
+            ClientPacket::SystemMessage {
                 message: Message::new(format!("{YELLOW}{BOLD}Sorry, Server is full!{C_RESET}"))
             }
         ).await.expect("Failed to write packet");
@@ -103,7 +103,7 @@ pub async fn client_login(w_client: &mut OutgoingPacketStream<WriteHalf<TcpStrea
     else if CONFIG.config.max_users != -1
         && i16::try_from(get_online_usernames().await.len()).unwrap_or(CONFIG.config.max_users) >= CONFIG.config.max_users {
         w_client.write(
-            ClientsidePacket::SystemMessage {
+            ClientPacket::SystemMessage {
                 message: Message::new(format!("{YELLOW}{BOLD}Queue is currently not implemented - Server is full!{C_RESET}"))
             }
         ).await.expect("Failed to write packet");
