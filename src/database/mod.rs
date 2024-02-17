@@ -1,11 +1,12 @@
 pub mod db;
 
 use sqlx::{MySql, MySqlPool, Pool, Row};
+use stblib::stbm::stbchat::object::User;
 
 use crate::constants::log_messages::SQL_CONNECTION_ERROR;
-use crate::global::{RUNTIME_LOGGER};
+use crate::global::RUNTIME_LOGGER;
 use crate::system_core::log::log_parser;
-use crate::system_core::objects::{User, UserAccount};
+use crate::system_core::objects::UserAccount;
 use crate::system_core::types::CRTLCODE_CLIENT_EXIT;
 use crate::utilities::role_color_parser;
 
