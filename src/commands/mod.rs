@@ -20,12 +20,14 @@ pub mod etc {
 }
 
 pub fn command_registry() -> Vec<Command> {
-    let mut cmds = vec![];
-    cmds.push(default::help::help());
-    cmds.push(default::about::about());
-    cmds.push(default::server_info::server_info());
-    cmds.push(etc::test_command::example_command());
-    cmds.push(user::online::online());
+    let mut cmds = vec![
+        default::help::help(),
+        default::about::about(),
+        default::server_info::server_info(),
+        etc::test_command::example_command(),
+        user::online::online()
+    ];
+
     if var("DEBUG").is_ok() {
         cmds.push(etc::hang::hang_command());
         cmds.push(etc::panic::panic_command());
