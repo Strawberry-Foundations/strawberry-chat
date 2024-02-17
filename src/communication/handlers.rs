@@ -6,28 +6,31 @@ use tokio::sync::mpsc::{Receiver, Sender};
 
 use owo_colors::OwoColorize;
 
+use stblib::stbm::stbchat::net::{IncomingPacketStream, OutgoingPacketStream};
+use stblib::stbm::stbchat::object::{User, Message};
+use stblib::stbm::stbchat::packet::{ClientsidePacket, ServersidePacket};
+
 use crate::constants::log_messages::{CLIENT_KICKED, USER_LEFT};
 use crate::global::{LOGGER, MESSAGE_VERIFICATOR};
 use crate::security::verification::MessageAction;
 use crate::system_core::log::log_parser;
 use crate::system_core::message::{MessageToClient, MessageToServer};
-use crate::system_core::objects::User;
 use crate::system_core::string::StbString;
 
-pub async fn client_incoming(tx: Sender<MessageToServer>, mut r_stream: ReadHalf<TcpStream>, peer_addr: IpAddr, user: User) {
-    let mut buffer = [0u8; 4096];
-
+pub async fn client_incoming(tx: Sender<MessageToServer>, mut r_stream: IncomingPacketStream<TcpStream>, peer_addr: IpAddr, user: User) {
     loop {
         // TODO: Replace unwraps with logger errors + RemoveMe
 
-        let Ok(n) = r_stream.read(&mut buffer).await else { return };
-        if n == 0 {
-            let _ = tx.send(MessageToServer::RemoveMe).await;
-            return;
-        }
+        let msg = match r_stream.read::<ServersidePacket>().await {
+            Ok(ServersidePacket::Message { message }) => message.content,
+            Err(e) => {
+                LOGGER.warning(format!("Failed to read packet, received from {peer_addr}: {e}"));
+                break;
+            }
+            _ => continue,
+        };
 
-        let content = String::from_utf8_lossy(&buffer[..n]).trim().to_string();
-        let content = strip_ansi_escapes::strip_str(content);
+        let content = strip_ansi_escapes::strip_str(msg);
 
         if content.starts_with('/') && content.len() > 1 {
             let parts: Vec<String> = content[1..].split_ascii_whitespace().map(String::from).collect();
