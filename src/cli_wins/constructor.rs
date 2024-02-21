@@ -28,6 +28,7 @@ pub struct ConstructorOptions {
 pub struct Constructor {
     pub title: String,
     pub border_color: String,
+    pub spacing: usize,
     pub options: ConstructorOptions
 }
 
@@ -35,6 +36,7 @@ pub struct Constructor {
 pub struct WindowBuilder {
     pub title: String,
     pub label: String,
+    pub spacing: usize,
     pub property_header: String,
     pub property_border_color: String,
     pub property_footer: String,
@@ -48,10 +50,11 @@ pub struct Window {
 
 impl Constructor {
     #![allow(clippy::needless_pass_by_value)]
-    pub fn new(title: impl ToString, border_color: impl ToString, constructor_options: ConstructorOptions) -> Self {
+    pub fn new(title: impl ToString, border_color: impl ToString, spacing: usize, constructor_options: ConstructorOptions) -> Self {
         Self {
             title: title.to_string(),
             border_color: border_color.to_string(),
+            spacing,
             options: constructor_options
         }
     }
@@ -60,15 +63,17 @@ impl Constructor {
         WindowBuilder::new(
             &self.title,
             &self.border_color,
+            self.spacing,
         )
     }
 }
 
 impl WindowBuilder {
-    pub fn new(title: &impl ToString, border_color: &impl ToString) -> Self {
+    pub fn new(title: &impl ToString, border_color: &impl ToString, spacing: usize) -> Self {
         Self {
             title: title.to_string(),
             property_border_color: border_color.to_string(),
+            spacing,
             ..Default::default()
         }
     }
@@ -77,6 +82,7 @@ impl WindowBuilder {
         Self {
             title: self.title.clone(),
             label: label.to_string(),
+            spacing: self.spacing,
             property_header: self.property_header.clone(),
             property_border_color: self.property_border_color.clone(),
             property_footer: self.property_footer.clone(),
@@ -90,9 +96,11 @@ impl WindowBuilder {
         let mut footer = String::new();
         let mut label = String::new();
 
+        let spacing = " ".repeat(self.spacing);
+
 
         write!(header, "{}", self.property_border_color).unwrap();
-        write!(header, " * ").unwrap();
+        write!(header, "{spacing}* ").unwrap();
 
         for _ in 0..(((self.label.len() - self.title.len()) / 2) - 1) {
             write!(header, "-").unwrap();
@@ -117,7 +125,7 @@ impl WindowBuilder {
 
         write!(header, " * ").unwrap();
 
-        write!(label, " | ").unwrap();
+        write!(label, "{spacing}| ").unwrap();
 
         for _ in 0..(self.property_header.len() / 2) {
             write!(label, "-").unwrap();
@@ -127,7 +135,7 @@ impl WindowBuilder {
 
         write!(label, " |").unwrap();
 
-        write!(footer, " * ").unwrap();
+        write!(footer, "{spacing}* ").unwrap();
 
         for _ in 0..self.label.len() {
             write!(footer, "-").unwrap();
@@ -151,43 +159,4 @@ impl Window {
         println!("{}", self.window_builder.property_label);
         println!("{}", self.window_builder.property_footer);
     }
-}
-
-pub fn print_window(txt: &str) {
-    let margin = if txt.len() % 2 == 0 { "  " } else { " " };
-
-    println!("\
---- CLIWins 0.1.0 Debug Information ---
-Text Length: {}
-Margin Length: {}
-    ", txt.len(), margin.len()
-    );
-
-    print!(" * ");
-    for txt in 0..(txt.len()) {
-        print!("-");
-    }
-    print!(" *");
-
-
-    println!();
-    print!(" | ");
-
-    /* for txt in 0..(txt.len() / 2) {
-        print!("{margin}");
-    } */
-
-    print!("{txt}");
-
-    for txt in 0..(txt.len() / 2) {
-        print!("{margin}");
-    }
-    print!(" |");
-    println!();
-    print!("*");
-    for txt in 0..(txt.len() + 5) {
-        print!("-");
-    }
-    print!("*");
-    println!();
 }
