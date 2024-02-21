@@ -55,6 +55,12 @@ pub async fn client_login(w_client: &mut OutgoingPacketStream<WriteHalf<TcpStrea
         };
     }
 
+    w_client.write(
+        ClientPacket::SystemMessage {
+            message: Message::new(format!("{BOLD}Checking your credentials...{C_RESET}"))
+        }
+    ).await.expect("Failed to write packet");   
+
     let (mut account, login_success) = DATABASE.check_credentials(&creds.0, &creds.1).await;
 
     if !login_success {
