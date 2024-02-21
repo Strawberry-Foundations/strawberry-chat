@@ -3,13 +3,15 @@
 
 // Removed: clippy::should_implement_trait,
 
+use std::env::var;
 use std::sync::{Mutex, OnceLock};
-use tokio::net::TcpListener;
-use tokio::spawn;
 
-use stblib::colors::{BOLD, C_RESET, CYAN, ITALIC, MAGENTA, RESET, YELLOW};
+use tokio::spawn;
+use tokio::net::TcpListener;
 use tokio::sync::mpsc::channel;
 use tokio::task::JoinHandle;
+
+use stblib::colors::{BOLD, C_RESET, CYAN, ITALIC, MAGENTA, RESET, YELLOW};
 
 use crate::communication::connection_handler::connection_handler;
 use crate::database::db::DATABASE;
@@ -34,7 +36,7 @@ pub static CORE_HANDLE: OnceLock<Mutex<JoinHandle<()>>> = OnceLock::new();
 async fn main(){
     println!("{CYAN}{BOLD}* -- {CHAT_NAME} {} {CODENAME} ({SERVER_EDITION}) -- *{RESET}{C_RESET}", DEFAULT_VERSION.clone());
 
-    let constructor = cli_wins::constructor::Constructor::new("EXPERIMENTAL SOFTWARE", YELLOW, cli_wins::constructor::ConstructorOptions {
+    let constructor = cli_wins::constructor::Constructor::new("EXPERIMENTAL SOFTWARE", YELLOW, 2, cli_wins::constructor::ConstructorOptions {
         debug_mode: true
     });
 
@@ -43,6 +45,20 @@ async fn main(){
         .build();
 
     window.show();
+
+    println!();
+
+    if var("DEBUG").is_ok() {
+        let constructor = cli_wins::constructor::Constructor::new("Warning: Debug Mode", YELLOW, 2, cli_wins::constructor::ConstructorOptions {
+            debug_mode: true
+        });
+
+        let window = constructor.builder()
+            .label("Strawberry Chat is running in Debug Mode", format!("{BOLD}{YELLOW}"))
+            .build();
+
+        window.show();
+    }
 
     let socket = TcpListener::bind((CONFIG.server.address.clone(), CONFIG.server.port)).await.unwrap_or_else(|err| {
         RUNTIME_LOGGER.panic(format!("{err}"));
@@ -53,6 +69,8 @@ async fn main(){
     if !CONFIG.flags.online_mode {
         cli_wins::online_mode::display();
     }
+
+
 
     ONLINE_MODE.auth().await;
 
