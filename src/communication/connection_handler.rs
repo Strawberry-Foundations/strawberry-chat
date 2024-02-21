@@ -20,7 +20,7 @@ use stblib::stbm::stbchat::object::Message;
 use crate::communication::client::client_handler;
 use crate::global::{CONFIG, LOGGER};
 use crate::system_core::log::log_parser;
-use crate::constants::log_messages::{CONNECTED, CONNECTED_RLM, CONNECTION_ERROR, RATELIMIT_REMOVED, REACHED_CON_LIMIT, WRITE_PACKET_FAIL, WRITE_STREAM_FAIL};
+use crate::constants::log_messages::{CONNECTED, CONNECTED_RLM, CONNECTION_ERROR, RATELIMIT_REMOVED, REACHED_CON_LIMIT, WRITE_STREAM_FAIL};
 use crate::system_core::server_core::register_connection;
 
 pub async fn connection_handler(socket: TcpListener) {
