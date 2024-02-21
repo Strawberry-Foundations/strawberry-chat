@@ -14,7 +14,7 @@ use stblib::stbm::stbchat::object::{User, Message};
 use stblib::stbm::stbchat::packet::{ClientPacket, ServerPacket};
 use stblib::colors::{BOLD, C_RESET, RED, YELLOW};
 
-use crate::constants::log_messages::{ADDRESS_LEFT, DISCONNECTED, S2C_ERROR};
+use crate::constants::log_messages::{ADDRESS_LEFT, DISCONNECTED, READ_PACKET_FAIL, S2C_ERROR, WRITE_PACKET_FAIL};
 use crate::database::db::DATABASE;
 use crate::global::{CONFIG, LOGGER};
 use crate::system_core::log::log_parser;
@@ -27,22 +27,23 @@ pub async fn client_login(w_client: &mut OutgoingPacketStream<WriteHalf<TcpStrea
     peer_addr: IpAddr
 ) -> Option<(UserAccount, User)> {
     // TODO: replace unwraps with logger errors
+
     w_client.write(
         ClientPacket::SystemMessage {
             message: Message::new(format!("{BOLD}Welcome to {}!{C_RESET}", CONFIG.server.title))
         }
-    ).await.expect("Failed to write packet");
+    ).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
 
     w_client.write(
         ClientPacket::Event {
             event_type: String::from("event.login")
         }
-    ).await.expect("Failed to write packet");
+    ).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
 
     let creds;
     loop {
         let Ok(packet) = r_client.read::<ServerPacket>().await else {
-            println!("Failed to read packet");
+            LOGGER.warning(READ_PACKET_FAIL);
             return None;
         };
 
@@ -59,7 +60,7 @@ pub async fn client_login(w_client: &mut OutgoingPacketStream<WriteHalf<TcpStrea
         ClientPacket::SystemMessage {
             message: Message::new(format!("{BOLD}Checking your credentials...{C_RESET}"))
         }
-    ).await.expect("Failed to write packet");   
+    ).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
 
     let (mut account, login_success) = DATABASE.check_credentials(&creds.0, &creds.1).await;
 
@@ -68,7 +69,7 @@ pub async fn client_login(w_client: &mut OutgoingPacketStream<WriteHalf<TcpStrea
             ClientPacket::SystemMessage {
                 message: Message::new(format!("{RED}{BOLD}Invalid username and/or password!{C_RESET}"))
             }
-        ).await.expect("Failed to write packet");
+        ).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
 
         LOGGER.info(log_parser(ADDRESS_LEFT, &[&peer_addr]));
 
@@ -82,7 +83,7 @@ pub async fn client_login(w_client: &mut OutgoingPacketStream<WriteHalf<TcpStrea
             ClientPacket::SystemMessage {
                 message: Message::new(format!("{RED}{BOLD}Your account was disabled by an administrator.{C_RESET}"))
             }
-        ).await.expect("Failed to write packet");
+        ).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
         LOGGER.info(log_parser(DISCONNECTED, &[&peer_addr]));
 
         w_client.inner_mut().shutdown().await.unwrap_or_else(|_| LOGGER.error(format!("{S2C_ERROR} (core::login::#85)")));
@@ -98,7 +99,7 @@ pub async fn client_login(w_client: &mut OutgoingPacketStream<WriteHalf<TcpStrea
             ClientPacket::SystemMessage {
                 message: Message::new(format!("{YELLOW}{BOLD}Sorry, Server is full!{C_RESET}"))
             }
-        ).await.expect("Failed to write packet");
+        ).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
 
         LOGGER.info(log_parser(DISCONNECTED, &[&peer_addr]));
 
@@ -112,7 +113,7 @@ pub async fn client_login(w_client: &mut OutgoingPacketStream<WriteHalf<TcpStrea
             ClientPacket::SystemMessage {
                 message: Message::new(format!("{YELLOW}{BOLD}Queue is currently not implemented - Server is full!{C_RESET}"))
             }
-        ).await.expect("Failed to write packet");
+        ).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
 
         LOGGER.info(log_parser(DISCONNECTED, &[&peer_addr]));
 
