@@ -10,7 +10,7 @@ use tokio::net::TcpStream;
 use tokio::io::{AsyncWriteExt, ReadHalf, WriteHalf};
 
 use stblib::stbm::stbchat::net::{IncomingPacketStream, OutgoingPacketStream};
-use stblib::stbm::stbchat::object::{User, Message};
+use stblib::stbm::stbchat::object::User;
 use stblib::stbm::stbchat::packet::{ClientPacket, ServerPacket};
 use stblib::colors::{BOLD, C_RESET, RED, YELLOW};
 
@@ -30,7 +30,7 @@ pub async fn client_login(w_client: &mut OutgoingPacketStream<WriteHalf<TcpStrea
 
     w_client.write(
         ClientPacket::SystemMessage {
-            message: Message::new(format!("{BOLD}Welcome to {}!{C_RESET}", CONFIG.server.title))
+            message: format!("{BOLD}Welcome to {}!{C_RESET}", CONFIG.server.title)
         }
     ).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
 
@@ -58,7 +58,7 @@ pub async fn client_login(w_client: &mut OutgoingPacketStream<WriteHalf<TcpStrea
 
     w_client.write(
         ClientPacket::SystemMessage {
-            message: Message::new(format!("{BOLD}Checking your credentials...{C_RESET}"))
+            message: format!("{BOLD}Checking your credentials...{C_RESET}")
         }
     ).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
 
@@ -67,7 +67,7 @@ pub async fn client_login(w_client: &mut OutgoingPacketStream<WriteHalf<TcpStrea
     if !login_success {
         w_client.write(
             ClientPacket::SystemMessage {
-                message: Message::new(format!("{RED}{BOLD}Invalid username and/or password!{C_RESET}"))
+                message: format!("{RED}{BOLD}Invalid username and/or password!{C_RESET}")
             }
         ).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
 
@@ -81,7 +81,7 @@ pub async fn client_login(w_client: &mut OutgoingPacketStream<WriteHalf<TcpStrea
     if !account.account_enabled && login_success {
         w_client.write(
             ClientPacket::SystemMessage {
-                message: Message::new(format!("{RED}{BOLD}Your account was disabled by an administrator.{C_RESET}"))
+                message: format!("{RED}{BOLD}Your account was disabled by an administrator.{C_RESET}")
             }
         ).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
         LOGGER.info(log_parser(DISCONNECTED, &[&peer_addr]));
@@ -97,7 +97,7 @@ pub async fn client_login(w_client: &mut OutgoingPacketStream<WriteHalf<TcpStrea
 
         w_client.write(
             ClientPacket::SystemMessage {
-                message: Message::new(format!("{YELLOW}{BOLD}Sorry, Server is full!{C_RESET}"))
+                message: format!("{YELLOW}{BOLD}Sorry, Server is full!{C_RESET}")
             }
         ).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
 
@@ -111,7 +111,7 @@ pub async fn client_login(w_client: &mut OutgoingPacketStream<WriteHalf<TcpStrea
         && i16::try_from(get_online_usernames().await.len()).unwrap_or(CONFIG.config.max_users) >= CONFIG.config.max_users {
         w_client.write(
             ClientPacket::SystemMessage {
-                message: Message::new(format!("{YELLOW}{BOLD}Queue is currently not implemented - Server is full!{C_RESET}"))
+                message: format!("{YELLOW}{BOLD}Queue is currently not implemented - Server is full!{C_RESET}")
             }
         ).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
 
