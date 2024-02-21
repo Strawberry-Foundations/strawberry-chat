@@ -70,8 +70,6 @@ async fn main(){
         cli_wins::online_mode::display();
     }
 
-
-
     ONLINE_MODE.auth().await;
 
     RUNTIME_LOGGER.default(format!("Connecting to database on address {}", CONFIG.database.host));
@@ -89,8 +87,11 @@ async fn main(){
     );
 
     let (wd_tx, wd_rx) = channel::<()>(1);
+    
     spawn(connection_handler(socket));
     spawn(watchdog_thread(wd_rx));
+    
     CORE_HANDLE.set(Mutex::new(spawn(core_thread(wd_tx)))).unwrap();
+    
     std::thread::park();
 }
