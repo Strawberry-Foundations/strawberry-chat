@@ -17,7 +17,7 @@ use stblib::colors::{BOLD, C_RESET, GRAY, GREEN, RED};
 use owo_colors::OwoColorize;
 use stblib::stbm::stbchat::object::Message;
 
-use crate::constants::log_messages::{ADDRESS_LEFT, LOGIN, LOGIN_ERROR, S2C_ERROR};
+use crate::constants::log_messages::{ADDRESS_LEFT, LOGIN, LOGIN_ERROR, S2C_ERROR, WRITE_PACKET_FAIL};
 use crate::global::{CONFIG, LOGGER};
 use crate::system_core::log::log_parser;
 use crate::system_core::{CORE, login};
@@ -43,7 +43,7 @@ pub async fn client_handler(client: TcpStream, rx: Receiver<MessageToClient>, tx
             ClientPacket::SystemMessage {
                 message: Message::new(format!("{RED}{BOLD}Sorry, you're not allowed to connect to this server.{C_RESET}"))
             }
-        ).await.expect("Failed to write packet");
+        ).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
 
         w_client.inner_mut().shutdown().await.unwrap_or_else(|_| LOGGER.error(format!("{S2C_ERROR} (com::client::#40)")));
 
@@ -76,7 +76,7 @@ pub async fn client_handler(client: TcpStream, rx: Receiver<MessageToClient>, tx
             ClientPacket::SystemMessage {
                 message: Message::new(format!("{RED}{BOLD}Invalid username and/or password!{C_RESET}"))
             }
-        ).await.expect("Failed to write packet");
+        ).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
 
         LOGGER.info(log_parser(ADDRESS_LEFT, &[&peer_addr]));
 
@@ -103,7 +103,7 @@ pub async fn client_handler(client: TcpStream, rx: Receiver<MessageToClient>, tx
         ClientPacket::SystemMessage {
             message: Message::new(format!("Welcome back {}! Nice to see you!", user.username).bold().cyan())
         }
-    ).await.expect("Failed to write packet");
+    ).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
 
     CORE.write().await.add_connection();
 
@@ -116,7 +116,7 @@ pub async fn client_handler(client: TcpStream, rx: Receiver<MessageToClient>, tx
         ClientPacket::SystemMessage {
             message: Message::new(format!("Currently there {online_users_str} online. For help use /help!").bold().cyan())
         }
-    ).await.expect("Failed to write packet");
+    ).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
 
     tx.send(MessageToServer::Broadcast {
         content: format!("{GRAY}{BOLD}-->{C_RESET} {}{}{GREEN}{BOLD} has joined the chat room!{C_RESET}", user.role_color, user.username)
