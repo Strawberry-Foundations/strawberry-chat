@@ -7,7 +7,7 @@ use tokio::sync::mpsc::{Receiver, Sender};
 use owo_colors::OwoColorize;
 
 use stblib::stbm::stbchat::net::{IncomingPacketStream, OutgoingPacketStream};
-use stblib::stbm::stbchat::object::{User, Message};
+use stblib::stbm::stbchat::object::User;
 use stblib::stbm::stbchat::packet::{ClientPacket, ServerPacket};
 
 use crate::constants::log_messages::{CLIENT_KICKED, USER_LEFT};
@@ -26,7 +26,7 @@ pub async fn client_incoming(
     loop {
         // TODO: Replace unwraps with logger errors + RemoveMe
         let msg = match r_stream.read::<ServerPacket>().await {
-            Ok(ServerPacket::Message { message }) => message.content,
+            Ok(ServerPacket::Message { message }) => message,
             Err(e) => {
                 LOGGER.warning(format!("Failed to read packet, received from {peer_addr}: {e}"));
                 break;
@@ -100,7 +100,7 @@ pub async fn client_outgoing(
 
                 if let Err(e) = w_stream.write(ClientPacket::UserMessage {
                     author,
-                    message: Message::new(content.string),
+                    message: content.string,
                 }).await {
                     LOGGER.error(format!("[S -> {peer_addr}] Failed to send a packet: {e}"));
                     return;
@@ -109,7 +109,7 @@ pub async fn client_outgoing(
             MessageToClient::SystemMessage { content } => {
                 if let Err(e) = w_stream
                     .write(ClientPacket::SystemMessage {
-                        message: Message::new(content),
+                        message: content,
                     })
                     .await
                 {
