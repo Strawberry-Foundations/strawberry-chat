@@ -33,12 +33,12 @@ With v2 of the standard, we implemented JSON to provide more options for how the
 Security is an important part when it comes to internet programs.
 In the following table you can see our security features and the corresponding versions:
 
-| Version | PW Hashing | TLS | Automod | IP Blocking | Ratelimit | Login Verification | Msg Verification | Watchdog | 
-|---------|------------|-----|---------|-------------|-----------|--------------------|------------------|----------|
-| `v1.8`  | ✅          | ❌   | ➖       | ❌           | ❌         | ❌                  | ❌                | ❌        |
-| `v1.9`  | ✅          | ❌   | ➖       | ❌           | ❌         | ❌                  | ❌                | ❌        |
-| `v1.10` | ✅          | ❌   | ➖       | ✅           | ✅         | ❌                  | ❌                | ❌        |
-| `v1.11` | ✅          | ❌   | ✅       | ✅           | ✅         | ✅                  | ✅                | ✅        |
+| Version | PW Hashing | TLS | Auto-<br>mod | IP Blocking | Ratelimit | Login Verification | Msg Verification | Watchdog | 
+|---------|------------|-----|--------------|-------------|-----------|--------------------|------------------|----------|
+| `v1.8`  | ✅          | ❌   | ➖            | ❌           | ❌         | ❌                  | ❌                | ❌        |
+| `v1.9`  | ✅          | ❌   | ➖            | ❌           | ❌         | ❌                  | ❌                | ❌        |
+| `v1.10` | ✅          | ❌   | ➖            | ✅           | ✅         | ❌                  | ❌                | ❌        |
+| `v1.11` | ✅          | ❌   | ✅            | ✅           | ✅         | ✅                  | ✅                | ✅        |
 
 **Legend**
 
