@@ -15,7 +15,6 @@ use stblib::stbm::stbchat::packet::ClientPacket;
 use stblib::colors::{BOLD, C_RESET, GRAY, GREEN, RED};
 
 use owo_colors::OwoColorize;
-use stblib::stbm::stbchat::object::Message;
 
 use crate::constants::log_messages::{ADDRESS_LEFT, LOGIN, LOGIN_ERROR, S2C_ERROR, WRITE_PACKET_FAIL};
 use crate::global::{CONFIG, LOGGER};
@@ -41,7 +40,7 @@ pub async fn client_handler(client: TcpStream, rx: Receiver<MessageToClient>, tx
 
         w_client.write(
             ClientPacket::SystemMessage {
-                message: Message::new(format!("{RED}{BOLD}Sorry, you're not allowed to connect to this server.{C_RESET}"))
+                message: format!("{RED}{BOLD}Sorry, you're not allowed to connect to this server.{C_RESET}")
             }
         ).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
 
@@ -74,7 +73,7 @@ pub async fn client_handler(client: TcpStream, rx: Receiver<MessageToClient>, tx
     if user.username == *CRTLCODE_CLIENT_EXIT{
         w_client.write(
             ClientPacket::SystemMessage {
-                message: Message::new(format!("{RED}{BOLD}Invalid username and/or password!{C_RESET}"))
+                message: format!("{RED}{BOLD}Invalid username and/or password!{C_RESET}")
             }
         ).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
 
@@ -101,7 +100,7 @@ pub async fn client_handler(client: TcpStream, rx: Receiver<MessageToClient>, tx
 
     w_client.write(
         ClientPacket::SystemMessage {
-            message: Message::new(format!("Welcome back {}! Nice to see you!", user.username).bold().cyan())
+            message: format!("Welcome back {}! Nice to see you!", user.username).bold().cyan().to_string()
         }
     ).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
 
@@ -114,7 +113,7 @@ pub async fn client_handler(client: TcpStream, rx: Receiver<MessageToClient>, tx
 
     w_client.write(
         ClientPacket::SystemMessage {
-            message: Message::new(format!("Currently there {online_users_str} online. For help use /help!").bold().cyan())
+            message: format!("Currently there {online_users_str} online. For help use /help!").bold().cyan().to_string()
         }
     ).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
 
