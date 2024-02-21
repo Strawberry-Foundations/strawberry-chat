@@ -29,3 +29,4 @@ pub const SQL_CONNECTION_ERROR: &str = "Couldn't connect to database: %s";
 
 pub const READ_PACKET_FAIL: &str = "Failed to read packet";
 pub const WRITE_PACKET_FAIL: &str = "Failed to write packet";
+pub const WRITE_STREAM_FAIL: &str = "Failed to write to stream";
