@@ -46,9 +46,9 @@ async fn main(){
 
     window.show();
 
-    println!();
-
     if var("DEBUG").is_ok() {
+        println!();
+
         let constructor = cli_wins::constructor::Constructor::new("Warning: Debug Mode", YELLOW, 2, cli_wins::constructor::ConstructorOptions {
             debug_mode: true
         });
@@ -87,11 +87,11 @@ async fn main(){
     );
 
     let (wd_tx, wd_rx) = channel::<()>(1);
-    
+
     spawn(connection_handler(socket));
     spawn(watchdog_thread(wd_rx));
-    
+
     CORE_HANDLE.set(Mutex::new(spawn(core_thread(wd_tx)))).unwrap();
-    
+
     std::thread::park();
 }
