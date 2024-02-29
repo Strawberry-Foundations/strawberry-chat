@@ -9,3 +9,4 @@ Cargo.lock
 old/
 
 config.yml
+bad_words.yml
