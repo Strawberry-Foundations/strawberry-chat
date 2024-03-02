@@ -13,12 +13,10 @@ use stblib::stbm::stbchat::net::{IncomingPacketStream, OutgoingPacketStream};
 use stblib::stbm::stbchat::object::User;
 use stblib::stbm::stbchat::packet::{ClientPacket, ServerPacket};
 use stblib::colors::{BOLD, C_RESET, RED, YELLOW};
-use stblib::utilities::contains_whitespace;
 
 use crate::constants::log_messages::{ADDRESS_LEFT, DISCONNECTED, READ_PACKET_FAIL, S2C_ERROR, WRITE_PACKET_FAIL};
 use crate::database::db::DATABASE;
-use crate::global::{CONFIG, LOGGER, MESSAGE_VERIFICATOR};
-use crate::security::verification::MessageAction;
+use crate::global::{CONFIG, LOGGER};
 use crate::system_core::log::log_parser;
 use crate::system_core::objects::UserAccount;
 use crate::system_core::register::client_register;
@@ -53,6 +51,7 @@ pub async fn client_login(w_client: &mut OutgoingPacketStream<WriteHalf<TcpStrea
         match packet {
             ServerPacket::Login { username, password } => {
                 creds = (username, password);
+                println!("{}", DATABASE.get_next_user_id().await);
                 break;
             }
             ServerPacket::Register { username, password, role_color} => {
