@@ -23,6 +23,17 @@ pub async fn client_register(
     w_client: &mut OutgoingPacketStream<WriteHalf<TcpStream>>,
     peer_addr: IpAddr
 ) {
+    let registered_users = DATABASE.fetch_members().await;
+    
+    if i16::try_from(registered_users.len()).unwrap() >= CONFIG.config.max_registered_users && CONFIG.config.max_registered_users != -1 {
+        w_client.write(ClientPacket::SystemMessage {
+            message: format!("{YELLOW}{BOLD}Unfortunately, we are no longer accepting new users. Maybe you will come back later!{C_RESET}")
+        }).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
+
+        LOGGER.info(log_parser(DISCONNECTED, &[&peer_addr]));
+        w_client.inner_mut().shutdown().await.unwrap_or_else(|_| LOGGER.error(format!("{S2C_ERROR} (core::register::#31)")));
+    } 
+
 
     /// Check if the username is in blacklisted words
     let action = MESSAGE_VERIFICATOR.check(&username.to_lowercase());
