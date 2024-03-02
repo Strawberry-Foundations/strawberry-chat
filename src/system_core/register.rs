@@ -1,12 +1,15 @@
 use std::net::IpAddr;
-use stblib::colors::{BOLD, C_RESET, YELLOW};
+use tokio::io::{AsyncWriteExt, WriteHalf};
+use tokio::net::TcpStream;
+
 use stblib::stbm::stbchat::net::OutgoingPacketStream;
 use stblib::stbm::stbchat::packet::ClientPacket;
 use stblib::utilities::contains_whitespace;
-use tokio::io::{AsyncWriteExt, WriteHalf};
-use tokio::net::TcpStream;
-use crate::constants::chars::USERNAME_ALLOWED_CHARACTERS;
+use stblib::colors::{BOLD, C_RESET, YELLOW};
+
+use crate::constants::chars::USERNAME_ALLOWED_CHARS;
 use crate::constants::log_messages::{DISCONNECTED, S2C_ERROR, WRITE_PACKET_FAIL};
+use crate::database::Database;
 use crate::database::db::DATABASE;
 use crate::global::{CONFIG, LOGGER, MESSAGE_VERIFICATOR};
 use crate::security::verification::MessageAction;
@@ -57,7 +60,7 @@ pub async fn client_register(
     }
 
     /// If username character is not in our charset, return an error message
-    if !is_valid_username(username.as_str(), USERNAME_ALLOWED_CHARACTERS) {
+    if !is_valid_username(&username.as_str(), USERNAME_ALLOWED_CHARS) {
         w_client.write(ClientPacket::SystemMessage {
             message: format!("{YELLOW}{BOLD}Please use only letters, numbers, dots or underscores{C_RESET}")
         }).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
@@ -77,7 +80,7 @@ pub async fn client_register(
     }
 
     /// Check if username is already taken
-    if DATABASE.is_username_taken(username).await {
+    if DATABASE.is_username_taken(&username).await {
         w_client.write(ClientPacket::SystemMessage {
             message: format!("{YELLOW}{BOLD}This username is already in use!{C_RESET}")
         }).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
@@ -105,4 +108,9 @@ pub async fn client_register(
         LOGGER.info(log_parser(DISCONNECTED, &[&peer_addr]));
         w_client.inner_mut().shutdown().await.unwrap_or_else(|_| LOGGER.error(format!("{S2C_ERROR} (core::register)")));
     }
+
+    let user_id = DATABASE.get_next_user_id().await;
+    let registered_password = Database::hash_password(password);
+
+    DATABASE.new_user(user_id, username, registered_password, role_color).await;
 }
