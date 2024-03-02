@@ -52,7 +52,7 @@ pub async fn client_login(w_client: &mut OutgoingPacketStream<WriteHalf<TcpStrea
                 creds = (username, password);
                 break;
             }
-            ServerPacket::Message { .. } => continue,
+            _ => continue,
         };
     }
 
