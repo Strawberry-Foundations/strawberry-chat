@@ -5,6 +5,7 @@ use argon2::{Argon2, PasswordHash, PasswordHasher, PasswordVerifier};
 use argon2::password_hash::rand_core::OsRng;
 use argon2::password_hash::SaltString;
 use stblib::stbm::stbchat::object::User;
+use stblib::utilities::unix_time;
 
 use crate::constants::log_messages::SQL_CONNECTION_ERROR;
 use crate::global::RUNTIME_LOGGER;
@@ -42,6 +43,49 @@ impl Database {
 
         let hashed_password = argon2.hash_password(plain_password.as_bytes(), &salt).unwrap();
         hashed_password.to_string()
+    }
+
+    pub async fn new_user(&self, user_id: i64, username: String, password: String, role_color: String) {
+        sqlx::query(
+            "INSERT INTO data.users (\
+            user_id, \
+            username, \
+            password, \
+            nickname, \
+            description, \
+            badge, \
+            badges, \
+            avatar_url, \
+            role, \
+            role_color, \
+            enable_blacklisted_words, \
+            account_enabled, \
+            enable_dms, \
+            muted, \
+            strawberry_id, \
+            discord_name, \
+            msg_count, \
+            creation_date \
+            ) \
+            VALUES (\
+            ?, \
+            ?, \
+            ?, \
+            '', \
+            '', \
+            '', \
+            '', \
+            '', \
+            'member', \
+            ?, \
+            1, 1, 1, 0, '', '', 0, ?);")
+            .bind(user_id)
+            .bind(username)
+            .bind(password)
+            .bind(role_color)
+            .bind(unix_time())
+            .execute(&self.connection)
+            .await.unwrap();
     }
 
     pub async fn check_credentials(&self, username: &String, entered_password: &String) -> (UserAccount, bool) {
@@ -114,7 +158,7 @@ impl Database {
         (user_account, true)
     }
 
-    pub async fn is_username_taken(&self, username: String) -> bool {
+    pub async fn is_username_taken(&self, username: &String) -> bool {
         let query = sqlx::query("SELECT username FROM users WHERE username = ?")
             .bind(username)
             .fetch_optional(&self.connection)
