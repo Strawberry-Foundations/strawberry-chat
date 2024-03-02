@@ -1,3 +1,4 @@
+use std::io::ErrorKind;
 use std::net::IpAddr;
 
 use tokio::io::{AsyncWriteExt, ReadHalf, WriteHalf};
@@ -29,7 +30,8 @@ pub async fn client_incoming(
         let msg = match r_stream.read::<ServerPacket>().await {
             Ok(ServerPacket::Message { message }) => message,
             Err(e) => {
-                if e.to_string().as_str() == "unexpected end of file" {
+                
+                if matches!(e.downcast_ref::<std::io::Error>().map(std::io::Error::kind), Some(ErrorKind::UnexpectedEof)) {
                     tx.send(MessageToServer::Broadcast {
                         content: format!("{GRAY}{BOLD}-->{C_RESET} {}{}{YELLOW}{BOLD} left the chat room!{C_RESET}", user.role_color, user.username)
                     }).await.unwrap();
