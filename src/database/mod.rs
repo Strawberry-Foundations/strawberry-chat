@@ -103,4 +103,13 @@ impl Database {
 
         (user_account, true)
     }
+
+    pub async fn is_username_taken(&self, username: String) -> bool {
+        let query = sqlx::query("SELECT username FROM users WHERE username = ?")
+            .bind(username)
+            .fetch_optional(&self.connection)
+            .await.unwrap();
+
+        query.is_some()
+    }
 }
