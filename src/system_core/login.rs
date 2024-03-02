@@ -13,12 +13,15 @@ use stblib::stbm::stbchat::net::{IncomingPacketStream, OutgoingPacketStream};
 use stblib::stbm::stbchat::object::User;
 use stblib::stbm::stbchat::packet::{ClientPacket, ServerPacket};
 use stblib::colors::{BOLD, C_RESET, RED, YELLOW};
+use stblib::utilities::contains_whitespace;
 
 use crate::constants::log_messages::{ADDRESS_LEFT, DISCONNECTED, READ_PACKET_FAIL, S2C_ERROR, WRITE_PACKET_FAIL};
 use crate::database::db::DATABASE;
-use crate::global::{CONFIG, LOGGER};
+use crate::global::{CONFIG, LOGGER, MESSAGE_VERIFICATOR};
+use crate::security::verification::MessageAction;
 use crate::system_core::log::log_parser;
 use crate::system_core::objects::UserAccount;
+use crate::system_core::register::client_register;
 use crate::system_core::server_core::get_online_usernames;
 
 /// Returns None if the client disconnected
@@ -52,6 +55,11 @@ pub async fn client_login(w_client: &mut OutgoingPacketStream<WriteHalf<TcpStrea
                 creds = (username, password);
                 break;
             }
+            ServerPacket::Register { username, password, role_color} => {
+                creds = (username.clone(), password.clone());
+                client_register(username, password, role_color, w_client, peer_addr).await;
+                break;
+            }
             _ => continue,
         };
     }
@@ -61,7 +69,7 @@ pub async fn client_login(w_client: &mut OutgoingPacketStream<WriteHalf<TcpStrea
             message: format!("{BOLD}Checking your credentials...{C_RESET}")
         }
     ).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
-
+    
     let (mut account, login_success) = DATABASE.check_credentials(&creds.0, &creds.1).await;
 
     if !login_success {
