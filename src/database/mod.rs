@@ -8,6 +8,7 @@ use stblib::utilities::unix_time;
 use argon2::{Argon2, PasswordHash, PasswordHasher, PasswordVerifier};
 use argon2::password_hash::rand_core::OsRng;
 use argon2::password_hash::SaltString;
+use sqlx::mysql::MySqlRow;
 
 use crate::constants::log_messages::SQL_CONNECTION_ERROR;
 use crate::global::RUNTIME_LOGGER;
@@ -89,6 +90,12 @@ impl Database {
             .bind(unix_time())
             .execute(&self.connection)
             .await.unwrap();
+    }
+    
+    pub async fn fetch_members(&self) -> Vec<MySqlRow>{
+        sqlx::query("SELECT username from users")
+            .fetch_all(&self.connection)
+            .await.unwrap()
     }
 
     pub async fn check_credentials(&self, username: &String, entered_password: &String) -> (UserAccount, bool) {
