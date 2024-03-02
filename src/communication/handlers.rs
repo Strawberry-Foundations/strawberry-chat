@@ -5,6 +5,7 @@ use tokio::net::TcpStream;
 use tokio::sync::mpsc::{Receiver, Sender};
 
 use owo_colors::OwoColorize;
+use stblib::colors::{BOLD, C_RESET, GRAY, YELLOW};
 
 use stblib::stbm::stbchat::net::{IncomingPacketStream, OutgoingPacketStream};
 use stblib::stbm::stbchat::object::User;
@@ -43,6 +44,10 @@ pub async fn client_incoming(
                 .collect();
 
             if &parts[0] == "exit" {
+                tx.send(MessageToServer::Broadcast {
+                    content: format!("{GRAY}{BOLD}-->{C_RESET} {}{}{YELLOW}{BOLD} left the chat room!{C_RESET}", user.role_color, user.username)
+                }).await.unwrap();
+
                 tx.send(MessageToServer::RemoveMe).await.unwrap();
                 LOGGER.info(log_parser(USER_LEFT, &[&user.username, &peer_addr]));
                 return;
@@ -61,6 +66,10 @@ pub async fn client_incoming(
 
         match action {
             MessageAction::Kick => {
+                tx.send(MessageToServer::Broadcast {
+                    content: format!("{GRAY}{BOLD}-->{C_RESET} {}{}{YELLOW}{BOLD} left the chat room!{C_RESET}", user.role_color, user.username)
+                }).await.unwrap();
+
                 tx.send(MessageToServer::ClientDisconnect {
                     reason: "Please be friendlier in the chat. Rejoin when you feel ready!"
                         .yellow()
