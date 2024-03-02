@@ -70,3 +70,12 @@ pub fn role_color_parser(color: &str) -> String {
         _ => String::new()
     }
 }
+
+pub fn is_valid_username(username: &str, allowed_characters: &str) -> bool {
+    for c in username.chars() {
+        if !allowed_characters.contains(c) {
+            return false;
+        }
+    }
+    true
+}
