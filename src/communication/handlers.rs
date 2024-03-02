@@ -29,6 +29,16 @@ pub async fn client_incoming(
         let msg = match r_stream.read::<ServerPacket>().await {
             Ok(ServerPacket::Message { message }) => message,
             Err(e) => {
+                if e.to_string().as_str() == "unexpected end of file" {
+                    tx.send(MessageToServer::Broadcast {
+                        content: format!("{GRAY}{BOLD}-->{C_RESET} {}{}{YELLOW}{BOLD} left the chat room!{C_RESET}", user.role_color, user.username)
+                    }).await.unwrap();
+
+                    tx.send(MessageToServer::RemoveMe).await.unwrap();
+                    LOGGER.info(log_parser(USER_LEFT, &[&user.username, &peer_addr]));
+                    return;
+                }
+                
                 LOGGER.warning(format!("Failed to read packet, received from {peer_addr}: {e}"));
                 break;
             }
