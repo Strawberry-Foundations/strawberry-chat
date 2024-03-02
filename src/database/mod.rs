@@ -112,4 +112,17 @@ impl Database {
 
         query.is_some()
     }
+
+    pub async fn get_next_user_id(&self) -> i64 {
+        #[derive(sqlx::FromRow)]
+        struct QUser {
+            id: i64,
+        }
+        
+        let query = sqlx::query_as::<_, QUser>("SELECT id FROM users ORDER BY id DESC LIMIT 1")
+            .fetch_optional(&self.connection)
+            .await.unwrap();
+
+        query.map_or(1, |user| user.id + 1)
+    }
 }
