@@ -12,7 +12,7 @@ repository = "https://github.com/Strawberry-Foundations/strawberry-chat"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-stblib = { version =  "0.5.6", features = ["stbchat"] }
+stblib = { version =  "0.5.7", features = ["stbchat"] }
 # stblib = { version =  "0.5.6", features = ["stbchat"], path = "../stblib-rust" }
 tokio = { version = "1.36.0", features = ["full"] }
 lazy_static = "1.4.0"
