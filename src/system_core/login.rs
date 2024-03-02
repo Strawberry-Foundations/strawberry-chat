@@ -51,7 +51,6 @@ pub async fn client_login(w_client: &mut OutgoingPacketStream<WriteHalf<TcpStrea
         match packet {
             ServerPacket::Login { username, password } => {
                 creds = (username, password);
-                println!("{}", DATABASE.get_next_user_id().await);
                 break;
             }
             ServerPacket::Register { username, password, role_color} => {
