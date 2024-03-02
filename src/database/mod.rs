@@ -1,7 +1,9 @@
 pub mod db;
 
 use sqlx::{MySql, MySqlPool, Pool, Row};
-use argon2::{Argon2, PasswordHash, PasswordVerifier};
+use argon2::{Argon2, PasswordHash, PasswordHasher, PasswordVerifier};
+use argon2::password_hash::rand_core::OsRng;
+use argon2::password_hash::SaltString;
 use stblib::stbm::stbchat::object::User;
 
 use crate::constants::log_messages::SQL_CONNECTION_ERROR;
@@ -32,6 +34,14 @@ impl Database {
         let password: &[u8] = entered_password.as_bytes();
 
         Argon2::default().verify_password(password, &hash).is_ok()
+    }
+
+    pub fn hash_password(plain_password: String) -> String {
+        let argon2 = Argon2::default();
+        let salt = SaltString::generate(&mut OsRng);
+
+        let hashed_password = argon2.hash_password(plain_password.as_bytes(), &salt).unwrap();
+        hashed_password.to_string()
     }
 
     pub async fn check_credentials(&self, username: &String, entered_password: &String) -> (UserAccount, bool) {
