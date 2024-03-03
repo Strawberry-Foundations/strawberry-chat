@@ -76,21 +76,21 @@ pub async fn client_incoming(
         }
 
         let action = MESSAGE_VERIFICATOR.check(&content.to_lowercase());
-        
+
         let content = StbString::from_str(content)
             .check_for_mention()
             .await;
 
         if content.is_mention && content.mentioned_user != user.username {
             tx.send(MessageToServer::ClientNotification {
-                content,
+                content: content.clone(),
                 bell: false,
                 sent_by: user.clone(),
             }).await.unwrap_or_else(|e| {
                 LOGGER.error(format!("[S -> {peer_addr}] Failed to send internal packet: {e}"));
             });
         }
-        
+
 
         match action {
             MessageAction::Kick => {
