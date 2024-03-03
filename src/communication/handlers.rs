@@ -83,8 +83,6 @@ pub async fn client_incoming(
 
         if content.is_mention && content.mentioned_user != user.username {
             tx.send(MessageToServer::ClientNotification {
-                title: String::from("Strawberry Chat"),
-                username,
                 content,
                 bell: false,
                 sent_by: user.clone(),
