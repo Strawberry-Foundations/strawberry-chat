@@ -118,6 +118,18 @@ pub async fn client_outgoing(
                     .check_for_mention()
                     .await;
 
+                if content.is_mention {
+                    w_stream.write(ClientPacket::Notification {
+                        title: String::from("Strawberry Chat"),
+                        username: author.username.clone(),
+                        avatar_url: author.avatar_url.clone(),
+                        content: content.string.clone(),
+                        bell: false,
+                    }).await.unwrap_or_else(|e| {
+                        LOGGER.error(format!("[S -> {peer_addr}] Failed to send a packet: {e}"));
+                    });
+                }
+
                 if let Err(e) = w_stream.write(ClientPacket::UserMessage {
                     author,
                     message: content.string,
