@@ -124,9 +124,16 @@ pub async fn client_outgoing(
                     let conn = get_senders_by_username(content.mentioned_user.as_str()).await;
 
                     for tx in conn {
+                        let username = if author.username == author.nickname {
+                          author.username.to_string()
+                        }
+                        else {
+                          format!("{} (@{})", author.nickname, author.username)
+                        };
+
                         tx.send(MessageToClient::Notification {
                             title: String::from("Strawberry Chat"),
-                            username: author.username.clone(),
+                            username,
                             avatar_url: author.avatar_url.clone(),
                             content: escape_ansi(content.string.as_str()),
                             bell: false,
