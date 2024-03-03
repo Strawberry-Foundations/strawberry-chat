@@ -9,6 +9,8 @@ use tokio::time::sleep;
 
 use lazy_static::lazy_static;
 use stblib::stbm::stbchat::object::User;
+use crate::constants::log_messages::WRITE_PACKET_FAIL;
+use crate::global::LOGGER;
 
 use crate::system_core::commands::run_command;
 use crate::system_core::message::{MessageToClient, MessageToServer};
@@ -185,10 +187,10 @@ impl Connection {
     }
 
     pub async fn disconnect(&mut self) {
-        self.tx.send(MessageToClient::Shutdown).await.unwrap();
+        self.tx.send(MessageToClient::Shutdown).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
         self.state = State::Disconnected;
     }
-}
+}   
 
 #[derive(PartialEq, Eq)]
 pub enum State {
