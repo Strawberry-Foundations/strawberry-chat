@@ -11,12 +11,14 @@ use stblib::colors::{BOLD, C_RESET, GRAY, YELLOW};
 use stblib::stbm::stbchat::net::{IncomingPacketStream, OutgoingPacketStream};
 use stblib::stbm::stbchat::object::User;
 use stblib::stbm::stbchat::packet::{ClientPacket, ServerPacket};
+use stblib::utilities::escape_ansi;
 
 use crate::constants::log_messages::{CLIENT_KICKED, USER_LEFT};
 use crate::global::{LOGGER, MESSAGE_VERIFICATOR};
 use crate::security::verification::MessageAction;
 use crate::system_core::log::log_parser;
 use crate::system_core::message::{MessageToClient, MessageToServer};
+use crate::system_core::server_core::get_senders_by_username;
 use crate::system_core::string::StbString;
 
 pub async fn client_incoming(
@@ -118,15 +120,18 @@ pub async fn client_outgoing(
                     .check_for_mention()
                     .await;
 
-                if content.is_mention {
-                    w_stream.write(ClientPacket::Notification {
+                if content.is_mention && content.mentioned_user != author.username {
+                    let conn = get_senders_by_username(content.mentioned_user.as_str()).await;
+                    let tx = conn.first().unwrap();
+
+                    tx.send(MessageToClient::Notification {
                         title: String::from("Strawberry Chat"),
                         username: author.username.clone(),
                         avatar_url: author.avatar_url.clone(),
-                        content: content.string.clone(),
+                        content: escape_ansi(content.string.as_str()),
                         bell: false,
                     }).await.unwrap_or_else(|e| {
-                        LOGGER.error(format!("[S -> {peer_addr}] Failed to send a packet: {e}"));
+                        LOGGER.error(format!("[S -> {peer_addr}] Failed to send internal packet: {e}"));
                     });
                 }
 
@@ -148,6 +153,17 @@ pub async fn client_outgoing(
                     LOGGER.error(format!("[S -> {peer_addr}] Failed to send a packet: {e}"));
                     return;
                 }
+            }
+            MessageToClient::Notification { title, username, avatar_url, content, bell} => {
+                w_stream.write(ClientPacket::Notification {
+                    title,
+                    username,
+                    avatar_url,
+                    content,
+                    bell,
+                }).await.unwrap_or_else(|e| {
+                    LOGGER.error(format!("[S -> {peer_addr}] Failed to send a packet: {e}"));
+                });
             }
             MessageToClient::Shutdown => {
                 let _ = w_stream.unwrap().shutdown().await;
