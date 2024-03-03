@@ -76,6 +76,23 @@ pub async fn client_incoming(
         }
 
         let action = MESSAGE_VERIFICATOR.check(&content.to_lowercase());
+        
+        let content = StbString::from_str(content)
+            .check_for_mention()
+            .await;
+
+        if content.is_mention && content.mentioned_user != user.username {
+            tx.send(MessageToServer::ClientNotification {
+                title: String::from("Strawberry Chat"),
+                username,
+                content,
+                bell: false,
+                sent_by: user.clone(),
+            }).await.unwrap_or_else(|e| {
+                LOGGER.error(format!("[S -> {peer_addr}] Failed to send internal packet: {e}"));
+            });
+        }
+        
 
         match action {
             MessageAction::Kick => {
@@ -98,7 +115,7 @@ pub async fn client_incoming(
                 ));
             }
             MessageAction::Hide => {}
-            MessageAction::Allow => tx.send(MessageToServer::Message { content }).await.unwrap(),
+            MessageAction::Allow => tx.send(MessageToServer::Message { content: content.string }).await.unwrap(),
         }
     }
 }
@@ -120,7 +137,7 @@ pub async fn client_outgoing(
                     .check_for_mention()
                     .await;
 
-                if content.is_mention && content.mentioned_user != author.username {
+                /* if content.is_mention && content.mentioned_user != author.username {
                     let conn = get_senders_by_username(content.mentioned_user.as_str()).await;
 
                     for tx in conn {
@@ -141,7 +158,7 @@ pub async fn client_outgoing(
                             LOGGER.error(format!("[S -> {peer_addr}] Failed to send internal packet: {e}"));
                         });
                     }
-                }
+                } */
 
                 if let Err(e) = w_stream.write(ClientPacket::UserMessage {
                     author,
