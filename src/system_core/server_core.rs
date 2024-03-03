@@ -9,7 +9,7 @@ use tokio::time::sleep;
 
 use lazy_static::lazy_static;
 use stblib::stbm::stbchat::object::User;
-use crate::constants::log_messages::{SEND_INTERNAL_MESSAGE_FAIL, WRITE_PACKET_FAIL};
+use crate::constants::log_messages::SEND_INTERNAL_MESSAGE_FAIL;
 use crate::global::LOGGER;
 
 use crate::system_core::commands::run_command;
@@ -190,7 +190,7 @@ impl Connection {
         self.tx.send(MessageToClient::Shutdown).await.unwrap_or_else(|_| LOGGER.warning(SEND_INTERNAL_MESSAGE_FAIL));
         self.state = State::Disconnected;
     }
-}   
+}
 
 #[derive(PartialEq, Eq)]
 pub enum State {
