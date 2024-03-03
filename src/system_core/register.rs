@@ -130,7 +130,7 @@ pub async fn client_register(
     }
 
     let user_id = DATABASE.get_next_user_id().await;
-    let registered_password = Database::hash_password(password);
+    let registered_password = Database::hash_password(password.as_str());
 
     DATABASE.new_user(user_id, username, registered_password, role_color).await;
 }
