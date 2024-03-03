@@ -13,7 +13,7 @@ repository = "https://github.com/Strawberry-Foundations/strawberry-chat"
 
 [dependencies]
 stblib = { version =  "0.5.12", features = ["stbchat"] }
-# stblib = { version =  "0.5.8", features = ["stbchat"], path = "../stblib-rust" }
+# stblib = { version =  "0.5.12", features = ["stbchat"], path = "../stblib-rust" }
 tokio = { version = "1.36.0", features = ["full"] }
 lazy_static = "1.4.0"
 serde = { version = "1.0.197", features = ["derive"] }
