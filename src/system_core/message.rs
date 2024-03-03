@@ -1,6 +1,7 @@
 //! Contains messages sent internally
 
 use stblib::stbm::stbchat::object::User;
+use crate::system_core::string::StbString;
 
 #[derive(Clone, Debug)]
 pub enum MessageToClient {
@@ -38,5 +39,12 @@ pub enum MessageToServer {
     RemoveMe,
     ClientDisconnect {
         reason: String
+    },
+    ClientNotification {
+        title: String,
+        username: String,
+        content: StbString,
+        bell: bool,
+        sent_by: User
     },
 }
