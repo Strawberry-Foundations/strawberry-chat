@@ -41,8 +41,6 @@ pub enum MessageToServer {
         reason: String
     },
     ClientNotification {
-        title: String,
-        username: String,
         content: StbString,
         bell: bool,
         sent_by: User
