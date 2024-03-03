@@ -2,7 +2,7 @@ use stblib::colors::{BACK_MAGENTA, BLUE, BOLD, C_RESET, CYAN, GREEN, MAGENTA, RE
 use chrono::{Utc, Local};
 use crate::system_core::server_core::get_online_users;
 
-#[derive(Default)]
+#[derive(Default, Clone, Debug)]
 pub struct StbString {
     pub string: String,
     pub is_mention: bool,
