@@ -41,7 +41,7 @@ impl Database {
         Argon2::default().verify_password(password, &hash).is_ok()
     }
 
-    pub fn hash_password(plain_password: String) -> String {
+    pub fn hash_password(plain_password: &str) -> String {
         let argon2 = Argon2::default();
         let salt = SaltString::generate(&mut OsRng);
 
