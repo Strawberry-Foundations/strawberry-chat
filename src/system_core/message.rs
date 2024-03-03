@@ -11,6 +11,13 @@ pub enum MessageToClient {
     SystemMessage {
         content: String,
     },
+    Notification {
+        title: String,
+        username: String,
+        avatar_url: String,
+        content: String,
+        bell: bool,
+    },
     Shutdown
 }
 
