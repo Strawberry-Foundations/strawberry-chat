@@ -122,17 +122,18 @@ pub async fn client_outgoing(
 
                 if content.is_mention && content.mentioned_user != author.username {
                     let conn = get_senders_by_username(content.mentioned_user.as_str()).await;
-                    let tx = conn.first().unwrap();
 
-                    tx.send(MessageToClient::Notification {
-                        title: String::from("Strawberry Chat"),
-                        username: author.username.clone(),
-                        avatar_url: author.avatar_url.clone(),
-                        content: escape_ansi(content.string.as_str()),
-                        bell: false,
-                    }).await.unwrap_or_else(|e| {
-                        LOGGER.error(format!("[S -> {peer_addr}] Failed to send internal packet: {e}"));
-                    });
+                    for tx in conn {
+                        tx.send(MessageToClient::Notification {
+                            title: String::from("Strawberry Chat"),
+                            username: author.username.clone(),
+                            avatar_url: author.avatar_url.clone(),
+                            content: escape_ansi(content.string.as_str()),
+                            bell: false,
+                        }).await.unwrap_or_else(|e| {
+                            LOGGER.error(format!("[S -> {peer_addr}] Failed to send internal packet: {e}"));
+                        });
+                    }
                 }
 
                 if let Err(e) = w_stream.write(ClientPacket::UserMessage {
