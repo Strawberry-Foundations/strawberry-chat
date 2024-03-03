@@ -75,7 +75,7 @@ pub async fn client_register(
     }
 
     /// If username character is not in our charset, return an error message
-    if !is_valid_username(&username.as_str(), USERNAME_ALLOWED_CHARS) {
+    if !is_valid_username(username.as_str(), USERNAME_ALLOWED_CHARS) {
         w_client.write(ClientPacket::SystemMessage {
             message: format!("{YELLOW}{BOLD}Please use only lowercase letters, numbers, dots or underscores{C_RESET}")
         }).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
