@@ -32,8 +32,8 @@ pub async fn client_register(
 
         LOGGER.info(log_parser(DISCONNECTED, &[&peer_addr]));
         w_client.inner_mut().shutdown().await.unwrap_or_else(|_| LOGGER.error(format!("{S2C_ERROR} (core::register::#31)")));
-    } 
-
+        return;
+    }
 
     /// Check if the username is in blacklisted words
     let action = MESSAGE_VERIFICATOR.check(&username.to_lowercase());
@@ -46,6 +46,7 @@ pub async fn client_register(
 
             LOGGER.info(log_parser(DISCONNECTED, &[&peer_addr]));
             w_client.inner_mut().shutdown().await.unwrap_or_else(|_| LOGGER.error(format!("{S2C_ERROR} (core::register::#31)")));
+            return;
         },
         MessageAction::Allow => { }
     }
@@ -58,6 +59,8 @@ pub async fn client_register(
 
         LOGGER.info(log_parser(DISCONNECTED, &[&peer_addr]));
         w_client.inner_mut().shutdown().await.unwrap_or_else(|_| LOGGER.error(format!("{S2C_ERROR} (core::register)")));
+        return;
+        
     }
 
     /// If username contains whitespaces, return an error message
@@ -68,6 +71,7 @@ pub async fn client_register(
 
         LOGGER.info(log_parser(DISCONNECTED, &[&peer_addr]));
         w_client.inner_mut().shutdown().await.unwrap_or_else(|_| LOGGER.error(format!("{S2C_ERROR} (core::register)")));
+        return;
     }
 
     /// If username character is not in our charset, return an error message
@@ -78,6 +82,7 @@ pub async fn client_register(
 
         LOGGER.info(log_parser(DISCONNECTED, &[&peer_addr]));
         w_client.inner_mut().shutdown().await.unwrap_or_else(|_| LOGGER.error(format!("{S2C_ERROR} (core::register)")));
+        return;
     }
 
     /// If username is longer than max_username_length (default: 32) characters, return an error message
@@ -88,6 +93,7 @@ pub async fn client_register(
 
         LOGGER.info(log_parser(DISCONNECTED, &[&peer_addr]));
         w_client.inner_mut().shutdown().await.unwrap_or_else(|_| LOGGER.error(format!("{S2C_ERROR} (core::register)")));
+        return;
     }
 
     /// Check if username is already taken
@@ -98,6 +104,7 @@ pub async fn client_register(
 
         LOGGER.info(log_parser(DISCONNECTED, &[&peer_addr]));
         w_client.inner_mut().shutdown().await.unwrap_or_else(|_| LOGGER.error(format!("{S2C_ERROR} (core::register)")));
+        return;
     }
 
     /// If password contains whitespaces, return an error message
@@ -108,6 +115,7 @@ pub async fn client_register(
 
         LOGGER.info(log_parser(DISCONNECTED, &[&peer_addr]));
         w_client.inner_mut().shutdown().await.unwrap_or_else(|_| LOGGER.error(format!("{S2C_ERROR} (core::register)")));
+        return;
     }
 
     /// If password is longer than max_password_length (default: 256) characters, return an error message
@@ -118,6 +126,7 @@ pub async fn client_register(
 
         LOGGER.info(log_parser(DISCONNECTED, &[&peer_addr]));
         w_client.inner_mut().shutdown().await.unwrap_or_else(|_| LOGGER.error(format!("{S2C_ERROR} (core::register)")));
+        return;
     }
 
     let user_id = DATABASE.get_next_user_id().await;
