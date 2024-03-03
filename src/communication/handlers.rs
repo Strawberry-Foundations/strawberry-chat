@@ -11,14 +11,12 @@ use stblib::colors::{BOLD, C_RESET, GRAY, YELLOW};
 use stblib::stbm::stbchat::net::{IncomingPacketStream, OutgoingPacketStream};
 use stblib::stbm::stbchat::object::User;
 use stblib::stbm::stbchat::packet::{ClientPacket, ServerPacket};
-use stblib::utilities::escape_ansi;
 
 use crate::constants::log_messages::{CLIENT_KICKED, USER_LEFT};
 use crate::global::{LOGGER, MESSAGE_VERIFICATOR};
 use crate::security::verification::MessageAction;
 use crate::system_core::log::log_parser;
 use crate::system_core::message::{MessageToClient, MessageToServer};
-use crate::system_core::server_core::get_senders_by_username;
 use crate::system_core::string::StbString;
 
 pub async fn client_incoming(
