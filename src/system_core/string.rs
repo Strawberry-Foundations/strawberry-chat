@@ -3,7 +3,8 @@ use chrono::{Utc, Local};
 use crate::system_core::server_core::get_online_users;
 
 pub struct StbString {
-    pub string: String
+    pub string: String,
+    pub is_mention: bool,
 }
 
 impl StbString {
@@ -11,6 +12,7 @@ impl StbString {
     pub fn from_str(string: impl ToString) -> Self {
         Self {
             string: string.to_string(),
+            is_mention: false,
         }
     }
 
@@ -48,6 +50,8 @@ impl StbString {
                     .replace(&format!("@{}", user.username), &format!("{BACK_MAGENTA}{BOLD}@{}{C_RESET}", user.nickname));
             }
         }
+        
+        self.is_mention = true;
         self
     }
 
