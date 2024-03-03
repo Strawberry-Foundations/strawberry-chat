@@ -2,9 +2,11 @@ use stblib::colors::{BACK_MAGENTA, BLUE, BOLD, C_RESET, CYAN, GREEN, MAGENTA, RE
 use chrono::{Utc, Local};
 use crate::system_core::server_core::get_online_users;
 
+#[derive(Default)]
 pub struct StbString {
     pub string: String,
     pub is_mention: bool,
+    pub mentioned_user: String
 }
 
 impl StbString {
@@ -12,7 +14,7 @@ impl StbString {
     pub fn from_str(string: impl ToString) -> Self {
         Self {
             string: string.to_string(),
-            is_mention: false,
+            ..Default::default()
         }
     }
 
@@ -42,13 +44,15 @@ impl StbString {
     pub async fn check_for_mention(mut self) -> Self {
         let string_lower = self.string.to_lowercase();
         let msg_split = string_lower.split_whitespace().collect::<Vec<&str>>();
-
+        
         for user in &get_online_users().await {
             if msg_split.contains(&&*format!("@{}", user.username.to_lowercase())) {
                 self.string = self.string
                     .replace(&format!("@{}", user.username.to_lowercase()), &format!("{BACK_MAGENTA}{BOLD}@{}{C_RESET}", user.nickname))
                     .replace(&format!("@{}", user.username), &format!("{BACK_MAGENTA}{BOLD}@{}{C_RESET}", user.nickname));
+                
                 self.is_mention = true;
+                self.mentioned_user = user.clone().username;
             }
         }
         
