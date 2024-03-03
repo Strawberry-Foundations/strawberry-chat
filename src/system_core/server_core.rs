@@ -9,6 +9,7 @@ use tokio::time::sleep;
 
 use lazy_static::lazy_static;
 use stblib::stbm::stbchat::object::User;
+use stblib::utilities::escape_ansi;
 use crate::constants::log_messages::SEND_INTERNAL_MESSAGE_FAIL;
 use crate::global::LOGGER;
 
@@ -114,6 +115,30 @@ async fn get_events() -> Vec<(Event, usize)> {
             Ok(MessageToServer::ClientDisconnect { reason }) => {
                 Some(Event::ClientShutdownR { reason })
             },
+            Ok(MessageToServer::ClientNotification { title, username, content, bell, sent_by}) => {
+                let conn = futures::executor::block_on(async { get_senders_by_username(content.mentioned_user.as_str()).await });
+
+                for tx in conn {
+                    let username = if sent_by.username == sent_by.nickname {
+                        sent_by.username.to_string()
+                    }
+                    else {
+                        format!("{} (@{})", sent_by.nickname, sent_by.username)
+                    };
+                    
+                    futures::executor::block_on(async {
+                        tx.send(MessageToClient::Notification {
+                            title: String::from("Strawberry Chat"),
+                            username,
+                            avatar_url: sent_by.avatar_url.clone(),
+                            content: escape_ansi(content.string.as_str()),
+                            bell,
+                        }).await.unwrap_or_else(|e| {
+                            LOGGER.error(format!("[S -> {peer_addr}] Failed to send internal packet: {e}"));
+                        });
+                    });
+                }
+            }
             _ => None
         } {
             events.push((event, i));
