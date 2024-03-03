@@ -15,6 +15,7 @@ use crate::global::LOGGER;
 
 use crate::system_core::commands::run_command;
 use crate::system_core::message::{MessageToClient, MessageToServer};
+use crate::system_core::string::StbString;
 
 const CHANNEL_BUFFER: usize = 10;
 
@@ -89,7 +90,12 @@ enum Event {
     },
     ClientShutdownR {
         reason: String,
-    }
+    },
+    ClientNotification {
+        content: StbString,
+        bell: bool,
+        sent_by: User
+    },
 }
 
 async fn get_events() -> Vec<(Event, usize)> {
@@ -115,29 +121,8 @@ async fn get_events() -> Vec<(Event, usize)> {
             Ok(MessageToServer::ClientDisconnect { reason }) => {
                 Some(Event::ClientShutdownR { reason })
             },
-            Ok(MessageToServer::ClientNotification { title, username, content, bell, sent_by}) => {
-                let conn = futures::executor::block_on(async { get_senders_by_username(content.mentioned_user.as_str()).await });
-
-                for tx in conn {
-                    let username = if sent_by.username == sent_by.nickname {
-                        sent_by.username.to_string()
-                    }
-                    else {
-                        format!("{} (@{})", sent_by.nickname, sent_by.username)
-                    };
-                    
-                    futures::executor::block_on(async {
-                        tx.send(MessageToClient::Notification {
-                            title: String::from("Strawberry Chat"),
-                            username,
-                            avatar_url: sent_by.avatar_url.clone(),
-                            content: escape_ansi(content.string.as_str()),
-                            bell,
-                        }).await.unwrap_or_else(|e| {
-                            LOGGER.error(format!("[S -> {peer_addr}] Failed to send internal packet: {e}"));
-                        });
-                    });
-                }
+            Ok(MessageToServer::ClientNotification { content, bell, sent_by}) => {
+                Some(Event::ClientNotification { content, bell, sent_by })
             }
             _ => None
         } {
@@ -180,6 +165,28 @@ pub async fn core_thread(watchdog_tx: Sender<()>) {
                 },
                 Event::SystemMessage { content } => {
                     send_to_all(MessageToClient::SystemMessage { content }, true).await;
+                },
+                Event::ClientNotification { content, bell, sent_by} => {
+                    let conn = get_senders_by_username(content.mentioned_user.as_str()).await;
+
+                    for tx in conn {
+                        let username = if sent_by.username == sent_by.nickname {
+                            sent_by.username.to_string()
+                        }
+                        else {
+                            format!("{} (@{})", sent_by.nickname, sent_by.username)
+                        };
+
+                        tx.send(MessageToClient::Notification {
+                            title: String::from("Strawberry Chat"),
+                            username,
+                            avatar_url: sent_by.avatar_url.clone(),
+                            content: escape_ansi(content.string.as_str()),
+                            bell,
+                        }).await.unwrap_or_else(|e| {
+                            LOGGER.error(format!("Failed to send internal packet: {e}"));
+                        });
+                    }
                 }
             }
         }
