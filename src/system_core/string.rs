@@ -48,10 +48,11 @@ impl StbString {
                 self.string = self.string
                     .replace(&format!("@{}", user.username.to_lowercase()), &format!("{BACK_MAGENTA}{BOLD}@{}{C_RESET}", user.nickname))
                     .replace(&format!("@{}", user.username), &format!("{BACK_MAGENTA}{BOLD}@{}{C_RESET}", user.nickname));
+                self.is_mention = true;
             }
         }
         
-        self.is_mention = true;
+        
         self
     }
 
