@@ -12,6 +12,7 @@ pub mod default {
 
 pub mod user {
     pub mod online;
+    pub mod nickname;
 }
 
 pub mod etc {
