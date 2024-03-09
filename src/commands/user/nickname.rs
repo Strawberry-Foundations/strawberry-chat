@@ -1,8 +1,6 @@
-use sqlx::Row;
-use stblib::colors::{BOLD, C_RESET, RED, LIGHT_GREEN, YELLOW};
+use stblib::colors::{BOLD, C_RESET, RED, LIGHT_GREEN};
 
 use crate::database::db::DATABASE;
-use crate::global::LOGGER;
 
 use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;
@@ -32,9 +30,9 @@ pub fn nickname() -> commands::Command {
 
             return Ok(Some(format!("{BOLD}{LIGHT_GREEN}Removed nickname{C_RESET}")))
         }
-        
+
         let nickname = ctx.args[1..].to_vec().join(" ");
-        
+
         match sqlx::query("UPDATE users SET nickname = ? WHERE username = ?")
             .bind(&nickname)
             .bind(&ctx.executor.username)
