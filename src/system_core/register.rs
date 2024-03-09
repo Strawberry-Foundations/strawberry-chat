@@ -48,7 +48,7 @@ pub async fn client_register(
             w_client.inner_mut().shutdown().await.unwrap_or_else(|_| LOGGER.error(format!("{S2C_ERROR} (core::register::#31)")));
             return;
         },
-        MessageAction::Allow => { }
+        _ => {}
     }
 
     /// If username is in this set of blacklisted words, return an error message
