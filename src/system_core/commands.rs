@@ -54,15 +54,15 @@ pub struct Command {
 
     /// Description of command
     pub description: String,
-
-    /// Logic of command (function)
-    pub handler: fn(Context) -> BoxFuture<CommandResponse>,
-
+    
     /// Category of command
     pub category: CommandCategory,
 
     /// Required permissions
-    pub permissions: Permissions
+    pub permissions: Permissions,
+    
+    /// Logic of command (function)
+    pub handler: fn(Context) -> BoxFuture<CommandResponse>,
 }
 
 /// # Context struct
@@ -99,17 +99,14 @@ pub fn get_commands_category(command_category: &CommandCategory) -> Vec<Command>
 
 pub async fn run_command(name: String, args: Vec<String>, conn: &Connection) {
     let res = exec_command(name, args, conn).await;
+    
     match res {
         Ok(Some(text)) => conn.tx.send(
-            MessageToClient::SystemMessage {
-                content: text
-            }
+            MessageToClient::SystemMessage { content: text }
         ).await.unwrap(),
         Ok(None) => {},
         Err(e) => conn.tx.send(
-            MessageToClient::SystemMessage {
-                content: e.to_string().red().to_string()
-            }
+            MessageToClient::SystemMessage { content: e.to_string().red().to_string() }
         ).await.unwrap()
     };
 }
