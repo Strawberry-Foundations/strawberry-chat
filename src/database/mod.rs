@@ -1,6 +1,7 @@
 pub mod db;
 
 use sqlx::{MySql, MySqlPool, Pool, Row};
+use sqlx::mysql::MySqlRow;
 
 use stblib::stbm::stbchat::object::User;
 use stblib::utilities::unix_time;
@@ -8,7 +9,6 @@ use stblib::utilities::unix_time;
 use argon2::{Argon2, PasswordHash, PasswordHasher, PasswordVerifier};
 use argon2::password_hash::rand_core::OsRng;
 use argon2::password_hash::SaltString;
-use sqlx::mysql::MySqlRow;
 
 use crate::constants::log_messages::SQL_CONNECTION_ERROR;
 use crate::global::RUNTIME_LOGGER;
