@@ -2,6 +2,7 @@ use stblib::colors::{BLUE, BOLD, C_RESET, CYAN, GREEN, RED, RESET, UNDERLINE};
 use crate::system_core::commands;
 use crate::system_core::commands::{CommandCategory, get_commands_category};
 use crate::system_core::message::MessageToClient;
+use crate::system_core::permissions::Permissions;
 
 pub fn help() -> commands::Command {
     async fn logic(ctx: &commands::Context) -> commands::CommandResponse {
@@ -45,6 +46,7 @@ pub fn help() -> commands::Command {
         aliases: vec![],
         description: "Help command".to_string(),
         category: CommandCategory::Default,
+        permissions: Permissions::Member,
         handler: |ctx| Box::pin(async move {
             logic(&ctx).await
         }),
