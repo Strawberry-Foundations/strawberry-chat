@@ -4,6 +4,7 @@ use crate::global::CONFIG;
 use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;
 use crate::system_core::message::MessageToClient;
+use crate::system_core::permissions::Permissions;
 
 pub fn server_info() -> commands::Command {
     async fn logic(ctx: &commands::Context) -> commands::CommandResponse {
@@ -19,6 +20,7 @@ pub fn server_info() -> commands::Command {
         aliases: vec!["server-info", "info"],
         description: "Show information about this server".to_string(),
         category: CommandCategory::Default,
+        permissions: Permissions::Member,
         handler: |ctx| Box::pin(async move {
             logic(&ctx).await
         }),
