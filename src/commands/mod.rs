@@ -37,6 +37,8 @@ pub fn command_registry() -> Vec<Command> {
         user::online::online(),
         admin::ban::ban(),
         admin::unban::unban(),
+        admin::mute::mute(),
+        admin::unmute::unmute(),
 
     ];
 
