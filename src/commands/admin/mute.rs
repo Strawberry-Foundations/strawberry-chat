@@ -1,0 +1,61 @@
+use sqlx::Row;
+use stblib::colors::{BOLD, C_RESET, RED, LIGHT_GREEN};
+
+use crate::database::db::DATABASE;
+use crate::global::LOGGER;
+
+use crate::system_core::commands;
+use crate::system_core::commands::CommandCategory;
+use crate::system_core::message::MessageToClient;
+
+pub fn mute() -> commands::Command {
+    async fn logic(ctx: &commands::Context) -> commands::CommandResponse {
+        if ctx.args.is_empty() {
+            return Ok(Some(
+                format!(
+                    "{BOLD}{RED}Command requires 1 arguments - but only {} were given{C_RESET}",
+                    ctx.args.len()
+                )))
+        }
+
+        let data = sqlx::query("SELECT username, account_enabled FROM users WHERE username = ?")
+            .bind(ctx.args[0].as_str())
+            .fetch_all(&DATABASE.connection)
+            .await.expect("err");
+
+        if data.is_empty() {
+            return Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")))
+        }
+
+        let muted: bool = data.first().unwrap().get("muted");
+        
+        if muted {
+            return Ok(Some(format!("{BOLD}{RED}User already muted{C_RESET}")))
+        }
+
+        match sqlx::query("UPDATE users SET muted = '1' WHERE username = ?")
+            .bind(ctx.args[0].as_str())
+            .execute(&DATABASE.connection)
+            .await {
+            Ok(..) => ..,
+            Err(_) => return Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")))
+        };
+
+        ctx.tx_channel.send(MessageToClient::SystemMessage {
+            content: format!("{BOLD}{LIGHT_GREEN}Muted {}{C_RESET}", ctx.args[0])
+        }).await.unwrap();
+
+        LOGGER.info(format!("{} has been muted by {}", ctx.args[0], ctx.executor.username));
+        Ok(None)
+    }
+
+    commands::Command {
+        name: "mute".to_string(),
+        aliases: vec![],
+        description: "Mutes a user".to_string(),
+        category: CommandCategory::Default,
+        handler: |ctx| Box::pin(async move {
+            logic(&ctx).await
+        }),
+    }
+}
