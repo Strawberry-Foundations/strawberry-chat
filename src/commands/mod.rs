@@ -34,13 +34,16 @@ pub fn command_registry() -> Vec<Command> {
         default::about::about(),
         default::dm::dm_basic(),
         default::server_info::server_info(),
+        
         etc::test_command::example_command(),
+        
         user::online::online(),
+        user::nickname::nickname(),
+        
         admin::ban::ban(),
         admin::unban::unban(),
         admin::mute::mute(),
         admin::unmute::unmute(),
-
     ];
 
     if var("DEBUG").is_ok() {
