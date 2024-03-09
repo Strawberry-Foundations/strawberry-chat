@@ -7,6 +7,7 @@ use crate::global::LOGGER;
 use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;
 use crate::system_core::message::MessageToClient;
+use crate::system_core::permissions::Permissions;
 use crate::system_core::server_core::get_senders_by_username_ignore_case;
 use crate::utilities::role_color_parser;
 
@@ -82,6 +83,7 @@ pub fn dm_basic() -> commands::Command {
         aliases: vec![],
         description: "Send direct messages to a user".to_string(),
         category: CommandCategory::Default,
+        permissions: Permissions::Member,
         handler: |ctx| Box::pin(async move {
             logic(&ctx).await
         }),
