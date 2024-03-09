@@ -54,7 +54,7 @@ pub fn unmute() -> commands::Command {
         name: "unmute".to_string(),
         aliases: vec![],
         description: "Unmutes a user".to_string(),
-        category: CommandCategory::Default,
+        category: CommandCategory::Admin,
         permissions: Permissions::Admin,
         handler: |ctx| Box::pin(async move {
             logic(&ctx).await
