@@ -91,6 +91,9 @@ enum Event {
     SystemMessage {
         content: String,
     },
+    SystemMessageToUser {
+        content: String,
+    },
     Remove,
     RunCommand {
         name: String,
@@ -133,7 +136,7 @@ async fn get_events() -> Vec<(Event, usize)> {
                 Some(Event::ClientNotification { content, bell, sent_by })
             },
             Ok(MessageToServer::SystemMessage { content}) => {
-                Some(Event::SystemMessage { content })
+                Some(Event::SystemMessageToUser { content })
             }
             _ => None
         } {
@@ -176,6 +179,11 @@ pub async fn core_thread(watchdog_tx: Sender<()>) {
                 },
                 Event::SystemMessage { content } => {
                     send_to_all(MessageToClient::SystemMessage { content }, true).await;
+                },
+                Event::SystemMessageToUser { content } => {
+                    CLIENTS.write()
+                        .await.get_mut(i).unwrap()
+                        .tx.send(MessageToClient::SystemMessage { content }).await.unwrap();
                 },
                 Event::ClientNotification { content, bell, sent_by} => {
                     let conn = get_senders_by_username(content.mentioned_user.as_str()).await;
