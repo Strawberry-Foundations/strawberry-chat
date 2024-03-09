@@ -131,6 +131,9 @@ async fn get_events() -> Vec<(Event, usize)> {
             },
             Ok(MessageToServer::ClientNotification { content, bell, sent_by}) => {
                 Some(Event::ClientNotification { content, bell, sent_by })
+            },
+            Ok(MessageToServer::SystemMessage { content}) => {
+                Some(Event::SystemMessage { content })
             }
             _ => None
         } {
