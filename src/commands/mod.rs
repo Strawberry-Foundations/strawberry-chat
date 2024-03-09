@@ -23,6 +23,8 @@ pub mod etc {
 pub mod admin {
     pub mod ban;
     pub mod unban;
+    pub mod mute;
+    pub mod unmute;
 }
 
 pub fn command_registry() -> Vec<Command> {
