@@ -29,7 +29,7 @@ pub fn unban() -> commands::Command {
 
         let account_enabled: bool = data.first().unwrap().get("account_enabled");
 
-        if !account_enabled {
+        if account_enabled {
             return Ok(Some(format!("{BOLD}{RED}User not banned{C_RESET}")))
         }
 
