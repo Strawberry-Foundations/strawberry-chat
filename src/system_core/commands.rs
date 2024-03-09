@@ -13,6 +13,7 @@
 //!         aliases: vec![],
 //!         description: "prints 'Hello, World'".to_string(),
 //!         category: CommandCategory::Etc,
+//!         permissions: Permissions::Member,
 //!         handler: |ctx| Box::pin(async move {
 //!             logic(ctx)
 //!         }),
@@ -138,6 +139,7 @@ fn hello_command() -> Command {
         aliases: vec![],
         description: "prints 'Hello, World'".to_string(),
         category: CommandCategory::Etc,
+        permissions: Permissions::Member,
         handler: |ctx| Box::pin(async move {
             logic(ctx)
         }),
