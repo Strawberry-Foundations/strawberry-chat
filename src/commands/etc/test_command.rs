@@ -1,6 +1,7 @@
 use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;
 use crate::system_core::message::MessageToClient;
+use crate::system_core::permissions::Permissions;
 
 pub fn example_command() -> commands::Command {
     async fn logic(ctx: &commands::Context) -> commands::CommandResponse {
@@ -14,6 +15,7 @@ pub fn example_command() -> commands::Command {
         aliases: vec![],
         description: "Example command".to_string(),
         category: CommandCategory::Etc,
+        permissions: Permissions::Member,
         handler: |ctx| Box::pin(async move {
             logic(&ctx).await
         }),
