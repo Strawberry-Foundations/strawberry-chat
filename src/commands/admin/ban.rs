@@ -20,7 +20,7 @@ pub fn ban() -> commands::Command {
         }
 
         if ctx.executor.username == ctx.args[0].as_str() {
-            return Ok(Some(format!("{BOLD}{YELLOW}You cannot ban yourself a message!{C_RESET}")))
+            return Ok(Some(format!("{BOLD}{YELLOW}You cannot ban yourself!{C_RESET}")))
         }
 
         let data = sqlx::query("SELECT username, account_enabled FROM users WHERE username = ?")
