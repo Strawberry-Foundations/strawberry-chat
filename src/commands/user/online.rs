@@ -4,6 +4,7 @@ use crate::global::CONFIG;
 use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;
 use crate::system_core::message::MessageToClient;
+use crate::system_core::permissions::Permissions;
 use crate::system_core::server_core::get_online_usernames;
 
 pub fn online() -> commands::Command {
@@ -32,6 +33,7 @@ pub fn online() -> commands::Command {
         aliases: vec![],
         description: "Shows online users".to_string(),
         category: CommandCategory::User,
+        permissions: Permissions::Member,
         handler: |ctx| Box::pin(async move {
             logic(&ctx).await
         }),
