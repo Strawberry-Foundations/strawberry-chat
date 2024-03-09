@@ -18,7 +18,7 @@ pub fn unmute() -> commands::Command {
                 )))
         }
 
-        let data = sqlx::query("SELECT username, account_enabled FROM users WHERE username = ?")
+        let data = sqlx::query("SELECT username, muted FROM users WHERE username = ?")
             .bind(ctx.args[0].as_str())
             .fetch_all(&DATABASE.connection)
             .await.expect("err");
