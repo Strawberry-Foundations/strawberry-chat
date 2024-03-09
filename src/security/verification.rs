@@ -20,7 +20,7 @@ pub enum MessageAction {
 }
 
 impl MessageVerification {
-    pub async fn check(&self, content: &impl ToString) -> MessageAction {
+    pub fn check(&self, content: &impl ToString) -> MessageAction {
         let content = content.to_string();
         
         if self.blocked_words.blacklisted_words.iter().any(|w| content.contains(w)) {
