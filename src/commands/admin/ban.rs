@@ -58,7 +58,7 @@ pub fn ban() -> commands::Command {
         name: "ban".to_string(),
         aliases: vec![],
         description: "Bans a user".to_string(),
-        category: CommandCategory::Default,
+        category: CommandCategory::Admin,
         permissions: Permissions::Admin,
         handler: |ctx| Box::pin(async move {
             logic(&ctx).await
