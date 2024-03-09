@@ -6,11 +6,11 @@ use tokio::net::TcpStream;
 use tokio::sync::mpsc::{Receiver, Sender};
 
 use owo_colors::OwoColorize;
-use stblib::colors::{BOLD, C_RESET, GRAY, RED, YELLOW};
 
 use stblib::stbm::stbchat::net::{IncomingPacketStream, OutgoingPacketStream};
 use stblib::stbm::stbchat::object::User;
 use stblib::stbm::stbchat::packet::{ClientPacket, ServerPacket};
+use stblib::colors::{BOLD, C_RESET, GRAY, RED, YELLOW};
 
 use crate::constants::log_messages::{CLIENT_KICKED, USER_LEFT};
 use crate::global::{LOGGER, MESSAGE_VERIFICATOR};
@@ -67,9 +67,8 @@ pub async fn client_incoming(
             tx.send(MessageToServer::RunCommand {
                 name: parts[0].to_string(),
                 args: parts[1..].to_vec(),
-            })
-                .await
-                .unwrap();
+            }).await.unwrap();
+            
             continue;
         }
 
@@ -101,9 +100,7 @@ pub async fn client_incoming(
                         .yellow()
                         .bold()
                         .to_string(),
-                })
-                    .await
-                    .unwrap();
+                }).await.unwrap();
 
                 LOGGER.info(log_parser(
                     CLIENT_KICKED,
@@ -139,29 +136,6 @@ pub async fn client_outgoing(
                     .check_for_mention()
                     .await;
 
-                /* if content.is_mention && content.mentioned_user != author.username {
-                    let conn = get_senders_by_username(content.mentioned_user.as_str()).await;
-
-                    for tx in conn {
-                        let username = if author.username == author.nickname {
-                          author.username.to_string()
-                        }
-                        else {
-                          format!("{} (@{})", author.nickname, author.username)
-                        };
-
-                        tx.send(MessageToClient::Notification {
-                            title: String::from("Strawberry Chat"),
-                            username,
-                            avatar_url: author.avatar_url.clone(),
-                            content: escape_ansi(content.string.as_str()),
-                            bell: false,
-                        }).await.unwrap_or_else(|e| {
-                            LOGGER.error(format!("[S -> {peer_addr}] Failed to send internal packet: {e}"));
-                        });
-                    }
-                } */
-
                 if let Err(e) = w_stream.write(ClientPacket::UserMessage {
                     author,
                     message: content.string,
@@ -171,12 +145,9 @@ pub async fn client_outgoing(
                 }
             }
             MessageToClient::SystemMessage { content } => {
-                if let Err(e) = w_stream
-                    .write(ClientPacket::SystemMessage {
+                if let Err(e) = w_stream.write(ClientPacket::SystemMessage {
                         message: content,
-                    })
-                    .await
-                {
+                    }).await {
                     LOGGER.error(format!("[S -> {peer_addr}] Failed to send a packet: {e}"));
                     return;
                 }
