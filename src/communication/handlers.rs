@@ -6,7 +6,7 @@ use tokio::net::TcpStream;
 use tokio::sync::mpsc::{Receiver, Sender};
 
 use owo_colors::OwoColorize;
-use stblib::colors::{BOLD, C_RESET, GRAY, YELLOW};
+use stblib::colors::{BOLD, C_RESET, GRAY, RED, YELLOW};
 
 use stblib::stbm::stbchat::net::{IncomingPacketStream, OutgoingPacketStream};
 use stblib::stbm::stbchat::object::User;
@@ -73,7 +73,7 @@ pub async fn client_incoming(
             continue;
         }
 
-        let action = MESSAGE_VERIFICATOR.check(&content.to_lowercase());
+        let action = MESSAGE_VERIFICATOR.check_with_user(&content.to_lowercase(), &user).await;
 
         let content = StbString::from_str(content)
             .check_for_mention()
@@ -111,6 +111,12 @@ pub async fn client_incoming(
                 ));
             }
             MessageAction::Hide => {}
+            MessageAction::UserMuted => {
+                tx.send(MessageToServer::SystemMessage {
+                    content: format!("{BOLD}{RED}Sorry, but you were muted by an administrator.\
+                    Please contact him/her if you have done nothing wrong, or wait until you are unmuted.{C_RESET}")
+                }).await.unwrap();
+            }
             MessageAction::Allow => tx.send(MessageToServer::Message { content: content.string }).await.unwrap(),
         }
     }
