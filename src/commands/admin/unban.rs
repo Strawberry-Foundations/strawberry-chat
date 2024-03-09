@@ -7,6 +7,7 @@ use crate::global::LOGGER;
 use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;
 use crate::system_core::message::MessageToClient;
+use crate::system_core::permissions::Permissions;
 
 pub fn unban() -> commands::Command {
     async fn logic(ctx: &commands::Context) -> commands::CommandResponse {
@@ -54,6 +55,7 @@ pub fn unban() -> commands::Command {
         aliases: vec![],
         description: "Unbans a user".to_string(),
         category: CommandCategory::Default,
+        permissions: Permissions::Admin,
         handler: |ctx| Box::pin(async move {
             logic(&ctx).await
         }),
