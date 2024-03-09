@@ -42,7 +42,7 @@ pub fn help() -> commands::Command {
 
     commands::Command {
         name: "help".to_string(),
-        aliases: vec!["server-info", "info"],
+        aliases: vec![],
         description: "Help command".to_string(),
         category: CommandCategory::Default,
         handler: |ctx| Box::pin(async move {
