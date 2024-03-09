@@ -1,3 +1,7 @@
+use sqlx::Row;
+use stblib::stbm::stbchat::object::User;
+use crate::database::db::DATABASE;
+
 pub struct BlockedWords<'a> {
     pub blacklisted_words: Vec<&'a str>,
     pub content_block: Vec<&'a str>,
@@ -11,22 +15,47 @@ pub struct MessageVerification {
 pub enum MessageAction {
     Allow,
     Hide,
-    Kick
+    Kick,
+    UserMuted
 }
 
 impl MessageVerification {
-    pub fn check(&self, content: &impl ToString) -> MessageAction {
+    pub async fn check(&self, content: &impl ToString) -> MessageAction {
         let content = content.to_string();
-
+        
         if self.blocked_words.blacklisted_words.iter().any(|w| content.contains(w)) {
             return MessageAction::Kick;
         }
         if self.blocked_words.content_block.iter().any(|w| content.contains(w)) {
             return MessageAction::Hide;
         }
-
         if content.trim().is_empty() {
             return MessageAction::Hide;
+        }
+        MessageAction::Allow
+    }
+    
+    pub async fn check_with_user(&self, content: &impl ToString, user: &User) -> MessageAction {
+        let content = content.to_string();
+
+        let user_data = sqlx::query("SELECT muted FROM users WHERE username = ?")
+            .bind(&user.username)
+            .fetch_all(&DATABASE.connection)
+            .await.expect("err");
+        
+        let muted: bool = user_data.first().unwrap().get("muted");
+        
+        if self.blocked_words.blacklisted_words.iter().any(|w| content.contains(w)) {
+            return MessageAction::Kick;
+        }
+        if self.blocked_words.content_block.iter().any(|w| content.contains(w)) {
+            return MessageAction::Hide;
+        }
+        if content.trim().is_empty() {
+            return MessageAction::Hide;
+        }
+        if muted {
+            return MessageAction::UserMuted;
         }
 
         MessageAction::Allow
