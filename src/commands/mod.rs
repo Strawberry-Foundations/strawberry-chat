@@ -20,6 +20,11 @@ pub mod etc {
     pub mod panic;
 }
 
+pub mod admin {
+    pub mod ban;
+    pub mod unban;
+}
+
 pub fn command_registry() -> Vec<Command> {
     let mut cmds = vec![
         default::help::help(),
@@ -27,7 +32,10 @@ pub fn command_registry() -> Vec<Command> {
         default::dm::dm_basic(),
         default::server_info::server_info(),
         etc::test_command::example_command(),
-        user::online::online()
+        user::online::online(),
+        admin::ban::ban(),
+        admin::unban::unban(),
+
     ];
 
     if var("DEBUG").is_ok() {
