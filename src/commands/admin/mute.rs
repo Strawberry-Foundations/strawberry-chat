@@ -14,7 +14,7 @@ pub fn mute() -> commands::Command {
         if ctx.args.is_empty() {
             return Ok(Some(
                 format!(
-                    "{BOLD}{RED}Command requires 1 arguments - but only {} were given{C_RESET}",
+                    "{BOLD}{RED}Command requires 1 argument - but only {} were given{C_RESET}",
                     ctx.args.len()
                 )))
         }
