@@ -20,7 +20,7 @@ pub fn mute() -> commands::Command {
         }
 
         if ctx.executor.username == ctx.args[0].as_str() {
-            return Ok(Some(format!("{BOLD}{YELLOW}You cannot mute yourself a message!{C_RESET}")))
+            return Ok(Some(format!("{BOLD}{YELLOW}You cannot mute yourself!{C_RESET}")))
         }
 
         let data = sqlx::query("SELECT username, muted FROM users WHERE username = ?")
