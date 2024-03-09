@@ -4,6 +4,7 @@ use crate::global::{AUTHORS, CHAT_NAME, CODENAME, DEFAULT_VERSION, EXT_VERSION, 
 use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;
 use crate::system_core::message::MessageToClient;
+use crate::system_core::permissions::Permissions;
 
 pub fn about() -> commands::Command {
     async fn logic(ctx: &commands::Context) -> commands::CommandResponse {
@@ -26,6 +27,7 @@ pub fn about() -> commands::Command {
         aliases: vec![],
         description: "Shows about description for Strawberry Chat".to_string(),
         category: CommandCategory::Default,
+        permissions: Permissions::Member,
         handler: |ctx| Box::pin(async move {
             logic(&ctx).await
         }),
