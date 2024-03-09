@@ -31,7 +31,7 @@ pub fn nickname() -> commands::Command {
             return Ok(Some(format!("{BOLD}{LIGHT_GREEN}Removed nickname{C_RESET}")))
         }
 
-        let nickname = ctx.args[1..].to_vec().join(" ");
+        let nickname = ctx.args[0..].to_vec().join(" ");
 
         match sqlx::query("UPDATE users SET nickname = ? WHERE username = ?")
             .bind(&nickname)
