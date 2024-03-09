@@ -58,7 +58,7 @@ pub fn mute() -> commands::Command {
         name: "mute".to_string(),
         aliases: vec![],
         description: "Mutes a user".to_string(),
-        category: CommandCategory::Default,
+        category: CommandCategory::Admin,
         permissions: Permissions::Admin,
         handler: |ctx| Box::pin(async move {
             logic(&ctx).await
