@@ -7,6 +7,7 @@ pub mod default {
     pub mod server_info;
     pub mod about;
     pub mod help;
+    pub mod dm;
 }
 
 pub mod user {
@@ -23,6 +24,7 @@ pub fn command_registry() -> Vec<Command> {
     let mut cmds = vec![
         default::help::help(),
         default::about::about(),
+        default::dm::dm_basic(),
         default::server_info::server_info(),
         etc::test_command::example_command(),
         user::online::online()
