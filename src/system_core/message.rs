@@ -40,6 +40,9 @@ pub enum MessageToServer {
     ClientDisconnect {
         reason: String
     },
+    SystemMessage {
+        content: String
+    },
     ClientNotification {
         content: StbString,
         bell: bool,
