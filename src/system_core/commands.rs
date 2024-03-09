@@ -28,6 +28,7 @@ use stblib::stbm::stbchat::object::User;
 
 use crate::commands::command_registry;
 use crate::system_core::message::MessageToClient;
+use crate::system_core::permissions::Permissions;
 use crate::system_core::server_core::Connection;
 
 
@@ -53,7 +54,10 @@ pub struct Command {
     pub handler: fn(Context) -> BoxFuture<CommandResponse>,
 
     /// Category of command
-    pub category: CommandCategory
+    pub category: CommandCategory,
+    
+    /// Required permissions
+    pub permissions: Permissions
 }
 
 /// # Context struct
