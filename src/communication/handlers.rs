@@ -113,7 +113,7 @@ pub async fn client_incoming(
             MessageAction::Hide => {}
             MessageAction::UserMuted => {
                 tx.send(MessageToServer::SystemMessage {
-                    content: format!("{BOLD}{RED}Sorry, but you were muted by an administrator.\
+                    content: format!("{BOLD}{RED}Sorry, but you were muted by an administrator. \
                     Please contact him/her if you have done nothing wrong, or wait until you are unmuted.{C_RESET}")
                 }).await.unwrap();
             }
