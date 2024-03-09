@@ -1,5 +1,5 @@
 use sqlx::Row;
-use stblib::colors::{BOLD, C_RESET, RED, LIGHT_GREEN};
+use stblib::colors::{BOLD, C_RESET, RED, LIGHT_GREEN, YELLOW};
 
 use crate::database::db::DATABASE;
 use crate::global::LOGGER;
@@ -16,6 +16,10 @@ pub fn ban() -> commands::Command {
                     "{BOLD}{RED}Command requires 1 arguments - but only {} were given{C_RESET}",
                     ctx.args.len()
                 )))
+        }
+
+        if ctx.executor.username == ctx.args[0].as_str() {
+            return Ok(Some(format!("{BOLD}{YELLOW}You cannot ban yourself a message!{C_RESET}")))
         }
 
         let data = sqlx::query("SELECT username, account_enabled FROM users WHERE username = ?")
