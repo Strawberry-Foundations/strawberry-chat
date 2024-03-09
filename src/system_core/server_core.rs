@@ -15,7 +15,7 @@ use crate::constants::log_messages::SEND_INTERNAL_MESSAGE_FAIL;
 use crate::global::LOGGER;
 
 use crate::system_core::commands::run_command;
-use crate::system_core::message::{MessageToClient, MessageToServer};
+use crate::system_core::internals::{MessageToClient, MessageToServer};
 use crate::system_core::string::StbString;
 
 const CHANNEL_BUFFER: usize = 10;

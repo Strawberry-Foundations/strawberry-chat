@@ -3,7 +3,7 @@ use stblib::colors::{BOLD, C_RESET, CYAN, GREEN, UNDERLINE};
 use crate::global::CONFIG;
 use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;
-use crate::system_core::message::MessageToClient;
+use crate::system_core::internals::MessageToClient;
 use crate::system_core::permissions::Permissions;
 use crate::system_core::server_core::get_online_usernames;
 

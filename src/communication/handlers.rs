@@ -16,7 +16,7 @@ use crate::constants::log_messages::{CLIENT_KICKED, USER_LEFT};
 use crate::global::{LOGGER, MESSAGE_VERIFICATOR};
 use crate::security::verification::MessageAction;
 use crate::system_core::log::log_parser;
-use crate::system_core::message::{MessageToClient, MessageToServer};
+use crate::system_core::internals::{MessageToClient, MessageToServer};
 use crate::system_core::string::StbString;
 
 pub async fn client_incoming(

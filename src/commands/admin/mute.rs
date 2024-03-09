@@ -6,7 +6,7 @@ use crate::global::LOGGER;
 
 use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;
-use crate::system_core::message::MessageToClient;
+use crate::system_core::internals::MessageToClient;
 use crate::system_core::permissions::Permissions;
 
 pub fn mute() -> commands::Command {

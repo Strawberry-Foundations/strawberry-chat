@@ -31,7 +31,7 @@ use stblib::stbm::stbchat::object::User;
 
 use crate::commands::command_registry;
 use crate::database::db::DATABASE;
-use crate::system_core::message::MessageToClient;
+use crate::system_core::internals::MessageToClient;
 use crate::system_core::permissions::Permissions;
 use crate::system_core::server_core::Connection;
 

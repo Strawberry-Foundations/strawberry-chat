@@ -3,7 +3,7 @@ use stblib::colors::{BLUE, BOLD, C_RESET, GREEN, RESET, UNDERLINE};
 use crate::global::{AUTHORS, CHAT_NAME, CODENAME, DEFAULT_VERSION, EXT_VERSION, SERVER_EDITION};
 use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;
-use crate::system_core::message::MessageToClient;
+use crate::system_core::internals::MessageToClient;
 use crate::system_core::permissions::Permissions;
 
 pub fn about() -> commands::Command {

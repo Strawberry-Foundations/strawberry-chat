@@ -20,7 +20,7 @@ use crate::constants::log_messages::{ADDRESS_LEFT, LOGIN, LOGIN_ERROR, S2C_ERROR
 use crate::global::{CONFIG, LOGGER};
 use crate::system_core::log::log_parser;
 use crate::system_core::{CORE, login};
-use crate::system_core::message::{MessageToClient, MessageToServer};
+use crate::system_core::internals::{MessageToClient, MessageToServer};
 use crate::system_core::server_core::get_users_len;
 use crate::system_core::types::CRTLCODE_CLIENT_EXIT;
 use crate::communication::handlers::{client_incoming, client_outgoing};

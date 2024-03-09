@@ -7,7 +7,7 @@ pub mod config;
 pub mod login;
 pub mod types;
 pub mod objects;
-pub mod message;
+pub mod internals;
 pub mod server_core;
 pub mod commands;
 pub mod string;

@@ -6,7 +6,7 @@ use crate::global::LOGGER;
 
 use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;
-use crate::system_core::message::MessageToClient;
+use crate::system_core::internals::MessageToClient;
 use crate::system_core::permissions::Permissions;
 use crate::system_core::server_core::get_senders_by_username_ignore_case;
 use crate::utilities::role_color_parser;
