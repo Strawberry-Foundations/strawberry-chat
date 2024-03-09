@@ -55,6 +55,14 @@ pub async fn get_senders_by_username(username: &str) -> Vec<Sender<MessageToClie
         .collect()
 }
 
+pub async fn get_senders_by_username_ignore_case(username: &str) -> Vec<Sender<MessageToClient>> {
+    CLIENTS.read().await
+        .iter()
+        .filter(|c| c.get_user().map(|u| u.username.eq_ignore_ascii_case(username)) == Some(true))
+        .map(|c| c.tx.clone())
+        .collect()
+}
+
 pub async fn register_connection(peer: SocketAddr) -> (Sender<MessageToServer>, Receiver<MessageToClient>, ) {
     let (tc_tx, tc_rx) = channel::<MessageToClient>(CHANNEL_BUFFER);
     let (ts_tx, ts_rx) = channel::<MessageToServer>(CHANNEL_BUFFER);
