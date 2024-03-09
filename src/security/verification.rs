@@ -22,7 +22,7 @@ pub enum MessageAction {
 impl MessageVerification {
     pub fn check(&self, content: &impl ToString) -> MessageAction {
         let content = content.to_string();
-        
+
         if self.blocked_words.blacklisted_words.iter().any(|w| content.contains(w)) {
             return MessageAction::Kick;
         }
@@ -34,17 +34,17 @@ impl MessageVerification {
         }
         MessageAction::Allow
     }
-    
-    pub async fn check_with_user(&self, content: &impl ToString, user: &User) -> MessageAction {
+
+    pub async fn check_with_user(&self, content: &String, user: &User) -> MessageAction {
         let content = content.to_string();
 
         let user_data = sqlx::query("SELECT muted FROM users WHERE username = ?")
             .bind(&user.username)
             .fetch_all(&DATABASE.connection)
             .await.expect("err");
-        
+
         let muted: bool = user_data.first().unwrap().get("muted");
-        
+
         if self.blocked_words.blacklisted_words.iter().any(|w| content.contains(w)) {
             return MessageAction::Kick;
         }
