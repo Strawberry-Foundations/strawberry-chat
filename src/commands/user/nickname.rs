@@ -28,7 +28,7 @@ pub fn nickname() -> commands::Command {
                 Err(_) => return Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")))
             };
 
-            return Ok(Some(format!("{BOLD}{LIGHT_GREEN}Removed nickname{C_RESET}")))
+            return Ok(Some(format!("{BOLD}{LIGHT_GREEN}Removed nickname. Rejoin to apply changes")))
         }
 
         let nickname = ctx.args[0..].to_vec().join(" ");
@@ -44,7 +44,8 @@ pub fn nickname() -> commands::Command {
 
         ctx.tx_channel.send(MessageToClient::SystemMessage {
             content: format!(
-                "{BOLD}{LIGHT_GREEN}Changed nickname to {}{nickname}{C_RESET}",
+                "{BOLD}{LIGHT_GREEN}Changed nickname to {}{nickname}{C_RESET}{BOLD}{LIGHT_GREEN}. \
+                Rejoin to apply changes",
                 role_color_parser(&ctx.executor.role_color)
             )
         }).await.unwrap();
