@@ -1,5 +1,5 @@
 use stblib::colors::{BACK_MAGENTA, BLUE, BOLD, C_RESET, CYAN, GREEN, MAGENTA, RED, RESET, UNDERLINE, WHITE, YELLOW};
-use chrono::{Utc, Local};
+use chrono::{Utc, Local, TimeDelta};
 
 use crate::system_core::server_core::get_online_users;
 
@@ -36,8 +36,8 @@ impl StbString {
             .replace("#month", &Utc::now().format("%m").to_string())
             .replace("#fullmonth", &Local::now().format("%h").to_string())
             .replace("#ftoday", &Local::now().format("%A, %d. %h %Y").to_string())
-            .replace("#tomorrow", &(Utc::now() + chrono::Duration::days(1)).format("%Y-%m-%d").to_string())
-            .replace("#ftomorrow", &(Local::now() + chrono::Duration::days(1)).format("%A, %d. %h %Y").to_string());
+            .replace("#tomorrow", &(Utc::now() + TimeDelta::try_days(1).unwrap()).format("%Y-%m-%d").to_string())
+            .replace("#ftomorrow", &(Local::now() + TimeDelta::try_days(1).unwrap()).format("%A, %d. %h %Y").to_string());
 
         self
     }
