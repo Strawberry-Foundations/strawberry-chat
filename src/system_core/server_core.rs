@@ -158,6 +158,7 @@ pub async fn core_thread(watchdog_tx: Sender<()>) {
     loop {
         let _ = watchdog_tx.try_send(());
         let events = get_events().await;
+        
         for (event, i) in events {
             match event {
                 Event::Authorize { user} => {
