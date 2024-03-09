@@ -1,4 +1,4 @@
-use stblib::colors::{BLUE, BOLD, C_RESET, CYAN, GREEN, RED, RESET, UNDERLINE};
+use stblib::colors::{BLUE, BOLD, C_RESET, CYAN, GREEN, MAGENTA, RED, RESET, UNDERLINE};
 use crate::system_core::commands;
 use crate::system_core::commands::{CommandCategory, get_commands_category};
 use crate::system_core::message::MessageToClient;
@@ -23,12 +23,21 @@ pub fn help() -> commands::Command {
             .map(|cmd| format!("{BLUE}{BOLD}/{}: {RESET}{}{C_RESET}", cmd.name, cmd.description))
             .collect::<Vec<String>>()
             .join("\n        ");
+        
+        let admin_help_message: String = get_commands_category(&CommandCategory::Admin)
+            .iter()
+            .map(|cmd| format!("{BLUE}{BOLD}/{}: {RESET}{}{C_RESET}", cmd.name, cmd.description))
+            .collect::<Vec<String>>()
+            .join("\n        ");
 
         let help_message = format!("{GREEN}{UNDERLINE}{BOLD}Default commands{C_RESET}
         {default_help_message}
 
         {CYAN}{UNDERLINE}{BOLD}Profile & User Commands{C_RESET}
         {user_help_message}
+        
+        {MAGENTA}{UNDERLINE}{BOLD}Admin Commands{C_RESET}
+        {admin_help_message}
 
         {RED}{UNDERLINE}{BOLD}Other Commands{C_RESET}
         {etc_help_message}
