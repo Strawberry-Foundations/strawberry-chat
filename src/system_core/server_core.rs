@@ -59,7 +59,7 @@ pub async fn get_senders_by_username(username: &str) -> Vec<Sender<MessageToClie
 pub async fn get_senders_by_username_ignore_case(username: &str) -> Vec<Sender<MessageToClient>> {
     CLIENTS.read().await
         .iter()
-        .filter(|c| c.get_user().map(|u| u.username.eq_ignore_ascii_case(username)) == Some(true))
+        .filter(|c| c.get_user().is_some_and(|u| u.username.eq_ignore_ascii_case(username)))
         .map(|c| c.tx.clone())
         .collect()
 }
