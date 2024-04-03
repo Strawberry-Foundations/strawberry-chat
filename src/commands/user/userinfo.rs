@@ -61,14 +61,13 @@ pub fn userinfo() -> commands::Command {
         }
 
         user.role = capitalize_first(user.role.as_str());
-        user.role_color = capitalize_first(user.role_color.as_str());
 
         let date = DateTime::from_timestamp(i64::from(user.creation_date), 0).unwrap();
 
         let message = format!(
             "
      {BOLD}{CYAN}{UNDERLINE}User profile of {}{C_RESET}
-  *  {BOLD}{GREEN}Username: {}@{}{C_RESET}
+  *  {BOLD}{GREEN}Username: {RESET}{}@{}{C_RESET}
   *  {BOLD}{GREEN}User-ID:{RESET} {}{C_RESET}
   *  {BOLD}{GREEN}Nickname:{RESET} {}{C_RESET}
   *  {BOLD}{GREEN}Description:{RESET} {}{C_RESET}
@@ -83,7 +82,7 @@ pub fn userinfo() -> commands::Command {
             user.username, role_color_parser(user.role_color.as_str()), user.username,
             user.user_id, user.nickname, user.description, date.format("%a, %e. %b %Y"), user.badge,
             create_badge_list(user.badges.as_str()), user.role, role_color_parser(user.role_color.as_str()),
-            user.role_color, user.strawberry_id, user.discord_name
+            capitalize_first(user.role_color.as_str()), user.strawberry_id, user.discord_name
 
         );
 
