@@ -2,6 +2,7 @@ use std::fs;
 use std::io::{self, Write};
 
 use stblib::colors::{BLUE, BOLD, CYAN, GREEN, MAGENTA, RED, RESET, YELLOW};
+use crate::constants::badges::{BERRYJUICE_BADGE, BOT_BADGE, COOL_BADGE, CROWN_BADGE, EVIL_BADGE, FLAME_BADGE, KINDNESS_BADGE, MACHER_BADGE, NEWBIE_BADGE, OG_BADGE, STBCHAT_PLUS_USER, STRAWBERRY_BADGE, SUPPORTER_BADGE, TROLL_BADGE};
 
 use crate::global::{CONFIG, LOGGER};
 
@@ -83,4 +84,57 @@ pub fn is_valid_username(username: &str, allowed_characters: &str) -> bool {
 pub fn capitalize_first(s: &str) -> String {
     let mut chars = s.chars();
     chars.next().map_or_else(String::new, |first_char| first_char.to_uppercase().collect::<String>() + chars.as_str())
+}
+
+pub fn create_badge_list(row: &str) -> String {
+    let mut all_badges = String::new();
+
+    if row.is_empty() {
+        all_badges = "This user doesn't have any badges yet".to_string();
+    } else {
+        if row.contains("👑") {
+            all_badges.push_str(&format!("\n        {}", CROWN_BADGE));
+        }
+        if row.contains("😎") {
+            all_badges.push_str(&format!("\n        {}", COOL_BADGE));
+        }
+        if row.contains("🔥") {
+            all_badges.push_str(&format!("\n        {}", FLAME_BADGE));
+        }
+        if row.contains("🫐") {
+            all_badges.push_str(&format!("\n        {}", BERRYJUICE_BADGE));
+        }
+        if row.contains("🤖") {
+            all_badges.push_str(&format!("\n        {}", BOT_BADGE));
+        }
+        if row.contains("💪") {
+            all_badges.push_str(&format!("\n        {}", MACHER_BADGE));
+        }
+        if row.contains("👍") {
+            all_badges.push_str(&format!("\n        {}", KINDNESS_BADGE));
+        }
+        if row.contains("🤡") {
+            all_badges.push_str(&format!("\n        {}", TROLL_BADGE));
+        }
+        if row.contains("😈") {
+            all_badges.push_str(&format!("\n        {}", EVIL_BADGE));
+        }
+        if row.contains("🤝") {
+            all_badges.push_str(&format!("\n        {}", SUPPORTER_BADGE));
+        }
+        if row.contains("👋") {
+            all_badges.push_str(&format!("\n        {}", NEWBIE_BADGE));
+        }
+        if row.contains("😌") {
+            all_badges.push_str(&format!("\n        {}", OG_BADGE));
+        }
+        if row.contains("🍓") {
+            all_badges.push_str(&format!("\n        {}", STRAWBERRY_BADGE));
+        }
+        if row.contains("💫") {
+            all_badges.push_str(&format!("\n        {}", STBCHAT_PLUS_USER));
+        }
+    }
+
+    all_badges
 }
