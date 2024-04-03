@@ -13,6 +13,7 @@ pub mod default {
 pub mod user {
     pub mod online;
     pub mod nickname;
+    pub mod description;
 }
 
 pub mod etc {
@@ -39,6 +40,7 @@ pub fn command_registry() -> Vec<Command> {
         
         user::online::online(),
         user::nickname::nickname(),
+        user::description::description(),
         
         admin::ban::ban(),
         admin::unban::unban(),
