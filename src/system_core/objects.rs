@@ -46,3 +46,4 @@ pub struct UserAccount {
     pub ok: bool,
     pub user: User,
 }
+
