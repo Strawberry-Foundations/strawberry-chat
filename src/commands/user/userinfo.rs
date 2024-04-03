@@ -1,3 +1,4 @@
+use chrono::DateTime;
 use stblib::colors::{BOLD, C_RESET, CYAN, GREEN, RED, UNDERLINE, RESET, MAGENTA};
 
 use crate::system_core::commands;
@@ -5,7 +6,7 @@ use crate::system_core::commands::CommandCategory;
 use crate::system_core::internals::MessageToClient;
 use crate::system_core::permissions::Permissions;
 use crate::database::db::DATABASE;
-use crate::utilities::{capitalize_first, role_color_parser};
+use crate::utilities::{capitalize_first, create_badge_list, role_color_parser};
 
 #[derive(Clone, Default, Debug, PartialEq, Eq, sqlx::FromRow)]
 pub struct UUserAccount {
@@ -62,6 +63,7 @@ pub fn userinfo() -> commands::Command {
         user.role = capitalize_first(user.role.as_str());
         user.role_color = capitalize_first(user.role_color.as_str());
 
+        let date = DateTime::from_timestamp(i64::from(user.creation_date), 0).unwrap();
 
         let message = format!(
             "
@@ -79,9 +81,9 @@ pub fn userinfo() -> commands::Command {
   *  {BOLD}{GREEN}Discord:{RESET} {}{C_RESET}
 ",
             user.username, role_color_parser(user.role_color.as_str()), user.username,
-            user.user_id, user.nickname, user.description, user.creation_date, user.badge,
-            user.badges, user.role, role_color_parser(user.role_color.as_str()), user.role_color,
-            user.strawberry_id, user.discord_name
+            user.user_id, user.nickname, user.description, date.format("%a, %e. %b %Y"), user.badge,
+            create_badge_list(user.badges.as_str()), user.role, role_color_parser(user.role_color.as_str()),
+            user.role_color, user.strawberry_id, user.discord_name
 
         );
 
