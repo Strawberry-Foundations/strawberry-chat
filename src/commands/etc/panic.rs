@@ -4,7 +4,7 @@ use crate::system_core::permissions::Permissions;
 
 pub fn panic_command() -> commands::Command {
     fn logic(_: &commands::Context) -> commands::CommandResponse {
-        panic!();
+        panic!("explicit panic executed by command");
     }
 
     commands::Command {
