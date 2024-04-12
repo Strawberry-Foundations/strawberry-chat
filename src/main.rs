@@ -14,6 +14,7 @@ use stblib::colors::{BOLD, C_RESET, CYAN, ITALIC, MAGENTA, RESET, YELLOW};
 use crate::communication::connection_handler::connection_handler;
 use crate::database::db::DATABASE;
 use crate::global::{CHAT_NAME, CODENAME, CONFIG, DEFAULT_VERSION, ONLINE_MODE, RUNTIME_LOGGER, SERVER_EDITION};
+use crate::system_core::panic::panic_handler;
 use crate::system_core::server_core::core_thread;
 use crate::system_core::watchdog::watchdog_thread;
 use crate::utilities::{delete_last_line, runtime_all_addresses};
@@ -32,6 +33,10 @@ pub static CORE_HANDLE: OnceLock<Mutex<JoinHandle<()>>> = OnceLock::new();
 
 #[tokio::main]
 async fn main(){
+    std::panic::set_hook(Box::new(|info| {
+        panic_handler(info);
+    }));
+
     println!("{CYAN}{BOLD}* -- {CHAT_NAME} {} {CODENAME} ({SERVER_EDITION}) -- *{RESET}{C_RESET}", DEFAULT_VERSION.clone());
 
     let constructor = cli_wins::constructor::Constructor::new("Beta Software", YELLOW, 2, cli_wins::constructor::ConstructorOptions {
