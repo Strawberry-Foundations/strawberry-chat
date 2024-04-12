@@ -16,6 +16,7 @@ pub mod user {
     pub mod description;
     pub mod userinfo;
     pub mod user_settings;
+    pub mod discord;
 }
 
 pub mod etc {
