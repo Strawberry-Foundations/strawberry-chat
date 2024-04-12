@@ -11,7 +11,7 @@ pub fn panic_handler(info: &PanicInfo) {
     let payload = info.payload()
         .downcast_ref::<&str>()
         .map_or_else(
-            || String::new(),
+            String::new,
             |s| format!(": {s:?} "));
 
 
