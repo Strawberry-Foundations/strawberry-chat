@@ -8,9 +8,14 @@ pub fn panic_handler(info: &PanicInfo) {
             |location| format!("file '{}' at line {}", location.file(), location.line())
         );
 
-    LOGGER.critical(
-        format!(
-            "Core thread panicked in {location}",
-        )
+    let payload = info.payload()
+        .downcast_ref::<&str>()
+        .map_or_else(
+            String::new,
+            |s| format!(": '{s:?}' "));
+
+
+        LOGGER.panic(
+        format!("Core thread panicked in {location} {payload}")
     );
 }
