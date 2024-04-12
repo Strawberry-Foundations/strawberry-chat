@@ -12,6 +12,7 @@ pub struct GlobalConfig {
     pub flags: FlagConfig,
     pub database: DatabaseConfig,
     pub security: SecurityConfig,
+    pub config_ver: String,
 
     #[serde(skip)]
     pub path: String,
