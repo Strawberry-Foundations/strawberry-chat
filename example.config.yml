@@ -3,7 +3,7 @@ server:
   port: 52800
   name: "Strawberry Chat Server"
   title: "Julian's Strawberry Chat"
-  description: "This is Julian's Strawberry chat instance!"
+  description: "This is Julian's Strawberry Chat instance!"
   edition_key: "somekey"
   update_channel: "stable"
 
