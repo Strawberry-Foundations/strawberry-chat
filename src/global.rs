@@ -67,7 +67,18 @@ lazy_static! {
             config_path = String::from("./config.yml");
         }
 
-        GlobalConfig::new(config_path)
+        let config = GlobalConfig::new(config_path);
+
+        if CONFIG_VER != config.config_ver {
+            LOGGER.panic_crash(
+                format!(
+                    "Config version is invalid - Please update your config. (got {}, requires {CONFIG_VER})",
+                    config.config_ver
+                )
+            )
+        }
+
+        config
     };
 
     pub static ref DEFAULT_VERSION: String = format!("v{BASE_VERSION}{ADDITION_VER}");
