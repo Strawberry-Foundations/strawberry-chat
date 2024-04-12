@@ -75,6 +75,55 @@ pub struct SecurityConfig {
     pub banned_ips: Vec<String>
 }
 
+pub const DEFAULT_CONFIG: &str = r#"server:
+  address: "0.0.0.0"
+  port: 52800
+  name: "Strawberry Chat Server"
+  title: "Julian's Strawberry Chat"
+  description: "This is Julian's Strawberry Chat instance!"
+  edition_key: "somekey"
+  update_channel: "stable"
+
+config:
+  max_message_length: 256
+  max_users: -1
+  max_registered_users: -1
+  max_username_length: 32
+  max_password_length: 256
+  recv_allowed_bytes: 8192
+  watchdog_timeout: 4
+
+networking:
+  ratelimit: true
+  ratelimit_timeout: 15
+
+flags:
+  enable_messages: true
+  enable_queue: true
+  debug_mode: true
+  online_mode: true
+  admins_wait_queue: false
+  bots_wait_queue: true
+  special_messages: false
+
+database:
+  driver: mysql       # Available drivers: mysql
+
+  host: localhost
+  port: 3006
+  user: admin
+  password: admin
+  database_name: data
+  database_table: users
+
+security:
+  require_signing: false
+  signing_key: none
+  banned_ips: []
+
+
+config_ver: 9"#;
+
 impl GlobalConfig {
     pub fn new(config_path: String) -> Self {
         let cfg_content = utilities::open_config(&config_path);
