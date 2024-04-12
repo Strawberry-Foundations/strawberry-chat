@@ -7,12 +7,12 @@ use tokio::sync::mpsc::{channel, Receiver};
 use tokio::time::sleep;
 
 use crate::CORE_HANDLE;
-use crate::global::LOGGER;
+use crate::global::{CONFIG, LOGGER};
 use crate::system_core::server_core::core_thread;
 
 pub async fn watchdog_thread(mut rx: Receiver<()>) {
     loop {
-        sleep(Duration::from_secs(4)).await;
+        sleep(Duration::from_secs(CONFIG.config.watchdog_timeout)).await;
         
         if rx.try_recv().is_err() {
             LOGGER.warning("Core thread froze/closed, restarting it...");
