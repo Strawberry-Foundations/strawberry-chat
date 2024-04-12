@@ -5,11 +5,21 @@ use stblib::colors::{BLUE, BOLD, CYAN, GREEN, MAGENTA, RED, RESET, YELLOW};
 use crate::constants::badges::{BERRYJUICE_BADGE, BOT_BADGE, COOL_BADGE, CROWN_BADGE, EVIL_BADGE, FLAME_BADGE, KINDNESS_BADGE, MACHER_BADGE, NEWBIE_BADGE, OG_BADGE, STBCHAT_PLUS_USER, STRAWBERRY_BADGE, SUPPORTER_BADGE, TROLL_BADGE};
 
 use crate::global::{CONFIG, LOGGER};
+use crate::system_core::config::DEFAULT_CONFIG;
 
 pub fn open_config(config_path: &str) -> String {
     fs::read_to_string(config_path).unwrap_or_else(|_| {
-        LOGGER.panic_crash("Could not open your configuration");
+        LOGGER.error("Could not open your configuration");
+        LOGGER.info("Trying to create a new config...");
+        
+        create_config(config_path);
+
+        fs::read_to_string(config_path).unwrap()
     })
+}
+
+pub fn create_config(config_path: &str) {
+    fs::write(config_path, DEFAULT_CONFIG).unwrap();
 }
 
 pub fn is_feature_enabled(feature_state: bool) -> String {
