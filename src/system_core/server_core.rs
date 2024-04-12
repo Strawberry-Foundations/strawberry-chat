@@ -149,7 +149,7 @@ async fn get_events() -> Vec<(Event, usize)> {
 
 #[allow(clippy::significant_drop_in_scrutinee)]
 pub async fn send_to_all(what: MessageToClient, authed_only: bool) {
-    for conn in CLIENTS.write().await.iter_mut().filter(|conn| !authed_only || conn.is_auth()) {
+    for conn in CLIENTS.read().await.iter().filter(|conn| !authed_only || conn.is_auth()) {
         let _ = conn.tx.send(what.clone()).await;
     }
 }
