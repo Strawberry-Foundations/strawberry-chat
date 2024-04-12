@@ -6,9 +6,9 @@ use tokio::spawn;
 use tokio::sync::mpsc::{channel, Receiver};
 use tokio::time::sleep;
 
+use crate::system_core::server_core::core_thread;
 use crate::CORE_HANDLE;
 use crate::global::{CONFIG, LOGGER};
-use crate::system_core::server_core::core_thread;
 
 pub async fn watchdog_thread(mut rx: Receiver<()>) {
     loop {
