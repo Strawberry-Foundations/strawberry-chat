@@ -17,6 +17,7 @@ pub mod user {
     pub mod userinfo;
     pub mod user_settings;
     pub mod discord;
+    pub mod strawberry_id;
 }
 
 pub mod etc {
