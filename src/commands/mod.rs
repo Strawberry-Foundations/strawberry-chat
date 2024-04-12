@@ -31,6 +31,7 @@ pub mod admin {
     pub mod unban;
     pub mod mute;
     pub mod unmute;
+    pub mod broadcast;
 }
 
 pub fn command_registry() -> Vec<Command> {
