@@ -14,6 +14,7 @@ pub mod string;
 pub mod watchdog;
 pub mod register;
 pub mod permissions;
+pub mod panic;
 
 lazy_static! {
     pub static ref CORE: RwLock<Core> = RwLock::new(Core::new());
