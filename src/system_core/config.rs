@@ -79,7 +79,7 @@ impl GlobalConfig {
         let cfg_content = utilities::open_config(&config_path);
 
         let mut config: Self = from_str(&cfg_content).unwrap_or_else(|err| {
-            LOGGER.panic_critical(format!("Could not read configuration: {err}"));
+            LOGGER.critical_panic(format!("Could not read configuration: {err}"));
         });
 
         config.path = config_path;
