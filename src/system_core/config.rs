@@ -36,6 +36,7 @@ pub struct Config {
     pub max_username_length: u16,
     pub max_password_length: u16,
     pub recv_allowed_bytes: u16,
+    pub watchdog_timeout: u64,
 }
 
 #[derive(Debug, Deserialize)]
