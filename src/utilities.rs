@@ -103,46 +103,46 @@ pub fn create_badge_list(row: &str) -> String {
         all_badges = "This user doesn't have any badges yet".to_string();
     } else {
         if row.contains('👑') {
-            all_badges.push_str(&format!("\n        {}", CROWN_BADGE));
+            all_badges.push_str(&format!("\n        {CROWN_BADGE}"));
         }
         if row.contains('😎') {
-            all_badges.push_str(&format!("\n        {}", COOL_BADGE));
+            all_badges.push_str(&format!("\n        {COOL_BADGE}"));
         }
         if row.contains('🔥') {
-            all_badges.push_str(&format!("\n        {}", FLAME_BADGE));
+            all_badges.push_str(&format!("\n        {FLAME_BADGE}"));
         }
         if row.contains('🫐') {
-            all_badges.push_str(&format!("\n        {}", BERRYJUICE_BADGE));
+            all_badges.push_str(&format!("\n        {BERRYJUICE_BADGE}"));
         }
         if row.contains('🤖') {
-            all_badges.push_str(&format!("\n        {}", BOT_BADGE));
+            all_badges.push_str(&format!("\n        {BOT_BADGE}"));
         }
         if row.contains('💪') {
-            all_badges.push_str(&format!("\n        {}", MACHER_BADGE));
+            all_badges.push_str(&format!("\n        {MACHER_BADGE}"));
         }
         if row.contains('👍') {
-            all_badges.push_str(&format!("\n        {}", KINDNESS_BADGE));
+            all_badges.push_str(&format!("\n        {KINDNESS_BADGE}"));
         }
         if row.contains('🤡') {
-            all_badges.push_str(&format!("\n        {}", TROLL_BADGE));
+            all_badges.push_str(&format!("\n        {TROLL_BADGE}"));
         }
         if row.contains('😈') {
-            all_badges.push_str(&format!("\n        {}", EVIL_BADGE));
+            all_badges.push_str(&format!("\n        {EVIL_BADGE}"));
         }
         if row.contains('🤝') {
-            all_badges.push_str(&format!("\n        {}", SUPPORTER_BADGE));
+            all_badges.push_str(&format!("\n        {SUPPORTER_BADGE}"));
         }
         if row.contains('👋') {
-            all_badges.push_str(&format!("\n        {}", NEWBIE_BADGE));
+            all_badges.push_str(&format!("\n        {NEWBIE_BADGE}"));
         }
         if row.contains('😌') {
-            all_badges.push_str(&format!("\n        {}", OG_BADGE));
+            all_badges.push_str(&format!("\n        {OG_BADGE}"));
         }
         if row.contains('🍓') {
-            all_badges.push_str(&format!("\n        {}", STRAWBERRY_BADGE));
+            all_badges.push_str(&format!("\n        {STRAWBERRY_BADGE}"));
         }
         if row.contains('💫') {
-            all_badges.push_str(&format!("\n        {}", STBCHAT_PLUS_USER));
+            all_badges.push_str(&format!("\n        {STBCHAT_PLUS_USER}"));
         }
     }
 
