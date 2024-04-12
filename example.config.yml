@@ -45,4 +45,4 @@ security:
   banned_ips: []
 
 
-config_ver: 8
+config_ver: 9
