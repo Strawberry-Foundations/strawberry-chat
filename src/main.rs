@@ -64,7 +64,7 @@ async fn main(){
     }
 
     let socket = TcpListener::bind((CONFIG.server.address.clone(), CONFIG.server.port)).await.unwrap_or_else(|err| {
-        RUNTIME_LOGGER.panic(format!("{err}"));
+        RUNTIME_LOGGER.panic_crash(format!("{err}"));
     });
 
     cli_wins::feature::display();
