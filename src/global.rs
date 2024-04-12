@@ -17,6 +17,7 @@ pub const API: &str = "https://api.strawberryfoundations.xyz/v1/";
 pub const BASE_VERSION: &str = "1.11.0";
 pub const ADDITION_VER: &str = "pre1";
 pub const STBM_VER: &str = "3";
+pub const CONFIG_VER: &str  = "9";
 
 pub const CODENAME: &str = "Vanilla Cake";
 pub const CODENAME_SHORT: &str = "vacakes";
