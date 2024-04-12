@@ -47,6 +47,8 @@ pub fn command_registry() -> Vec<Command> {
         user::description::description(),
         user::userinfo::userinfo(),
         user::user_settings::user_settings(),
+        user::strawberry_id::strawberry_id(),
+        user::discord::discord(),
         
         admin::ban::ban(),
         admin::unban::unban(),
