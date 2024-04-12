@@ -40,6 +40,7 @@ lazy_static! {
             error: format!("{C_RESET}{BOLD}{RED}RUNTIME_ERROR{C_RESET} [%<message>%]"),
             default: format!("{C_RESET}{BOLD}{BLUE}DATABASE{C_RESET} [%<message>%]"),
             warning: format!("{C_RESET}{BOLD}{YELLOW}WARNING{C_RESET} [%<message>%]"),
+            panic: format!("{C_RESET}{BOLD}{YELLOW}PANIC{C_RESET} [%<message>%]"),
             critical: String::new(),
             extensions: LogFormatExt {
                 time_fmt: "%Y-%m-%d %H:%M".to_string(),
@@ -50,11 +51,11 @@ lazy_static! {
 
     pub static ref CONFIG: GlobalConfig = {
         let exe_path = env::current_exe().unwrap_or_else(|_| {
-            LOGGER.panic("Could not get your Strawberry Chat Runtime Executable");
+            LOGGER.panic_crash("Could not get your Strawberry Chat Runtime Executable");
         });
 
         let exe_dir = exe_path.parent().unwrap_or_else(|| {
-            LOGGER.panic("Could not get directory of your Strawberry Chat Runtime Executable");
+            LOGGER.panic_crash("Could not get directory of your Strawberry Chat Runtime Executable");
         });
 
         let exe_dir_str = PathBuf::from(exe_dir).display().to_string();
