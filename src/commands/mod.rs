@@ -15,6 +15,7 @@ pub mod user {
     pub mod nickname;
     pub mod description;
     pub mod userinfo;
+    pub mod user_settings;
 }
 
 pub mod etc {
@@ -43,6 +44,7 @@ pub fn command_registry() -> Vec<Command> {
         user::nickname::nickname(),
         user::description::description(),
         user::userinfo::userinfo(),
+        user::user_settings::user_settings(),
         
         admin::ban::ban(),
         admin::unban::unban(),
