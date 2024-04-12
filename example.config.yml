@@ -1,11 +1,11 @@
 server:
   address: "0.0.0.0"
-  port: 8080
+  port: 52800
   name: "Strawberry Chat Server"
   title: "Julian's Strawberry Chat"
-  description: "This is the official chat server for Strawberry Chat!"
+  description: "This is Julian's Strawberry chat instance!"
   edition_key: "somekey"
-  update_channel: "canary"
+  update_channel: "stable"
 
 config:
   max_message_length: 256
@@ -37,7 +37,7 @@ database:
   user: admin
   password: admin
   database_name: data
-  database_table: chat_data
+  database_table: users
 
 security:
   require_signing: false
