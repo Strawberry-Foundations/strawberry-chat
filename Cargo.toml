@@ -12,8 +12,8 @@ repository = "https://github.com/Strawberry-Foundations/strawberry-chat"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-stblib = { version =  "0.5.14", features = ["stbchat"] }
-# stblib = { version =  "0.5.14", features = ["stbchat"], path = "../stblib-rust" }
+stblib = { version =  "0.5.15", features = ["stbchat"] }
+# stblib = { version =  "0.5.15", features = ["stbchat"], path = "../stblib-rust" }
 tokio = { version = "1.37.0", features = ["full"] }
 lazy_static = "1.4.0"
 serde = { version = "1.0.197", features = ["derive"] }
@@ -27,7 +27,7 @@ sha2 = "0.11.0-pre.3"
 hex = "0.4.3"
 strip-ansi-escapes = "0.2.0"
 chrono = "0.4.37"
-reqwest = "0.12.2"
+reqwest = "0.12.3"
 argon2 = "0.5.3"
 
 [profile.release]
