@@ -1,8 +1,10 @@
-use stblib::colors::{BOLD, CYAN, GREEN, RED, UNDERLINE};
+use stblib::colors::{BOLD, RED};
 
 use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;
+use crate::system_core::internals::MessageToClient;
 use crate::system_core::permissions::Permissions;
+use crate::system_core::server_core::send_to_all;
 use crate::system_core::string::StbString;
 
 pub fn broadcast() -> commands::Command {
@@ -10,8 +12,10 @@ pub fn broadcast() -> commands::Command {
         if ctx.args.is_empty() {
             return Ok(Some(format!("{RED}{BOLD}Missing arguments - Command requires at least 1 argument - Got 0 arguments")))
         }
-        
+
         let content = StbString::from_str(ctx.args[0..].to_vec().join(" ")).apply_htpf();
+
+        send_to_all(MessageToClient::SystemMessage { content: content.to_string() }, true).await;
 
         Ok(None)
     }
