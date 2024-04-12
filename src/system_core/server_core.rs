@@ -12,7 +12,7 @@ use stblib::stbm::stbchat::object::User;
 use stblib::utilities::escape_ansi;
 
 use crate::constants::log_messages::SEND_INTERNAL_MESSAGE_FAIL;
-use crate::global::LOGGER;
+use crate::global::{CORE_VERSION, LOGGER};
 
 use crate::system_core::commands::run_command;
 use crate::system_core::internals::{MessageToClient, MessageToServer};
@@ -155,6 +155,8 @@ async fn send_to_all(what: MessageToClient, authed_only: bool) {
 }
 
 pub async fn core_thread(watchdog_tx: Sender<()>) {
+    LOGGER.info(format!("Starting core thread ({})", CORE_VERSION.clone()));
+
     loop {
         let _ = watchdog_tx.try_send(());
         let events = get_events().await;
