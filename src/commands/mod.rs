@@ -51,6 +51,7 @@ pub fn command_registry() -> Vec<Command> {
         user::strawberry_id::strawberry_id(),
         user::discord::discord(),
         
+        admin::broadcast::broadcast(),
         admin::ban::ban(),
         admin::unban::unban(),
         admin::mute::mute(),
