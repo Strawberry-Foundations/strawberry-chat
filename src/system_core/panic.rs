@@ -11,11 +11,11 @@ pub fn panic_handler(info: &PanicInfo) {
     let payload = info.payload()
         .downcast_ref::<&str>()
         .map_or_else(
-            String::new,
-            |s| format!(": '{s:?}' "));
+            || String::new(),
+            |s| format!(": {s:?} "));
 
 
         LOGGER.panic(
-        format!("Core thread panicked in {location} {payload}")
+        format!("Core thread panicked in {location}{payload}")
     );
 }
