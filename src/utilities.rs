@@ -1,7 +1,7 @@
 use std::fs;
 use std::io::{self, Write};
 
-use stblib::colors::{BLUE, BOLD, CYAN, GREEN, MAGENTA, RED, RESET, YELLOW};
+use stblib::colors::{BLUE, BOLD, C_RESET, CYAN, GREEN, MAGENTA, RED, RESET, YELLOW};
 use crate::constants::badges::{BERRYJUICE_BADGE, BOT_BADGE, COOL_BADGE, CROWN_BADGE, EVIL_BADGE, FLAME_BADGE, KINDNESS_BADGE, MACHER_BADGE, NEWBIE_BADGE, OG_BADGE, STBCHAT_PLUS_USER, STRAWBERRY_BADGE, SUPPORTER_BADGE, TROLL_BADGE};
 
 use crate::global::{CONFIG, LOGGER};
@@ -150,10 +150,14 @@ pub fn create_badge_list(row: &str) -> String {
 }
 
 pub fn string_to_bool(string: &str) -> bool {
-    if string.to_lowercase() == "true" {
-        true
+    string.to_lowercase() == "true"
+}
+
+pub fn bool_color_fmt(bool: bool) -> String {
+    if bool {
+        format!("{GREEN}{BOLD}true{C_RESET}")
     }
     else {
-        false
+        format!("{RED}{BOLD}false{C_RESET}")
     }
 }
