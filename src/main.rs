@@ -11,12 +11,12 @@ use tokio::task::JoinHandle;
 
 use stblib::colors::{BOLD, C_RESET, CYAN, ITALIC, MAGENTA, RESET, YELLOW};
 
+use crate::system_core::server_core::core_thread;
+use crate::system_core::watchdog::watchdog_thread;
+use crate::system_core::panic::panic_handler;
 use crate::communication::connection_handler::connection_handler;
 use crate::database::db::DATABASE;
 use crate::global::{CHAT_NAME, CODENAME, CONFIG, DEFAULT_VERSION, ONLINE_MODE, RUNTIME_LOGGER, SERVER_EDITION};
-use crate::system_core::panic::panic_handler;
-use crate::system_core::server_core::core_thread;
-use crate::system_core::watchdog::watchdog_thread;
 use crate::utilities::{delete_last_line, runtime_all_addresses};
 
 mod utilities;
