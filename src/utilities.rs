@@ -96,6 +96,7 @@ pub fn capitalize_first(s: &str) -> String {
     chars.next().map_or_else(String::new, |first_char| first_char.to_uppercase().collect::<String>() + chars.as_str())
 }
 
+#[allow(clippy::useless_let_if_seq)]
 pub fn create_badge_list(row: &str) -> String {
     let mut all_badges = String::new();
 
