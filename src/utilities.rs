@@ -155,9 +155,9 @@ pub fn string_to_bool(string: &str) -> bool {
 
 pub fn bool_color_fmt(bool: bool) -> String {
     if bool {
-        format!("{GREEN}{BOLD}true{C_RESET}")
+        format!("{GREEN}true{C_RESET}")
     }
     else {
-        format!("{RED}{BOLD}false{C_RESET}")
+        format!("{RED}false{C_RESET}")
     }
 }
