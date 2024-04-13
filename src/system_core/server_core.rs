@@ -13,7 +13,6 @@ use stblib::utilities::escape_ansi;
 
 use crate::constants::log_messages::SEND_INTERNAL_MESSAGE_FAIL;
 use crate::global::{CORE_VERSION, LOGGER};
-
 use crate::system_core::commands::run_command;
 use crate::system_core::internals::{MessageToClient, MessageToServer};
 use crate::system_core::string::StbString;
