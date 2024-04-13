@@ -1,11 +1,11 @@
 use stblib::colors::{BOLD, C_RESET, CYAN, GREEN, UNDERLINE};
 
-use crate::global::CONFIG;
 use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;
 use crate::system_core::internals::MessageToClient;
 use crate::system_core::permissions::Permissions;
 use crate::system_core::server_core::get_online_usernames;
+use crate::global::CONFIG;
 
 pub fn online() -> commands::Command {
     async fn logic(ctx: &commands::Context) -> commands::CommandResponse {
