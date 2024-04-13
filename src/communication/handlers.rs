@@ -7,17 +7,17 @@ use tokio::sync::mpsc::{Receiver, Sender};
 
 use owo_colors::OwoColorize;
 
-use stblib::stbm::stbchat::net::{IncomingPacketStream, OutgoingPacketStream};
-use stblib::stbm::stbchat::object::User;
-use stblib::stbm::stbchat::packet::{ClientPacket, ServerPacket};
+use stblib::stbchat::net::{IncomingPacketStream, OutgoingPacketStream};
+use stblib::stbchat::object::User;
+use stblib::stbchat::packet::{ClientPacket, ServerPacket};
 use stblib::colors::{BOLD, C_RESET, GRAY, RED, YELLOW};
 
-use crate::constants::log_messages::{CLIENT_KICKED, USER_LEFT};
-use crate::global::{LOGGER, MESSAGE_VERIFICATOR};
-use crate::security::verification::MessageAction;
 use crate::system_core::log::log_parser;
 use crate::system_core::internals::{MessageToClient, MessageToServer};
 use crate::system_core::string::StbString;
+use crate::constants::log_messages::{CLIENT_KICKED, USER_LEFT};
+use crate::global::{LOGGER, MESSAGE_VERIFICATOR};
+use crate::security::verification::MessageAction;
 
 pub async fn client_incoming(
     tx: Sender<MessageToServer>,
