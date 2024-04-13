@@ -27,8 +27,8 @@ use tokio::sync::mpsc::Sender;
 use owo_colors::OwoColorize;
 use sqlx::Row;
 
+use stblib::stbchat::object::User;
 use stblib::colors::{BOLD, C_RESET, RED};
-use stblib::stbm::stbchat::object::User;
 
 use crate::commands::command_registry;
 use crate::database::db::DATABASE;
