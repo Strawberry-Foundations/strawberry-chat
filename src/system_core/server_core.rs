@@ -8,7 +8,7 @@ use tokio::sync::RwLock;
 use tokio::time::sleep;
 
 use lazy_static::lazy_static;
-use stblib::stbm::stbchat::object::User;
+use stblib::stbchat::object::User;
 use stblib::utilities::escape_ansi;
 
 use crate::constants::log_messages::SEND_INTERNAL_MESSAGE_FAIL;
