@@ -10,19 +10,19 @@ use tokio::sync::mpsc::{Receiver, Sender};
 use tokio::{select, spawn};
 use tokio::time::sleep;
 
-use stblib::stbm::stbchat::net::{IncomingPacketStream, OutgoingPacketStream};
-use stblib::stbm::stbchat::packet::ClientPacket;
+use stblib::stbchat::net::{IncomingPacketStream, OutgoingPacketStream};
+use stblib::stbchat::packet::ClientPacket;
 use stblib::colors::{BOLD, C_RESET, GRAY, GREEN, RED};
 
 use owo_colors::OwoColorize;
 
-use crate::constants::log_messages::{ADDRESS_LEFT, LOGIN, LOGIN_ERROR, S2C_ERROR, WRITE_PACKET_FAIL};
-use crate::global::{CONFIG, LOGGER};
 use crate::system_core::log::log_parser;
 use crate::system_core::{CORE, login};
 use crate::system_core::internals::{MessageToClient, MessageToServer};
 use crate::system_core::server_core::get_users_len;
 use crate::system_core::types::CRTLCODE_CLIENT_EXIT;
+use crate::constants::log_messages::{ADDRESS_LEFT, LOGIN, LOGIN_ERROR, S2C_ERROR, WRITE_PACKET_FAIL};
+use crate::global::{CONFIG, LOGGER};
 use crate::communication::handlers::{client_incoming, client_outgoing};
 
 
