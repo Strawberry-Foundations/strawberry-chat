@@ -1,6 +1,6 @@
 //! Contains messages sent internally
 
-use stblib::stbm::stbchat::object::User;
+use stblib::stbchat::object::User;
 use crate::system_core::string::StbString;
 
 #[derive(Clone, Debug)]
