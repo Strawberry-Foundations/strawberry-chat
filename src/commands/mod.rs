@@ -12,6 +12,7 @@ pub mod default {
 
 pub mod user {
     pub mod online;
+    pub mod members;
     pub mod nickname;
     pub mod description;
     pub mod userinfo;
@@ -44,6 +45,7 @@ pub fn command_registry() -> Vec<Command> {
         etc::test_command::example_command(),
         
         user::online::online(),
+        user::members::members(),
         user::nickname::nickname(),
         user::description::description(),
         user::userinfo::userinfo(),
