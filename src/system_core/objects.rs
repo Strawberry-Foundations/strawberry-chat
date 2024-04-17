@@ -1,4 +1,4 @@
-use stblib::stbm::stbchat::object::User;
+use stblib::stbchat::object::User;
 
 // Object for sending Notifications
 pub struct NotificationObject {

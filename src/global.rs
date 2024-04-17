@@ -3,8 +3,8 @@ use std::path::{Path, PathBuf};
 use lazy_static::lazy_static;
 
 use stblib::logging::Logger;
-use stblib::colors::{BLUE, BOLD, C_RESET, GREEN, RED, YELLOW};
 use stblib::logging::formats::{LogFormat, LogFormatExt};
+use stblib::colors::{BLUE, BOLD, C_RESET, GREEN, RED, YELLOW};
 
 use crate::system_core::config::GlobalConfig;
 use crate::security::verification::MessageVerification;

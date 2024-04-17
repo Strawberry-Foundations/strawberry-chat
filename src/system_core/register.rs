@@ -2,8 +2,8 @@ use std::net::IpAddr;
 use tokio::io::{AsyncWriteExt, WriteHalf};
 use tokio::net::TcpStream;
 
-use stblib::stbm::stbchat::net::OutgoingPacketStream;
-use stblib::stbm::stbchat::packet::ClientPacket;
+use stblib::stbchat::net::OutgoingPacketStream;
+use stblib::stbchat::packet::ClientPacket;
 use stblib::utilities::contains_whitespace;
 use stblib::colors::{BOLD, C_RESET, YELLOW};
 
