@@ -80,7 +80,7 @@ pub async fn register_connection(peer: SocketAddr) -> (Sender<MessageToServer>, 
 }
 
 #[derive(Debug)]
-enum Event {
+pub enum Event {
     Authorize {
         user: User,
     },
@@ -113,34 +113,34 @@ async fn get_events() -> Vec<(Event, usize)> {
     let mut events = vec![];
 
     CLIENTS.write().await.iter_mut().enumerate().for_each(|(i, conn)| {
-        if let Some(event) = match conn.rx.try_recv() {
-            Ok(MessageToServer::Authorize { user }) => {
+        if let Some(message) = match conn.rx.try_recv().ok() {
+            Some(MessageToServer::Authorize { user }) => {
                 Some(Event::Authorize { user })
             },
-            Ok(MessageToServer::Message { content }) => {
+            Some(MessageToServer::Message { content }) => {
                 conn.get_user().map(|author| Event::UserMessage { author, content })
             },
-            Ok(MessageToServer::Broadcast { content }) => {
+            Some(MessageToServer::Broadcast { content }) => {
                 conn.get_user().map(|_| Event::SystemMessage { content })
             },
-            Ok(MessageToServer::RemoveMe) => {
+            Some(MessageToServer::RemoveMe) => {
                 Some(Event::Remove)
             },
-            Ok(MessageToServer::RunCommand { name, args }) => {
+            Some(MessageToServer::RunCommand { name, args }) => {
                 Some(Event::RunCommand { name, args })
             },
-            Ok(MessageToServer::ClientDisconnect { reason }) => {
+            Some(MessageToServer::ClientDisconnect { reason }) => {
                 Some(Event::ClientShutdownR { reason })
             },
-            Ok(MessageToServer::ClientNotification { content, bell, sent_by}) => {
+            Some(MessageToServer::ClientNotification { content, bell, sent_by}) => {
                 Some(Event::ClientNotification { content, bell, sent_by })
             },
-            Ok(MessageToServer::SystemMessage { content}) => {
+            Some(MessageToServer::SystemMessage { content}) => {
                 Some(Event::SystemMessageToUser { content })
             }
             _ => None
         } {
-            events.push((event, i));
+            events.push((message, i));
         }
     });
     events
@@ -161,6 +161,11 @@ pub async fn core_thread(watchdog_tx: Sender<()>) {
         let events = get_events().await;
         
         for (event, i) in events {
+            if CLIENTS.read().await[i].get_user().is_some_and(has_hook_sync) {
+                let conn = &mut CLIENTS.write().await[i];
+                send_to_hook_sync(conn.get_user().unwrap(), event);
+                continue
+            }
             match event {
                 Event::Authorize { user} => {
                     CLIENTS.write().await.get_mut(i).unwrap().auth(&user);
@@ -184,9 +189,7 @@ pub async fn core_thread(watchdog_tx: Sender<()>) {
                     send_to_all(MessageToClient::SystemMessage { content }, true).await;
                 },
                 Event::SystemMessageToUser { content } => {
-                    CLIENTS.write()
-                        .await.get_mut(i).unwrap()
-                        .tx.send(MessageToClient::SystemMessage { content }).await.unwrap();
+                    CLIENTS.write().await.get_mut(i).unwrap().tx.send(MessageToClient::SystemMessage { content }).await.unwrap();
                 },
                 Event::ClientNotification { content, bell, sent_by} => {
                     let conn = get_senders_by_username(content.mentioned_user.as_str()).await;
@@ -253,6 +256,49 @@ pub enum State {
     Disconnected,
 }
 
+struct EventHook {
+    from_user: User,
+    detour: Sender<Event>,
+}
+
+pub async fn register_hook(detour: Sender<Event>, from_user: User) -> bool {
+    if has_hook(from_user.clone()).await {
+        return false;
+    }
+    EVENT_HOOKS.write().await.push(EventHook { from_user, detour });
+    true
+}
+
+fn has_hook_sync(who: User) -> bool {
+    futures::executor::block_on(has_hook(who))
+}
+
+async fn has_hook(who: User) -> bool {
+    EVENT_HOOKS.read().await.iter().any(|h| h.from_user == who)
+}
+
+#[allow(clippy::needless_pass_by_value)]
+fn send_to_hook_sync(who: User, what: Event) -> bool {
+    futures::executor::block_on(async {
+        let mut w_guard = EVENT_HOOKS.write().await;
+        let maybe_detour = w_guard
+            .iter_mut()
+            .find(|h| h.from_user == who);
+
+        if let Some(hook) = maybe_detour {
+            if hook.detour.send(what).await.is_err() {
+                return false;
+            };
+        } else {
+            return false;
+        }
+
+        w_guard.retain(|h| h.from_user != who);
+        true
+    })
+}
+
 lazy_static! {
     pub static ref CLIENTS: RwLock<Vec<Connection>> = RwLock::new(Vec::new());
+    static ref EVENT_HOOKS: RwLock<Vec<EventHook>> = RwLock::new(Vec::new());
 }

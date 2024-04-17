@@ -25,6 +25,7 @@ pub mod etc {
     pub mod test_command;
     pub mod hang;
     pub mod panic;
+    pub mod hook;
     pub mod delete_account;
 }
 
@@ -65,6 +66,7 @@ pub fn command_registry() -> Vec<Command> {
     if var("DEBUG").is_ok() {
         cmds.push(etc::hang::hang_command());
         cmds.push(etc::panic::panic_command());
+        cmds.push(etc::hook::hook());
     }
     cmds
 }
