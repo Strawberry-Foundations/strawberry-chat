@@ -260,13 +260,14 @@ pub enum State {
 struct EventHook {
     from_user: User,
     detour: Sender<Event>,
+    amount_uses: usize,
 }
 
-pub async fn register_hook(detour: Sender<Event>, from_user: User) -> bool {
+pub async fn register_hook(detour: Sender<Event>, from_user: User, amount_uses: usize) -> bool {
     if has_hook(from_user.clone()).await {
         return false;
     }
-    EVENT_HOOKS.write().await.push(EventHook { from_user, detour });
+    EVENT_HOOKS.write().await.push(EventHook { from_user, detour, amount_uses });
     true
 }
 
@@ -294,7 +295,16 @@ fn send_to_hook_sync(who: User, what: Event) -> bool {
             return false;
         }
 
-        w_guard.retain(|h| h.from_user != who);
+        w_guard.retain_mut(|h| {
+            if h.from_user == who {
+                h.amount_uses -= 1;
+                if h.amount_uses == 0 {
+                    return false;
+                }
+            }
+            
+            true
+        });
         true
     })
 }
