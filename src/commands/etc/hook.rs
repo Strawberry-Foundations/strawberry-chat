@@ -13,7 +13,7 @@ pub fn hook() -> commands::Command {
         }).await.unwrap();
         
         let (tx, mut rx) = channel::<Event>(32);
-        register_hook(tx, ctx.executor.clone()).await;
+        register_hook(tx, ctx.executor.clone(), 1).await;
         let tx = ctx.tx_channel.clone();
         spawn(async move {
             if let Some(e) = rx.recv().await {
