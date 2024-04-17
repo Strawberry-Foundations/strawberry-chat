@@ -25,6 +25,7 @@ pub mod etc {
     pub mod test_command;
     pub mod hang;
     pub mod panic;
+    pub mod delete_account;
 }
 
 pub mod admin {
@@ -42,8 +43,6 @@ pub fn command_registry() -> Vec<Command> {
         default::dm::dm_basic(),
         default::server_info::server_info(),
         
-        etc::test_command::example_command(),
-        
         user::online::online(),
         user::members::members(),
         user::nickname::nickname(),
@@ -58,6 +57,9 @@ pub fn command_registry() -> Vec<Command> {
         admin::unban::unban(),
         admin::mute::mute(),
         admin::unmute::unmute(),
+
+        etc::test_command::example_command(),
+        etc::delete_account::delete_account(),
     ];
 
     if var("DEBUG").is_ok() {
