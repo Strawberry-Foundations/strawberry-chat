@@ -1,24 +1,26 @@
 use stblib::colors::{BOLD, C_RESET, CYAN, GREEN, UNDERLINE};
+use crate::database::db::DATABASE;
 
 use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;
 use crate::system_core::internals::MessageToClient;
 use crate::system_core::permissions::Permissions;
-use crate::system_core::server_core::get_online_usernames;
 use crate::global::CONFIG;
 
-pub fn online() -> commands::Command {
+pub fn members() -> commands::Command {
     async fn logic(ctx: &commands::Context) -> commands::CommandResponse {
-        let online_users_vec = get_online_usernames().await.clone();
+        let members_vec: Vec<String> = sqlx::query_scalar("SELECT username FROM users")
+            .fetch_all(&DATABASE.connection)
+            .await.unwrap();
 
-        let online_users = if CONFIG.config.max_users == -1 {
-            format!("{}", online_users_vec.len())
+        let members = if CONFIG.config.max_registered_users == -1 {
+            format!("{}", members_vec.len())
         } else {
-            format!("{}/{}", online_users_vec.len(), CONFIG.config.max_users)
+            format!("{}/{}", members_vec.len(), CONFIG.config.max_registered_users)
         };
 
-        let message = format!("{GREEN}{BOLD}{UNDERLINE}Users who are currently online ({online_users}){C_RESET}
-        {BOLD}->{C_RESET} {CYAN}{}{C_RESET}", online_users_vec.join(", ")
+        let message = format!("{GREEN}{BOLD}{UNDERLINE}Members on this server ({members}){C_RESET}
+        {BOLD}->{C_RESET} {CYAN}{}{C_RESET}", members_vec.join(", ")
         );
 
         ctx.tx_channel.send(MessageToClient::SystemMessage {
@@ -29,9 +31,9 @@ pub fn online() -> commands::Command {
     }
 
     commands::Command {
-        name: "online".to_string(),
+        name: "members".to_string(),
         aliases: vec![],
-        description: "Shows online users".to_string(),
+        description: "Shows registered members on this server".to_string(),
         category: CommandCategory::User,
         permissions: Permissions::Member,
         handler: |ctx| Box::pin(async move {

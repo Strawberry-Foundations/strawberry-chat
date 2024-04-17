@@ -1,5 +1,5 @@
 use sqlx::Row;
-use stblib::stbm::stbchat::object::User;
+use stblib::stbchat::object::User;
 use crate::database::db::DATABASE;
 
 pub struct BlockedWords<'a> {

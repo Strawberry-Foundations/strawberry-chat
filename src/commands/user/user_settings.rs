@@ -1,11 +1,11 @@
 use stblib::colors::{BOLD, C_RESET, LIGHT_GREEN, RED};
-use crate::constants::messages::USER_SETTINGS_HELP;
-use crate::database::db::DATABASE;
 
 use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;
 use crate::system_core::permissions::Permissions;
 use crate::utilities::{bool_color_fmt, string_to_bool};
+use crate::database::db::DATABASE;
+use crate::constants::messages::USER_SETTINGS_HELP;
 
 pub fn user_settings() -> commands::Command {
     async fn logic(ctx: &commands::Context) -> commands::CommandResponse {

@@ -9,18 +9,18 @@ use std::net::IpAddr;
 use tokio::net::TcpStream;
 use tokio::io::{AsyncWriteExt, ReadHalf, WriteHalf};
 
-use stblib::stbm::stbchat::net::{IncomingPacketStream, OutgoingPacketStream};
-use stblib::stbm::stbchat::object::User;
-use stblib::stbm::stbchat::packet::{ClientPacket, ServerPacket};
+use stblib::stbchat::net::{IncomingPacketStream, OutgoingPacketStream};
+use stblib::stbchat::object::User;
+use stblib::stbchat::packet::{ClientPacket, ServerPacket};
 use stblib::colors::{BOLD, C_RESET, RED, YELLOW};
 
-use crate::constants::log_messages::{ADDRESS_LEFT, DISCONNECTED, READ_PACKET_FAIL, S2C_ERROR, WRITE_PACKET_FAIL};
-use crate::database::db::DATABASE;
-use crate::global::{CONFIG, LOGGER};
 use crate::system_core::log::log_parser;
 use crate::system_core::objects::UserAccount;
 use crate::system_core::register::client_register;
 use crate::system_core::server_core::get_online_usernames;
+use crate::constants::log_messages::{ADDRESS_LEFT, DISCONNECTED, READ_PACKET_FAIL, S2C_ERROR, WRITE_PACKET_FAIL};
+use crate::database::db::DATABASE;
+use crate::global::{CONFIG, LOGGER};
 
 /// Returns None if the client disconnected
 pub async fn client_login(w_client: &mut OutgoingPacketStream<WriteHalf<TcpStream>>,
