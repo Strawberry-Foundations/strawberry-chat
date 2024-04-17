@@ -1,7 +1,5 @@
 use std::env;
 use std::path::{Path, PathBuf};
-use std::string::ToString;
-
 use lazy_static::lazy_static;
 
 use stblib::logging::Logger;

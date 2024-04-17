@@ -135,7 +135,7 @@ impl Database {
         user.role_color = role_color_parser(data.first().unwrap().get("role_color"));
         user.avatar_url = data.first().unwrap().get("avatar_url");
 
-        if nickname.is_empty(){
+        if nickname.is_empty() {
             user.nickname = user.username.clone();
         }
         else {

@@ -22,6 +22,7 @@ pub enum MessageToClient {
     Shutdown
 }
 
+#[derive(Clone, Debug)]
 pub enum MessageToServer {
     Authorize {
         user: User
