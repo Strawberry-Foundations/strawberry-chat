@@ -1,4 +1,5 @@
-use stblib::colors::{BOLD, C_RESET, RED, YELLOW};
+use serde::Serialize;
+use stblib::colors::{BOLD, C_RESET, GREEN, RED, YELLOW};
 use stblib::utilities::escape_ansi;
 use tokio::spawn;
 use crate::database::db::DATABASE;
@@ -25,7 +26,7 @@ pub fn delete_account() -> commands::Command {
                     hook.tx_ctx.send(MessageToClient::SystemMessage {
                         content: format!("{RED}{BOLD}THIS IS YOUR VERY LAST WARNING! This action is irreversible!! ARE YOU SURE?{C_RESET}")
                     }).await.unwrap();
-                    
+
                     let mut hook = Hook::new(hook.user, hook.tx_ctx, hook.uses).await;
 
                     if let Some(Event::UserMessage { content, ..}) = hook.rx.recv().await {
@@ -55,6 +56,12 @@ pub fn delete_account() -> commands::Command {
                                                 content: format!("{YELLOW}{BOLD}Deleting your user account...{C_RESET}")
                                             }).await.unwrap();
 
+                                            DATABASE.delete_user(author.username).await;
+
+                                            hook.tx_ctx.send(MessageToClient::SystemMessage {
+                                                content: format!("{GREEN}{BOLD}Deleted. Goodbye!{C_RESET}")
+                                            }).await.unwrap();
+
                                         } else {
                                             hook.tx_ctx.send(MessageToClient::SystemMessage {
                                                 content: format!("{YELLOW}{BOLD}Deletion of your account has been canceled...{C_RESET}")
@@ -80,9 +87,7 @@ pub fn delete_account() -> commands::Command {
                 }
             }
         });
-
-
-
+        
         Ok(None)
     }
 
