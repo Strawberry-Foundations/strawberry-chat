@@ -42,7 +42,7 @@ pub fn user_settings() -> commands::Command {
                     .await
                     .unwrap_or_else(|err| { println!("{err}"); std::process::exit(1) });
 
-                Ok(Some(format!("{LIGHT_GREEN}Updated role_color to {}{}{C_RESET}", role_color_parser(&ctx.args[1]), &ctx.args[1])))
+                Ok(Some(format!("{LIGHT_GREEN}Updated role color to {}{}{C_RESET}", role_color_parser(&ctx.args[1]), &ctx.args[1])))
             },
             _ => Ok(Some(format!("{RED}{BOLD}Invalid subcommand!{C_RESET}"))),
         }
