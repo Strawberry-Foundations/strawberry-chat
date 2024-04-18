@@ -1,8 +1,7 @@
-use serde::Serialize;
-use stblib::colors::{BOLD, C_RESET, GREEN, RED, YELLOW};
-use stblib::utilities::escape_ansi;
 use tokio::spawn;
-use crate::database::db::DATABASE;
+
+use stblib::utilities::escape_ansi;
+use stblib::colors::{BOLD, C_RESET, GREEN, RED, YELLOW};
 
 use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;
@@ -10,6 +9,7 @@ use crate::system_core::hooks::Hook;
 use crate::system_core::internals::MessageToClient;
 use crate::system_core::permissions::Permissions;
 use crate::system_core::server_core::Event;
+use crate::database::db::DATABASE;
 
 pub fn delete_account() -> commands::Command {
     async fn logic(ctx: &commands::Context) -> commands::CommandResponse {
