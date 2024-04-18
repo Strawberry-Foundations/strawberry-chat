@@ -256,10 +256,10 @@ pub enum State {
     Disconnected,
 }
 
-struct EventHook {
-    from_user: User,
-    detour: Sender<Event>,
-    amount_uses: usize,
+pub struct EventHook {
+    pub from_user: User,
+    pub detour: Sender<Event>,
+    pub amount_uses: usize,
 }
 
 pub async fn register_hook(detour: Sender<Event>, from_user: User, amount_uses: usize) -> bool {
@@ -310,5 +310,5 @@ fn send_to_hook_sync(who: User, what: Event) -> bool {
 
 lazy_static! {
     pub static ref CLIENTS: RwLock<Vec<Connection>> = RwLock::new(Vec::new());
-    static ref EVENT_HOOKS: RwLock<Vec<EventHook>> = RwLock::new(Vec::new());
+    pub static ref EVENT_HOOKS: RwLock<Vec<EventHook>> = RwLock::new(Vec::new());
 }
