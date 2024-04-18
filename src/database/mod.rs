@@ -196,4 +196,32 @@ impl Database {
 
         query.map_or(1, |user| user.user_id + 1)
     }
+
+    pub async fn get_user_by_name(&self, username: &String) -> Option<User> {
+        let data = sqlx::query("SELECT * FROM users WHERE username = ?")
+            .bind(username)
+            .fetch_all(&self.connection)
+            .await.expect("err");
+        
+        if data.is_empty() {
+            None
+        }
+        else {
+            let mut user = User {
+                username: CRTLCODE_CLIENT_EXIT.to_string(),
+                nickname: String::new(),
+                badge: String::new(),
+                role_color: String::new(),
+                avatar_url: String::new(),
+            };
+
+            user.username   = data.first().unwrap().get("username");
+            user.nickname   = data.first().unwrap().get("nickname");
+            user.badge      = data.first().unwrap().get("badge");
+            user.role_color = role_color_parser(data.first().unwrap().get("role_color"));
+            user.avatar_url = data.first().unwrap().get("avatar_url");
+
+            Some(user)
+        }
+    }
 }
