@@ -13,7 +13,7 @@ use crate::security::online_mode::OnlineMode;
 pub const API: &str = "https://api.strawberryfoundations.xyz/v1/";
 
 pub const BASE_VERSION: &str = "1.11.0";
-pub const ADDITION_VER: &str = "pre1";
+pub const ADDITION_VER: &str = "final1";
 pub const STBM_VER: &str = "3";
 pub const CONFIG_VER: &str  = "9";
 
@@ -21,7 +21,7 @@ pub const CODENAME: &str = "Vanilla Cake";
 pub const CODENAME_SHORT: &str = "vacakes";
 
 pub const CHAT_NAME: &str = "Strawberry Chat";
-pub const UPDATE_CHANNEL: &str = "canary";
+pub const UPDATE_CHANNEL: &str = "stable";
 pub const SERVER_EDITION: &str = "Rusty Edition";
 
 pub const AUTHORS: &[&str; 3] = &["Juliandev02", "Paddyk45", "matteodev8"];
