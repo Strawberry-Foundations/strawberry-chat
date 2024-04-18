@@ -1,27 +1,27 @@
 use tokio::spawn;
-use tokio::sync::mpsc::channel;
+
 use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;
+use crate::system_core::hooks::Hook;
 use crate::system_core::internals::MessageToClient;
 use crate::system_core::permissions::Permissions;
-use crate::system_core::server_core::{Event, register_hook};
 
 pub fn hook() -> commands::Command {
     async fn logic(ctx: &commands::Context) -> commands::CommandResponse {
         ctx.tx_channel.send(MessageToClient::SystemMessage {
             content: "Say something!".to_string(),
         }).await.unwrap();
-        
-        let (tx, mut rx) = channel::<Event>(32);
-        register_hook(tx, ctx.executor.clone(), 1).await;
-        let tx = ctx.tx_channel.clone();
+
+        let mut hook = Hook::new(ctx.executor.clone(), ctx.tx_channel.clone(), 1).await;
+
         spawn(async move {
-            if let Some(e) = rx.recv().await {
-                tx.send(MessageToClient::SystemMessage {
+            if let Some(e) = hook.rx.recv().await {
+                hook.tx_ctx.send(MessageToClient::SystemMessage {
                     content: format!("Event: {e:?}")
                 }).await.unwrap();
             }
         });
+
         Ok(None)
     }
 
