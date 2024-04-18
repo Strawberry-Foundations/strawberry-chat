@@ -91,6 +91,13 @@ impl Database {
             .execute(&self.connection)
             .await.unwrap();
     }
+
+    pub async fn delete_user(&self, username: String) {
+        sqlx::query("DELETE FROM users WHERE username = ?")
+            .bind(username)
+            .execute(&self.connection)
+            .await.unwrap();
+    }
     
     pub async fn fetch_members(&self) -> Vec<MySqlRow>{
         sqlx::query("SELECT username from users")
