@@ -19,6 +19,7 @@ pub mod user {
     pub mod user_settings;
     pub mod discord;
     pub mod strawberry_id;
+    pub mod memberlist;
 }
 
 pub mod etc {
@@ -46,6 +47,7 @@ pub fn command_registry() -> Vec<Command> {
         
         user::online::online(),
         user::members::members(),
+        user::memberlist::memberlist(),
         user::nickname::nickname(),
         user::description::description(),
         user::userinfo::userinfo(),
