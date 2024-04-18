@@ -17,9 +17,6 @@ pub fn delete_account() -> commands::Command {
         }).await.unwrap();
 
         let mut hook = Hook::new(ctx.executor.clone(), ctx.tx_channel.clone(), 1).await;
-        let mut hook2 = Hook::new(ctx.executor.clone(), ctx.tx_channel.clone(), 1).await;
-        let mut hook3 = Hook::new(ctx.executor.clone(), ctx.tx_channel.clone(), 1).await;
-        let mut hook4 = Hook::new(ctx.executor.clone(), ctx.tx_channel.clone(), 1).await;
 
         spawn(async move {
             if let Some(Event::UserMessage { content, .. }) = hook.rx.recv().await {
@@ -28,23 +25,28 @@ pub fn delete_account() -> commands::Command {
                     hook.tx_ctx.send(MessageToClient::SystemMessage {
                         content: format!("{RED}{BOLD}THIS IS YOUR VERY LAST WARNING! This action is irreversible!! ARE YOU SURE?{C_RESET}")
                     }).await.unwrap();
+                    
+                    let mut hook = Hook::new(hook.user, hook.tx_ctx, hook.uses).await;
 
-
-                    if let Some(Event::UserMessage { content, ..}) = hook2.rx.recv().await {
+                    if let Some(Event::UserMessage { content, ..}) = hook.rx.recv().await {
                         // Second time for confirming account deletion
                         if escape_ansi(&content).eq_ignore_ascii_case("yes") {
                             hook.tx_ctx.send(MessageToClient::SystemMessage {
                                 content: format!("{YELLOW}{BOLD}Enter your username to confirm the deletion of your account:{C_RESET}")
                             }).await.unwrap();
 
-                            if let Some(Event::UserMessage { author, content}) = hook3.rx.recv().await {
+                            let mut hook = Hook::new(hook.user, hook.tx_ctx, hook.uses).await;
+
+                            if let Some(Event::UserMessage { author, content}) = hook.rx.recv().await {
                                 // Third time for confirming account deletion
                                 if escape_ansi(&content) == author.username {
                                     hook.tx_ctx.send(MessageToClient::SystemMessage {
                                         content: format!("{YELLOW}{BOLD}Now, enter your password to finally confirm your account deletion:{C_RESET}")
                                     }).await.unwrap();
 
-                                    if let Some(Event::UserMessage { author, content}) = hook4.rx.recv().await {
+                                    let mut hook = Hook::new(hook.user, hook.tx_ctx, hook.uses).await;
+
+                                    if let Some(Event::UserMessage { author, content}) = hook.rx.recv().await {
                                         // Last time for confirming account deletion
                                         let (_, result) = DATABASE.check_credentials(&author.username, &content).await;
 
