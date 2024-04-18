@@ -1,6 +1,6 @@
 [package]
 name = "strawberry-chat"
-version = "1.11.0-pre1"
+version = "1.11.0-final1"
 edition = "2021"
 authors = ["Juliandev02", "Paddyk45", "matteodev8"]
 description = "A simple but nice chat platform for your terminal"
@@ -16,9 +16,9 @@ stblib = { version =  "0.6.1", features = ["stbchat"] }
 # stblib = { version =  "0.6.1", features = ["stbchat"], path = "../stblib-rust" }
 tokio = { version = "1.37.0", features = ["full"] }
 lazy_static = "1.4.0"
-serde = { version = "1.0.197", features = ["derive"] }
+serde = { version = "1.0.198", features = ["derive"] }
 serde_yaml = "0.9.34"
-serde_json = "1.0.115"
+serde_json = "1.0.116"
 eyre = "0.6.12"
 owo-colors = "4.0.0"
 futures = "0.3.30"
@@ -26,7 +26,7 @@ sqlx = { version = "0.7.4", features = ["mysql", "runtime-tokio-native-tls"] }
 sha2 = "0.11.0-pre.3"
 hex = "0.4.3"
 strip-ansi-escapes = "0.2.0"
-chrono = "0.4.37"
+chrono = "0.4.38"
 reqwest = "0.12.3"
 argon2 = "0.5.3"
 
