@@ -46,7 +46,24 @@ In the following table you can see our security features and the corresponding v
 |-----------|---------------|---------------------|
 | Supported | Not supported | Partially supported |
 
+
+## Release cycle
+
+We have developed the Strawberry Chat release schedule so that a version is released approximately every month.
+This can be a major release (such as v1.9, v.11), but it can also be a minor release (such as v1.8.2).
+In rare cases, a new version is only released every 2 months.
+
+> The last stable release before v1.11.0 was released on December 1, 2023, and was version 1.9.0.
+> About 5 months have passed since this release.
+> In very rare cases this can happen. This was because we rewrote Strawberry Chat in a completely different language,
+> namely Rust, which takes a lot of time. We do not plan to change the language in the future - however,
+> if we change anything in our code base, which could take a long time,
+> it is quite possible that the release of a new version could take several months.
+
+
 ## Side Notes
 ### Config
+When you start Strawberry Chat for the first time, Strawberry Chat automatically creates a configuration for you.
+However, if you want to create a config file beforehand, you can copy the example.config.yml from this repository and modify it:
 Copy `./example.config.yml` to `./target/{RELEASE_TYPE}/config.yml` (Or to the same directory as the executable) 
 and change values as needed
