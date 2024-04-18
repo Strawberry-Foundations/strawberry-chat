@@ -3,7 +3,7 @@ use stblib::colors::{BOLD, C_RESET, LIGHT_GREEN, RED};
 use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;
 use crate::system_core::permissions::Permissions;
-use crate::utilities::{bool_color_fmt, string_to_bool};
+use crate::utilities::{bool_color_fmt, role_color_parser, string_to_bool};
 use crate::database::db::DATABASE;
 use crate::constants::messages::USER_SETTINGS_HELP;
 
@@ -28,6 +28,21 @@ pub fn user_settings() -> commands::Command {
                     .unwrap_or_else(|err| { println!("{err}"); std::process::exit(1) });
 
                 Ok(Some(format!("{LIGHT_GREEN}Updated enable_dms to {}", bool_color_fmt(string_to_bool(&ctx.args[1])))))
+            },
+
+            "role-color" => {
+                if ctx.args[1].is_empty() {
+                    return Ok(Some(format!("{RED}{BOLD}Missing arguments - Subcommand requires at least 1 argument - Got 0 arguments{C_RESET}")))
+                }
+
+                sqlx::query("UPDATE users SET role_color = ? WHERE username = ?")
+                    .bind(&ctx.args[1])
+                    .bind(&ctx.executor.username)
+                    .execute(&DATABASE.connection)
+                    .await
+                    .unwrap_or_else(|err| { println!("{err}"); std::process::exit(1) });
+
+                Ok(Some(format!("{LIGHT_GREEN}Updated role_color to {}{}{C_RESET}", role_color_parser(&ctx.args[1]), &ctx.args[1])))
             },
             _ => Ok(Some(format!("{RED}{BOLD}Invalid subcommand!{C_RESET}"))),
         }
