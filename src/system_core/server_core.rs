@@ -278,7 +278,7 @@ async fn has_hook(who: User) -> bool {
     EVENT_HOOKS.read().await.iter().any(|h| h.from_user == who)
 }
 
-pub async fn retain_hook_by_user(user: User) {
+pub async fn remove_hooks_by_user(user: User) {
     EVENT_HOOKS.write().await.retain(|h| h.from_user != user);
 }
 
