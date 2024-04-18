@@ -18,6 +18,7 @@ use crate::system_core::string::StbString;
 use crate::constants::log_messages::{CLIENT_KICKED, USER_LEFT};
 use crate::global::{LOGGER, MESSAGE_VERIFICATOR};
 use crate::security::verification::MessageAction;
+use crate::system_core::server_core::EVENT_HOOKS;
 
 pub async fn client_incoming(
     tx: Sender<MessageToServer>,
@@ -37,6 +38,7 @@ pub async fn client_incoming(
 
                     tx.send(MessageToServer::RemoveMe).await.unwrap();
                     LOGGER.info(log_parser(USER_LEFT, &[&user.username, &peer_addr]));
+                    EVENT_HOOKS.write().await.retain(|h| h.from_user != user);
                     return;
                 }
                 
