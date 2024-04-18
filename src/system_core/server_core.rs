@@ -256,10 +256,10 @@ pub enum State {
     Disconnected,
 }
 
-pub struct EventHook {
-    pub from_user: User,
-    pub detour: Sender<Event>,
-    pub amount_uses: usize,
+struct EventHook {
+    pub(crate) from_user: User,
+    detour: Sender<Event>,
+    amount_uses: usize,
 }
 
 pub async fn register_hook(detour: Sender<Event>, from_user: User, amount_uses: usize) -> bool {
@@ -276,6 +276,10 @@ fn has_hook_sync(who: User) -> bool {
 
 async fn has_hook(who: User) -> bool {
     EVENT_HOOKS.read().await.iter().any(|h| h.from_user == who)
+}
+
+pub async fn retain_hook_by_user(user: User) {
+    EVENT_HOOKS.write().await.retain(|h| h.from_user != user);
 }
 
 #[allow(clippy::needless_pass_by_value)]
@@ -310,5 +314,5 @@ fn send_to_hook_sync(who: User, what: Event) -> bool {
 
 lazy_static! {
     pub static ref CLIENTS: RwLock<Vec<Connection>> = RwLock::new(Vec::new());
-    pub static ref EVENT_HOOKS: RwLock<Vec<EventHook>> = RwLock::new(Vec::new());
+    static ref EVENT_HOOKS: RwLock<Vec<EventHook>> = RwLock::new(Vec::new());
 }
