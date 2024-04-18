@@ -1,0 +1,45 @@
+# STRAWBERRY CHAT V1.11.0 STABLE
+
+-- New Features included with v1.10 that has been ported to v1.11 --
+- NEW: Added config file error when using an outdated config file (#106)
+- NEW: Added IP-Banning (#111)
+- NEW: Added Windows/Mac/Linux System Notification when getting pinged (configurable) (#114)
+- NEW: Added error handling if address is already in use
+- NEW: Added system notification when receiving an dm (#116)
+- NEW: Added specific restrictions for username (only lowercase, a - z, 0 - 9, dots, underscore) (#122)
+- NEW: Added username length checking
+- NEW: Added max_username_length & max_password_length config + moved some values to config yml
+- NEW: Added rate limiting (#129)
+- NEW: Added configuration for ratelimit (Enabling or disabling ratelimit + ratelimit timeout)
+
+-- Changes from v1.11.0 --
+- IMPORTANT: Changed code base language to Rust (see #135)
+- IMPORTANT: Complete new code structure (core-based structure)
+- IMPORTANT: We changed our Communication Standard to v3 (German documentation: https://developers.strawberryfoundations.xyz/german/json-communication/introduction#versionen-des-strawberry-communication-standards)
+
+- NEW: MySQL Database as main database (#99)
+- NEW: New rust-based clients for rust-based Strawberry Chat (CLI and TUI)
+- NEW: Added improved Automod (Security)
+- NEW: Added login verification (check if you're really logged in) (Security)
+- NEW: Added improved message verification (Security)
+- NEW: Added Watchdog (Security)
+- NEW: Added automatic config creation (if no config exists)
+- NEW: Added msgpack as a compression method
+- NEW: Added small but fine cli "windows"
+- NEW: Added new logging system (stblib)
+- NEW: Custom Strawberry Chat rust library for accessing Strawberry Chat's packets
+- NEW: Removed server settings (security risk)
+- NEW: Removed admin user settings (security risk)
+
+- FIX: Fixed add automatic command for invalid session removal (#130) (fixed by Rust-rewrite)
+- FIX: Sometimes you cannot write after mentioning a user (#125) (fixed by Rust-rewrite)
+
+- OPTIMIZATION: Memory safety!
+- OPTIMIZATION: Improve performance by not accessing the database every time when writing something (instead use caching) (#98) (fixed by Rust-rewrite)
+- OPTIMIZATION: Improved error handling
+
+- SCAPI: Scapi API Wrapper for scs.v3 (Python)
+
+- API: Added Rust API for scs.v3
+- API: Added Python API for scs.v3
+- API: Added Java API for scs.v3
