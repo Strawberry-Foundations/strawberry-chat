@@ -18,12 +18,12 @@ config:
 
 networking:
   ratelimit: true
-  ratelimit_timeout: 15
+  ratelimit_timeout: 30
 
 flags:
   enable_messages: true
   enable_queue: true
-  debug_mode: true
+  debug_mode: false
   online_mode: true
   admins_wait_queue: false
   bots_wait_queue: true
