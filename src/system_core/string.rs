@@ -82,3 +82,8 @@ impl StbString {
         self.string.clone()
     }
 }
+
+pub fn capitalize_first(s: &str) -> String {
+    let mut chars = s.chars();
+    chars.next().map_or_else(String::new, |first_char| first_char.to_uppercase().collect::<String>() + chars.as_str())
+}
