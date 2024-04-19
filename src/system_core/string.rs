@@ -87,3 +87,16 @@ pub fn capitalize_first(s: &str) -> String {
     let mut chars = s.chars();
     chars.next().map_or_else(String::new, |first_char| first_char.to_uppercase().collect::<String>() + chars.as_str())
 }
+
+pub fn string_to_bool(string: &str) -> bool {
+    string.to_lowercase() == "true"
+}
+
+pub fn bool_color_fmt(bool: bool) -> String {
+    if bool {
+        format!("{GREEN}true{C_RESET}")
+    }
+    else {
+        format!("{RED}false{C_RESET}")
+    }
+}
