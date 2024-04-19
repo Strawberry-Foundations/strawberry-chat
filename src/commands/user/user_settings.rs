@@ -3,7 +3,8 @@ use stblib::colors::{BOLD, C_RESET, LIGHT_GREEN, RED};
 use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;
 use crate::system_core::permissions::Permissions;
-use crate::utilities::{bool_color_fmt, role_color_parser, string_to_bool};
+use crate::system_core::string::{bool_color_fmt, string_to_bool};
+use crate::utilities::role_color_parser;
 use crate::database::db::DATABASE;
 use crate::constants::messages::USER_SETTINGS_HELP;
 
