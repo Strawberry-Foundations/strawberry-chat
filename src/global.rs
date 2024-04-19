@@ -13,7 +13,7 @@ use crate::security::online_mode::OnlineMode;
 pub const API: &str = "https://api.strawberryfoundations.xyz/v1/";
 
 pub const BASE_VERSION: &str = "1.11.0";
-pub const ADDITION_VER: &str = "final1";
+pub const ADDITION_VER: &str = "";
 pub const STBM_VER: &str = "3";
 pub const CONFIG_VER: &str  = "9";
 
