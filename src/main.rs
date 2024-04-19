@@ -5,19 +5,19 @@ use std::env::var;
 use std::sync::{Mutex, OnceLock};
 
 use tokio::spawn;
-use tokio::net::TcpListener;
 use tokio::sync::mpsc::channel;
+use tokio::net::TcpListener;
 use tokio::task::JoinHandle;
 
-use stblib::colors::{BOLD, C_RESET, CYAN, ITALIC, MAGENTA, RESET, YELLOW};
+use stblib::colors::{YELLOW, CYAN, MAGENTA, BOLD, C_RESET, ITALIC, RESET};
 
 use crate::system_core::server_core::core_thread;
 use crate::system_core::watchdog::watchdog_thread;
 use crate::system_core::panic::panic_handler;
 use crate::communication::connection_handler::connection_handler;
-use crate::database::db::DATABASE;
-use crate::global::{CHAT_NAME, CODENAME, CONFIG, DEFAULT_VERSION, ONLINE_MODE, RUNTIME_LOGGER, SERVER_EDITION};
 use crate::utilities::{delete_last_line, runtime_all_addresses};
+use crate::database::db::DATABASE;
+use crate::global::{CONFIG, DEFAULT_VERSION, ONLINE_MODE, RUNTIME_LOGGER, CHAT_NAME, CODENAME, SERVER_EDITION};
 
 mod utilities;
 mod global;
