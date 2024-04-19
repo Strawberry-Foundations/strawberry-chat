@@ -5,8 +5,9 @@ use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;
 use crate::system_core::internals::MessageToClient;
 use crate::system_core::permissions::Permissions;
+use crate::system_core::string::capitalize_first;
 use crate::database::db::DATABASE;
-use crate::utilities::{capitalize_first, create_badge_list, role_color_parser};
+use crate::utilities::{create_badge_list, role_color_parser};
 
 #[derive(Clone, Default, Debug, PartialEq, Eq, sqlx::FromRow)]
 pub struct UUserAccount {
