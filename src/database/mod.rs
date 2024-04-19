@@ -12,7 +12,7 @@ use argon2::password_hash::SaltString;
 
 use crate::system_core::log::log_parser;
 use crate::system_core::objects::UserAccount;
-use crate::system_core::types::CRTLCODE_CLIENT_EXIT;
+use crate::constants::types::CRTLCODE_CLIENT_EXIT;
 use crate::constants::log_messages::SQL_CONNECTION_ERROR;
 use crate::global::RUNTIME_LOGGER;
 use crate::utilities::role_color_parser;
