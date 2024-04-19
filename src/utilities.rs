@@ -144,16 +144,3 @@ pub fn create_badge_list(row: &str) -> String {
 
     all_badges
 }
-
-pub fn string_to_bool(string: &str) -> bool {
-    string.to_lowercase() == "true"
-}
-
-pub fn bool_color_fmt(bool: bool) -> String {
-    if bool {
-        format!("{GREEN}true{C_RESET}")
-    }
-    else {
-        format!("{RED}false{C_RESET}")
-    }
-}
