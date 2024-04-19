@@ -40,7 +40,7 @@ async fn format_to_list(member_list: &[String], fmt_color: &str) -> String {
             };
 
             format!(
-                "{}{fmt_color} {} {}",
+                "{C_RESET}{}{fmt_color} {} {}",
                 check_user_status(&user.username),
                 username,
                 badge
