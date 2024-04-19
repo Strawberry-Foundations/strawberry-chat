@@ -3,9 +3,13 @@ use std::io::{self, Write};
 
 use stblib::colors::{BLUE, BOLD, C_RESET, CYAN, GREEN, MAGENTA, RED, RESET, YELLOW};
 
-use crate::constants::badges::{BERRYJUICE_BADGE, BOT_BADGE, COOL_BADGE, CROWN_BADGE, EVIL_BADGE, FLAME_BADGE, KINDNESS_BADGE, MACHER_BADGE, NEWBIE_BADGE, OG_BADGE, STBCHAT_PLUS_USER, STRAWBERRY_BADGE, SUPPORTER_BADGE, TROLL_BADGE};
-use crate::global::{CONFIG, LOGGER};
 use crate::system_core::config::DEFAULT_CONFIG;
+use crate::global::{CONFIG, LOGGER};
+use crate::constants::badges::{
+    BERRYJUICE_BADGE, BOT_BADGE, COOL_BADGE, CROWN_BADGE, EVIL_BADGE, FLAME_BADGE,
+    KINDNESS_BADGE, MACHER_BADGE, NEWBIE_BADGE, OG_BADGE, STBCHAT_PLUS_USER, STRAWBERRY_BADGE,
+    SUPPORTER_BADGE, TROLL_BADGE
+};
 
 pub fn open_config(config_path: &str) -> String {
     fs::read_to_string(config_path).unwrap_or_else(|_| {
