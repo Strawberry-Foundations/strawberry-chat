@@ -5,7 +5,6 @@ use crate::system_core::server_core::Core;
 pub mod log;
 pub mod config;
 pub mod login;
-pub mod types;
 pub mod objects;
 pub mod internals;
 pub mod server_core;
