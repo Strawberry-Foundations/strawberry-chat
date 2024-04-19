@@ -16,14 +16,10 @@ pub fn open_config(config_path: &str) -> String {
         LOGGER.error("Could not open your configuration");
         LOGGER.info("Trying to create a new config...");
 
-        create_config(config_path);
+        fs::write(config_path, DEFAULT_CONFIG).unwrap();
 
         fs::read_to_string(config_path).unwrap()
     })
-}
-
-pub fn create_config(config_path: &str) {
-    fs::write(config_path, DEFAULT_CONFIG).unwrap();
 }
 
 pub fn is_feature_enabled(feature_state: bool) -> String {
