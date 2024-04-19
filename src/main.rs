@@ -17,7 +17,7 @@ use crate::system_core::panic::panic_handler;
 use crate::communication::connection_handler::connection_handler;
 use crate::utilities::{delete_last_line, runtime_all_addresses};
 use crate::database::db::DATABASE;
-use crate::global::{CONFIG, DEFAULT_VERSION, ONLINE_MODE, RUNTIME_LOGGER, CHAT_NAME, CODENAME, SERVER_EDITION};
+use crate::global::{CONFIG, DEFAULT_VERSION, ONLINE_MODE, RUNTIME_LOGGER, CHAT_NAME, CODENAME, SERVER_EDITION, ADDITION_VER};
 
 mod utilities;
 mod global;
@@ -39,15 +39,17 @@ async fn main(){
 
     println!("{CYAN}{BOLD}* -- {CHAT_NAME} {} {CODENAME} ({SERVER_EDITION}) -- *{RESET}{C_RESET}", DEFAULT_VERSION.clone());
 
-    let constructor = cli_wins::constructor::Constructor::new("Pre-released Software", YELLOW, 2, cli_wins::constructor::ConstructorOptions {
-        debug_mode: true
-    });
+    if !ADDITION_VER.is_empty() {
+        let constructor = cli_wins::constructor::Constructor::new("Pre-released Software", YELLOW, 2, cli_wins::constructor::ConstructorOptions {
+            debug_mode: true
+        });
 
-    let window = constructor.builder()
-        .label("Some features are still missing", format!("{BOLD}{YELLOW}"))
-        .build();
+        let window = constructor.builder()
+            .label("Some features are still missing", format!("{BOLD}{YELLOW}"))
+            .build();
 
-    window.show();
+        window.show();
+    }
 
     if var("DEBUG").is_ok() {
         println!();
