@@ -7,7 +7,8 @@ use crate::system_core::internals::MessageToClient;
 use crate::system_core::permissions::Permissions;
 use crate::system_core::string::capitalize_first;
 use crate::database::db::DATABASE;
-use crate::utilities::{create_badge_list, role_color_parser};
+use crate::system_core::server_core::STATUS;
+use crate::utilities::{create_badge_list, parse_user_status, role_color_parser};
 
 #[derive(Clone, Default, Debug, PartialEq, Eq, sqlx::FromRow)]
 pub struct UUserAccount {
@@ -64,10 +65,13 @@ pub fn userinfo() -> commands::Command {
         user.role = capitalize_first(user.role.as_str());
 
         let date = DateTime::from_timestamp(i64::from(user.creation_date), 0).unwrap();
+        
+        let status_raw = *STATUS.read().await.get_by_name(ctx.executor.username.as_str());
+        let status = parse_user_status(status_raw, false);
 
         let message = format!(
             "
-     {BOLD}{CYAN}{UNDERLINE}User profile of {}{C_RESET}
+     {BOLD}{CYAN}{UNDERLINE}User profile of {}{C_RESET} {status}
   *  {BOLD}{GREEN}Username: {RESET}{}@{}{C_RESET}
   *  {BOLD}{GREEN}User-ID:{RESET} {}{C_RESET}
   *  {BOLD}{GREEN}Nickname:{RESET} {}{C_RESET}
