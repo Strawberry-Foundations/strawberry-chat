@@ -1,7 +1,7 @@
 use std::fs;
 use std::io::{self, Write};
 
-use stblib::colors::{BLUE, BOLD, CYAN, GREEN, MAGENTA, RED, RESET, YELLOW};
+use stblib::colors::{BLUE, BOLD, C_RESET, CYAN, GRAY, GREEN, MAGENTA, RED, RESET, YELLOW};
 
 use crate::system_core::config::DEFAULT_CONFIG;
 use crate::global::{CONFIG, LOGGER};
@@ -10,6 +10,7 @@ use crate::constants::badges::{
     KINDNESS_BADGE, MACHER_BADGE, NEWBIE_BADGE, OG_BADGE, STBCHAT_PLUS_USER, STRAWBERRY_BADGE,
     SUPPORTER_BADGE, TROLL_BADGE
 };
+use crate::system_core::status::Status;
 
 pub fn open_config(config_path: &str) -> String {
     fs::read_to_string(config_path).unwrap_or_else(|_| {
@@ -143,4 +144,24 @@ pub fn create_badge_list(row: &str) -> String {
     }
 
     all_badges
+}
+
+pub fn parse_user_status(status: Status, with_text: bool) -> String {
+    if with_text {
+        match status {
+            Status::Online => format!("{GREEN}Online (🟢){C_RESET}"),
+            Status::Afk => format!("{YELLOW}Afk (🌙){C_RESET}"),
+            Status::DoNotDisturb => format!("{RED}Do not disturb (🔴){C_RESET}"),
+            Status::Offline => format!("{GRAY}{BOLD}Offline (〇){C_RESET}")
+        }
+    }
+    else {
+        match status {
+            Status::Online => format!("{GREEN}🟢{C_RESET}"),
+            Status::Afk => format!("{YELLOW}🌙{C_RESET}"),
+            Status::DoNotDisturb => format!("{RED}🔴{C_RESET}"),
+            Status::Offline => format!("{GRAY}{BOLD}〇{C_RESET}")
+        }
+    }
+
 }
