@@ -4,7 +4,7 @@ pub struct UserStatus {
     pub users: HashMap<String, Status>
 }
 
-#[derive(Copy, Clone, Eq, PartialEq, Default)]
+#[derive(Copy, Clone, Eq, PartialEq, Default, Debug)]
 pub enum Status {
     #[default]
     Online,
@@ -21,10 +21,10 @@ impl UserStatus {
     }
 
     pub fn append(&mut self, username: &str, status: Status) {
-        self.users.insert(username.to_string(), status).unwrap();
+        self.users.insert(username.to_string(), status);
     }
 
     pub fn get_by_name(&self, username: &str) -> &Status {
-        self.users.get(username).unwrap()
+        self.users.get(username).unwrap_or(&Status::Offline)
     }
 }
