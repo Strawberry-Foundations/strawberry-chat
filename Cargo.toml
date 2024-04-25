@@ -1,6 +1,6 @@
 [package]
 name = "strawberry-chat"
-version = "1.11.0"
+version = "1.11.1-b1"
 edition = "2021"
 authors = ["Juliandev02", "Paddyk45", "matteodev8"]
 description = "A simple but nice chat platform for your terminal"
@@ -27,7 +27,7 @@ sha2 = "0.11.0-pre.3"
 hex = "0.4.3"
 strip-ansi-escapes = "0.2.0"
 chrono = "0.4.38"
-reqwest = "0.12.3"
+reqwest = "0.12.4"
 argon2 = "0.5.3"
 
 [profile.release]
