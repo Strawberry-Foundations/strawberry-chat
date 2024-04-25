@@ -4,8 +4,9 @@ pub struct UserStatus {
     pub users: HashMap<String, Status>
 }
 
-#[derive(Copy, Clone, Eq, PartialEq)]
+#[derive(Copy, Clone, Eq, PartialEq, Default)]
 pub enum Status {
+    #[default]
     Online,
     DoNotDisturb,
     Afk,
