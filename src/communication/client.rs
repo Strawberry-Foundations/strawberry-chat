@@ -30,6 +30,7 @@ pub async fn client_handler(client: TcpStream, rx: Receiver<MessageToClient>, tx
     let peer_addr = client.peer_addr().unwrap().ip();
 
     let (r_client, w_client) = split(client);
+    
     let mut r_client = IncomingPacketStream::wrap(r_client);
     let mut w_client = OutgoingPacketStream::wrap(w_client);
 
