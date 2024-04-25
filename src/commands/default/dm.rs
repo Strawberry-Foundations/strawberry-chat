@@ -7,9 +7,10 @@ use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;
 use crate::system_core::internals::MessageToClient;
 use crate::system_core::permissions::Permissions;
-use crate::system_core::server_core::get_senders_by_username_ignore_case;
+use crate::system_core::server_core::{get_senders_by_username_ignore_case, STATUS};
 use crate::database::db::DATABASE;
 use crate::global::LOGGER;
+use crate::system_core::status::Status;
 use crate::utilities::role_color_parser;
 
 pub fn dm_basic() -> commands::Command {
@@ -56,6 +57,8 @@ pub fn dm_basic() -> commands::Command {
         }).await.unwrap();
         
         for tx in conn {
+            
+            
             tx.send(MessageToClient::SystemMessage {
                 content: format!(
                     "{}{}{C_RESET}{GRAY} --> {role_color}You{C_RESET}: {}",
@@ -64,16 +67,19 @@ pub fn dm_basic() -> commands::Command {
                     message.join(" ")
                 )
             }).await.unwrap();
-
-            tx.send(MessageToClient::Notification {
-                title: String::from("Strawberry Chat (Direct Message)"),
-                username: format!("@{}", ctx.executor.username.clone()),
-                avatar_url: ctx.executor.avatar_url.clone(),
-                content: escape_ansi(&message.join(" ")),
-                bell: false,
-            }).await.unwrap_or_else(|e| {
-                LOGGER.error(format!("Failed to send internal packet: {e}"));
-            });
+            
+            let status = *STATUS.read().await.get_by_name(ctx.args[0].as_str());
+            if status != Status::DoNotDisturb {
+                tx.send(MessageToClient::Notification {
+                    title: String::from("Strawberry Chat (Direct Message)"),
+                    username: format!("@{}", ctx.executor.username.clone()),
+                    avatar_url: ctx.executor.avatar_url.clone(),
+                    content: escape_ansi(&message.join(" ")),
+                    bell: false,
+                }).await.unwrap_or_else(|e| {
+                    LOGGER.error(format!("Failed to send internal packet: {e}"));
+                });
+            }
         }
 
         Ok(None)
