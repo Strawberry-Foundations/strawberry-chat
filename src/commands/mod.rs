@@ -21,6 +21,7 @@ pub mod user {
     pub mod strawberry_id;
     pub mod memberlist;
     pub mod badge;
+    pub mod status;
 }
 
 pub mod etc {
@@ -47,6 +48,7 @@ pub fn command_registry() -> Vec<Command> {
         default::server_info::server_info(),
         
         user::online::online(),
+        user::status::status(),
         user::members::members(),
         user::memberlist::memberlist(),
         user::nickname::nickname(),
