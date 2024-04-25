@@ -23,6 +23,10 @@ impl UserStatus {
     pub fn append(&mut self, username: &str, status: Status) {
         self.users.insert(username.to_string(), status);
     }
+    
+    pub fn remove(&mut self, username: &str) {
+        self.users.remove(&username.to_string());
+    }
 
     pub fn get_by_name(&self, username: &str) -> &Status {
         self.users.get(username).unwrap_or(&Status::Offline)
