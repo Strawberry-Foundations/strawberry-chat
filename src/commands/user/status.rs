@@ -6,9 +6,10 @@ use crate::system_core::status::Status;
 
 pub fn status() -> commands::Command {
     async fn logic(ctx: &commands::Context) -> commands::CommandResponse {
-        STATUS.write().await.append(ctx.executor.username.as_str(), Status::Afk);
+        // STATUS.write().await.append(ctx.executor.username.as_str(), Status::Afk);
 
-        Ok(None)
+        let status = *STATUS.read().await.get_by_name(ctx.executor.username.as_str());
+        Ok(Some(format!("{status:?}")))
     }
 
     commands::Command {
