@@ -16,14 +16,14 @@ use stblib::colors::{BOLD, C_RESET, GRAY, GREEN, RED};
 
 use owo_colors::OwoColorize;
 
-use crate::system_core::log::log_parser;
-use crate::system_core::{CORE, login};
-use crate::system_core::internals::{MessageToClient, MessageToServer};
 use crate::system_core::server_core::get_users_len;
+use crate::system_core::log::log_parser;
+use crate::system_core::login;
+use crate::system_core::internals::{MessageToClient, MessageToServer};
+use crate::communication::handlers::{client_incoming, client_outgoing};
+use crate::global::{CONFIG, LOGGER};
 use crate::constants::types::CRTLCODE_CLIENT_EXIT;
 use crate::constants::log_messages::{ADDRESS_LEFT, LOGIN, LOGIN_ERROR, S2C_ERROR, WRITE_PACKET_FAIL};
-use crate::global::{CONFIG, LOGGER};
-use crate::communication::handlers::{client_incoming, client_outgoing};
 
 
 pub async fn client_handler(client: TcpStream, rx: Receiver<MessageToClient>, tx: Sender<MessageToServer>) {
@@ -104,9 +104,7 @@ pub async fn client_handler(client: TcpStream, rx: Receiver<MessageToClient>, tx
             message: format!("Welcome back {}! Nice to see you!", user.username).bold().cyan().to_string()
         }
     ).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
-
-    CORE.write().await.add_connection();
-
+    
     let users_len = get_users_len().await;
     let online_users_str =
         if users_len == 1 { format!("is {users_len} user") }
