@@ -163,5 +163,4 @@ pub fn parse_user_status(status: Status, with_text: bool) -> String {
             Status::Offline => format!("{GRAY}{BOLD}〇{C_RESET}")
         }
     }
-
 }
