@@ -14,7 +14,7 @@ use lazy_static::lazy_static;
 use crate::system_core::commands::run_command;
 use crate::system_core::internals::{MessageToClient, MessageToServer};
 use crate::system_core::string::StbString;
-use crate::system_core::status::UserStatus;
+use crate::system_core::status::{Status, UserStatus};
 use crate::constants::log_messages::SEND_INTERNAL_MESSAGE_FAIL;
 use crate::global::{CORE_VERSION, LOGGER};
 
@@ -151,9 +151,11 @@ pub async fn core_thread(watchdog_tx: Sender<()>) {
                 send_to_hook_sync(conn.get_user().unwrap(), event);
                 continue
             }
+
             match event {
                 Event::Authorize { user} => {
                     CLIENTS.write().await.get_mut(i).unwrap().auth(&user);
+                    STATUS.write().await.append(&user.username.as_str(), Status::Online);
                 },
                 Event::UserMessage { author, content } => {
                     send_to_all(MessageToClient::UserMessage { author, content }, true).await;
