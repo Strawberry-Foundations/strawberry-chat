@@ -65,8 +65,8 @@ pub fn userinfo() -> commands::Command {
         user.role = capitalize_first(user.role.as_str());
 
         let date = DateTime::from_timestamp(i64::from(user.creation_date), 0).unwrap();
-        
-        let status_raw = *STATUS.read().await.get_by_name(ctx.executor.username.as_str());
+
+        let status_raw = *STATUS.read().await.get_by_name(user.username.as_str());
         let status = parse_user_status(status_raw, false);
 
         let message = format!(
