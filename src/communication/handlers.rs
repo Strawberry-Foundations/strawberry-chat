@@ -15,10 +15,11 @@ use stblib::colors::{BOLD, C_RESET, GRAY, RED, YELLOW};
 use crate::system_core::log::log_parser;
 use crate::system_core::internals::{MessageToClient, MessageToServer};
 use crate::system_core::string::StbString;
-use crate::system_core::server_core::remove_hooks_by_user;
+use crate::system_core::server_core::{remove_hooks_by_user, STATUS};
 use crate::constants::log_messages::{CLIENT_KICKED, USER_LEFT};
 use crate::global::{LOGGER, MESSAGE_VERIFICATOR};
 use crate::security::verification::MessageAction;
+use crate::system_core::status::Status;
 
 
 pub async fn client_incoming(
@@ -80,8 +81,10 @@ pub async fn client_incoming(
         let content = StbString::from_str(content)
             .check_for_mention()
             .await;
-
-        if content.is_mention && content.mentioned_user != user.username {
+        
+        let status = *STATUS.read().await.get_by_name(content.mentioned_user.as_str());
+        
+        if content.is_mention && content.mentioned_user != user.username && status != Status::DoNotDisturb {
             tx.send(MessageToServer::ClientNotification {
                 content: content.clone(),
                 bell: false,
