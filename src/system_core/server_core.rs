@@ -20,22 +20,6 @@ use crate::global::{CORE_VERSION, LOGGER};
 
 const CHANNEL_BUFFER: usize = 10;
 
-pub struct Core {
-    pub online_users: u16
-}
-
-impl Core {
-    pub fn new() -> Self {
-        Self {
-            online_users: 0
-        }
-    }
-
-    pub fn add_connection(&mut self) {
-        self.online_users += 1;
-    }
-}
-
 pub async fn get_users_len() -> usize {
     CLIENTS.read().await.iter().filter(|c| c.is_auth()).count()
 }
