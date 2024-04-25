@@ -1,25 +1,12 @@
-use futures::executor::block_on;
-use stblib::colors::{BOLD, C_RESET, CYAN, RED, UNDERLINE, RESET, MAGENTA, YELLOW, LIGHT_YELLOW, LIGHT_MAGENTA, LIGHT_RED, GRAY};
+use stblib::colors::{BOLD, C_RESET, CYAN, RED, UNDERLINE, RESET, MAGENTA, YELLOW, LIGHT_YELLOW, LIGHT_MAGENTA, LIGHT_RED};
 
 use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;
 use crate::system_core::internals::MessageToClient;
 use crate::system_core::permissions::Permissions;
-use crate::system_core::server_core::get_online_usernames;
+use crate::system_core::server_core::{get_online_usernames, STATUS};
 use crate::database::db::DATABASE;
-
-fn check_user_status(username: &String) -> String {
-    let online_users = block_on(async {
-        get_online_usernames().await
-    });
-
-    if online_users.contains(username) {
-        String::from("🟢")
-    }
-    else {
-        format!("{GRAY}〇{RESET}")
-    }
-}
+use crate::utilities::parse_user_status;
 
 async fn format_to_list(member_list: &[String], fmt_color: &str) -> String {
     let futures = member_list.iter().map(|result| {
@@ -39,12 +26,10 @@ async fn format_to_list(member_list: &[String], fmt_color: &str) -> String {
                 format!("{} (@{})", user.nickname, user.username)
             };
 
-            format!(
-                "{C_RESET}{}{fmt_color} {} {}",
-                check_user_status(&user.username),
-                username,
-                badge
-            )
+            let status_raw = *STATUS.read().await.get_by_name(user.username.as_str());
+            let status = parse_user_status(status_raw, false);
+
+            format!("{C_RESET}{status}{fmt_color} {username} {badge}")
         }
     });
 
