@@ -1,14 +1,15 @@
 use sqlx::Row;
-use stblib::colors::{BOLD, C_RESET, LIGHT_GREEN, RED, RESET};
+use stblib::colors::{BOLD, C_RESET, GRAY, GREEN, LIGHT_GREEN, MAGENTA, RED, RESET, UNDERLINE};
 
 use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;
 use crate::system_core::permissions::Permissions;
-use crate::system_core::string::string_to_bool;
+use crate::system_core::string::{bool_color_fmt, string_to_bool};
 use crate::utilities::role_color_parser;
 use crate::database::db::DATABASE;
 use crate::constants::messages::USER_SETTINGS_HELP;
 
+#[allow(clippy::too_many_lines)]
 pub fn user_settings() -> commands::Command {
     async fn logic(ctx: &commands::Context) -> commands::CommandResponse {
         if ctx.args.is_empty() {
@@ -17,6 +18,27 @@ pub fn user_settings() -> commands::Command {
 
         match ctx.args[0].as_str() {
             "help" => Ok(Some(USER_SETTINGS_HELP.to_string())),
+            "preview" => {
+                let user_settings = DATABASE.get_account_by_name(&ctx.executor.username).await.unwrap();
+
+                Ok(Some(format!(
+                    "
+    {MAGENTA}{BOLD}{UNDERLINE}User Settings - Preview{C_RESET}
+    {GRAY}* {GREEN}{BOLD}Direct Messages{RESET}{GRAY} - {RESET}{}{C_RESET}
+    {GRAY}* {GREEN}{BOLD}Discord username{RESET}{GRAY} - {RESET}{}{C_RESET}
+    {GRAY}* {GREEN}{BOLD}Strawberry ID{RESET}{GRAY} - {RESET}{}{C_RESET}
+    {GRAY}* {GREEN}{BOLD}Role color{RESET}{GRAY} - {RESET}{}{}{C_RESET}
+    {GRAY}* {GREEN}{BOLD}Badge{RESET}{GRAY} - {RESET}{}{C_RESET}
+    {GRAY}* {GREEN}{BOLD}Description{RESET}{GRAY} - {RESET}{}{C_RESET}
+                ",
+                    bool_color_fmt(user_settings.enable_dms),
+                    user_settings.discord_name,
+                    user_settings.strawberry_id,
+                    role_color_parser(user_settings.role_color.as_str()), user_settings.role_color,
+                    user_settings.badge,
+                    user_settings.description,
+                )))
+            },
             "allow-dms" => {
                 if ctx.args[1].is_empty() {
                     return Err(format!("{RED}{BOLD}Missing arguments - Subcommand requires at least 1 argument - Got 0 arguments{C_RESET}"))
