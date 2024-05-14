@@ -1,4 +1,3 @@
-use stblib::colors::{BOLD, RED};
 
 use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;
