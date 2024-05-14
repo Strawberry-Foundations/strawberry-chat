@@ -60,7 +60,7 @@ pub struct Command {
 
     /// Required permissions
     pub permissions: Permissions,
-    
+
     /// Required count of args
     pub required_args: usize,
     
@@ -165,6 +165,7 @@ fn hello_command() -> Command {
         description: "prints 'Hello, World'".to_string(),
         category: CommandCategory::Etc,
         permissions: Permissions::Member,
+        required_args: 0,
         handler: |ctx| Box::pin(async move {
             logic(ctx)
         }),
