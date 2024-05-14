@@ -64,6 +64,7 @@ pub fn badge() -> commands::Command {
         description: "Set your main badge".to_string(),
         category: CommandCategory::User,
         permissions: Permissions::Member,
+        required_args: 1,
         handler: |ctx| Box::pin(async move {
             logic(&ctx).await
         }),
