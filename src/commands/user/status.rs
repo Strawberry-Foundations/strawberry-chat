@@ -34,6 +34,7 @@ pub fn status() -> commands::Command {
         description: "Show or change your status".to_string(),
         category: CommandCategory::User,
         permissions: Permissions::Member,
+        required_args: 1,
         handler: |ctx| Box::pin(async move {
             logic(&ctx).await
         }),
