@@ -56,7 +56,7 @@ pub fn unban() -> commands::Command {
         description: "Unbans a user".to_string(),
         category: CommandCategory::Admin,
         permissions: Permissions::Admin,
-        required_args: 0,
+        required_args: 1,
         handler: |ctx| Box::pin(async move {
             logic(&ctx).await
         }),
