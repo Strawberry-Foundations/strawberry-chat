@@ -94,6 +94,7 @@ pub fn memberlist() -> commands::Command {
         description: "Displays a list of members with their badges and roles".to_string(),
         category: CommandCategory::User,
         permissions: Permissions::Member,
+        required_args: 0,
         handler: |ctx| Box::pin(async move {
             logic(&ctx).await
         }),
