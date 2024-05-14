@@ -143,7 +143,7 @@ impl Database {
         user.avatar_url = data.first().unwrap().get("avatar_url");
 
         if nickname.is_empty() {
-            user.nickname = user.username.clone();
+            user.nickname.clone_from(&user.username);
         }
         else {
             user.nickname = data.first().unwrap().get("nickname");
