@@ -14,6 +14,7 @@
 //!         description: "prints 'Hello, World'".to_string(),
 //!         category: CommandCategory::Etc,
 //!         permissions: Permissions::Member,
+//!         required_args: 0,
 //!         handler: |ctx| Box::pin(async move {
 //!             logic(ctx)
 //!         }),
