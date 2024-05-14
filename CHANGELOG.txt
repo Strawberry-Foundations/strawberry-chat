@@ -2,3 +2,4 @@
 
 
 - NEW: Added user status system (#139)
+- NEW: Added a minimum of required args to command system (#144)
