@@ -91,6 +91,7 @@ pub fn dm_basic() -> commands::Command {
         description: "Send direct messages to a user".to_string(),
         category: CommandCategory::Default,
         permissions: Permissions::Member,
+        required_args: 2,
         handler: |ctx| Box::pin(async move {
             logic(&ctx).await
         }),
