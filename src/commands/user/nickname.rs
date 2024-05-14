@@ -9,15 +9,6 @@ use crate::database::db::DATABASE;
 
 pub fn nickname() -> commands::Command {
     async fn logic(ctx: &commands::Context) -> commands::CommandResponse {
-        if ctx.args.is_empty() {
-            return Ok(Some(
-                format!(
-                    "{BOLD}{RED}Command requires a minimum of 1 argument - but only {} were given{C_RESET}",
-                    ctx.args.len()
-                )))
-        }
-
-
         if ctx.args[0].as_str() == "reset" || ctx.args[0].as_str() == "remove" {
             match sqlx::query("UPDATE users SET nickname = '' WHERE username = ?")
                 .bind(&ctx.executor.username)
