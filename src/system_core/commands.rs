@@ -143,9 +143,9 @@ async fn exec_command(name: String, args: Vec<String>, conn: &Connection) -> Res
     
     if (cmd.permissions) == Permissions::Admin && user_permissions == Permissions::Member {
         return Err(String::from("You do not have permissions to run this command!"))
-    } 
-    
-    if (cmd.required_args) < args.len() {
+    }
+
+    if args.len() < (cmd.required_args) {
         return Err(format!(
             "Missing arguments - Command requires at least {} argument - Got {} arguments",
             (cmd.required_args), args.len()
