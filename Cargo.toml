@@ -16,7 +16,7 @@ stblib = { version =  "0.6.1", features = ["stbchat"] }
 # stblib = { version =  "0.6.1", features = ["stbchat"], path = "../stblib-rust" }
 tokio = { version = "1.37.0", features = ["full"] }
 lazy_static = "1.4.0"
-serde = { version = "1.0.198", features = ["derive"] }
+serde = { version = "1.0.201", features = ["derive"] }
 serde_yaml = "0.9.34"
 serde_json = "1.0.116"
 eyre = "0.6.12"
