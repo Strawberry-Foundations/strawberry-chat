@@ -31,6 +31,7 @@ pub fn hook() -> commands::Command {
         description: "Creates a hook and prints the next event - DEBUG ONLY".to_string(),
         category: CommandCategory::Etc,
         permissions: Permissions::Member,
+        required_args: 0,
         handler: |ctx| Box::pin(async move {
             logic(&ctx).await
         }),
