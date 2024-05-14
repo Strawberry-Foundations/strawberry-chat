@@ -15,14 +15,6 @@ use crate::utilities::role_color_parser;
 
 pub fn dm_basic() -> commands::Command {
     async fn logic(ctx: &commands::Context) -> commands::CommandResponse {
-        if ctx.args.len() < 2 {
-            return Ok(Some(
-                format!(
-                    "{BOLD}{RED}Command requires 2 arguments - but only {} were given{C_RESET}",
-                    ctx.args.len()
-                )))
-        }
-
         let conn = get_senders_by_username_ignore_case(ctx.args[0].as_str()).await;
 
         if conn.is_empty() {
