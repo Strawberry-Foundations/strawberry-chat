@@ -12,10 +12,6 @@ use crate::constants::messages::USER_SETTINGS_HELP;
 #[allow(clippy::too_many_lines)]
 pub fn user_settings() -> commands::Command {
     async fn logic(ctx: &commands::Context) -> commands::CommandResponse {
-        if ctx.args.is_empty() {
-            return Err("Missing arguments - Command requires at least 1 argument - Got 0 arguments".to_string())
-        }
-
         match ctx.args[0].as_str() {
             "help" => Ok(Some(USER_SETTINGS_HELP.to_string())),
             "preview" => {
