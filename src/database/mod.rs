@@ -11,7 +11,7 @@ use argon2::password_hash::rand_core::OsRng;
 use argon2::password_hash::SaltString;
 
 use crate::system_core::log::log_parser;
-use crate::system_core::objects::UserAccount;
+use crate::system_core::objects::{Account, UserAccount};
 use crate::constants::types::CRTLCODE_CLIENT_EXIT;
 use crate::constants::log_messages::SQL_CONNECTION_ERROR;
 use crate::global::RUNTIME_LOGGER;
@@ -222,6 +222,24 @@ impl Database {
             user.avatar_url = data.first().unwrap().get("avatar_url");
 
             Some(user)
+        }
+    }
+
+    pub async fn get_account_by_name(&self, username: &String) -> Option<Account> {
+        let data: Vec<Account> = sqlx::query_as("SELECT * FROM users WHERE username = ?")
+            .bind(username)
+            .fetch_all(&self.connection)
+            .await.expect("err");
+
+        if data.is_empty() {
+            None
+        }
+
+        else {
+            return match data.first() {
+                Some(user) => Some(user.to_owned()),
+                None => return None
+            };
         }
     }
 }
