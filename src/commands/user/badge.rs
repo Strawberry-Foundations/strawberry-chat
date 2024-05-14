@@ -10,10 +10,6 @@ use crate::database::db::DATABASE;
 
 pub fn badge() -> commands::Command {
     async fn logic(ctx: &commands::Context) -> commands::CommandResponse {
-        if ctx.args.is_empty() {
-            return Ok(Some(format!("{BOLD}{YELLOW}Please provide a valid badge{C_RESET}")))
-        }
-
         if ctx.args[0].as_str() == "reset" || ctx.args[0].as_str() == "remove" {
             match sqlx::query("UPDATE users SET badge = '' WHERE username = ?")
                 .bind(&ctx.executor.username)
