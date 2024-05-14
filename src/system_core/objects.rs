@@ -47,6 +47,7 @@ pub struct UserAccount {
     pub user: User,
 }
 
+#[allow(clippy::pedantic)]
 #[derive(Clone, Default, Debug, PartialEq, Eq, sqlx::FromRow)]
 pub struct Account {
     pub user_id: i32,
