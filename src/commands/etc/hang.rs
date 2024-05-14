@@ -17,6 +17,7 @@ pub fn hang_command() -> commands::Command {
         description: "Hangs the server - DEBUG ONLY".to_string(),
         category: CommandCategory::Etc,
         permissions: Permissions::Admin,
+        required_args: 0,
         handler: |ctx| Box::pin(async move {
             logic(&ctx).await
         }),
