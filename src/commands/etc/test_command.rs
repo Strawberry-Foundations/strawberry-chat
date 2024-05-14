@@ -16,6 +16,7 @@ pub fn example_command() -> commands::Command {
         description: "Example command".to_string(),
         category: CommandCategory::Etc,
         permissions: Permissions::Member,
+        required_args: 1,
         handler: |ctx| Box::pin(async move {
             logic(&ctx).await
         }),
