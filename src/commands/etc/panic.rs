@@ -13,6 +13,7 @@ pub fn panic_command() -> commands::Command {
         description: "Panics the core thread - DEBUG ONLY".to_string(),
         category: CommandCategory::Etc,
         permissions: Permissions::Admin,
+        required_args: 0,
         handler: |ctx| Box::pin(async move {
             logic(&ctx)
         }),
