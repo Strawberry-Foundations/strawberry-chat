@@ -102,7 +102,7 @@ pub async fn run_command(name: String, args: Vec<String>, conn: &Connection) {
     
     match res {
         Ok(Some(text)) => conn.tx.send(
-            MessageToClient::SystemMessage { content: text }
+            MessageToClient::SystemMessage { content: format!("{text}{C_RESET}") }
         ).await.unwrap(),
         Ok(None) => {},
         Err(e) => conn.tx.send(
