@@ -141,6 +141,7 @@ pub fn user_settings() -> commands::Command {
         description: "Change some settings of your account".to_string(),
         category: CommandCategory::User,
         permissions: Permissions::Member,
+        required_args: 1,
         handler: |ctx| Box::pin(async move {
             logic(&ctx).await
         }),
