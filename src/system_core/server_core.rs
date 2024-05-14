@@ -155,7 +155,7 @@ pub async fn core_thread(watchdog_tx: Sender<()>) {
             match event {
                 Event::Authorize { user} => {
                     CLIENTS.write().await.get_mut(i).unwrap().auth(&user);
-                    STATUS.write().await.append(&user.username.as_str(), Status::Online);
+                    STATUS.write().await.append(user.username.as_str(), Status::Online);
                 },
                 Event::UserMessage { author, content } => {
                     send_to_all(MessageToClient::UserMessage { author, content }, true).await;
