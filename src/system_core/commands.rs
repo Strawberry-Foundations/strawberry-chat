@@ -101,8 +101,8 @@ pub async fn run_command(name: String, args: Vec<String>, conn: &Connection) {
     let res = exec_command(name, args, conn).await;
     
     match res {
-        Ok(Some(text)) => conn.tx.send(
-            MessageToClient::SystemMessage { content: format!("{text}{C_RESET}") }
+        Ok(Some(message)) => conn.tx.send(
+            MessageToClient::SystemMessage { content: format!("{message}{C_RESET}") }
         ).await.unwrap(),
         Ok(None) => {},
         Err(e) => conn.tx.send(
