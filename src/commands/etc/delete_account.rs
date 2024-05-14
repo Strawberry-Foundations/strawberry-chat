@@ -97,6 +97,7 @@ pub fn delete_account() -> commands::Command {
         description: "Delete your account on this server".to_string(),
         category: CommandCategory::Etc,
         permissions: Permissions::Member,
+        required_args: 0,
         handler: |ctx| Box::pin(async move {
             logic(&ctx).await
         }),
