@@ -61,7 +61,7 @@ pub fn strawberry_id() -> commands::Command {
         description: "Set your Strawberry ID".to_string(),
         category: CommandCategory::User,
         permissions: Permissions::Member,
-        required_args: 1,
+        required_args: 0,
         handler: |ctx| Box::pin(async move {
             logic(&ctx).await
         }),
