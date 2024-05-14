@@ -9,10 +9,6 @@ use crate::system_core::string::StbString;
 
 pub fn broadcast() -> commands::Command {
     async fn logic(ctx: &commands::Context) -> commands::CommandResponse {
-        if ctx.args.is_empty() {
-            return Ok(Some(format!("{RED}{BOLD}Missing arguments - Command requires at least 1 argument - Got 0 arguments")))
-        }
-
         let content = StbString::from_str(ctx.args[0..].to_vec().join(" ")).apply_htpf();
 
         send_to_all(MessageToClient::SystemMessage { content: content.to_string() }, true).await;
