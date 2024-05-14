@@ -21,6 +21,7 @@ pub fn server_info() -> commands::Command {
         description: "Show information about this server".to_string(),
         category: CommandCategory::Default,
         permissions: Permissions::Member,
+        required_args: 0,
         handler: |ctx| Box::pin(async move {
             logic(&ctx).await
         }),
