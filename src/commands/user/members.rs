@@ -36,6 +36,7 @@ pub fn members() -> commands::Command {
         description: "Shows registered members on this server".to_string(),
         category: CommandCategory::User,
         permissions: Permissions::Member,
+        required_args: 0,
         handler: |ctx| Box::pin(async move {
             logic(&ctx).await
         }),
