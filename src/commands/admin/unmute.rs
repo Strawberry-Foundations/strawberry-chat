@@ -11,14 +11,6 @@ use crate::system_core::permissions::Permissions;
 
 pub fn unmute() -> commands::Command {
     async fn logic(ctx: &commands::Context) -> commands::CommandResponse {
-        if ctx.args.is_empty() {
-            return Ok(Some(
-                format!(
-                    "{BOLD}{RED}Command requires 1 argument - but only {} were given{C_RESET}",
-                    ctx.args.len()
-                )))
-        }
-
         let data = sqlx::query("SELECT username, muted FROM users WHERE username = ?")
             .bind(ctx.args[0].as_str())
             .fetch_all(&DATABASE.connection)
