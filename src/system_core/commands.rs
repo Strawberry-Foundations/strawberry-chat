@@ -61,6 +61,9 @@ pub struct Command {
     /// Required permissions
     pub permissions: Permissions,
     
+    /// Required count of args
+    pub required_args: usize,
+    
     /// Logic of command (function)
     pub handler: fn(Context) -> BoxFuture<CommandResponse>,
 }
