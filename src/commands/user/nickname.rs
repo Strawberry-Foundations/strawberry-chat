@@ -58,6 +58,7 @@ pub fn nickname() -> commands::Command {
         description: "Change your nickname".to_string(),
         category: CommandCategory::User,
         permissions: Permissions::Member,
+        required_args: 1,
         handler: |ctx| Box::pin(async move {
             logic(&ctx).await
         }),
