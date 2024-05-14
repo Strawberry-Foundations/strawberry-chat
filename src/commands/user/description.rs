@@ -61,6 +61,7 @@ pub fn description() -> commands::Command {
         description: "Display or change your description".to_string(),
         category: CommandCategory::User,
         permissions: Permissions::Member,
+        required_args: 1,
         handler: |ctx| Box::pin(async move {
             logic(&ctx).await
         }),
