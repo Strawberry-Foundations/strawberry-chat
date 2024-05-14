@@ -28,6 +28,7 @@ pub fn about() -> commands::Command {
         description: "Shows about description for Strawberry Chat".to_string(),
         category: CommandCategory::Default,
         permissions: Permissions::Member,
+        required_args: 0,
         handler: |ctx| Box::pin(async move {
             logic(&ctx).await
         }),
