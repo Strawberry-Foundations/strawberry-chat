@@ -57,6 +57,7 @@ pub fn help() -> commands::Command {
         description: "Help command".to_string(),
         category: CommandCategory::Default,
         permissions: Permissions::Member,
+        required_args: 0,
         handler: |ctx| Box::pin(async move {
             logic(&ctx).await
         }),
