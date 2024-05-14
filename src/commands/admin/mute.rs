@@ -11,14 +11,6 @@ use crate::system_core::permissions::Permissions;
 
 pub fn mute() -> commands::Command {
     async fn logic(ctx: &commands::Context) -> commands::CommandResponse {
-        if ctx.args.is_empty() {
-            return Ok(Some(
-                format!(
-                    "{BOLD}{RED}Command requires 1 argument - but only {} were given{C_RESET}",
-                    ctx.args.len()
-                )))
-        }
-
         if ctx.executor.username == ctx.args[0].as_str() {
             return Ok(Some(format!("{BOLD}{YELLOW}You cannot mute yourself!{C_RESET}")))
         }
