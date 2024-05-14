@@ -17,7 +17,6 @@ pub mod user {
     pub mod description;
     pub mod userinfo;
     pub mod user_settings;
-    pub mod discord;
     pub mod strawberry_id;
     pub mod memberlist;
     pub mod badge;
@@ -56,7 +55,6 @@ pub fn command_registry() -> Vec<Command> {
         user::userinfo::userinfo(),
         user::user_settings::user_settings(),
         user::strawberry_id::strawberry_id(),
-        user::discord::discord(),
         user::badge::badge(),
         
         admin::broadcast::broadcast(),
