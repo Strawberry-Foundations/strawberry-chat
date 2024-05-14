@@ -4,23 +4,22 @@ use stblib::colors::{BOLD, C_RESET, LIGHT_GREEN, RED, RESET};
 use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;
 use crate::system_core::permissions::Permissions;
-use crate::system_core::string::{bool_color_fmt, string_to_bool};
+use crate::system_core::string::string_to_bool;
 use crate::utilities::role_color_parser;
 use crate::database::db::DATABASE;
 use crate::constants::messages::USER_SETTINGS_HELP;
-use crate::system_core::internals::MessageToClient;
 
 pub fn user_settings() -> commands::Command {
     async fn logic(ctx: &commands::Context) -> commands::CommandResponse {
         if ctx.args.is_empty() {
-            return Ok(Some(format!("{RED}{BOLD}Missing arguments - Command requires at least 1 argument - Got 0 arguments{C_RESET}")))
+            return Err("Missing arguments - Command requires at least 1 argument - Got 0 arguments".to_string())
         }
 
         match ctx.args[0].as_str() {
             "help" => Ok(Some(USER_SETTINGS_HELP.to_string())),
-            "enable-dms" => {
+            "allow-dms" => {
                 if ctx.args[1].is_empty() {
-                    return Ok(Some(format!("{RED}{BOLD}Missing arguments - Subcommand requires at least 1 argument - Got 0 arguments{C_RESET}")))
+                    return Err(format!("{RED}{BOLD}Missing arguments - Subcommand requires at least 1 argument - Got 0 arguments{C_RESET}"))
                 }
 
                 sqlx::query("UPDATE users SET enable_dms = ? WHERE username = ?")
@@ -30,12 +29,18 @@ pub fn user_settings() -> commands::Command {
                     .await
                     .unwrap_or_else(|err| { println!("{err}"); std::process::exit(1) });
 
-                Ok(Some(format!("{LIGHT_GREEN}Updated enable_dms to {}", bool_color_fmt(string_to_bool(&ctx.args[1])))))
+                if string_to_bool(&ctx.args[1]) {
+                    Ok(Some(format!("{LIGHT_GREEN}You can now receive direct messages from other users.")))
+                }
+                else {
+                    Ok(Some(format!("{LIGHT_GREEN}You can no longer receive direct messages from other users.")))
+                }
+
             },
 
             "role-color" => {
                 if ctx.args[1].is_empty() {
-                    return Ok(Some(format!("{RED}{BOLD}Missing arguments - Subcommand requires at least 1 argument - Got 0 arguments{C_RESET}")))
+                    return Err("Missing arguments - Subcommand requires at least 1 argument - Got 0 arguments".to_string())
                 }
 
                 sqlx::query("UPDATE users SET role_color = ? WHERE username = ?")
@@ -88,10 +93,10 @@ pub fn user_settings() -> commands::Command {
                     Rejoin to apply changes{C_RESET}", role_color_parser(&ctx.executor.role_color)
                 )))
             },
-            
+
             "badge" => {
                 if ctx.args[1].is_empty() {
-                    return Ok(Some(format!("{RED}{BOLD}Missing arguments - Subcommand requires at least 1 argument - Got 0 arguments{C_RESET}")))
+                    return Err("Missing arguments - Subcommand requires at least 1 argument - Got 0 arguments".to_string())
                 }
 
                 sqlx::query("UPDATE users SET discord_name = ? WHERE username = ?")
@@ -103,8 +108,8 @@ pub fn user_settings() -> commands::Command {
 
                 Ok(Some(format!("{LIGHT_GREEN}Updated Discord name to {}{}{C_RESET}", role_color_parser(&ctx.args[1]), &ctx.args[1])))
             },
-            
-            _ => Ok(Some(format!("{RED}{BOLD}Invalid subcommand!{C_RESET}"))),
+
+            _ => Err(format!("{RED}{BOLD}Invalid subcommand!{C_RESET}")),
         }
     }
 
