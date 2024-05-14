@@ -112,7 +112,9 @@ pub async fn run_command(name: String, args: Vec<String>, conn: &Connection) {
 }
 
 async fn exec_command(name: String, args: Vec<String>, conn: &Connection) -> Result<Option<String>, String> {
-    let Some(cmd) = command_registry().into_iter().find(|cmd| cmd.name == name || cmd.aliases.contains(&name.as_str())) else {
+    let Some(cmd) = command_registry()
+        .into_iter()
+        .find(|cmd| cmd.name == name || cmd.aliases.contains(&name.as_str())) else {
         return Err(format!("Command '{name}' not found"))
     };
 
