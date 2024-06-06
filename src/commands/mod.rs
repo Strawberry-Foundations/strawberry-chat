@@ -63,6 +63,7 @@ pub fn command_registry() -> Vec<Command> {
         admin::unban::unban(),
         admin::mute::mute(),
         admin::unmute::unmute(),
+        admin::admin_settings::admin_settings(),
 
         etc::test_command::example_command(),
         etc::delete_account::delete_account(),
