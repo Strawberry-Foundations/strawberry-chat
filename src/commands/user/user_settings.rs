@@ -125,18 +125,44 @@ pub fn user_settings() -> commands::Command {
             },
 
             "badge" => {
-                if ctx.args[1].is_empty() {
-                    return Err("Missing arguments - Subcommand requires at least 1 argument - Got 0 arguments".to_string())
+                if ctx.args[1].as_str() == "reset" || ctx.args[1].as_str() == "remove" {
+                    match sqlx::query("UPDATE users SET badge = '' WHERE username = ?")
+                        .bind(&ctx.executor.username)
+                        .execute(&DATABASE.connection)
+                        .await {
+                        Ok(..) => ..,
+                        Err(_) => return Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")))
+                    };
+
+                    return Ok(Some(format!("{BOLD}{LIGHT_GREEN}Removed badge. Rejoin to apply changes{C_RESET}")))
                 }
 
-                sqlx::query("UPDATE users SET discord_name = ? WHERE username = ?")
-                    .bind(&ctx.args[1])
+                let badge = &ctx.args[1];
+
+
+                let badges: String = sqlx::query("SELECT badges FROM users WHERE username = ?")
+                    .bind(&ctx.executor.username)
+                    .fetch_one(&DATABASE.connection)
+                    .await.unwrap().get("badges");
+
+                if !badges.contains(badge) {
+                    return Ok(Some(format!("{BOLD}{RED}You do not own this badge!{C_RESET}")))
+                }
+
+                match sqlx::query("UPDATE users SET badge = ? WHERE username = ?")
+                    .bind(badge)
                     .bind(&ctx.executor.username)
                     .execute(&DATABASE.connection)
-                    .await
-                    .unwrap_or_else(|err| { println!("{err}"); std::process::exit(1) });
+                    .await {
+                    Ok(..) => ..,
+                    Err(_) => return Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")))
+                };
 
-                Ok(Some(format!("{LIGHT_GREEN}Updated Discord name to {}{}{C_RESET}", role_color_parser(&ctx.args[1]), &ctx.args[1])))
+                Ok(Some(format!(
+                        "{BOLD}{LIGHT_GREEN}Changed your main badge to {}{badge}{C_RESET}{BOLD}{LIGHT_GREEN}. \
+                Rejoin to apply changes{C_RESET}",
+                        role_color_parser(&ctx.executor.role_color)
+                    )))
             },
             "account" => {
                 if ctx.args[1..].is_empty() {
