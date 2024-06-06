@@ -3,6 +3,7 @@ use tokio::spawn;
 
 use stblib::utilities::{contains_whitespace, escape_ansi};
 use stblib::colors::{BOLD, C_RESET, GRAY, GREEN, LIGHT_GREEN, MAGENTA, RED, RESET, UNDERLINE, YELLOW};
+use stblib::stbchat::packet::ClientPacket;
 
 use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;
@@ -16,8 +17,10 @@ use crate::utilities::{is_valid_username, role_color_parser};
 use crate::database::db::DATABASE;
 use crate::constants::messages::USER_SETTINGS_HELP;
 use crate::constants::chars::USERNAME_ALLOWED_CHARS;
-use crate::constants::log_messages::{WRITE_PACKET_FAIL};
+use crate::constants::log_messages::{DISCONNECTED, WRITE_PACKET_FAIL};
+use crate::database::Database;
 use crate::global::{CONFIG, LOGGER, MESSAGE_VERIFICATOR};
+use crate::system_core::log::log_parser;
 
 
 #[allow(clippy::too_many_lines)]
@@ -156,12 +159,11 @@ pub fn user_settings() -> commands::Command {
 
                         let mut hook = Hook::new(ctx.executor.clone(), ctx.tx_channel.clone(), 1).await;
                         
-                        let new_username_cc = new_username.to_owned();
+                        let new_username_cc = escape_ansi(new_username);
                         
                         spawn(async move {
                             if let Some(Event::UserMessage { content, .. }) = hook.rx.recv().await {
                                 if escape_ansi(&content).eq_ignore_ascii_case("yes") {
-
                                     /// Check if the username is in blacklisted words
                                     let action = MESSAGE_VERIFICATOR.check(&new_username_cc.to_lowercase());
 
@@ -221,6 +223,13 @@ pub fn user_settings() -> commands::Command {
 
                                         return;
                                     }
+
+                                    sqlx::query("UPDATE users SET username = ? WHERE username = ?")
+                                        .bind(&new_username_cc)
+                                        .bind(&hook.user.username)
+                                        .execute(&DATABASE.connection)
+                                        .await
+                                        .unwrap_or_else(|err| { println!("{err}"); std::process::exit(1) });
                                     
                                     hook.tx_ctx.send(MessageToClient::SystemMessage {
                                         content: format!("{GREEN}{BOLD}Your username has been updated to {new_username_cc}. You may need to rejoin in Strawberry Chat{C_RESET}")
@@ -233,10 +242,62 @@ pub fn user_settings() -> commands::Command {
                                 }
                             }
                         });
-
                     },
                     "password" => {
+                        ctx.tx_channel.send(MessageToClient::SystemMessage {
+                            content: format!("{GREEN}{BOLD}Enter new password: {C_RESET}")
+                        }).await.unwrap();
+                        
+                        let mut hook = Hook::new(ctx.executor.clone(), ctx.tx_channel.clone(), 1).await;
+                        
+                        spawn(async move {
+                            if let Some(Event::UserMessage { content, .. }) = hook.rx.recv().await {
+                                /// If password contains whitespaces, return an error message
+                                if contains_whitespace(&content) {
+                                    hook.tx_ctx.send(MessageToClient::SystemMessage {
+                                        content: format!("{YELLOW}{BOLD}Your password must not contain spaces{C_RESET}")
+                                    }).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
 
+                                    return;
+                                }
+
+                                /// If password is longer than max_password_length (default: 256) characters, return an error message
+                                if content.len() > CONFIG.config.max_password_length as usize {
+                                    hook.tx_ctx.send(MessageToClient::SystemMessage {
+                                        content: format!("{YELLOW}{BOLD}Your password is too long{C_RESET}")
+                                    }).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
+                                }
+
+                                let mut hook = Hook::new(hook.user, hook.tx_ctx, hook.uses).await;
+
+                                let first_password = content.clone();
+
+                                if let Some(Event::UserMessage { content, .. }) = hook.rx.recv().await {
+                                    hook.tx_ctx.send(MessageToClient::SystemMessage {
+                                        content: format!("{GREEN}{BOLD}Confirm password: {C_RESET}")
+                                    }).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
+
+                                    if first_password != content {
+                                        hook.tx_ctx.send(MessageToClient::SystemMessage {
+                                            content: format!("{YELLOW}{BOLD}Passwords do not match{C_RESET}")
+                                        }).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
+                                    }
+                                    
+                                    let password = Database::hash_password(content.as_str());
+
+                                    sqlx::query("UPDATE users SET password = ? WHERE username = ?")
+                                        .bind(&password)
+                                        .bind(&hook.user.username)
+                                        .execute(&DATABASE.connection)
+                                        .await
+                                        .unwrap_or_else(|err| { println!("{err}"); std::process::exit(1) });
+
+                                    hook.tx_ctx.send(MessageToClient::SystemMessage {
+                                        content: format!("{GREEN}{BOLD}Your password has been updated{C_RESET}")
+                                    }).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
+                                }
+                            }
+                        });
                     },
                     _ => return Err(format!("{RED}{BOLD}Invalid subcommand!{C_RESET}"))
                 }
