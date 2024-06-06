@@ -3,6 +3,7 @@ use tokio::spawn;
 
 use stblib::utilities::{contains_whitespace, escape_ansi};
 use stblib::colors::{BOLD, C_RESET, GRAY, GREEN, LIGHT_GREEN, MAGENTA, RED, RESET, UNDERLINE, YELLOW};
+use crate::constants::badges::BADGE_LIST;
 
 use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;
@@ -83,19 +84,76 @@ pub fn admin_settings() -> commands::Command {
                             return Ok(Some(format!("{BOLD}{RED}This user does not own this badge!{C_RESET}")))
                         }
 
-                        match sqlx::query("UPDATE users SET badge = ? WHERE username = ?")
+                        return match sqlx::query("UPDATE users SET badge = ? WHERE username = ?")
                             .bind(badge)
                             .bind(username)
                             .execute(&DATABASE.connection)
                             .await {
-                            Ok(..) => ..,
-                            Err(_) => return Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")))
+                            Ok(..) => Ok(Some(format!("{GREEN}{BOLD}The main badge of {username} has been updated to '{badge}'{C_RESET}"))),
+                            Err(_) => Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")))
                         };
 
                     },
-                    _ => return Err(format!("{RED}{BOLD}Invalid subcommand!{C_RESET}"))
-                }
+                    "add" => {
+                        let username = ctx.args[2].as_str();
+                        let badge = ctx.args[3].as_str();
 
+                        let badges: String = sqlx::query("SELECT badges FROM users WHERE username = ?")
+                            .bind(username)
+                            .fetch_one(&DATABASE.connection)
+                            .await.unwrap().get("badges");
+
+                        if badges.contains(badge) {
+                            return Ok(Some(format!("{BOLD}{RED}This user does already own this badge!{C_RESET}")))
+                        }
+
+                        if !BADGE_LIST.contains(&badge) {
+                            return Ok(Some(format!("{BOLD}{RED}This badge does not exists!{C_RESET}")))
+                        }
+
+                        let new_badges = format!("{badges}{badge}");
+
+                        return match sqlx::query("UPDATE users SET badges = ? WHERE username = ?")
+                            .bind(new_badges)
+                            .bind(username)
+                            .execute(&DATABASE.connection)
+                            .await {
+                            Ok(..) => Ok(Some(format!("{GREEN}{BOLD}Added badge '{badge}' to {username}'s profile{C_RESET}"))),
+                            Err(_) => Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")))
+                        };
+
+                    },
+                    "remove" => {
+                        let username = ctx.args[2].as_str();
+                        let badge = ctx.args[3].as_str();
+
+                        let badges: String = sqlx::query("SELECT badges FROM users WHERE username = ?")
+                            .bind(username)
+                            .fetch_one(&DATABASE.connection)
+                            .await.unwrap().get("badges");
+
+                        if !badges.contains(badge) {
+                            return Ok(Some(format!("{BOLD}{RED}This user does not own this badge!{C_RESET}")))
+                        }
+
+                        if !BADGE_LIST.contains(&badge) {
+                            return Ok(Some(format!("{BOLD}{RED}This badge does not exists!{C_RESET}")))
+                        }
+
+                        let new_badges = badges.replace(badge, "");
+
+                        return match sqlx::query("UPDATE users SET badges = ? WHERE username = ?")
+                            .bind(new_badges)
+                            .bind(username)
+                            .execute(&DATABASE.connection)
+                            .await {
+                            Ok(..) => Ok(Some(format!("{GREEN}{BOLD}Removed badge '{badge}' to {username}'s profile{C_RESET}"))),
+                            Err(_) => Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")))
+                        };
+
+                    },
+                    _ => return Err(format!("{RED}{BOLD}Insvalid subcommand!{C_RESET}"))
+                }
                 Ok(None)
             },
 
