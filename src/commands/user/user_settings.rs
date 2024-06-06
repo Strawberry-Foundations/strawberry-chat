@@ -1,10 +1,9 @@
 use sqlx::Row;
 use stblib::colors::{BOLD, C_RESET, GRAY, GREEN, LIGHT_GREEN, MAGENTA, RED, RESET, UNDERLINE, YELLOW};
-use stblib::stbchat::packet::ClientPacket;
 use stblib::utilities::{contains_whitespace, escape_ansi};
 use tokio::spawn;
 use crate::constants::chars::USERNAME_ALLOWED_CHARS;
-use crate::constants::log_messages::{DISCONNECTED, WRITE_PACKET_FAIL};
+use crate::constants::log_messages::{WRITE_PACKET_FAIL};
 
 use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;
@@ -17,7 +16,6 @@ use crate::global::{CONFIG, LOGGER, MESSAGE_VERIFICATOR};
 use crate::security::verification::MessageAction;
 use crate::system_core::hooks::Hook;
 use crate::system_core::internals::MessageToClient;
-use crate::system_core::log::log_parser;
 use crate::system_core::server_core::Event;
 
 #[allow(clippy::too_many_lines)]
