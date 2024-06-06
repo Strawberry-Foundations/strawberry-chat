@@ -33,11 +33,9 @@ pub fn admin_settings() -> commands::Command {
                     .bind(username)
                     .execute(&DATABASE.connection)
                     .await {
-                    Ok(..) => ..,
-                    Err(_) => return Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")))
-                };
-
-                Ok(None)
+                    Ok(..) => Ok(Some(format!("{GREEN}{BOLD}The role of {username} has been updated to '{role}'{C_RESET}"))),
+                    Err(_) => Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")))
+                }
             },
             "badge" => {
                 if ctx.args[1..].is_empty() {
