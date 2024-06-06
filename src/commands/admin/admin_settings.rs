@@ -34,7 +34,7 @@ pub fn admin_settings() -> commands::Command {
 
                 let username = ctx.args[1].as_str();
                 let role = ctx.args[2].as_str().to_lowercase();
-                
+
                 if !["member", "bot", "admin"].contains(&role.as_str()) {
                     return Err("Invalid role!".to_string())
                 }
@@ -54,13 +54,46 @@ pub fn admin_settings() -> commands::Command {
                 if ctx.args[1..].is_empty() {
                     return Err(format!("Missing arguments - Subcommand requires at least 3 argument - Got {} arguments", ctx.args[1..].len()))
                 }
-                
+
                 let subcommand = ctx.args[1].as_str();
 
                 match subcommand {
                     "set" => {
-                        
-                    }
+                        let username = ctx.args[2].as_str();
+                        let badge = ctx.args[3].as_str();
+
+                        if badge == "reset" || badge == "remove" {
+                            match sqlx::query("UPDATE users SET badge = '' WHERE username = ?")
+                                .bind(username)
+                                .execute(&DATABASE.connection)
+                                .await {
+                                Ok(..) => ..,
+                                Err(_) => return Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")))
+                            };
+
+                            return Ok(Some(format!("{BOLD}{LIGHT_GREEN}Removed badge of {username}{C_RESET}")))
+                        }
+
+                        let badges: String = sqlx::query("SELECT badges FROM users WHERE username = ?")
+                            .bind(username)
+                            .fetch_one(&DATABASE.connection)
+                            .await.unwrap().get("badges");
+
+                        if !badges.contains(badge) {
+                            return Ok(Some(format!("{BOLD}{RED}This user does not own this badge!{C_RESET}")))
+                        }
+
+                        match sqlx::query("UPDATE users SET badge = ? WHERE username = ?")
+                            .bind(badge)
+                            .bind(username)
+                            .execute(&DATABASE.connection)
+                            .await {
+                            Ok(..) => ..,
+                            Err(_) => return Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")))
+                        };
+
+                    },
+                    _ => return Err(format!("{RED}{BOLD}Invalid subcommand!{C_RESET}"))
                 }
 
                 Ok(None)
