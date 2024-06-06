@@ -85,10 +85,10 @@ pub fn user_settings() -> commands::Command {
 
             "discord" => {
                 if ctx.args[1..].is_empty() {
-                    return (sqlx::query("SELECT discord_name FROM users WHERE username = ?")
+                    return sqlx::query("SELECT discord_name FROM users WHERE username = ?")
                         .bind(&ctx.executor.username)
                         .fetch_one(&DATABASE.connection)
-                        .await).map_or_else(|_| Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))), |res| {
+                        .await.map_or_else(|_| Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))), |res| {
                         let discord_name: String = res.get("discord_name");
                         Ok(Some(format!("{BOLD}{LIGHT_GREEN}Your current Discord Name: {RESET}{discord_name}{C_RESET}")))
                     });
