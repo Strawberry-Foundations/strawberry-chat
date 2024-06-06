@@ -1,6 +1,6 @@
 [package]
 name = "strawberry-chat"
-version = "1.11.1-b2"
+version = "1.11.1-b3"
 edition = "2021"
 authors = ["Juliandev02", "Paddyk45", "matteodev8"]
 description = "A simple but nice chat platform for your terminal"
@@ -12,11 +12,11 @@ repository = "https://github.com/Strawberry-Foundations/strawberry-chat"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-stblib = { version =  "0.6.1", features = ["stbchat"] }
+stblib = { version =  "0.6.2", features = ["stbchat"] }
 # stblib = { version =  "0.6.1", features = ["stbchat"], path = "../stblib-rust" }
-tokio = { version = "1.37.0", features = ["full"] }
+tokio = { version = "1.38.0", features = ["full"] }
 lazy_static = "1.4.0"
-serde = { version = "1.0.201", features = ["derive"] }
+serde = { version = "1.0.203", features = ["derive"] }
 serde_yaml = "0.9.34"
 serde_json = "1.0.117"
 eyre = "0.6.12"
