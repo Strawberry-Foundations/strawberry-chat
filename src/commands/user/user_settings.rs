@@ -1,13 +1,24 @@
 use sqlx::Row;
-use stblib::colors::{BOLD, C_RESET, GRAY, GREEN, LIGHT_GREEN, MAGENTA, RED, RESET, UNDERLINE};
+use stblib::colors::{BOLD, C_RESET, GRAY, GREEN, LIGHT_GREEN, MAGENTA, RED, RESET, UNDERLINE, YELLOW};
+use stblib::stbchat::packet::ClientPacket;
+use stblib::utilities::{contains_whitespace, escape_ansi};
+use tokio::spawn;
+use crate::constants::chars::USERNAME_ALLOWED_CHARS;
+use crate::constants::log_messages::{DISCONNECTED, WRITE_PACKET_FAIL};
 
 use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;
 use crate::system_core::permissions::Permissions;
 use crate::system_core::string::{bool_color_fmt, string_to_bool};
-use crate::utilities::role_color_parser;
+use crate::utilities::{is_valid_username, role_color_parser};
 use crate::database::db::DATABASE;
 use crate::constants::messages::USER_SETTINGS_HELP;
+use crate::global::{CONFIG, LOGGER, MESSAGE_VERIFICATOR};
+use crate::security::verification::MessageAction;
+use crate::system_core::hooks::Hook;
+use crate::system_core::internals::MessageToClient;
+use crate::system_core::log::log_parser;
+use crate::system_core::server_core::Event;
 
 #[allow(clippy::too_many_lines)]
 pub fn user_settings() -> commands::Command {
@@ -125,6 +136,111 @@ pub fn user_settings() -> commands::Command {
                     .unwrap_or_else(|err| { println!("{err}"); std::process::exit(1) });
 
                 Ok(Some(format!("{LIGHT_GREEN}Updated Discord name to {}{}{C_RESET}", role_color_parser(&ctx.args[1]), &ctx.args[1])))
+            },
+            "account" => {
+                if ctx.args[1..].len() < 2 {
+                    return Err(format!("Missing arguments - Subcommand requires at least 2 argument - Got {} arguments", ctx.args[1..].len()))
+                }
+
+                match ctx.args[1].as_str() {
+                    "username" => {
+                        let new_username = ctx.args[2].as_str();
+
+                        if new_username == ctx.executor.username {
+                            return Err(format!("{YELLOW}{BOLD}You shouldn't update your username to your current. Nothing changed.{C_RESET}"))
+                        }
+
+                        ctx.tx_channel.send(MessageToClient::SystemMessage {
+                            content: format!("{YELLOW}{BOLD}Are you sure to change your username to {new_username}?{C_RESET}")
+                        }).await.unwrap();
+
+                        let mut hook = Hook::new(ctx.executor.clone(), ctx.tx_channel.clone(), 1).await;
+                        
+                        let new_username_cc = new_username.to_owned();
+                        
+                        spawn(async move {
+                            if let Some(Event::UserMessage { content, .. }) = hook.rx.recv().await {
+                                if escape_ansi(&content).eq_ignore_ascii_case("yes") {
+
+                                    /// Check if the username is in blacklisted words
+                                    let action = MESSAGE_VERIFICATOR.check(&new_username_cc.to_lowercase());
+
+                                    match action {
+                                        MessageAction::Kick | MessageAction::Hide => {
+                                            hook.tx_ctx.send(MessageToClient::SystemMessage {
+                                                content: format!("{YELLOW}{BOLD}This username is not allowed!{C_RESET}")
+                                            }).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
+
+                                            return;
+                                        },
+                                        _ => {}
+                                    }
+
+                                    /// If username is in this set of blacklisted words, return an error message
+                                    if ["exit", "register", "login", "sid"].contains(&new_username_cc.as_str()) {
+                                        hook.tx_ctx.send(MessageToClient::SystemMessage {
+                                            content: format!("{YELLOW}{BOLD}This username is not allowed!{C_RESET}")
+                                        }).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
+
+                                        return;
+
+                                    }
+
+                                    /// If username contains whitespaces, return an error message
+                                    if contains_whitespace(&new_username_cc) {
+                                        hook.tx_ctx.send(MessageToClient::SystemMessage {
+                                            content: format!("{YELLOW}{BOLD}Your username must not contain spaces{C_RESET}")
+                                        }).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
+
+                                        return;
+                                    }
+
+                                    /// If username character is not in our charset, return an error message
+                                    if !is_valid_username(new_username_cc.as_str(), USERNAME_ALLOWED_CHARS) {
+                                        hook.tx_ctx.send(MessageToClient::SystemMessage {
+                                            content: format!("{YELLOW}{BOLD}Please use only lowercase letters, numbers, dots or underscores{C_RESET}")
+                                        }).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
+
+                                        return;
+                                    }
+
+                                    /// If username is longer than max_username_length (default: 32) characters, return an error message
+                                    if new_username_cc.len() > CONFIG.config.max_username_length as usize {
+                                        hook.tx_ctx.send(MessageToClient::SystemMessage {
+                                            content: format!("{YELLOW}{BOLD}Your username is too long{C_RESET}")
+                                        }).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
+
+                                        return;
+                                    }
+
+                                    /// Check if username is already taken
+                                    if DATABASE.is_username_taken(&new_username_cc).await {
+                                        hook.tx_ctx.send(MessageToClient::SystemMessage {
+                                            content: format!("{YELLOW}{BOLD}This username is already in use!{C_RESET}")
+                                        }).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
+
+                                        return;
+                                    }
+                                    
+                                    hook.tx_ctx.send(MessageToClient::SystemMessage {
+                                        content: format!("{GREEN}{BOLD}Your username has been updated to {new_username_cc}. You may need to rejoin in Strawberry Chat{C_RESET}")
+                                    }).await.unwrap();
+
+                                } else {
+                                    hook.tx_ctx.send(MessageToClient::SystemMessage {
+                                        content: format!("{YELLOW}{BOLD}Cancelled{C_RESET}")
+                                    }).await.unwrap();
+                                }
+                            }
+                        });
+
+                    },
+                    "password" => {
+
+                    },
+                    _ => return Err(format!("{RED}{BOLD}Invalid subcommand!{C_RESET}"))
+                }
+                Ok(None)
             },
 
             _ => Err(format!("{RED}{BOLD}Invalid subcommand!{C_RESET}")),
