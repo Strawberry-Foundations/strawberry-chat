@@ -139,8 +139,12 @@ pub fn user_settings() -> commands::Command {
                 Ok(Some(format!("{LIGHT_GREEN}Updated Discord name to {}{}{C_RESET}", role_color_parser(&ctx.args[1]), &ctx.args[1])))
             },
             "account" => {
-                if ctx.args[1..].len() < 2 {
-                    return Err(format!("Missing arguments - Subcommand requires at least 2 argument - Got {} arguments", ctx.args[1..].len()))
+                if ctx.args[1..].is_empty() {
+                    return Err(format!("Missing arguments - Subcommand requires at least 1 argument - Got {} arguments", ctx.args[1..].len()))
+                }
+
+                if ctx.args[1].as_str() == "username" && ctx.args.len() < 3 {
+                    return Err("Missing arguments - Subcommand requires at least 1 argument - Got 0 arguments".to_string())
                 }
 
                 match ctx.args[1].as_str() {
