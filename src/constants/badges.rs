@@ -12,3 +12,5 @@ pub const NEWBIE_BADGE: &str = "- 👋 Say hi! I'm new!";
 pub const OG_BADGE: &str = "- 😌 A real OG, who is one of the first members!";
 pub const STRAWBERRY_BADGE: &str = "- 🍓 Strawberry ID & Network user!";
 pub const STBCHAT_PLUS_USER: &str = "- 💫 Strawberry Chat+ user";
+
+pub const BADGE_LIST: [&str; 14] = ["👑", "😎", "🔥", "🫐", "🤖", "💪", "👍", "🤡", "😈", "🤝", "👋", "😌", "🍓", "💫"];
