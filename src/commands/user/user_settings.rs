@@ -1,22 +1,24 @@
 use sqlx::Row;
-use stblib::colors::{BOLD, C_RESET, GRAY, GREEN, LIGHT_GREEN, MAGENTA, RED, RESET, UNDERLINE, YELLOW};
-use stblib::utilities::{contains_whitespace, escape_ansi};
 use tokio::spawn;
-use crate::constants::chars::USERNAME_ALLOWED_CHARS;
-use crate::constants::log_messages::{WRITE_PACKET_FAIL};
+
+use stblib::utilities::{contains_whitespace, escape_ansi};
+use stblib::colors::{BOLD, C_RESET, GRAY, GREEN, LIGHT_GREEN, MAGENTA, RED, RESET, UNDERLINE, YELLOW};
 
 use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;
 use crate::system_core::permissions::Permissions;
 use crate::system_core::string::{bool_color_fmt, string_to_bool};
-use crate::utilities::{is_valid_username, role_color_parser};
-use crate::database::db::DATABASE;
-use crate::constants::messages::USER_SETTINGS_HELP;
-use crate::global::{CONFIG, LOGGER, MESSAGE_VERIFICATOR};
-use crate::security::verification::MessageAction;
 use crate::system_core::hooks::Hook;
 use crate::system_core::internals::MessageToClient;
 use crate::system_core::server_core::Event;
+use crate::security::verification::MessageAction;
+use crate::utilities::{is_valid_username, role_color_parser};
+use crate::database::db::DATABASE;
+use crate::constants::messages::USER_SETTINGS_HELP;
+use crate::constants::chars::USERNAME_ALLOWED_CHARS;
+use crate::constants::log_messages::{WRITE_PACKET_FAIL};
+use crate::global::{CONFIG, LOGGER, MESSAGE_VERIFICATOR};
+
 
 #[allow(clippy::too_many_lines)]
 pub fn user_settings() -> commands::Command {
