@@ -149,7 +149,7 @@ pub fn admin_settings() -> commands::Command {
     }
 
     commands::Command {
-        name: "admin-settings".to_string(),
+        name: "admin".to_string(),
         aliases: vec![],
         description: "Change some settings of other's account".to_string(),
         category: CommandCategory::Admin,
