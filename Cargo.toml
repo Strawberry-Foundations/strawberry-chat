@@ -1,6 +1,6 @@
 [package]
 name = "strawberry-chat"
-version = "1.11.1-b4"
+version = "1.11.1"
 edition = "2021"
 authors = ["Juliandev02", "Paddyk45", "matteodev8"]
 description = "A simple but nice chat platform for your terminal"
