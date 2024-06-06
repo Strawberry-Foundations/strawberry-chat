@@ -1,13 +1,13 @@
 use sqlx::Row;
 
 use stblib::colors::{BOLD, C_RESET, GREEN, LIGHT_GREEN, RED};
-use crate::constants::badges::BADGE_LIST;
 
 use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;
 use crate::system_core::permissions::Permissions;
 use crate::database::db::DATABASE;
 use crate::constants::messages::{ADMIN_SETTINGS_HELP};
+use crate::constants::badges::BADGE_LIST;
 
 
 #[allow(clippy::too_many_lines)]
@@ -72,14 +72,14 @@ pub fn admin_settings() -> commands::Command {
                             return Ok(Some(format!("{BOLD}{RED}This user does not own this badge!{C_RESET}")))
                         }
 
-                        return match sqlx::query("UPDATE users SET badge = ? WHERE username = ?")
+                        match sqlx::query("UPDATE users SET badge = ? WHERE username = ?")
                             .bind(badge)
                             .bind(username)
                             .execute(&DATABASE.connection)
                             .await {
                             Ok(..) => Ok(Some(format!("{GREEN}{BOLD}The main badge of {username} has been updated to '{badge}'{C_RESET}"))),
                             Err(_) => Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")))
-                        };
+                        }
 
                     },
                     "add" => {
@@ -101,14 +101,14 @@ pub fn admin_settings() -> commands::Command {
 
                         let new_badges = format!("{badges}{badge}");
 
-                        return match sqlx::query("UPDATE users SET badges = ? WHERE username = ?")
+                        match sqlx::query("UPDATE users SET badges = ? WHERE username = ?")
                             .bind(new_badges)
                             .bind(username)
                             .execute(&DATABASE.connection)
                             .await {
                             Ok(..) => Ok(Some(format!("{GREEN}{BOLD}Added badge '{badge}' to {username}'s profile{C_RESET}"))),
                             Err(_) => Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")))
-                        };
+                        }
 
                     },
                     "remove" => {
@@ -130,19 +130,18 @@ pub fn admin_settings() -> commands::Command {
 
                         let new_badges = badges.replace(badge, "");
 
-                        return match sqlx::query("UPDATE users SET badges = ? WHERE username = ?")
+                        match sqlx::query("UPDATE users SET badges = ? WHERE username = ?")
                             .bind(new_badges)
                             .bind(username)
                             .execute(&DATABASE.connection)
                             .await {
                             Ok(..) => Ok(Some(format!("{GREEN}{BOLD}Removed badge '{badge}' to {username}'s profile{C_RESET}"))),
                             Err(_) => Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")))
-                        };
+                        }
 
                     },
-                    _ => return Err(format!("{RED}{BOLD}Insvalid subcommand!{C_RESET}"))
+                    _ => Err(format!("{RED}{BOLD}Insvalid subcommand!{C_RESET}"))
                 }
-                Ok(None)
             },
 
             _ => Err(format!("{RED}{BOLD}Invalid subcommand!{C_RESET}")),
