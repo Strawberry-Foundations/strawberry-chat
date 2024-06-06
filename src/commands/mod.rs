@@ -37,6 +37,7 @@ pub mod admin {
     pub mod mute;
     pub mod unmute;
     pub mod broadcast;
+    pub mod admin_settings;
 }
 
 pub fn command_registry() -> Vec<Command> {
