@@ -140,7 +140,7 @@ pub fn admin_settings() -> commands::Command {
                         }
 
                     },
-                    _ => Err(format!("{RED}{BOLD}Insvalid subcommand!{C_RESET}"))
+                    _ => Err(format!("{RED}{BOLD}Invalid subcommand!{C_RESET}"))
                 }
             },
 
