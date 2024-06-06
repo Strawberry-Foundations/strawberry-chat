@@ -3,7 +3,7 @@ Hey! v1.11.1 of Strawberry Chat is released with a little delay.
 This version is a minor version and contains small changes.
 
 
-# Changelog - v1.11 (Rusty)
+# Changelog
 - ![](https://img.shields.io/badge/-New-success) Added user status system (#139)
 - ![](https://img.shields.io/badge/-New-success) Added a minimum of required args to command system (#144)
 - ![](https://img.shields.io/badge/-New-success) Added remaining admin commands (role, badge, ...) (#143)
