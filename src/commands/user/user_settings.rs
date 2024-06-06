@@ -3,7 +3,6 @@ use tokio::spawn;
 
 use stblib::utilities::{contains_whitespace, escape_ansi};
 use stblib::colors::{BOLD, C_RESET, GRAY, GREEN, LIGHT_GREEN, MAGENTA, RED, RESET, UNDERLINE, YELLOW};
-use stblib::stbchat::packet::ClientPacket;
 
 use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;
@@ -17,10 +16,9 @@ use crate::utilities::{is_valid_username, role_color_parser};
 use crate::database::db::DATABASE;
 use crate::constants::messages::USER_SETTINGS_HELP;
 use crate::constants::chars::USERNAME_ALLOWED_CHARS;
-use crate::constants::log_messages::{DISCONNECTED, WRITE_PACKET_FAIL};
+use crate::constants::log_messages::{WRITE_PACKET_FAIL};
 use crate::database::Database;
 use crate::global::{CONFIG, LOGGER, MESSAGE_VERIFICATOR};
-use crate::system_core::log::log_parser;
 
 
 #[allow(clippy::too_many_lines)]
