@@ -1,2 +1,5 @@
 blacklist:
   - nigga
+
+content_block:
+  - "[#<keepalive.event.sent>]"
