@@ -15,7 +15,6 @@ pub fn panic_handler(info: &PanicInfo) {
             |s| format!(": {s:?} "));
 
 
-        LOGGER.panic(
-        format!("Core thread panicked in {location}{payload}")
+        LOGGER.panic(format!("Core thread panicked in {location}{payload}")
     );
 }
