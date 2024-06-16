@@ -1,10 +1,4 @@
-# STRAWBERRY CHAT V1.11.1 STABLE
+# STRAWBERRY CHAT V1.12.0 STABLE
 
 
-- NEW: Added user status system (#139)
-- NEW: Added a minimum of required args to command system (#144)
-- NEW: Added remaining admin commands (role, badge, ...) (#143)
-- NEW: Added remaining user settings subcommands (#142)
-
-- FIX: Fixed several bugs
-- OPTIMIZATIONS: General QoL improvements
+- NEW: Added blacklisted words
