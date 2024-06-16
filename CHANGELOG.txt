@@ -2,3 +2,5 @@
 
 
 - NEW: Added blacklisted words
+
+- FIX: Fixed a panic occurred by automod
