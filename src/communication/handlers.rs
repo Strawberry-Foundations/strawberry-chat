@@ -34,9 +34,15 @@ pub async fn client_incoming(
             Ok(ServerPacket::Message { message }) => message,
             Err(e) => {
                 if matches!(e.downcast_ref::<std::io::Error>().map(std::io::Error::kind), Some(ErrorKind::UnexpectedEof)) {
-                    tx.send(MessageToServer::Broadcast {
+                    match tx.send(MessageToServer::Broadcast {
                         content: format!("{GRAY}{BOLD}-->{C_RESET} {}{}{YELLOW}{BOLD} left the chat room!{C_RESET}", user.role_color, user.username)
-                    }).await.unwrap();
+                    }).await {
+                        Ok(..) => (),
+                        Err(err) => {
+                            LOGGER.warning(format!("Unexpected network error: {err}"));
+                            return
+                        }
+                    }
 
                     tx.send(MessageToServer::RemoveMe).await.unwrap();
                     LOGGER.info(log_parser(USER_LEFT, &[&user.username, &peer_addr]));
