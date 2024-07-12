@@ -1,4 +1,4 @@
-use core::panic::PanicInfo;
+use std::panic::PanicInfo;
 use crate::global::LOGGER;
 
 pub fn panic_handler(info: &PanicInfo) {
