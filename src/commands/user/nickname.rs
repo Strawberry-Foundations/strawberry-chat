@@ -15,7 +15,7 @@ pub fn nickname() -> commands::Command {
                 .execute(&DATABASE.connection)
                 .await {
                 Ok(..) => ..,
-                Err(_) => return Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")))
+                Err(_) => return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
             };
 
             return Ok(Some(format!("{BOLD}{LIGHT_GREEN}Removed nickname. Rejoin to apply changes{C_RESET}")))
@@ -29,7 +29,7 @@ pub fn nickname() -> commands::Command {
             .execute(&DATABASE.connection)
             .await {
             Ok(..) => ..,
-            Err(_) => return Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")))
+            Err(_) => return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
         };
 
         ctx.tx_channel.send(MessageToClient::SystemMessage {
