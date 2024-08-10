@@ -1,5 +1,8 @@
 #![warn(clippy::all, clippy::nursery, clippy::pedantic)]
-#![allow(clippy::module_name_repetitions, clippy::struct_excessive_bools, dead_code, unused_doc_comments, clippy::missing_const_for_fn)]
+#![allow(
+    clippy::module_name_repetitions, clippy::struct_excessive_bools, clippy::missing_const_for_fn, clippy::const_is_empty,
+    dead_code, unused_doc_comments,
+)]
 
 use std::env::var;
 use std::sync::{Mutex, OnceLock};
@@ -38,7 +41,7 @@ async fn main(){
     }));
 
     println!("{CYAN}{BOLD}* -- {CHAT_NAME} {} {CODENAME} ({SERVER_EDITION}) -- *{RESET}{C_RESET}", DEFAULT_VERSION.clone());
-
+    
     if !ADDITION_VER.is_empty() {
         let constructor = cli_wins::constructor::Constructor::new("Pre-released Software", YELLOW, 2, cli_wins::constructor::ConstructorOptions {
             debug_mode: true
