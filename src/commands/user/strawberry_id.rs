@@ -14,7 +14,7 @@ pub fn strawberry_id() -> commands::Command {
             return (sqlx::query("SELECT strawberry_id FROM users WHERE username = ?")
                 .bind(&ctx.executor.username)
                 .fetch_one(&DATABASE.connection)
-                .await).map_or_else(|_| Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))), |res| {
+                .await).map_or_else(|_| Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")), |res| {
                 let strawberry_id: String = res.get("strawberry_id");
                 Ok(Some(format!("{BOLD}{LIGHT_GREEN}Your current Strawberry ID: {RESET}{strawberry_id}{C_RESET}")))
             });
@@ -27,7 +27,7 @@ pub fn strawberry_id() -> commands::Command {
                 .execute(&DATABASE.connection)
                 .await {
                 Ok(..) => ..,
-                Err(_) => return Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")))
+                Err(_) => return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
             };
 
             return Ok(Some(format!("{BOLD}{LIGHT_GREEN}Removed Strawberry ID. Rejoin to apply changes{C_RESET}")))
@@ -41,7 +41,7 @@ pub fn strawberry_id() -> commands::Command {
             .execute(&DATABASE.connection)
             .await {
             Ok(..) => ..,
-            Err(_) => return Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")))
+            Err(_) => return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
         };
 
         ctx.tx_channel.send(MessageToClient::SystemMessage {
