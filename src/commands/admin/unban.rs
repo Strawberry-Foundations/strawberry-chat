@@ -17,13 +17,13 @@ pub fn unban() -> commands::Command {
             .await.expect("err");
 
         if data.is_empty() {
-            return Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")))
+            return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
         }
 
         let account_enabled: bool = data.first().unwrap().get("account_enabled");
 
         if account_enabled {
-            return Ok(Some(format!("{BOLD}{RED}User not banned{C_RESET}")))
+            return Err(format!("{BOLD}{RED}User not banned{C_RESET}"))
         }
 
         match sqlx::query("UPDATE users SET account_enabled = '1' WHERE username = ?")
@@ -31,7 +31,7 @@ pub fn unban() -> commands::Command {
             .execute(&DATABASE.connection)
             .await {
             Ok(..) => ..,
-            Err(_) => return Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")))
+            Err(_) => return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
         };
 
         ctx.tx_channel.send(MessageToClient::SystemMessage {
@@ -53,4 +53,3 @@ pub fn unban() -> commands::Command {
             logic(&ctx).await
         }),
     }
-}
