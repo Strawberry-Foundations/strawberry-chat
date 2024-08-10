@@ -17,8 +17,8 @@ pub const ADDITION_VER: &str = "b1";
 pub const STBM_VER: &str = "3";
 pub const CONFIG_VER: &str  = "9";
 
-pub const CODENAME: &str = "Vanilla Cake";
-pub const CODENAME_SHORT: &str = "vacakes";
+pub const CODENAME: &str = "Rusty Cake";
+pub const CODENAME_SHORT: &str = "rscake";
 
 pub const CHAT_NAME: &str = "Strawberry Chat";
 pub const UPDATE_CHANNEL: &str = "stable";
