@@ -1,5 +1,5 @@
 use sqlx::Row;
-use stblib::colors::{BOLD, C_RESET, RED, LIGHT_GREEN, GRAY};
+use stblib::colors::{BOLD, C_RESET, RED, LIGHT_GREEN, GRAY, CYAN, GREEN};
 
 use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;
@@ -10,6 +10,17 @@ use crate::database::db::DATABASE;
 pub fn block() -> commands::Command {
     async fn logic(ctx: &commands::Context) -> commands::CommandResponse {
         let user = ctx.args[0].as_str();
+
+        if user == "list" {
+            let blocked_users: String = sqlx::query("SELECT blocked FROM users WHERE username = ?")
+                .bind(&ctx.executor.username)
+                .fetch_one(&DATABASE.connection)
+                .await.unwrap().get("blocked");
+
+            let blocked_users: Vec<&str> = blocked_users.split(',').collect();
+
+            return Ok(Some(format!("{BOLD}{GREEN}Blocked users: {CYAN}{}{C_RESET}", blocked_users.join(", "))))
+        }
 
         if !DATABASE.is_username_taken(&user.to_string()).await {
             return Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")))
