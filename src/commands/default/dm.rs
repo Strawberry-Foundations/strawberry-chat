@@ -18,11 +18,11 @@ pub fn dm_basic() -> commands::Command {
         let conn = get_senders_by_username_ignore_case(ctx.args[0].as_str()).await;
 
         if conn.is_empty() {
-            return Ok(Some(format!("{BOLD}{RED}User not found or offline{C_RESET}")))
+            return Err(format!("{BOLD}{RED}User not found or offline{C_RESET}"))
         }
 
         if ctx.executor.username == ctx.args[0].as_str() {
-            return Ok(Some(format!("{BOLD}{YELLOW}You cannot send yourself a message!{C_RESET}")))
+            return Err(format!("{BOLD}{YELLOW}You cannot send yourself a message!{C_RESET}"))
         }
 
         let data = sqlx::query("SELECT * FROM users WHERE username = ?")
@@ -33,7 +33,7 @@ pub fn dm_basic() -> commands::Command {
         let enable_dms: bool = data.first().unwrap().get("enable_dms");
 
         if !enable_dms {
-            return Ok(Some(format!("{BOLD}{YELLOW}This user has deactivated his/her DMs{C_RESET}")))
+            return Err(format!("{BOLD}{YELLOW}This user has deactivated his/her DMs{C_RESET}"))
         }
 
         let role_color: String = role_color_parser(data.first().unwrap().get("role_color"));
