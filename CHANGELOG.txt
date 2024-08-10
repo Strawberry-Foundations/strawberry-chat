@@ -4,3 +4,4 @@
 - NEW: Added blacklisted words
 
 - FIX: Fixed a panic occurred by automod
+- FIX: Fixed invalid api url
