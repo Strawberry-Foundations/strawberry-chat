@@ -32,7 +32,7 @@ pub fn unblock() -> commands::Command {
         };
 
         ctx.tx_channel.send(MessageToClient::SystemMessage {
-            content: format!("{BOLD}{LIGHT_GREEN}Blocked {user}. Type {GRAY}/unblock {user}{LIGHT_GREEN} to unblock{C_RESET}")
+            content: format!("{BOLD}{LIGHT_GREEN}Unblocked {user}{C_RESET}")
         }).await.unwrap();
 
         Ok(None)
