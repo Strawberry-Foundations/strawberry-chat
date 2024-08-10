@@ -21,6 +21,8 @@ pub mod user {
     pub mod memberlist;
     pub mod badge;
     pub mod status;
+    pub mod block;
+    pub mod unblock;
 }
 
 pub mod etc {
@@ -57,6 +59,8 @@ pub fn command_registry() -> Vec<Command> {
         user::user_settings::user_settings(),
         user::strawberry_id::strawberry_id(),
         user::badge::badge(),
+        user::block::block(),
+        user::unblock::unblock(),
         
         admin::broadcast::broadcast(),
         admin::ban::ban(),
