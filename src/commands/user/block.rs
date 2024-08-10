@@ -18,7 +18,7 @@ pub fn block() -> commands::Command {
                 .await.unwrap().get("blocked");
 
             if blocked_users.is_empty() {
-                return Ok(Some(format!("{BOLD}{YELLOW}You have not yet blocked a user{C_RESET}")))
+                return Err(format!("{BOLD}{YELLOW}You have not yet blocked a user{C_RESET}"))
             }
 
             let blocked_users: Vec<&str> = blocked_users.split(',').collect();
@@ -33,11 +33,11 @@ pub fn block() -> commands::Command {
         }
 
         if user == ctx.executor.username {
-            return Ok(Some(format!("{BOLD}{YELLOW}You cannot block yourself{C_RESET}")))
+            return Err(format!("{BOLD}{YELLOW}You cannot block yourself{C_RESET}"))
         }
 
         if !DATABASE.is_username_taken(&user.to_string()).await {
-            return Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")))
+            return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
         }
 
         let blocked_users: String = sqlx::query("SELECT blocked FROM users WHERE username = ?")
@@ -48,7 +48,7 @@ pub fn block() -> commands::Command {
         let blocked_users_list: Vec<&str> = blocked_users.split(',').collect();
 
         if blocked_users_list.contains(&user) {
-            return Ok(Some(format!("{BOLD}{YELLOW}This user is already blocked{C_RESET}")))
+            return Err(format!("{BOLD}{YELLOW}This user is already blocked{C_RESET}"))
         }
 
         let new_blocked_users: String = if blocked_users.is_empty() {
@@ -64,7 +64,7 @@ pub fn block() -> commands::Command {
             .execute(&DATABASE.connection)
             .await {
             Ok(..) => ..,
-            Err(_) => return Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")))
+            Err(_) => return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
         };
 
         ctx.tx_channel.send(MessageToClient::SystemMessage {
