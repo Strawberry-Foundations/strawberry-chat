@@ -21,7 +21,7 @@ serde_yaml = "0.9.34"
 serde_json = "1.0.122"
 owo-colors = "4.0.0"
 futures = "0.3.30"
-sqlx = { version = "0.8.0", features = ["mysql", "runtime-tokio-native-tls"] }
+sqlx = { version = "0.8.0", features = ["mysql", "runtime-tokio-native-tls", "json"] }
 strip-ansi-escapes = "0.2.0"
 chrono = "0.4.38"
 reqwest = "0.12.5"
