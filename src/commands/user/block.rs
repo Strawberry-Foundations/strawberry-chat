@@ -46,7 +46,7 @@ pub fn block() -> commands::Command {
             .await.unwrap().get("blocked");
 
         let blocked_users_list: Vec<&str> = blocked_users.split(',').collect();
-        
+
         if blocked_users_list.contains(&user) {
             return Ok(Some(format!("{BOLD}{YELLOW}This user is already blocked{C_RESET}")))
         }
