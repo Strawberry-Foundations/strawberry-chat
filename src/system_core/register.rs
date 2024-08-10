@@ -85,7 +85,7 @@ pub async fn client_register(
         return;
     }
 
-    /// If username is longer than max_username_length (default: 32) characters, return an error message
+    /// If username is longer than `max_username_length` (default: 32) characters, return an error message
     if username.len() > CONFIG.config.max_username_length as usize {
         w_client.write(ClientPacket::SystemMessage {
             message: format!("{YELLOW}{BOLD}Your username is too long{C_RESET}")
@@ -118,7 +118,7 @@ pub async fn client_register(
         return;
     }
 
-    /// If password is longer than max_password_length (default: 256) characters, return an error message
+    /// If password is longer than `max_password_length` (default: 256) characters, return an error message
     if password.len() > CONFIG.config.max_password_length as usize {
         w_client.write(ClientPacket::SystemMessage {
             message: format!("{YELLOW}{BOLD}Your password is too long{C_RESET}")
