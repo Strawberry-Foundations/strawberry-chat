@@ -68,6 +68,7 @@ impl Database {
             muted, \
             strawberry_id, \
             discord_name, \
+            blocked, \
             msg_count, \
             creation_date \
             ) \
@@ -82,7 +83,7 @@ impl Database {
             '', \
             'member', \
             ?, \
-            1, 1, 1, 0, '', '', 0, ?);")
+            1, 1, 1, 0, '', '', '', 0, ?);")
             .bind(user_id)
             .bind(username)
             .bind(password)
