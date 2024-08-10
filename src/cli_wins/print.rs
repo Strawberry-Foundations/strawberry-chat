@@ -17,10 +17,6 @@
 
 use stblib::colors::*;
 
-/// * --------- *
-/// |    Test    |
-///
-
 pub fn print_window(txt: &str) {
     let margin = if txt.len() % 2 == 0 { "  " } else { " " };
 
