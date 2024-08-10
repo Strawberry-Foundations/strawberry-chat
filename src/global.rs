@@ -10,7 +10,7 @@ use crate::system_core::config::GlobalConfig;
 use crate::security::verification::MessageVerification;
 use crate::security::online_mode::OnlineMode;
 
-pub const API: &str = "https://api.strawberryfoundations.xyz/v1/";
+pub const API: &str = "https://api.strawberryfoundations.org/v1/";
 
 pub const BASE_VERSION: &str = "1.12.0";
 pub const ADDITION_VER: &str = "a1";
