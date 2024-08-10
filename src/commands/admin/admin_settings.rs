@@ -34,7 +34,7 @@ pub fn admin_settings() -> commands::Command {
                     .execute(&DATABASE.connection)
                     .await {
                     Ok(..) => Ok(Some(format!("{GREEN}{BOLD}The role of {username} has been updated to '{role}'{C_RESET}"))),
-                    Err(_) => Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")))
+                    Err(_) => Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
                 }
             },
             "badge" => {
@@ -55,7 +55,7 @@ pub fn admin_settings() -> commands::Command {
                                 .execute(&DATABASE.connection)
                                 .await {
                                 Ok(..) => ..,
-                                Err(_) => return Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")))
+                                Err(_) => return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
                             };
 
                             return Ok(Some(format!("{BOLD}{LIGHT_GREEN}Removed badge of {username}{C_RESET}")))
@@ -67,7 +67,7 @@ pub fn admin_settings() -> commands::Command {
                             .await.unwrap().get("badges");
 
                         if !badges.contains(badge) {
-                            return Ok(Some(format!("{BOLD}{RED}This user does not own this badge!{C_RESET}")))
+                            return Err(format!("{BOLD}{RED}This user does not own this badge!{C_RESET}"))
                         }
 
                         match sqlx::query("UPDATE users SET badge = ? WHERE username = ?")
@@ -76,7 +76,7 @@ pub fn admin_settings() -> commands::Command {
                             .execute(&DATABASE.connection)
                             .await {
                             Ok(..) => Ok(Some(format!("{GREEN}{BOLD}The main badge of {username} has been updated to '{badge}'{C_RESET}"))),
-                            Err(_) => Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")))
+                            Err(_) => Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
                         }
 
                     },
@@ -90,11 +90,11 @@ pub fn admin_settings() -> commands::Command {
                             .await.unwrap().get("badges");
 
                         if badges.contains(badge) {
-                            return Ok(Some(format!("{BOLD}{RED}This user does already own this badge!{C_RESET}")))
+                            return Err(format!("{BOLD}{RED}This user does already own this badge!{C_RESET}"))
                         }
 
                         if !BADGE_LIST.contains(&badge) {
-                            return Ok(Some(format!("{BOLD}{RED}This badge does not exists!{C_RESET}")))
+                            return Err(format!("{BOLD}{RED}This badge does not exists!{C_RESET}"))
                         }
 
                         let new_badges = format!("{badges}{badge}");
@@ -105,7 +105,7 @@ pub fn admin_settings() -> commands::Command {
                             .execute(&DATABASE.connection)
                             .await {
                             Ok(..) => Ok(Some(format!("{GREEN}{BOLD}Added badge '{badge}' to {username}'s profile{C_RESET}"))),
-                            Err(_) => Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")))
+                            Err(_) => Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
                         }
 
                     },
@@ -119,11 +119,11 @@ pub fn admin_settings() -> commands::Command {
                             .await.unwrap().get("badges");
 
                         if !badges.contains(badge) {
-                            return Ok(Some(format!("{BOLD}{RED}This user does not own this badge!{C_RESET}")))
+                            return Err(format!("{BOLD}{RED}This user does not own this badge!{C_RESET}"))
                         }
 
                         if !BADGE_LIST.contains(&badge) {
-                            return Ok(Some(format!("{BOLD}{RED}This badge does not exists!{C_RESET}")))
+                            return Err(format!("{BOLD}{RED}This badge does not exists!{C_RESET}"))
                         }
 
                         let new_badges = badges.replace(badge, "");
@@ -134,7 +134,7 @@ pub fn admin_settings() -> commands::Command {
                             .execute(&DATABASE.connection)
                             .await {
                             Ok(..) => Ok(Some(format!("{GREEN}{BOLD}Removed badge '{badge}' to {username}'s profile{C_RESET}"))),
-                            Err(_) => Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")))
+                            Err(_) => Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
                         }
 
                     },
