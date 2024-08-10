@@ -22,6 +22,7 @@ pub fn block() -> commands::Command {
             }
 
             let blocked_users: Vec<&str> = blocked_users.split(',').collect();
+            dbg!(blocked_users.len());
             let blocked_users: String = if blocked_users.len() <= 1 {
                 blocked_users.join(", ").replace(',', "")
             }
@@ -30,6 +31,10 @@ pub fn block() -> commands::Command {
             };
 
             return Ok(Some(format!("{BOLD}{GREEN}Blocked users: {CYAN}{blocked_users}{C_RESET}")))
+        }
+
+        if user == ctx.executor.username {
+            return Ok(Some(format!("{BOLD}{YELLOW}You cannot block yourself{C_RESET}")))
         }
 
         if !DATABASE.is_username_taken(&user.to_string()).await {
