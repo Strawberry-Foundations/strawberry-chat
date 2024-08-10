@@ -22,8 +22,7 @@ pub fn block() -> commands::Command {
             }
 
             let blocked_users: Vec<&str> = blocked_users.split(',').collect();
-            dbg!(blocked_users.len());
-            let blocked_users: String = if blocked_users.len() <= 1 {
+            let blocked_users: String = if blocked_users.len() == 2 {
                 blocked_users.join(", ").replace(',', "")
             }
             else {
@@ -45,6 +44,12 @@ pub fn block() -> commands::Command {
             .bind(&ctx.executor.username)
             .fetch_one(&DATABASE.connection)
             .await.unwrap().get("blocked");
+
+        let blocked_users_list: Vec<&str> = blocked_users.split(',').collect();
+        
+        if blocked_users_list.contains(&user) {
+            return Ok(Some(format!("{BOLD}{YELLOW}This user is already blocked{C_RESET}")))
+        }
 
         let new_blocked_users: String = if blocked_users.is_empty() {
             format!("{user},")
