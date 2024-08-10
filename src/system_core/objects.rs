@@ -41,6 +41,7 @@ pub struct UserAccount {
     pub muted: bool,
     pub strawberry_id: String,
     pub discord_name: String,
+    pub blocked: String,
     pub msg_count: i32,
     pub creation_date: i32,
     pub ok: bool,
@@ -66,6 +67,7 @@ pub struct Account {
     pub muted: bool,
     pub strawberry_id: String,
     pub discord_name: String,
+    pub blocked: String,
     pub msg_count: i32,
     pub creation_date: i32,
 }
