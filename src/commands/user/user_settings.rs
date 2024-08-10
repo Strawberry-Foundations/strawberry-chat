@@ -88,7 +88,7 @@ pub fn user_settings() -> commands::Command {
                     return sqlx::query("SELECT discord_name FROM users WHERE username = ?")
                         .bind(&ctx.executor.username)
                         .fetch_one(&DATABASE.connection)
-                        .await.map_or_else(|_| Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))), |res| {
+                        .await.map_or_else(|_| Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")), |res| {
                         let discord_name: String = res.get("discord_name");
                         Ok(Some(format!("{BOLD}{LIGHT_GREEN}Your current Discord Name: {RESET}{discord_name}{C_RESET}")))
                     });
@@ -101,7 +101,7 @@ pub fn user_settings() -> commands::Command {
                         .execute(&DATABASE.connection)
                         .await {
                         Ok(..) => ..,
-                        Err(_) => return Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")))
+                        Err(_) => return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
                     };
 
                     return Ok(Some(format!("{BOLD}{LIGHT_GREEN}Removed Discord Name. Rejoin to apply changes{C_RESET}")))
@@ -115,7 +115,7 @@ pub fn user_settings() -> commands::Command {
                     .execute(&DATABASE.connection)
                     .await {
                     Ok(..) => ..,
-                    Err(_) => return Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")))
+                    Err(_) => return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
                 };
 
                 Ok(Some(format!(
@@ -131,7 +131,7 @@ pub fn user_settings() -> commands::Command {
                         .execute(&DATABASE.connection)
                         .await {
                         Ok(..) => ..,
-                        Err(_) => return Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")))
+                        Err(_) => return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
                     };
 
                     return Ok(Some(format!("{BOLD}{LIGHT_GREEN}Removed badge. Rejoin to apply changes{C_RESET}")))
@@ -146,7 +146,7 @@ pub fn user_settings() -> commands::Command {
                     .await.unwrap().get("badges");
 
                 if !badges.contains(badge) {
-                    return Ok(Some(format!("{BOLD}{RED}You do not own this badge!{C_RESET}")))
+                    return Err(format!("{BOLD}{RED}You do not own this badge!{C_RESET}"))
                 }
 
                 match sqlx::query("UPDATE users SET badge = ? WHERE username = ?")
@@ -155,7 +155,7 @@ pub fn user_settings() -> commands::Command {
                     .execute(&DATABASE.connection)
                     .await {
                     Ok(..) => ..,
-                    Err(_) => return Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")))
+                    Err(_) => return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
                 };
 
                 Ok(Some(format!(
