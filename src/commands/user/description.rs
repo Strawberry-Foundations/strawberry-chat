@@ -14,7 +14,7 @@ pub fn description() -> commands::Command {
             return (sqlx::query("SELECT description FROM users WHERE username = ?")
                 .bind(&ctx.executor.username)
                 .fetch_one(&DATABASE.connection)
-                .await).map_or_else(|_| Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))), |res| {
+                .await).map_or_else(|_| Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")), |res| {
                     let description: String = res.get("description");
                     Ok(Some(format!("{BOLD}{LIGHT_GREEN}Your current description: {RESET}{description}{C_RESET}")))
                 });
@@ -27,7 +27,7 @@ pub fn description() -> commands::Command {
                 .execute(&DATABASE.connection)
                 .await {
                 Ok(..) => ..,
-                Err(_) => return Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")))
+                Err(_) => return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
             };
 
             return Ok(Some(format!("{BOLD}{LIGHT_GREEN}Removed description. Rejoin to apply changes{C_RESET}")))
@@ -41,7 +41,7 @@ pub fn description() -> commands::Command {
             .execute(&DATABASE.connection)
             .await {
             Ok(..) => ..,
-            Err(_) => return Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")))
+            Err(_) => return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
         };
 
         ctx.tx_channel.send(MessageToClient::SystemMessage {
