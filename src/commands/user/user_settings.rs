@@ -234,7 +234,7 @@ pub fn user_settings() -> commands::Command {
                                         return;
                                     }
 
-                                    /// If username is longer than max_username_length (default: 32) characters, return an error message
+                                    /// If username is longer than `max_username_length` (default: 32) characters, return an error message
                                     if new_username_cc.len() > CONFIG.config.max_username_length as usize {
                                         hook.tx_ctx.send(MessageToClient::SystemMessage {
                                             content: format!("{YELLOW}{BOLD}Your username is too long{C_RESET}")
@@ -289,7 +289,7 @@ pub fn user_settings() -> commands::Command {
                                     return;
                                 }
 
-                                /// If password is longer than max_password_length (default: 256) characters, return an error message
+                                /// If password is longer than `max_password_length` (default: 256) characters, return an error message
                                 if content.len() > CONFIG.config.max_password_length as usize {
                                     hook.tx_ctx.send(MessageToClient::SystemMessage {
                                         content: format!("{YELLOW}{BOLD}Your password is too long{C_RESET}")
