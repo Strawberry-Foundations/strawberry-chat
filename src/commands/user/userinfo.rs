@@ -34,7 +34,7 @@ pub fn userinfo() -> commands::Command {
         };
 
         if !DATABASE.is_username_taken(&username.to_string()).await {
-            return Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")))
+            return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
         }
 
         let mut user: UUserAccount = sqlx::query_as(
