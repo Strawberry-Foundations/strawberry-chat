@@ -12,7 +12,7 @@ use crate::system_core::permissions::Permissions;
 pub fn mute() -> commands::Command {
     async fn logic(ctx: &commands::Context) -> commands::CommandResponse {
         if ctx.executor.username == ctx.args[0].as_str() {
-            return Ok(Some(format!("{BOLD}{YELLOW}You cannot mute yourself!{C_RESET}")))
+            return Err(format!("{BOLD}{YELLOW}You cannot mute yourself!{C_RESET}"))
         }
 
         let data = sqlx::query("SELECT username, muted FROM users WHERE username = ?")
@@ -21,13 +21,13 @@ pub fn mute() -> commands::Command {
             .await.expect("err");
 
         if data.is_empty() {
-            return Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")))
+            return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
         }
 
         let muted: bool = data.first().unwrap().get("muted");
         
         if muted {
-            return Ok(Some(format!("{BOLD}{RED}User already muted{C_RESET}")))
+            return Err(format!("{BOLD}{RED}User already muted{C_RESET}"))
         }
 
         match sqlx::query("UPDATE users SET muted = '1' WHERE username = ?")
@@ -35,7 +35,7 @@ pub fn mute() -> commands::Command {
             .execute(&DATABASE.connection)
             .await {
             Ok(..) => ..,
-            Err(_) => return Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")))
+            Err(_) => return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
         };
 
         ctx.tx_channel.send(MessageToClient::SystemMessage {
