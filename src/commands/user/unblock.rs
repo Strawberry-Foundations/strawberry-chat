@@ -17,7 +17,7 @@ pub fn unblock() -> commands::Command {
             .await.unwrap().get("blocked");
 
         if blocked_users.is_empty() {
-            return Ok(Some(format!("{BOLD}{YELLOW}You have not yet blocked a user{C_RESET}")))
+            return Err(format!("{BOLD}{YELLOW}You have not yet blocked a user{C_RESET}"))
         }
 
         blocked_users = blocked_users.replace(format!("{user},").as_str(), "");
@@ -28,7 +28,7 @@ pub fn unblock() -> commands::Command {
             .execute(&DATABASE.connection)
             .await {
             Ok(..) => ..,
-            Err(_) => return Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")))
+            Err(_) => return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
         };
 
         ctx.tx_channel.send(MessageToClient::SystemMessage {
