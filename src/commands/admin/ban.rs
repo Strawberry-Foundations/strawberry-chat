@@ -12,7 +12,7 @@ use crate::system_core::permissions::Permissions;
 pub fn ban() -> commands::Command {
     async fn logic(ctx: &commands::Context) -> commands::CommandResponse {
         if ctx.executor.username == ctx.args[0].as_str() {
-            return Ok(Some(format!("{BOLD}{YELLOW}You cannot ban yourself!{C_RESET}")))
+            return Err(format!("{BOLD}{YELLOW}You cannot ban yourself!{C_RESET}"))
         }
 
         let data = sqlx::query("SELECT username, account_enabled FROM users WHERE username = ?")
@@ -21,13 +21,13 @@ pub fn ban() -> commands::Command {
             .await.expect("err");
 
         if data.is_empty() {
-            return Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")))
+            return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
         }
 
         let account_enabled: bool = data.first().unwrap().get("account_enabled");
 
         if !account_enabled {
-            return Ok(Some(format!("{BOLD}{RED}User already banned{C_RESET}")))
+            return Err(format!("{BOLD}{RED}User already banned{C_RESET}"))
         }
 
         match sqlx::query("UPDATE users SET account_enabled = '0' WHERE username = ?")
@@ -35,7 +35,7 @@ pub fn ban() -> commands::Command {
             .execute(&DATABASE.connection)
             .await {
             Ok(..) => ..,
-            Err(_) => return Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")))
+            Err(_) => return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
         };
 
         ctx.tx_channel.send(MessageToClient::SystemMessage {
