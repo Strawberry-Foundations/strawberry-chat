@@ -16,7 +16,7 @@ pub fn badge() -> commands::Command {
                 .execute(&DATABASE.connection)
                 .await {
                 Ok(..) => ..,
-                Err(_) => return Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")))
+                Err(_) => return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
             };
 
             return Ok(Some(format!("{BOLD}{LIGHT_GREEN}Removed badge. Rejoin to apply changes{C_RESET}")))
@@ -31,7 +31,7 @@ pub fn badge() -> commands::Command {
             .await.unwrap().get("badges");
         
         if !badges.contains(badge) {
-            return Ok(Some(format!("{BOLD}{RED}You do not own this badge!{C_RESET}")))
+            return Err(format!("{BOLD}{RED}You do not own this badge!{C_RESET}"))
         }
 
         match sqlx::query("UPDATE users SET badge = ? WHERE username = ?")
@@ -40,7 +40,7 @@ pub fn badge() -> commands::Command {
             .execute(&DATABASE.connection)
             .await {
             Ok(..) => ..,
-            Err(_) => return Ok(Some(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")))
+            Err(_) => return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
         };
 
         ctx.tx_channel.send(MessageToClient::SystemMessage {
