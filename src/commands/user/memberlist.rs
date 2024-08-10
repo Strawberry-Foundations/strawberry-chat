@@ -90,7 +90,7 @@ pub fn memberlist() -> commands::Command {
 
     commands::Command {
         name: "memberlist".to_string(),
-        aliases: vec!["userlist"],
+        aliases: vec!["userlist", "users"],
         description: "Displays a list of members with their badges and roles".to_string(),
         category: CommandCategory::User,
         permissions: Permissions::Member,
