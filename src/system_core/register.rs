@@ -52,7 +52,7 @@ pub async fn client_register(
     }
 
     /// If username is in this set of blacklisted words, return an error message
-    if ["exit", "register", "login", "sid"].contains(&username.as_str()) {
+    if ["exit", "register", "login", "sid", "list"].contains(&username.as_str()) {
         w_client.write(ClientPacket::SystemMessage {
             message: format!("{YELLOW}{BOLD}This username is not allowed!{C_RESET}")
         }).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
