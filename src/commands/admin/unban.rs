@@ -53,3 +53,4 @@ pub fn unban() -> commands::Command {
             logic(&ctx).await
         }),
     }
+}
