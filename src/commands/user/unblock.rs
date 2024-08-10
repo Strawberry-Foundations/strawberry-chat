@@ -1,5 +1,5 @@
 use sqlx::Row;
-use stblib::colors::{BOLD, C_RESET, RED, LIGHT_GREEN, GRAY, YELLOW};
+use stblib::colors::{BOLD, C_RESET, RED, LIGHT_GREEN, YELLOW};
 
 use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;
