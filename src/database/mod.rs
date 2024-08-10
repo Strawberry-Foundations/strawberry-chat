@@ -166,6 +166,7 @@ impl Database {
             muted: data.first().unwrap().get("muted"),
             strawberry_id: data.first().unwrap().get("strawberry_id"),
             discord_name: data.first().unwrap().get("discord_name"),
+            blocked: data.first().unwrap().get("blocked"),
             msg_count: data.first().unwrap().get("msg_count"),
             creation_date: data.first().unwrap().get("creation_date"),
             ok: data.first().unwrap().get("account_enabled"),
