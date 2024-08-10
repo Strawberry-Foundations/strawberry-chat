@@ -17,9 +17,6 @@
 use std::fmt::Write;
 use stblib::colors::*;
 
-/// * --------- *
-/// |    Test    |
-///
 
 pub struct ConstructorOptions {
     pub debug_mode: bool,
