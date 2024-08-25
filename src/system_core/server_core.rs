@@ -79,7 +79,9 @@ pub enum Event {
     SystemMessageToUser {
         content: String,
     },
-    Remove,
+    Remove {
+        username: Option<String>
+    },
     RunCommand {
         name: String,
         args: Vec<String>,
@@ -108,8 +110,8 @@ async fn get_events() -> Vec<(Event, usize)> {
             Some(MessageToServer::Broadcast { content }) => {
                 conn.get_user().map(|_| Event::SystemMessage { content })
             },
-            Some(MessageToServer::RemoveMe) => {
-                Some(Event::Remove)
+            Some(MessageToServer::RemoveMe { username}) => {
+                Some(Event::Remove { username })
             },
             Some(MessageToServer::RunCommand { name, args }) => {
                 Some(Event::RunCommand { name, args })
@@ -160,8 +162,12 @@ pub async fn core_thread(watchdog_tx: Sender<()>) {
                 Event::UserMessage { author, content } => {
                     send_to_all(MessageToClient::UserMessage { author, content }, true).await;
                 },
-                Event::Remove => {
+                Event::Remove { username }=> {
                     CLIENTS.write().await.get_mut(i).unwrap().disconnect().await;
+
+                    if let Some(username) = username {
+                        STATUS.write().await.remove(username.as_str());
+                    }
                 },
                 Event::RunCommand { name, args } => {
                     run_command(name, args, CLIENTS.read().await.get(i).unwrap()).await;
