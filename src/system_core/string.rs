@@ -48,15 +48,17 @@ impl StbString {
         
         for user in &get_online_users().await {
             if msg_split.contains(&&*format!("@{}", user.username.to_lowercase())) {
+                println!("{}", self.string);
                 self.string = self.string
                     .replace(&format!("@{}", user.username.to_lowercase()), &format!("{BACK_MAGENTA}{BOLD}@{}{C_RESET}", user.nickname))
-                    .replace(&format!("@{}", user.username), &format!("{BACK_MAGENTA}{BOLD}@{}{C_RESET}", user.nickname));
-                
+                    .replace(&format!("@{}", user.username), &format!("{BACK_MAGENTA}{BOLD}@{}{C_RESET}", user.nickname))
+                    .replace(&format!("@{}", user.nickname), &format!("{BACK_MAGENTA}{BOLD}@{}{C_RESET}", user.nickname));
+
                 self.is_mention = true;
                 self.mentioned_user = user.clone().username;
             }
         }
-        
+
         self
     }
 
