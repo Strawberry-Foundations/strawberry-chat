@@ -57,7 +57,6 @@ impl StbString {
             }
         }
         
-        
         self
     }
 
