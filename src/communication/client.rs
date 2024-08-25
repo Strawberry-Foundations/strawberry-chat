@@ -53,7 +53,9 @@ pub async fn client_handler(client: TcpStream, rx: Receiver<MessageToClient>, tx
     /// # Core (feat): Client Login
     /// Basic feature to verify that you are you (yes)
     let Some((account, user)) = login::client_login(&mut w_client, &mut r_client, peer_addr).await else {
-        tx.send(MessageToServer::RemoveMe).await.unwrap(); // <--- stbbugs::20240202--1: Calls Exception when leaving stbchat while login screen
+        tx.send(MessageToServer::RemoveMe {
+            username: String::default()
+        }).await.unwrap(); // <--- stbbugs::20240202--1: Calls Exception when leaving stbchat while login screen
 
         tokio::time::sleep(Duration::from_millis(140)).await;
 
