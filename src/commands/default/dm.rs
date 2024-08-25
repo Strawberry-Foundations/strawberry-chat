@@ -37,13 +37,22 @@ pub fn dm_basic() -> commands::Command {
             return Err(format!("{BOLD}{YELLOW}This user has deactivated his/her DMs{C_RESET}"))
         }
 
-        let blocked_users: String = sqlx::query("SELECT blocked FROM users WHERE username = ?")
+        let blocked_users_recipient: String = sqlx::query("SELECT blocked FROM users WHERE username = ?")
             .bind(ctx.args[0].as_str())
             .fetch_one(&DATABASE.connection)
             .await.unwrap().get("blocked");
 
-        if blocked_users.split(',').any(|x| x == ctx.executor.username) {
+        if blocked_users_recipient.split(',').any(|x| x == ctx.executor.username) {
             return Err(format!("{BOLD}{YELLOW}Sorry, but it seems that this user does not want to receive DMs from you...{C_RESET}"))
+        }
+
+        let blocked_users_self: String = sqlx::query("SELECT blocked FROM users WHERE username = ?")
+            .bind(&ctx.executor.username)
+            .fetch_one(&DATABASE.connection)
+            .await.unwrap().get("blocked");
+
+        if blocked_users_self.split(',').any(|x| x == ctx.args[0].as_str()) {
+            return Err(format!("{BOLD}{YELLOW}Sorry, you cannot send DMs to user's that you've blocked{C_RESET}"))
         }
 
         let role_color: String = role_color_parser(data.first().unwrap().get("role_color"));
