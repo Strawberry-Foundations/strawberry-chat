@@ -1,3 +1,4 @@
+use owo_colors::OwoColorize;
 use sqlx::Row;
 
 use stblib::colors::{BOLD, C_RESET, GRAY, RED, YELLOW};
@@ -34,6 +35,15 @@ pub fn dm_basic() -> commands::Command {
 
         if !enable_dms {
             return Err(format!("{BOLD}{YELLOW}This user has deactivated his/her DMs{C_RESET}"))
+        }
+
+        let blocked_users: String = sqlx::query("SELECT blocked FROM users WHERE username = ?")
+            .bind(ctx.args[0].as_str())
+            .fetch_one(&DATABASE.connection)
+            .await.unwrap().get("blocked");
+
+        if blocked_users.split(',').any(|x| x == ctx.executor.username) {
+            return Err(format!("{BOLD}{YELLOW}Sorry, but it seems that this user does not want to receive DMs from you...{C_RESET}"))
         }
 
         let role_color: String = role_color_parser(data.first().unwrap().get("role_color"));
