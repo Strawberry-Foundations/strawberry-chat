@@ -44,10 +44,8 @@ pub fn block() -> commands::Command {
             .bind(&ctx.executor.username)
             .fetch_one(&DATABASE.connection)
             .await.unwrap().get("blocked");
-
-        let blocked_users_list: Vec<&str> = blocked_users.split(',').collect();
-
-        if blocked_users_list.contains(&user) {
+        
+        if blocked_users.split(',').any(|x| x == user) {
             return Err(format!("{BOLD}{YELLOW}This user is already blocked{C_RESET}"))
         }
 
