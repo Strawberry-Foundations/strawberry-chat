@@ -77,7 +77,7 @@ impl MessageVerification {
         let exe_dir = exe_path.parent().unwrap();
         let exe_dir_str = PathBuf::from(exe_dir).display().to_string();
 
-        let mut bad_words_path = format!("{exe_dir_str}/config.yml");
+        let mut bad_words_path = format!("{exe_dir_str}/bad_words.yml");
 
         if !Path::new(&bad_words_path).exists() {
             bad_words_path = String::from("./bad_words.yml");
