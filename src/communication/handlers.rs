@@ -45,7 +45,7 @@ pub async fn client_incoming(
                     }
 
                     tx.send(MessageToServer::RemoveMe {
-                        username: user.username.clone()
+                        username: Some(user.username.clone())
                     }).await.unwrap();
                     LOGGER.info(log_parser(USER_LEFT, &[&user.username, &peer_addr]));
                     remove_hooks_by_user(user).await;
@@ -72,7 +72,7 @@ pub async fn client_incoming(
                 }).await.unwrap();
 
                 tx.send(MessageToServer::RemoveMe {
-                    username: user.username.clone()
+                    username: Some(user.username.clone())
                 }).await.unwrap();
                 LOGGER.info(log_parser(USER_LEFT, &[&user.username, &peer_addr]));
                 return;
