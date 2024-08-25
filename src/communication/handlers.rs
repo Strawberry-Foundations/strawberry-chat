@@ -6,17 +6,18 @@ use tokio::net::TcpStream;
 use tokio::sync::mpsc::{Receiver, Sender};
 
 use owo_colors::OwoColorize;
-
 use stblib::stbchat::net::{IncomingPacketStream, OutgoingPacketStream};
 use stblib::stbchat::object::User;
 use stblib::stbchat::packet::{ClientPacket, ServerPacket};
 use stblib::colors::{BOLD, C_RESET, GRAY, RED, YELLOW};
+use sqlx::Row;
 
 use crate::system_core::log::log_parser;
 use crate::system_core::internals::{MessageToClient, MessageToServer};
 use crate::system_core::string::StbString;
 use crate::system_core::server_core::{remove_hooks_by_user, STATUS};
 use crate::constants::log_messages::{CLIENT_KICKED, USER_LEFT};
+use crate::database::db::DATABASE;
 use crate::global::{LOGGER, MESSAGE_VERIFICATOR};
 use crate::security::verification::MessageAction;
 use crate::system_core::status::Status;
@@ -93,15 +94,24 @@ pub async fn client_incoming(
             .await;
         
         let status = *STATUS.read().await.get_by_name(content.mentioned_user.as_str());
+
+
         
         if content.is_mention && content.mentioned_user != user.username && status != Status::DoNotDisturb {
-            tx.send(MessageToServer::ClientNotification {
-                content: content.clone(),
-                bell: false,
-                sent_by: user.clone(),
-            }).await.unwrap_or_else(|e| {
-                LOGGER.error(format!("[S -> {peer_addr}] Failed to send internal packet: {e}"));
-            });
+            let blocked_users_recipient: String = sqlx::query("SELECT blocked FROM users WHERE username = ?")
+                .bind(content.mentioned_user.as_str())
+                .fetch_one(&DATABASE.connection)
+                .await.unwrap().get("blocked");
+
+            if !blocked_users_recipient.split(',').any(|x| x == user.username) {
+                tx.send(MessageToServer::ClientNotification {
+                    content: content.clone(),
+                    bell: false,
+                    sent_by: user.clone(),
+                }).await.unwrap_or_else(|e| {
+                    LOGGER.error(format!("[S -> {peer_addr}] Failed to send internal packet: {e}"));
+                });
+            }
         }
 
 
