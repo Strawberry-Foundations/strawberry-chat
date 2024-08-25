@@ -37,7 +37,9 @@ pub enum MessageToServer {
         name: String,
         args: Vec<String>
     },
-    RemoveMe,
+    RemoveMe {
+        username: String
+    },
     ClientDisconnect {
         reason: String
     },
