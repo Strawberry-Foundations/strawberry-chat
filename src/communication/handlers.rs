@@ -94,8 +94,7 @@ pub async fn client_incoming(
             .await;
         
         let status = *STATUS.read().await.get_by_name(content.mentioned_user.as_str());
-        
-        
+
         if content.is_mention && content.mentioned_user != user.username && status != Status::DoNotDisturb {
             let blocked_users_recipient: String = sqlx::query("SELECT blocked FROM users WHERE username = ?")
                 .bind(content.mentioned_user.as_str())
@@ -112,7 +111,6 @@ pub async fn client_incoming(
                 });
             }
         }
-
 
         match action {
             MessageAction::Kick => {
