@@ -1,4 +1,5 @@
 use reqwest::Client;
+use stblib::colors::{CYAN, ITALIC, RESET};
 use crate::global::{API, RUNTIME_LOGGER};
 
 
@@ -30,7 +31,7 @@ impl OnlineMode {
                 let Ok(body) = response.text().await else { return };
                 let json: serde_json::Value = serde_json::from_str(body.as_str()).unwrap();
 
-                RUNTIME_LOGGER.info(format!("Connected to Strawberry API with IP {}", json["ip"].as_str().unwrap()));
+                RUNTIME_LOGGER.info(format!("Connected to Strawberry API with IP {ITALIC}{CYAN}{}{RESET}", json["ip"].as_str().unwrap()));
             }
             else {
                 RUNTIME_LOGGER.warning("Error while connecting to Strawberry API");
