@@ -16,7 +16,7 @@ use crate::system_core::internals::{MessageToClient, MessageToServer};
 use crate::system_core::string::StbString;
 use crate::system_core::status::{Status, UserStatus};
 use crate::constants::log_messages::SEND_INTERNAL_MESSAGE_FAIL;
-use crate::global::{CORE_VERSION, LOGGER};
+use crate::global::{CORE_VERSION, LOGGER, RUNTIME_LOGGER};
 
 const CHANNEL_BUFFER: usize = 10;
 
@@ -141,7 +141,7 @@ pub async fn send_to_all(what: MessageToClient, authed_only: bool) {
 }
 
 pub async fn core_thread(watchdog_tx: Sender<()>) {
-    LOGGER.info(format!("Starting core thread ({})", CORE_VERSION.clone()));
+    RUNTIME_LOGGER.info(format!("Starting core thread ({})", CORE_VERSION.clone()));
 
     loop {
         let _ = watchdog_tx.try_send(());
