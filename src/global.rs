@@ -22,7 +22,7 @@ pub const CODENAME_SHORT: &str = "rscake";
 
 pub const CHAT_NAME: &str = "Strawberry Chat";
 pub const UPDATE_CHANNEL: &str = "stable";
-pub const SERVER_EDITION: &str = "Rusty Edition";
+pub const SERVER_EDITION: &str = "Community";
 
 pub const AUTHORS: &[&str; 3] = &["Juliandev02", "Paddyk45", "matteodev8"];
 
