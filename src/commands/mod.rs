@@ -34,6 +34,7 @@ pub mod etc {
 }
 
 pub mod admin {
+    pub mod kick;
     pub mod ban;
     pub mod unban;
     pub mod mute;
