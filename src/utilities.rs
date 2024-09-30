@@ -1,6 +1,5 @@
 use std::fs;
 use std::io::{self, Write};
-
 use stblib::colors::{BLUE, BOLD, C_RESET, CYAN, GRAY, GREEN, MAGENTA, RED, RESET, YELLOW};
 
 use crate::system_core::config::DEFAULT_CONFIG;
@@ -163,4 +162,9 @@ pub fn parse_user_status(status: Status, with_text: bool) -> String {
             Status::Offline => format!("{GRAY}{BOLD}〇{C_RESET}")
         }
     }
+}
+
+pub fn serializer(text: &str) -> Result<serde_json::Value, serde_json::Error> {
+    let serializer = serde_json::from_str(text)?;
+    Ok(serializer)
 }
