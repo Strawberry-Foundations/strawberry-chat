@@ -65,6 +65,7 @@ pub fn command_registry() -> Vec<Command> {
         
         admin::broadcast::broadcast(),
         admin::ban::ban(),
+        admin::kick::kick(),
         admin::unban::unban(),
         admin::mute::mute(),
         admin::unmute::unmute(),
