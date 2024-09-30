@@ -109,7 +109,11 @@ pub fn strawberry_id() -> commands::Command {
                     }
                 });
             }
-            _ => {}
+            _ => {
+                ctx.tx_channel.send(MessageToClient::SystemMessage {
+                    content: format!("{BOLD}{YELLOW}Invalid subcommand. Usage: /strawberry-id [remove, link]{C_RESET}")
+                }).await.unwrap();
+            }
         }
 
         Ok(None)
