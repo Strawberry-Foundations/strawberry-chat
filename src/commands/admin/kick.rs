@@ -19,20 +19,24 @@ pub fn kick() -> commands::Command {
             return Err(format!("{BOLD}{YELLOW}You cannot kick yourself!{C_RESET}"))
         }
 
-        let reason: Vec<String> = ctx.args[1..].to_vec();
+        let reason_vec: Vec<String> = ctx.args[1..].to_vec();
+        let reason = if reason_vec.is_empty() {
+            String::from("Not specified")
+        }
+        else {
+            reason_vec.join(" ")
+        };
 
         ctx.tx_channel.send(MessageToClient::SystemMessage {
             content: format!(
-                "{GREEN}Kicked {user}. Reason: {}{C_RESET}",
-                reason.join(" ")
+                "{GREEN}Kicked {user}. Reason: {reason}{C_RESET}"
             )
         }).await.unwrap();
 
         for tx in conn {
             tx.send(MessageToClient::SystemMessage {
                 content: format!(
-                    "{YELLOW}{BOLD}You got kicked from the server. Reason: {}{C_RESET}",
-                    reason.join(" ")
+                    "{YELLOW}{BOLD}You got kicked from the server. Reason: {reason}{C_RESET}"
                 )
             }).await.unwrap();
 
