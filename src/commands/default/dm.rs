@@ -8,9 +8,9 @@ use crate::system_core::commands::CommandCategory;
 use crate::system_core::internals::MessageToClient;
 use crate::system_core::permissions::Permissions;
 use crate::system_core::server_core::{get_senders_by_username_ignore_case, STATUS};
+use crate::system_core::status::Status;
 use crate::database::db::DATABASE;
 use crate::global::LOGGER;
-use crate::system_core::status::Status;
 use crate::utilities::role_color_parser;
 
 pub fn dm_basic() -> commands::Command {
@@ -67,8 +67,6 @@ pub fn dm_basic() -> commands::Command {
         }).await.unwrap();
         
         for tx in conn {
-            
-            
             tx.send(MessageToClient::SystemMessage {
                 content: format!(
                     "{}{}{C_RESET}{GRAY} --> {role_color}You{C_RESET}: {}",
