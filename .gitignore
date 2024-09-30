@@ -8,5 +8,6 @@ Cargo.lock
 # Source files
 old/
 
+# Strawberry Chat files
 config.yml
 bad_words.yml
