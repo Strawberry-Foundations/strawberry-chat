@@ -1,17 +1,10 @@
-use sqlx::Row;
-
-use stblib::colors::{BOLD, C_RESET, GRAY, GREEN, RED, YELLOW};
-use stblib::utilities::escape_ansi;
+use stblib::colors::{BOLD, C_RESET, GREEN, RED, YELLOW};
 
 use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;
 use crate::system_core::internals::MessageToClient;
 use crate::system_core::permissions::Permissions;
-use crate::system_core::server_core::{get_senders_by_username_ignore_case, STATUS};
-use crate::system_core::status::Status;
-use crate::database::db::DATABASE;
-use crate::global::LOGGER;
-use crate::utilities::role_color_parser;
+use crate::system_core::server_core::get_senders_by_username_ignore_case;
 
 pub fn kick() -> commands::Command {
     async fn logic(ctx: &commands::Context) -> commands::CommandResponse {
@@ -42,7 +35,7 @@ pub fn kick() -> commands::Command {
                     reason.join(" ")
                 )
             }).await.unwrap();
-            
+
             tx.send(MessageToClient::Shutdown).await.unwrap();
         }
 
