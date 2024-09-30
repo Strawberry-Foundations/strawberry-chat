@@ -21,6 +21,7 @@ use crate::communication::connection_handler::connection_handler;
 use crate::utilities::{delete_last_line, runtime_all_addresses};
 use crate::database::db::DATABASE;
 use crate::global::{CONFIG, DEFAULT_VERSION, ONLINE_MODE, RUNTIME_LOGGER, CHAT_NAME, CODENAME, SERVER_EDITION, ADDITION_VER};
+use crate::cli_wins::constructor::{Constructor, ConstructorOptions};
 
 mod utilities;
 mod global;
@@ -34,6 +35,7 @@ mod security;
 
 pub static CORE_HANDLE: OnceLock<Mutex<JoinHandle<()>>> = OnceLock::new();
 
+
 #[tokio::main]
 async fn main(){
     std::panic::set_hook(Box::new(|info| {
@@ -43,7 +45,7 @@ async fn main(){
     println!("{CYAN}{BOLD}* -- {CHAT_NAME} {} {CODENAME} ({SERVER_EDITION}) -- *{RESET}{C_RESET}", DEFAULT_VERSION.clone());
     
     if !ADDITION_VER.is_empty() {
-        let constructor = cli_wins::constructor::Constructor::new("Pre-released Software", YELLOW, 2, cli_wins::constructor::ConstructorOptions {
+        let constructor = Constructor::new("Pre-released Software", YELLOW, 2, ConstructorOptions {
             debug_mode: true
         });
 
@@ -57,7 +59,7 @@ async fn main(){
     if var("DEBUG").is_ok() {
         println!();
 
-        let constructor = cli_wins::constructor::Constructor::new("Warning: Debug Mode", YELLOW, 2, cli_wins::constructor::ConstructorOptions {
+        let constructor = Constructor::new("Warning: Debug Mode", YELLOW, 2, ConstructorOptions {
             debug_mode: true
         });
 
