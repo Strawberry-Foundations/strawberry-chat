@@ -1,11 +1,11 @@
 use stblib::colors::{BOLD, C_RESET, GREEN, RED, YELLOW};
 
-use crate::global::LOGGER;
 use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;
 use crate::system_core::internals::MessageToClient;
 use crate::system_core::permissions::Permissions;
 use crate::system_core::server_core::get_senders_by_username_ignore_case;
+use crate::global::LOGGER;
 
 pub fn kick() -> commands::Command {
     async fn logic(ctx: &commands::Context) -> commands::CommandResponse {
