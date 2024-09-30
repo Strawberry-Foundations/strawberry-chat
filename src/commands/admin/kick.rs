@@ -1,5 +1,5 @@
 use stblib::colors::{BOLD, C_RESET, GREEN, RED, YELLOW};
-
+use crate::global::LOGGER;
 use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;
 use crate::system_core::internals::MessageToClient;
@@ -43,6 +43,7 @@ pub fn kick() -> commands::Command {
             tx.send(MessageToClient::Shutdown).await.unwrap();
         }
 
+        LOGGER.info(format!("{} has been kicked by {}", user, ctx.executor.username));
         Ok(None)
     }
 
