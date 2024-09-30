@@ -101,6 +101,8 @@ pub fn strawberry_id() -> commands::Command {
                                     .bind(&ctx_username)
                                     .execute(&DATABASE.connection)
                                     .await.is_ok() {};
+                                
+                                break
                             }
                         }
 
