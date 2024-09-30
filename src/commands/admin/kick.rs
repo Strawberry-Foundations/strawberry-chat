@@ -15,7 +15,7 @@ pub fn kick() -> commands::Command {
             return Err(format!("{BOLD}{RED}User not found or offline{C_RESET}"))
         }
 
-        if ctx.executor.username == ctx.args[0].as_str() {
+        if ctx.executor.username.to_lowercase() == ctx.args[0].as_str().to_lowercase() {
             return Err(format!("{BOLD}{YELLOW}You cannot kick yourself!{C_RESET}"))
         }
 
