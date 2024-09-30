@@ -33,14 +33,14 @@ pub fn is_feature_enabled(feature_state: bool) -> String {
 }
 
 pub fn get_ratelimit_timeout(feat_enabled: bool) -> String {
-    let rlm = CONFIG.networking.ratelimit_timeout.to_string();
+    let ratelimit_timeout = CONFIG.networking.ratelimit_timeout.to_string();
     if feat_enabled {
-        match rlm.len() {
-            1 => format!("{RESET}({CYAN}{rlm}s{RESET})    "),
-            2 => format!("{RESET}({CYAN}{rlm}s{RESET})   "),
-            3 => format!("{RESET}({CYAN}{rlm}s{RESET})  "),
-            4 => format!("{RESET}({CYAN}{rlm}s{RESET}) "),
-            5 => format!("{RESET}({CYAN}{rlm}s{RESET})"),
+        match ratelimit_timeout.len() {
+            1 => format!("{RESET}({CYAN}{ratelimit_timeout}s{RESET})    "),
+            2 => format!("{RESET}({CYAN}{ratelimit_timeout}s{RESET})   "),
+            3 => format!("{RESET}({CYAN}{ratelimit_timeout}s{RESET})  "),
+            4 => format!("{RESET}({CYAN}{ratelimit_timeout}s{RESET}) "),
+            5 => format!("{RESET}({CYAN}{ratelimit_timeout}s{RESET})"),
             _ => "        ".to_string(),
         }
     }
