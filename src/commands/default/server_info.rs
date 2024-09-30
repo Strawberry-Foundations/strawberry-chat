@@ -1,10 +1,10 @@
 use stblib::colors::{BOLD, C_RESET, WHITE};
 
-use crate::global::CONFIG;
 use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;
 use crate::system_core::internals::MessageToClient;
 use crate::system_core::permissions::Permissions;
+use crate::global::CONFIG;
 
 pub fn server_info() -> commands::Command {
     async fn logic(ctx: &commands::Context) -> commands::CommandResponse {
