@@ -1,6 +1,6 @@
 use reqwest::Client;
 use stblib::colors::{CYAN, ITALIC, RESET};
-use crate::global::{API, RUNTIME_LOGGER};
+use crate::global::{STRAWBERRY_API, RUNTIME_LOGGER};
 
 
 #[derive(Default)]
@@ -22,7 +22,7 @@ impl OnlineMode {
         if self.enabled {
             let client = Client::new();
 
-            let Ok(response) = client.get(format!("{API}utils/user/ip")).send().await else {
+            let Ok(response) = client.get(format!("{STRAWBERRY_API}utils/user/ip")).send().await else {
                 RUNTIME_LOGGER.warning("Could not send request to Strawberry API");
                 return
             };
