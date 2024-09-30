@@ -1,13 +1,12 @@
 use sqlx::Row;
 use stblib::colors::{BOLD, C_RESET, RED, LIGHT_GREEN, YELLOW};
 
-use crate::database::db::DATABASE;
-use crate::global::LOGGER;
-
 use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;
 use crate::system_core::internals::MessageToClient;
 use crate::system_core::permissions::Permissions;
+use crate::database::db::DATABASE;
+use crate::global::LOGGER;
 
 pub fn ban() -> commands::Command {
     async fn logic(ctx: &commands::Context) -> commands::CommandResponse {
