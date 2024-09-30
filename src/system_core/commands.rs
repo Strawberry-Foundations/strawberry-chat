@@ -72,6 +72,7 @@ pub struct Command {
 /// # Context struct
 /// The context struct contains all context-related information that the command requires for execution.
 /// This includes user information such as username, badge, ... and the arguments that the user has specified.
+#[derive(Clone)]
 pub struct Context {
     /// The user who executed the command
     pub executor: User,
