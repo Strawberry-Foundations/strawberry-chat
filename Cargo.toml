@@ -1,6 +1,6 @@
 [package]
 name = "strawberry-chat"
-version = "1.12.0"
+version = "1.13.0-dp1"
 edition = "2021"
 authors = ["Juliandev02", "Paddyk45", "matteodev8"]
 description = "A simple but nice chat platform for your terminal"
@@ -24,7 +24,7 @@ futures = "0.3.30"
 sqlx = { version = "0.8.2", features = ["mysql", "runtime-tokio-native-tls", "json"] }
 strip-ansi-escapes = "0.2.0"
 chrono = "0.4.38"
-reqwest = "0.12.7"
+reqwest = "0.12.8"
 argon2 = "0.6.0-pre.1"
 
 [profile.release]
