@@ -18,16 +18,24 @@
 
 
 ## What is Strawberry Chat?
-Strawberry Chat is a simple chat platform based on Rust Async Tcp Streams. It allows you to chat with other people in a simple and minimal way - without annoying tracking and spying.<br>
+Strawberry Chat is a simple chat platform based on Rust Async Tcp Streams.
+It allows you to chat with other people in a simple and minimal way - without annoying tracking and spying.<br>
 Also don't mind looking at our documentation! https://developers.strawberryfoundations.org/
 
-## Why?
-I wanted to program a "small" chat app because I had always been interested in microcomputer and bare-bones technologies such as pure Tcp sockets. At the time I started, I only knew Python. Due to the size and features of Strawberry Chat, Strawberry Chat was rewritten in a faster and safer language, Rust. Strawberry Chat is not intended to be a replacement for conventional chat platforms - it is more of an addition to have fun. 
+### Why?
+I wanted to program a “small” chat application because I had always been interested in networking and simple technologies like pure Tcp sockets.
+At the time I started, I only knew Python. Due to the scope and features of Strawberry Chat, Strawberry Chat was rewritten in a faster and safer language, Rust.
+Strawberry Chat is not meant to be a replacement for traditional chat platforms - it's more of an addition to have fun.
 
 ## How does Strawberry Chat work?
-I can't explain everything in detail now, it might end up in our [Developer documentation](https://developers.strawberryfoundations.org/), but Strawberry Chat works by simply communicating via Tcp sockets - similar to IRC, except we have our own transport format. <br>
-In the beginning, communication only took place via pure strings (if you can read German, [this](https://developers.strawberryfoundations.org/german/json-communication/introduction#versionen-des-strawberry-communication-standards) might be helpful). This was quite simple, but it limited the users very much. And so the [Strawberry Communication Standard](https://developers.strawberryfoundations.org/json-communication/introduction) was born.<nr>
-With v2 of the standard, we implemented JSON to provide more options for how the client can represent a message. We are currently developing v3, which goes in both directions - server & client send JSON. 
+Strawberry Chat uses TCP streams and a self-implemented JSON communication format.
+For data compression [msgpack](https://msgpack.org/) is used.
+There is a server and clients.
+The processing of all data, commands, etc. takes place on the server - the client only serves as an input between server and client.
+
+## Client
+Our official [Strawberry Chat Client](https://github.com/Strawberry-Foundations/strawberry-chat-client) is best optimized for use with the official Strawberry Chat Server.
+It is very easy to use and offers a configuration to save servers as well as credentials
 
 ## Security
 Security is an important part when it comes to internet programs.
@@ -47,23 +55,25 @@ In the following table you can see our security features and the corresponding v
 | Supported | Not supported | Partially supported |
 
 
-## Release cycle
+# How to install
+Strawberry Chat can be downloaded as a stable release [here](https://github.com/Strawberry-Foundations/strawberry-chat/releases/latest), 
+or as a development version directly from GitHub. However, this must be compiled manually.
 
-We have developed the Strawberry Chat release schedule so that a version is released approximately every month.
-This can be a major release (such as v1.9, v.11), but it can also be a minor release (such as v1.8.2).
-In rare cases, a new version is only released every 2 months.
-
-> The last stable release before v1.11.0 was released on December 1, 2023, and was version 1.9.0.
-> About 5 months have passed since this release.
-> In very rare cases this can happen. This was because we rewrote Strawberry Chat in a completely different language,
-> namely Rust, which takes a lot of time. We do not plan to change the language in the future - however,
-> if we change anything in our code base, which could take a long time,
-> it is quite possible that the release of a new version could take several months.
-
-
-## Side Notes
 ### Config
 When you start Strawberry Chat for the first time, Strawberry Chat automatically creates a configuration for you.
 However, if you want to create a config file beforehand, you can copy the example.config.yml from this repository and modify it:
-Copy `./example.config.yml` to `./target/{RELEASE_TYPE}/config.yml` (Or to the same directory as the executable) 
+Copy `./example.config.yml` to `./target/{RELEASE_TYPE}/config.yml` (Or to the same directory as the executable)
 and change values as needed
+
+### Database
+Strawberry Chat uses MySQL / MariaDB as database backend. The configuration for this is in the config.yml under the `database` section
+The database needs a `users` table for Strawberry Chat to work
+
+## Release cycle
+We have developed the release schedule of Strawberry Chat so that a new version should be released every month.
+This could be a major release (e.g. v1.12.0) or an intermediate release (e.g. v1.12.1).
+Usually a major version is always followed by a minor version or an intermediate version.
+In certain cases, 2 major or minor major versions can also be released in succession.
+
+> [!NOTE]
+> Due to a lack of ideas for new functions, this schedule cannot be adhered to.
