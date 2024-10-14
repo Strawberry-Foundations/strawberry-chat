@@ -35,16 +35,20 @@ pub fn kick() -> commands::Command {
         }).await.unwrap();
 
         for tx in conn {
-            tx.send(MessageToClient::SystemMessage {
-                content: format!(
-                    "{YELLOW}{BOLD}You got kicked from the server. Reason: {reason}{C_RESET}"
-                )
-            }).await.unwrap();
+            if matches!(tx.send(MessageToClient::SystemMessage {
+                content: format!("{YELLOW}{BOLD}You got kicked from the server. Reason: {reason}{C_RESET}")
+            }).await, Ok(())) {} else {
+                ctx.tx_channel.send(MessageToClient::SystemMessage {
+                    content: format!("{YELLOW}Couldn't kick {user}: User is not in IP list{C_RESET}")
+                }).await.unwrap();
+                LOGGER.warning(format!("Couldn't kick {user}: User is not in IP list"));
+                return Ok(None)
+            }
 
             tx.send(MessageToClient::Shutdown).await.unwrap();
         }
 
-        LOGGER.info(format!("{} has been kicked by {}", user, ctx.executor.username));
+        LOGGER.info(format!("{user} has been kicked by {}", ctx.executor.username));
         Ok(None)
     }
 
