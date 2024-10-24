@@ -7,9 +7,12 @@ use crate::global::CONFIG;
 lazy_static!(
     pub static ref DATABASE: Database = futures::executor::block_on(async {
         let url = format!(
-            "mysql://{}:{}@{}/{}",
-            CONFIG.database.user, CONFIG.database.password,
-            CONFIG.database.host, CONFIG.database.database
+            "mysql://{}:{}@{}:{}/{}",
+            CONFIG.database.user,
+            CONFIG.database.password,
+            CONFIG.database.host,
+            CONFIG.database.port,
+            CONFIG.database.database
         );
 
         Database::new(url.as_str()).await
