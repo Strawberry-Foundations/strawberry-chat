@@ -11,5 +11,8 @@
 - CHORE: Several dependency updates
 
 # DP 2
+- NEW: Remove unused config flags
+
 - CHORE: Moved cryptographic functions to separate module
+
 - FIX: code optimizations
