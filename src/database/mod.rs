@@ -238,10 +238,7 @@ impl Database {
         }
 
         else {
-            return match data.first() {
-                Some(user) => Some(user.to_owned()),
-                None => return None
-            };
+            data.first().map(std::borrow::ToOwned::to_owned)
         }
     }
 }
