@@ -4,7 +4,7 @@ use lazy_static::lazy_static;
 
 use stblib::logging::Logger;
 use stblib::logging::formats::{LogFormat, LogFormatExt};
-use stblib::colors::{BLUE, BOLD, C_RESET, GREEN, RED, YELLOW};
+use stblib::colors::{BLUE, BOLD, CYAN, C_RESET, GREEN, RED, YELLOW};
 
 use crate::system_core::config::GlobalConfig;
 use crate::security::verification::MessageVerification;
@@ -73,7 +73,8 @@ lazy_static! {
         if CONFIG_VER != config.config_ver {
             LOGGER.panic_crash(
                 format!(
-                    "Config version is invalid - Please update your config. (got {}, requires {CONFIG_VER})",
+                    "Config version is invalid - Please update your config. \
+                    (currently: {YELLOW}{}{C_RESET}, requires: {CYAN}{CONFIG_VER}{C_RESET})",
                     config.config_ver
                 )
             )
