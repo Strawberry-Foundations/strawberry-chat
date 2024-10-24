@@ -73,11 +73,8 @@ pub struct SecurityConfig {
 pub const DEFAULT_CONFIG: &str = r#"server:
   address: "0.0.0.0"
   port: 52800
-  name: "Strawberry Chat Server"
-  title: "Julian's Strawberry Chat"
+  name: "Julian's Strawberry Chat"
   description: "This is Julian's Strawberry Chat instance!"
-  edition_key: "somekey"
-  update_channel: "stable"
 
 config:
   max_message_length: 256
@@ -85,7 +82,6 @@ config:
   max_registered_users: -1
   max_username_length: 32
   max_password_length: 256
-  recv_allowed_bytes: 8192
   watchdog_timeout: 4
 
 networking:
@@ -99,17 +95,20 @@ flags:
   online_mode: true
   admins_wait_queue: false
   bots_wait_queue: true
-  special_messages: false
 
 database:
-  driver: mysql       # Available drivers: mysql
+  # Available drivers: mysql
+  driver: mysql
 
+  # DB Host & credentials
   host: localhost
   port: 3006
   user: admin
   password: admin
-  database_name: data
-  database_table: users
+
+  # Database & table
+  database: data
+  table: users
 
 security:
   require_signing: false
@@ -117,7 +116,7 @@ security:
   banned_ips: []
 
 
-config_ver: 9"#;
+config_ver: 10"#;
 
 impl GlobalConfig {
     pub fn new(config_path: String) -> Self {
