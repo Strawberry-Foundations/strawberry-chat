@@ -9,7 +9,7 @@ lazy_static!(
         let url = format!(
             "mysql://{}:{}@{}/{}",
             CONFIG.database.user, CONFIG.database.password,
-            CONFIG.database.host, CONFIG.database.database_name
+            CONFIG.database.host, CONFIG.database.database
         );
 
         Database::new(url.as_str()).await
