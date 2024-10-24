@@ -6,9 +6,6 @@ use sqlx::mysql::MySqlRow;
 use stblib::stbchat::object::User;
 use stblib::utilities::unix_time;
 
-use argon2::{PasswordHasher, PasswordVerifier};
-
-
 use crate::system_core::log::log_parser;
 use crate::system_core::objects::{Account, UserAccount};
 use crate::constants::types::CRTLCODE_CLIENT_EXIT;
