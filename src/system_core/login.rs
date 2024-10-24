@@ -31,7 +31,7 @@ pub async fn client_login(w_client: &mut OutgoingPacketStream<WriteHalf<TcpStrea
 
     w_client.write(
         ClientPacket::SystemMessage {
-            message: format!("{BOLD}Welcome to {}!{C_RESET}", CONFIG.server.title)
+            message: format!("{BOLD}Welcome to {}!{C_RESET}", CONFIG.server.name)
         }
     ).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
 
