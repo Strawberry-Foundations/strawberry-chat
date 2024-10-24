@@ -1,0 +1,31 @@
+name: Suggestion
+description: Suggest a new feature
+labels: [ enhancement, feature-request ]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: |
+        What should this feature be?
+    validations:
+      required: true
+  - type: input
+    id: reason
+    attributes:
+      label: Why should this feature be added?
+  - type: checkboxes
+    id: prerequisites
+    attributes:
+      label: Before submitting a suggestion
+      options:
+        - label: |
+            This feature does not exist in the latest version of Strawberry Chat
+          required: true
+        - label: |
+            This feature was not already suggested
+          required: true
+        - label: |
+            This feature is not on our todo-list (Check our GitHub project page!!!)
+          required: true
+

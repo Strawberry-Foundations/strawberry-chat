@@ -1,0 +1,100 @@
+name: Bug
+description: Report a bug
+labels: [ bug ]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the bug
+      description: |
+        Describe the bug
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproducing
+    attributes:
+      label: Steps to reproduce
+      description: Steps to reproduce this bug
+      render: bash
+    validations:
+      required: true
+
+  - type: textarea
+    id: error
+    attributes:
+      label: The Error Text/Stacktrace
+
+  - type: textarea
+    id: report
+    attributes:
+      label: Client Report (Run "python client.py --gen-report")
+  
+  - type: dropdown
+    id: chat-type
+    attributes:
+      label: Chat Program
+      options:
+        - Client
+        - Server
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: The version of Strawberry Chat you used
+    validations:
+      required: true
+
+  - type: input
+    id: python-version
+    attributes:
+      label: Python Version
+    validations:
+      required: true
+
+  - type: dropdown
+    id: operating-systems
+    attributes:
+      label: Operating System
+      options:
+        - Debian
+        - Ubuntu
+        - serverOS
+        - coreOS
+        - Fedora
+        - Alpine
+        - openSUSE
+        - macOS
+        - Windows
+        - Android
+        - other
+    validations:
+      required: true
+
+  - type: input
+    id: operating-system-version
+    attributes:
+      label: Operating System Version
+    validations:
+      required: false
+
+  - type: input
+    id: operating-system-specific-other
+    attributes:
+      label: Used Operating System (Only fill when selected "other")
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: prerequisites
+    attributes:
+      label: Before submitting a bug report
+      options:
+        - label: |
+            This bug wasn't already reported (I have searched bug reports on GitHub).
+          required: true
+        - label: |
+            This bug isn't fixed in the latest version of Strawberry Chat (including git)
+          required: true
