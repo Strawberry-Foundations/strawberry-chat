@@ -12,14 +12,13 @@ use crate::system_core::hooks::Hook;
 use crate::system_core::internals::MessageToClient;
 use crate::system_core::server_core::Event;
 use crate::security::verification::MessageAction;
+use crate::security::crypt::Crypt;
 use crate::utilities::{is_valid_username, role_color_parser};
 use crate::database::db::DATABASE;
-use crate::database::Database;
 use crate::constants::messages::USER_SETTINGS_HELP;
 use crate::constants::chars::USERNAME_ALLOWED_CHARS;
 use crate::constants::log_messages::{WRITE_PACKET_FAIL};
 use crate::global::{CONFIG, LOGGER, MESSAGE_VERIFICATOR};
-
 
 #[allow(clippy::too_many_lines)]
 pub fn user_settings() -> commands::Command {
@@ -311,7 +310,7 @@ pub fn user_settings() -> commands::Command {
                                         }).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
                                     }
                                     
-                                    let password = Database::hash_password(content.as_str());
+                                    let password = Crypt::hash_password(content.as_str());
 
                                     sqlx::query("UPDATE users SET password = ? WHERE username = ?")
                                         .bind(&password)
