@@ -39,6 +39,25 @@ pub fn strawberry_id() -> commands::Command {
                 Err(_) => return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
                 };
 
+                let badges: String = match sqlx::query("SELECT badges FROM users WHERE username = ?")
+                    .bind(&ctx.executor.username)
+                    .fetch_one(&DATABASE.connection)
+                    .await {
+                    Ok(val) => val.get("badges"),
+                    Err(_) => return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
+                };
+
+                let new_badges = badges.replace("🍓", "");
+
+                match sqlx::query("UPDATE users SET badges = ? WHERE username = ?")
+                    .bind(new_badges)
+                    .bind(&ctx.executor.username)
+                    .execute(&DATABASE.connection)
+                    .await {
+                    Ok(..) => (),
+                    Err(_) => return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
+                }
+
                 return Ok(Some(format!("{BOLD}{LIGHT_GREEN}Removed Strawberry ID. Rejoin to apply changes{C_RESET}")))
             },
             "link" => {
@@ -90,10 +109,33 @@ pub fn strawberry_id() -> commands::Command {
 
                                 for tx in &conn {
                                     tx.send(MessageToClient::SystemMessage {
-                                        content: format!(
-                                            "{BOLD}{GREEN}Logged in as {full_name} (@{username}){C_RESET}"
-                                        )
+                                        content: format!("{BOLD}{GREEN}Logged in as {full_name} (@{username}){C_RESET}")
                                     }).await.unwrap();
+
+                                    let badges: String = match sqlx::query("SELECT badges FROM users WHERE username = ?")
+                                        .bind(&ctx_username)
+                                        .fetch_one(&DATABASE.connection)
+                                        .await {
+                                        Ok(val) => val.get("badges"),
+                                        Err(_) => {
+                                            break
+                                        }
+                                    };
+
+                                    if badges.contains("🍓") {
+                                        break
+                                    }
+
+                                    let new_badges = format!("{badges}🍓");
+
+                                    match sqlx::query("UPDATE users SET badges = ? WHERE username = ?")
+                                        .bind(new_badges)
+                                        .bind(&ctx_username)
+                                        .execute(&DATABASE.connection)
+                                        .await {
+                                        Ok(..) => (),
+                                        Err(_) => break
+                                    }
                                 }
 
                                 if sqlx::query("UPDATE users SET strawberry_id = ? WHERE username = ?")
