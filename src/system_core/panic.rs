@@ -1,7 +1,7 @@
-use std::panic::PanicInfo;
+use std::panic::PanicHookInfo;
 use crate::global::LOGGER;
 
-pub fn panic_handler(info: &PanicInfo) {
+pub fn panic_handler(info: &PanicHookInfo) {
     let location = info.location()
         .map_or_else(
             || String::from("an unknown file"),
