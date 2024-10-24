@@ -158,7 +158,7 @@ pub fn admin_settings() -> commands::Command {
             },
             "list-badges" => {
                 let badge_list =  create_badge_list(&BADGE_LIST.join(""));
-                Ok(Some(format!("{GREEN}{BOLD}Available badges: {badge_list}{C_RESET}")))
+                Ok(Some(format!("{GREEN}{BOLD}Available badges: {C_RESET}{badge_list}{C_RESET}")))
             }
 
             _ => Err(format!("{RED}{BOLD}Invalid subcommand!{C_RESET}")),
