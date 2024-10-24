@@ -18,11 +18,11 @@ use crate::system_core::string::StbString;
 use crate::system_core::server_core::{remove_hooks_by_user, STATUS};
 use crate::constants::log_messages::{CLIENT_KICKED, USER_LEFT};
 use crate::database::db::DATABASE;
-use crate::global::{LOGGER, MESSAGE_VERIFICATOR};
+use crate::global::{CONFIG, LOGGER, MESSAGE_VERIFICATOR};
 use crate::security::verification::MessageAction;
 use crate::system_core::status::Status;
 
-
+#[allow(clippy::too_many_lines)]
 pub async fn client_incoming(
     tx: Sender<MessageToServer>,
     mut r_stream: IncomingPacketStream<ReadHalf<TcpStream>>,
@@ -135,6 +135,11 @@ pub async fn client_incoming(
                 tx.send(MessageToServer::SystemMessage {
                     content: format!("{BOLD}{RED}Sorry, but you were muted by an administrator. \
                     Please contact him/her if you have done nothing wrong, or wait until you are unmuted.{C_RESET}")
+                }).await.unwrap();
+            }
+            MessageAction::TooLong => {
+                tx.send(MessageToServer::SystemMessage {
+                    content: format!("{BOLD}{YELLOW}Your message is too long ({}/{}).{C_RESET}", content.len(), CONFIG.config.max_message_length)
                 }).await.unwrap();
             }
             MessageAction::Allow => tx.send(MessageToServer::Message { content: content.string }).await.unwrap(),
