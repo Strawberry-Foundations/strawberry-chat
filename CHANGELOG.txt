@@ -13,6 +13,7 @@
 # DP 2
 - NEW: Remove unused config flags
 - NEW: Updated logging
+- NEW: Add `max_message_length` for Rust-rewrite
 
 - CHORE: Moved cryptographic functions to separate module
 
