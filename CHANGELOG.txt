@@ -7,6 +7,7 @@
 - NEW: Added kick command
 - NEW: Added proper Strawberry ID linking
 - NEW: Added list-badges subcommand for /admin-settings
+- NEW: Added automatic addition of the Strawberry badge when the user connects to the Strawberry ID
 - NEW: Updated about command
 
 - FIX: Fixed a panic occurred by automod
