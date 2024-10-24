@@ -1,16 +1,10 @@
-# STRAWBERRY CHAT V1.12.0 STABLE
+# STRAWBERRY CHAT V1.13.0 STABLE
 
-
-- NEW: Added blacklisted words
-- NEW: Added block & unblock command
-- NEW: Added additional alias for userlist (/users)
-- NEW: Added kick command
-- NEW: Added proper Strawberry ID linking
 - NEW: Added list-badges subcommand for /admin-settings
 - NEW: Added automatic addition of the Strawberry badge when the user connects to the Strawberry ID
-- NEW: Updated about command
 
-- FIX: Fixed a panic occurred by automod
 - FIX: Fixed a panic occurred by /admin-settings
-- FIX: Fixed invalid api url
-- FIX: Fixed several clippy warnings
+- FIX: Fixed a panic occurred by /kick
+- FIX: Fixed use of deprecated type alias std::panic::PanicInfo
+
+- CHORE: Several dependency updates
