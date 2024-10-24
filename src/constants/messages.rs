@@ -14,4 +14,5 @@ pub const ADMIN_SETTINGS_HELP: &str = "\x1B[36m\x1B[4m\x1B[1mAdmin Settings\x1B[
         \x1B[34m\x1B[1m/admin-settings help: \x1B[0mHelp Command
         \x1B[34m\x1B[1m/admin-settings role <user> <role>: \x1B[0mSet the role for a user
         \x1B[34m\x1B[1m/admin-settings badge set/add/remove <user> <badge>: \x1B[0mAdd a badge to a user
+        \x1B[34m\x1B[1m/admin-settings list-badges: \x1B[0mLists available badges
     ";
