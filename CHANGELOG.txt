@@ -9,5 +9,6 @@
 - NEW: Updated about command
 
 - FIX: Fixed a panic occurred by automod
+- FIX: Fixed a panic occurred by /admin-settings
 - FIX: Fixed invalid api url
 - FIX: Fixed several clippy warnings
