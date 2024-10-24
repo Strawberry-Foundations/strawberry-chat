@@ -18,7 +18,7 @@ pub const BASE_VERSION: &str = "1.13.0";
 pub const CORE_BASE_VERSION: &str = "1.02";
 pub const ADDITION_VER: &str = "dp2";
 pub const STBM_VER: &str = "3";
-pub const CONFIG_VER: &str  = "9";
+pub const CONFIG_VER: &str  = "10";
 
 pub const CODENAME: &str = "Rusty Cake";
 pub const CODENAME_SHORT: &str = "rscake";
