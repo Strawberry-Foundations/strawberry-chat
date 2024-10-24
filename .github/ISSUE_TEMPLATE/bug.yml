@@ -25,32 +25,10 @@ body:
     attributes:
       label: The Error Text/Stacktrace
 
-  - type: textarea
-    id: report
-    attributes:
-      label: Client Report (Run "python client.py --gen-report")
-  
-  - type: dropdown
-    id: chat-type
-    attributes:
-      label: Chat Program
-      options:
-        - Client
-        - Server
-    validations:
-      required: true
-
   - type: input
     id: version
     attributes:
       label: The version of Strawberry Chat you used
-    validations:
-      required: true
-
-  - type: input
-    id: python-version
-    attributes:
-      label: Python Version
     validations:
       required: true
 
@@ -61,11 +39,11 @@ body:
       options:
         - Debian
         - Ubuntu
-        - serverOS
-        - coreOS
         - Fedora
-        - Alpine
         - openSUSE
+        - StrawberryOS
+        - coreOS
+        - Alpine
         - macOS
         - Windows
         - Android
@@ -78,7 +56,7 @@ body:
     attributes:
       label: Operating System Version
     validations:
-      required: false
+      required: true
 
   - type: input
     id: operating-system-specific-other
