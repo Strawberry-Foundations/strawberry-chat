@@ -86,7 +86,7 @@ async fn main(){
     let _ = DATABASE.connection.clone();
 
     delete_last_line();
-    RUNTIME_LOGGER.default(format!("Connected to {ITALIC}{CYAN}{}:{}{RESET} (MySQL->{}->{})", CONFIG.database.host, CONFIG.database.port, CONFIG.database.database_name, CONFIG.database.database_table));
+    RUNTIME_LOGGER.default(format!("Connected to {ITALIC}{CYAN}{}:{}{RESET} (MySQL->{}->{})", CONFIG.database.host, CONFIG.database.port, CONFIG.database.database, CONFIG.database.table));
 
 
     RUNTIME_LOGGER.info(
