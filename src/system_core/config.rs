@@ -28,7 +28,7 @@ pub struct ServerConfig {
 
 #[derive(Debug, Deserialize)]
 pub struct Config {
-    pub max_message_length: i16,
+    pub max_message_length: usize,
     pub max_users: i16,
     pub max_registered_users: i16,
     pub max_username_length: u16,
