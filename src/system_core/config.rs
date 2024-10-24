@@ -102,7 +102,7 @@ database:
 
   # DB Host & credentials
   host: localhost
-  port: 3006
+  port: 3306
   user: admin
   password: admin
 
