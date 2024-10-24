@@ -6,15 +6,15 @@ use sqlx::mysql::MySqlRow;
 use stblib::stbchat::object::User;
 use stblib::utilities::unix_time;
 
-use argon2::{Argon2, PasswordHash, PasswordHasher, PasswordVerifier};
-use argon2::password_hash::rand_core::OsRng;
-use argon2::password_hash::SaltString;
+use argon2::{PasswordHasher, PasswordVerifier};
+
 
 use crate::system_core::log::log_parser;
 use crate::system_core::objects::{Account, UserAccount};
 use crate::constants::types::CRTLCODE_CLIENT_EXIT;
 use crate::constants::log_messages::SQL_CONNECTION_ERROR;
 use crate::global::RUNTIME_LOGGER;
+use crate::security::crypt::Crypt;
 use crate::utilities::role_color_parser;
 
 
@@ -32,23 +32,7 @@ impl Database {
             connection
         }
     }
-
-    pub fn verify_password(stored_password: &str, entered_password: &String) -> bool {
-        let hash = PasswordHash::new(stored_password).unwrap();
-
-        let password: &[u8] = entered_password.as_bytes();
-
-        Argon2::default().verify_password(password, &hash).is_ok()
-    }
-
-    pub fn hash_password(plain_password: &str) -> String {
-        let argon2 = Argon2::default();
-        let salt = SaltString::generate(&mut OsRng);
-
-        let hashed_password = argon2.hash_password(plain_password.as_bytes(), &salt).unwrap();
-        hashed_password.to_string()
-    }
-
+    
     pub async fn new_user(&self, user_id: i64, username: String, password: String, role_color: String) {
         sqlx::query(
             "INSERT INTO data.users (\
@@ -118,7 +102,7 @@ impl Database {
 
         let stored_password: String = row.first().unwrap().get("password");
 
-        if !Self::verify_password(stored_password.as_str(), entered_password) {
+        if !Crypt::verify_password(stored_password.as_str(), entered_password) {
             return (UserAccount::default(), false)
         }
 
