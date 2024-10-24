@@ -81,6 +81,10 @@ impl StbString {
     pub fn to_string(&self) -> String {
         self.string.clone()
     }
+    
+    pub fn len(&self) -> usize {
+        self.string.len()
+    }
 }
 
 pub fn capitalize_first(s: &str) -> String {
