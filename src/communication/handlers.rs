@@ -139,7 +139,7 @@ pub async fn client_incoming(
             }
             MessageAction::TooLong => {
                 tx.send(MessageToServer::SystemMessage {
-                    content: format!("{BOLD}{YELLOW}Your message is too long ({}/{}).{C_RESET}", content.len(), CONFIG.config.max_message_length)
+                    content: format!("{BOLD}{YELLOW}Your message is too long ({}/{}){C_RESET}", content.len(), CONFIG.config.max_message_length)
                 }).await.unwrap();
             }
             MessageAction::Allow => tx.send(MessageToServer::Message { content: content.string }).await.unwrap(),
