@@ -9,9 +9,9 @@ use stblib::colors::{BOLD, C_RESET, YELLOW};
 
 use crate::constants::chars::USERNAME_ALLOWED_CHARS;
 use crate::constants::log_messages::{DISCONNECTED, S2C_ERROR, WRITE_PACKET_FAIL};
-use crate::database::Database;
 use crate::database::db::DATABASE;
 use crate::global::{CONFIG, LOGGER, MESSAGE_VERIFICATOR};
+use crate::security::crypt::Crypt;
 use crate::security::verification::MessageAction;
 use crate::system_core::log::log_parser;
 use crate::utilities::is_valid_username;
@@ -130,7 +130,7 @@ pub async fn client_register(
     }
 
     let user_id = DATABASE.get_next_user_id().await;
-    let registered_password = Database::hash_password(password.as_str());
+    let registered_password = Crypt::hash_password(password.as_str());
 
     DATABASE.new_user(user_id, username, registered_password, role_color).await;
 }
