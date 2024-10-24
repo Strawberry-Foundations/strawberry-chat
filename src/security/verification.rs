@@ -42,7 +42,7 @@ impl MessageVerification {
         if content.trim().is_empty() {
             return MessageAction::Hide;
         }
-        if content.len() > CONFIG.config.max_message_length as usize {
+        if content.len() > CONFIG.config.max_message_length {
             return MessageAction::TooLong;
         }
         MessageAction::Allow
@@ -67,7 +67,7 @@ impl MessageVerification {
         if content.trim().is_empty() {
             return MessageAction::Hide;
         }
-        if content.len() > CONFIG.config.max_message_length as usize {
+        if content.len() > CONFIG.config.max_message_length {
             return MessageAction::TooLong;
         }
         if muted {
