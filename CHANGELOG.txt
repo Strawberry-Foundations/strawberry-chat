@@ -16,3 +16,4 @@
 - CHORE: Moved cryptographic functions to separate module
 
 - FIX: code optimizations
+- FIX: Fixed custom database port not working (#150)
