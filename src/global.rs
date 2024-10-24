@@ -15,6 +15,7 @@ pub const STRAWBERRY_ID_API: &str = "https://id.strawberryfoundations.org/v2/";
 pub const STRAWBERRY_CLOUD_API: &str = "https://cloud.strawberryfoundations.org/";
 
 pub const BASE_VERSION: &str = "1.13.0";
+pub const CORE_BASE_VERSION: &str = "1.02";
 pub const ADDITION_VER: &str = "dp2";
 pub const STBM_VER: &str = "3";
 pub const CONFIG_VER: &str  = "9";
@@ -84,7 +85,7 @@ lazy_static! {
     pub static ref DEFAULT_VERSION: String = format!("v{BASE_VERSION}{ADDITION_VER}");
     pub static ref VERSION: String = format!("{}", DEFAULT_VERSION.clone());
 
-    pub static ref CORE_VERSION: String = format!("{BASE_VERSION}-{CODENAME_SHORT}-1.02");
+    pub static ref CORE_VERSION: String = format!("{BASE_VERSION}-{CODENAME_SHORT}-{CORE_BASE_VERSION}");
 
     pub static ref EXT_VERSION: String = format!(
         "{}_{UPDATE_CHANNEL}-{CODENAME_SHORT}-rst_stbcv{STBM_VER}",
