@@ -23,10 +23,7 @@ pub struct ServerConfig {
     pub address: String,
     pub port: u16,
     pub name: String,
-    pub title: String,
     pub description: String,
-    pub edition_key: String,
-    pub update_channel: String,
 }
 
 #[derive(Debug, Deserialize)]
@@ -36,7 +33,6 @@ pub struct Config {
     pub max_registered_users: i16,
     pub max_username_length: u16,
     pub max_password_length: u16,
-    pub recv_allowed_bytes: u16,
     pub watchdog_timeout: u64,
 }
 
@@ -54,7 +50,6 @@ pub struct FlagConfig {
     pub online_mode: bool,
     pub admins_wait_queue: bool,
     pub bots_wait_queue: bool,
-    pub special_messages: bool,
 }
 
 #[derive(Debug, Deserialize)]
@@ -64,8 +59,8 @@ pub struct DatabaseConfig {
     pub port: u16,
     pub user: String,
     pub password: String,
-    pub database_name: String,
-    pub database_table: String,
+    pub database: String,
+    pub table: String,
 }
 
 #[derive(Debug, Deserialize)]
