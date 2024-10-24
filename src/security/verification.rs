@@ -8,7 +8,7 @@ use sqlx::Row;
 use stblib::stbchat::object::User;
 
 use crate::database::db::DATABASE;
-use crate::global::LOGGER;
+use crate::global::{CONFIG, LOGGER};
 
 #[derive(Deserialize)]
 pub struct BlockedWords {
@@ -25,7 +25,8 @@ pub enum MessageAction {
     Allow,
     Hide,
     Kick,
-    UserMuted
+    UserMuted,
+    TooLong
 }
 
 impl MessageVerification {
@@ -40,6 +41,9 @@ impl MessageVerification {
         }
         if content.trim().is_empty() {
             return MessageAction::Hide;
+        }
+        if content.len() > CONFIG.config.max_message_length as usize {
+            return MessageAction::TooLong;
         }
         MessageAction::Allow
     }
@@ -62,6 +66,9 @@ impl MessageVerification {
         }
         if content.trim().is_empty() {
             return MessageAction::Hide;
+        }
+        if content.len() > CONFIG.config.max_message_length as usize {
+            return MessageAction::TooLong;
         }
         if muted {
             return MessageAction::UserMuted;
