@@ -6,6 +6,7 @@
 - NEW: Added additional alias for userlist (/users)
 - NEW: Added kick command
 - NEW: Added proper Strawberry ID linking
+- NEW: Added list-badges subcommand for /admin-settings
 - NEW: Updated about command
 
 - FIX: Fixed a panic occurred by automod
