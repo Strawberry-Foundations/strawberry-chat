@@ -1,5 +1,6 @@
 # STRAWBERRY CHAT V1.13.0 STABLE
 
+# DP 1
 - NEW: Added list-badges subcommand for /admin-settings
 - NEW: Added automatic addition of the Strawberry badge when the user connects to the Strawberry ID
 
@@ -8,3 +9,7 @@
 - FIX: Fixed use of deprecated type alias std::panic::PanicInfo
 
 - CHORE: Several dependency updates
+
+# DP 2
+- CHORE: Moved cryptographic functions to separate module
+- FIX: code optimizations
