@@ -12,6 +12,7 @@
 
 # DP 2
 - NEW: Remove unused config flags
+- NEW: Updated logging
 
 - CHORE: Moved cryptographic functions to separate module
 
