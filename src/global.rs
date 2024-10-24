@@ -71,13 +71,13 @@ lazy_static! {
         let config = GlobalConfig::new(config_path);
 
         if CONFIG_VER != config.config_ver {
-            LOGGER.panic_crash(
+            RUNTIME_LOGGER.panic_crash(
                 format!(
                     "Config version is invalid - Please update your config. \
                     (currently: {YELLOW}{}{C_RESET}, requires: {CYAN}{CONFIG_VER}{C_RESET})",
                     config.config_ver
                 )
-            )
+            );
         }
 
         config
