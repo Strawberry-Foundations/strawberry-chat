@@ -9,7 +9,7 @@ use stblib::colors::{BOLD, C_RESET, YELLOW};
 
 use crate::constants::chars::USERNAME_ALLOWED_CHARS;
 use crate::constants::log_messages::{DISCONNECTED, S2C_ERROR, WRITE_PACKET_FAIL};
-use crate::database::db::DATABASE;
+use crate::database::DATABASE;
 use crate::global::{CONFIG, LOGGER, MESSAGE_VERIFICATOR};
 use crate::security::crypt::Crypt;
 use crate::security::verification::MessageAction;

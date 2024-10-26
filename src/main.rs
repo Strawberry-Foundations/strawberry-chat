@@ -19,7 +19,7 @@ use crate::system_core::watchdog::watchdog_thread;
 use crate::system_core::panic::panic_handler;
 use crate::communication::connection_handler::connection_handler;
 use crate::utilities::{delete_last_line, runtime_all_addresses};
-use crate::database::db::DATABASE;
+use crate::database::DATABASE;
 use crate::global::{CONFIG, DEFAULT_VERSION, ONLINE_MODE, RUNTIME_LOGGER, CHAT_NAME, CODENAME, SERVER_EDITION, ADDITION_VER};
 use crate::cli_wins::constructor::{Constructor, ConstructorOptions};
 

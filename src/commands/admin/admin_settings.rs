@@ -4,7 +4,7 @@ use stblib::colors::{BOLD, C_RESET, GREEN, LIGHT_GREEN, RED};
 use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;
 use crate::system_core::permissions::Permissions;
-use crate::database::db::DATABASE;
+use crate::database::DATABASE;
 use crate::constants::messages::{ADMIN_SETTINGS_HELP};
 use crate::constants::badges::BADGE_LIST;
 use crate::utilities::create_badge_list;

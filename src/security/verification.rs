@@ -7,7 +7,7 @@ use sqlx::Row;
 
 use stblib::stbchat::object::User;
 
-use crate::database::db::DATABASE;
+use crate::database::DATABASE;
 use crate::global::{CONFIG, LOGGER};
 
 #[derive(Deserialize)]

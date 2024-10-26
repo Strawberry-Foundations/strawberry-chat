@@ -5,7 +5,7 @@ use crate::system_core::commands::CommandCategory;
 use crate::system_core::internals::MessageToClient;
 use crate::system_core::permissions::Permissions;
 use crate::system_core::server_core::{get_online_usernames, STATUS};
-use crate::database::db::DATABASE;
+use crate::database::DATABASE;
 use crate::utilities::parse_user_status;
 
 async fn format_to_list(member_list: &[String], fmt_color: &str) -> String {

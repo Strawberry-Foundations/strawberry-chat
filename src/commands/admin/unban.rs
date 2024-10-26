@@ -5,7 +5,7 @@ use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;
 use crate::system_core::internals::MessageToClient;
 use crate::system_core::permissions::Permissions;
-use crate::database::db::DATABASE;
+use crate::database::DATABASE;
 use crate::global::LOGGER;
 
 pub fn unban() -> commands::Command {

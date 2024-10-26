@@ -14,7 +14,7 @@ use crate::system_core::server_core::Event;
 use crate::security::verification::MessageAction;
 use crate::security::crypt::Crypt;
 use crate::utilities::{is_valid_username, role_color_parser};
-use crate::database::db::DATABASE;
+use crate::database::DATABASE;
 use crate::constants::messages::USER_SETTINGS_HELP;
 use crate::constants::chars::USERNAME_ALLOWED_CHARS;
 use crate::constants::log_messages::{WRITE_PACKET_FAIL};

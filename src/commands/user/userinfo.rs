@@ -7,7 +7,7 @@ use crate::system_core::internals::MessageToClient;
 use crate::system_core::permissions::Permissions;
 use crate::system_core::string::capitalize_first;
 use crate::system_core::server_core::STATUS;
-use crate::database::db::DATABASE;
+use crate::database::DATABASE;
 use crate::utilities::{create_badge_list, parse_user_status, role_color_parser};
 
 #[derive(Clone, Default, Debug, PartialEq, Eq, sqlx::FromRow)]

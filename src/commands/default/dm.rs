@@ -9,7 +9,7 @@ use crate::system_core::internals::MessageToClient;
 use crate::system_core::permissions::Permissions;
 use crate::system_core::server_core::{get_senders_by_username_ignore_case, STATUS};
 use crate::system_core::status::Status;
-use crate::database::db::DATABASE;
+use crate::database::DATABASE;
 use crate::global::LOGGER;
 use crate::utilities::role_color_parser;
 

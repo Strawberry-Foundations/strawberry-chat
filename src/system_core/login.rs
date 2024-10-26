@@ -19,7 +19,7 @@ use crate::system_core::objects::UserAccount;
 use crate::system_core::register::client_register;
 use crate::system_core::server_core::get_online_usernames;
 use crate::constants::log_messages::{ADDRESS_LEFT, DISCONNECTED, READ_PACKET_FAIL, S2C_ERROR, WRITE_PACKET_FAIL};
-use crate::database::db::DATABASE;
+use crate::database::DATABASE;
 use crate::global::{CONFIG, LOGGER};
 
 /// Returns None if the client disconnected

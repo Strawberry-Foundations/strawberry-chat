@@ -1,11 +1,12 @@
 use stblib::colors::{BOLD, C_RESET, CYAN, GREEN, UNDERLINE};
-use crate::database::db::DATABASE;
 
 use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;
 use crate::system_core::internals::MessageToClient;
 use crate::system_core::permissions::Permissions;
 use crate::global::CONFIG;
+use crate::database::DATABASE;
+
 
 pub fn members() -> commands::Command {
     async fn logic(ctx: &commands::Context) -> commands::CommandResponse {

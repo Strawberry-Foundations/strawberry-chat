@@ -5,7 +5,7 @@ use crate::system_core::commands::CommandCategory;
 use crate::system_core::internals::MessageToClient;
 use crate::system_core::permissions::Permissions;
 use crate::utilities::role_color_parser;
-use crate::database::db::DATABASE;
+use crate::database::DATABASE;
 
 pub fn nickname() -> commands::Command {
     async fn logic(ctx: &commands::Context) -> commands::CommandResponse {

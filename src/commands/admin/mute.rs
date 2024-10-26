@@ -1,7 +1,7 @@
 use sqlx::Row;
 use stblib::colors::{BOLD, C_RESET, RED, LIGHT_GREEN, YELLOW};
 
-use crate::database::db::DATABASE;
+use crate::database::DATABASE;
 use crate::global::LOGGER;
 
 use crate::system_core::commands;

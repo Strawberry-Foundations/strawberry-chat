@@ -17,7 +17,7 @@ use crate::system_core::internals::{MessageToClient, MessageToServer};
 use crate::system_core::string::StbString;
 use crate::system_core::server_core::{remove_hooks_by_user, STATUS};
 use crate::constants::log_messages::{CLIENT_KICKED, USER_LEFT};
-use crate::database::db::DATABASE;
+use crate::database::DATABASE;
 use crate::global::{CONFIG, LOGGER, MESSAGE_VERIFICATOR};
 use crate::security::verification::MessageAction;
 use crate::system_core::status::Status;

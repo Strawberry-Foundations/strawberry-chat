@@ -35,7 +35,7 @@ use crate::system_core::internals::MessageToClient;
 use crate::system_core::permissions::Permissions;
 use crate::system_core::server_core::Connection;
 use crate::commands::command_registry;
-use crate::database::db::DATABASE;
+use crate::database::DATABASE;
 
 
 // 'static borrow from https://github.com/serenity-rs/poise/blob/c5a4fc862e22166c8933e7e11727c577bb93067d/src/lib.rs#L439

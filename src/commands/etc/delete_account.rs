@@ -9,7 +9,7 @@ use crate::system_core::hooks::Hook;
 use crate::system_core::internals::MessageToClient;
 use crate::system_core::permissions::Permissions;
 use crate::system_core::server_core::Event;
-use crate::database::db::DATABASE;
+use crate::database::DATABASE;
 
 pub fn delete_account() -> commands::Command {
     async fn logic(ctx: &commands::Context) -> commands::CommandResponse {
