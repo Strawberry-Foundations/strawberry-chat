@@ -59,15 +59,9 @@ impl Database for SQLiteDB {
         todo!()
     }
 
-    async fn update_nickname(&self, username: &'_ str, new_nickname: &'_ str) {
+    async fn update_val(&self, username: &'_ str, key: &'_ str, value: &'_ str) {
         todo!()
     }
-
-    async fn update_description(&self, username: &'_ str, new_description: &'_ str) {
-        todo!()
-    }
-
-
 }
 
 impl SQLiteDB {
