@@ -50,7 +50,7 @@ impl MessageVerification {
 
     pub async fn check_with_user(&self, content: &String, user: &User) -> MessageAction {
         let content = content.to_string();
-        let muted = DATABASE.is_user_muted(&user.username.as_str()).await;
+        let muted = DATABASE.is_user_muted(&user.username.as_str()).await.unwrap();
 
         if self.bad_words.blacklist.iter().any(|w| content.contains(w)) {
             return MessageAction::Kick;

@@ -19,8 +19,8 @@ pub trait Database: Send + Sync {
     async fn check_credentials(&self, username: &'_ str, entered_password: &'_ str) -> (UserAccount, bool);
     async fn is_username_taken(&self, username: &'_ str) -> bool;
     async fn is_account_enabled(&self, username: &'_ str) -> Option<bool>;
-    async fn is_user_muted(&self, username: &'_ str) -> bool;
-    
+    async fn is_user_muted(&self, username: &'_ str) -> Option<bool>;
+
     async fn get_members(&self) -> Vec<String>;
     async fn get_members_by_role(&self, role: &'_ str) -> Vec<String>;
     async fn get_next_user_id(&self) -> i64;

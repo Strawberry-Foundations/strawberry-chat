@@ -35,7 +35,7 @@ impl Database for SQLiteDB {
         todo!()
     }
 
-    async fn is_user_muted(&self, username: &'_ str) -> bool {
+    async fn is_user_muted(&self, username: &'_ str) -> Option<bool> {
         todo!()
     }
 
