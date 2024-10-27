@@ -20,6 +20,10 @@ pub struct MySqlDB {
 
 #[async_trait::async_trait]
 impl Database for MySqlDB {
+    fn hello(&self) {
+        let _ = &self.connection;
+    }
+
     async fn create_user(&self, user_id: i64, username: String, password: String, role_color: String) {
         sqlx::query(
             "INSERT INTO data.users (\
@@ -246,7 +250,7 @@ impl Database for MySqlDB {
 
     async fn get_val_from_user(&self, username: &'_ str, value: &'_ str) -> Option<String> {
         let user_data = sqlx::query(format!("SELECT {value} FROM users WHERE LOWER(username) = ?").as_str())
-            .bind(&username)
+            .bind(username)
             .fetch_all(&self.connection)
             .await.expect("err");
 

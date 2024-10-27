@@ -33,11 +33,11 @@ pub fn userinfo() -> commands::Command {
             ctx.args[0].as_str()
         };
 
-        if !DATABASE.is_username_taken(&username.to_string()).await {
+        if !DATABASE.is_username_taken(username).await {
             return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
         }
 
-        let mut user = DATABASE.get_account_by_name(&username).await.unwrap();
+        let mut user = DATABASE.get_account_by_name(username).await.unwrap();
 
         if user.nickname.is_empty() {
             user.nickname = String::from("Not set");

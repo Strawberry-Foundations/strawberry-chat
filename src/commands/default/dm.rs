@@ -39,7 +39,7 @@ pub fn dm_basic() -> commands::Command {
             return Err(format!("{BOLD}{YELLOW}Sorry, you cannot send DMs to user's that you've blocked{C_RESET}"))
         }
 
-        let role_color: String = role_color_parser(&*data.role_color);
+        let role_color: String = role_color_parser(&data.role_color);
         let message: Vec<String> = ctx.args[1..].to_vec();
 
         ctx.tx_channel.send(MessageToClient::SystemMessage {

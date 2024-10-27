@@ -25,7 +25,7 @@ pub fn admin_settings() -> commands::Command {
                     return Err("Invalid role!".to_string())
                 }
 
-                match DATABASE.update_val(&username, "role", &role).await {
+                match DATABASE.update_val(username, "role", &role).await {
                     Ok(..) => Ok(Some(format!("{GREEN}{BOLD}The role of {username} has been updated to '{role}'{C_RESET}"))),
                     Err(_) => Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
                 }
@@ -47,7 +47,7 @@ pub fn admin_settings() -> commands::Command {
                         let badge = ctx.args[3].as_str();
 
                         if badge == "reset" || badge == "remove" {
-                            match DATABASE.update_val(&username,"badge", "").await {
+                            match DATABASE.update_val(username,"badge", "").await {
                                 Ok(..) => ..,
                                 Err(_) => return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
                             };
@@ -55,7 +55,7 @@ pub fn admin_settings() -> commands::Command {
                             return Ok(Some(format!("{BOLD}{LIGHT_GREEN}Removed badge of {username}{C_RESET}")))
                         }
 
-                        let badges: String = match DATABASE.get_val_from_user(&username,"badges").await {
+                        let badges: String = match DATABASE.get_val_from_user(username,"badges").await {
                             Some(val) => val,
                             None => return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
                         };
@@ -64,7 +64,7 @@ pub fn admin_settings() -> commands::Command {
                             return Err(format!("{BOLD}{RED}This user does not own this badge!{C_RESET}"))
                         }
 
-                        match DATABASE.update_val(&username,"badge", badge).await {
+                        match DATABASE.update_val(username,"badge", badge).await {
                             Ok(..) => Ok(Some(format!("{GREEN}{BOLD}The main badge of {username} has been updated to '{badge}'{C_RESET}"))),
                             Err(_) => Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
                         }
@@ -78,7 +78,7 @@ pub fn admin_settings() -> commands::Command {
                         let username = ctx.args[2].as_str();
                         let badge = ctx.args[3].as_str();
 
-                        let badges = match DATABASE.get_val_from_user(&username, "badges").await {
+                        let badges = match DATABASE.get_val_from_user(username, "badges").await {
                             Some(val) => val,
                             None => return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
                         };
@@ -93,7 +93,7 @@ pub fn admin_settings() -> commands::Command {
 
                         let new_badges = format!("{badges}{badge}");
 
-                        match DATABASE.update_val(&username,"badges", &new_badges).await {
+                        match DATABASE.update_val(username,"badges", &new_badges).await {
                             Ok(..) => Ok(Some(format!("{GREEN}{BOLD}Added badge '{badge}' to {username}'s profile{C_RESET}"))),
                             Err(_) => Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
                         }
@@ -103,7 +103,7 @@ pub fn admin_settings() -> commands::Command {
                         let username = ctx.args[2].as_str();
                         let badge = ctx.args[3].as_str();
 
-                        let badges = match DATABASE.get_val_from_user(&username, "badges").await {
+                        let badges = match DATABASE.get_val_from_user(username, "badges").await {
                             Some(val) => val,
                             None => return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
                         };
@@ -118,7 +118,7 @@ pub fn admin_settings() -> commands::Command {
 
                         let new_badges = badges.replace(badge, "");
 
-                        match DATABASE.update_val(&username,"badges", &new_badges).await {
+                        match DATABASE.update_val(username,"badges", &new_badges).await {
                             Ok(..) => Ok(Some(format!("{GREEN}{BOLD}Removed badge '{badge}' to {username}'s profile{C_RESET}"))),
                             Err(_) => Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
                         }

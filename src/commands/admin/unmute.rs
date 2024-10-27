@@ -9,7 +9,7 @@ use crate::global::LOGGER;
 
 pub fn unmute() -> commands::Command {
     async fn logic(ctx: &commands::Context) -> commands::CommandResponse {
-        let muted = DATABASE.is_user_muted(&ctx.args[0].as_str()).await;
+        let muted = DATABASE.is_user_muted(ctx.args[0].as_str()).await;
 
         if muted.is_none() {
             return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
@@ -19,7 +19,7 @@ pub fn unmute() -> commands::Command {
             return Err(format!("{BOLD}{RED}User already muted{C_RESET}"))
         }
 
-        DATABASE.update_val(&ctx.args[0].as_str(),"muted", "0").await.unwrap();
+        DATABASE.update_val(ctx.args[0].as_str(),"muted", "0").await.unwrap();
 
         ctx.tx_channel.send(MessageToClient::SystemMessage {
             content: format!("{BOLD}{LIGHT_GREEN}Unmuted {}{C_RESET}", ctx.args[0])

@@ -1,5 +1,4 @@
-use sqlx::Row;
-use stblib::colors::{BOLD, C_RESET, RED, LIGHT_GREEN, YELLOW};
+use stblib::colors::{BOLD, C_RESET, LIGHT_GREEN, YELLOW};
 
 use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;
@@ -11,25 +10,14 @@ pub fn unblock() -> commands::Command {
     async fn logic(ctx: &commands::Context) -> commands::CommandResponse {
         let user = ctx.args[0].as_str();
 
-        let mut blocked_users: String = sqlx::query("SELECT blocked FROM users WHERE username = ?")
-            .bind(&ctx.executor.username)
-            .fetch_one(&DATABASE.connection)
-            .await.unwrap().get("blocked");
+        let blocked_users = DATABASE.get_val_from_user(&ctx.executor.username, "blocked").await;
 
-        if blocked_users.is_empty() {
+        if blocked_users.is_none() {
             return Err(format!("{BOLD}{YELLOW}You have not yet blocked a user{C_RESET}"))
         }
 
-        blocked_users = blocked_users.replace(format!("{user},").as_str(), "");
-
-        match sqlx::query("UPDATE users SET blocked = ? WHERE username = ?")
-            .bind(blocked_users)
-            .bind(&ctx.executor.username)
-            .execute(&DATABASE.connection)
-            .await {
-            Ok(..) => ..,
-            Err(_) => return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
-        };
+        let blocked_users = blocked_users.unwrap().replace(format!("{user},").as_str(), "");
+        DATABASE.update_val(&ctx.executor.username, "blocked", &blocked_users).await.unwrap();
 
         ctx.tx_channel.send(MessageToClient::SystemMessage {
             content: format!("{BOLD}{LIGHT_GREEN}Unblocked {user}{C_RESET}")

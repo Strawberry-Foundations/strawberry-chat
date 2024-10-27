@@ -13,7 +13,7 @@ pub fn ban() -> commands::Command {
             return Err(format!("{BOLD}{YELLOW}You cannot ban yourself!{C_RESET}"))
         }
 
-        let account_enabled = DATABASE.is_account_enabled(&ctx.args[0].as_str()).await;
+        let account_enabled = DATABASE.is_account_enabled(ctx.args[0].as_str()).await;
 
         if account_enabled.is_none() {
             return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
@@ -23,7 +23,7 @@ pub fn ban() -> commands::Command {
             return Err(format!("{BOLD}{RED}User already banned{C_RESET}"))
         }
         
-        DATABASE.update_val(&ctx.args[0].as_str(),"account_enabled", "0").await.unwrap();
+        DATABASE.update_val(ctx.args[0].as_str(),"account_enabled", "0").await.unwrap();
 
         ctx.tx_channel.send(MessageToClient::SystemMessage {
             content: format!("{BOLD}{LIGHT_GREEN}Banned {}{C_RESET}", ctx.args[0])

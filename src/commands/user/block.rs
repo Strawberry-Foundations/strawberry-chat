@@ -32,7 +32,7 @@ pub fn block() -> commands::Command {
             return Err(format!("{BOLD}{YELLOW}You cannot block yourself{C_RESET}"))
         }
 
-        if !DATABASE.is_username_taken(&user.to_string()).await {
+        if !DATABASE.is_username_taken(user).await {
             return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
         }
 
@@ -49,7 +49,7 @@ pub fn block() -> commands::Command {
             format!("{blocked_users}{user},")
         };
 
-        DATABASE.update_val(&ctx.executor.username, "blocked", &new_blocked_users).await;
+        DATABASE.update_val(&ctx.executor.username, "blocked", &new_blocked_users).await.unwrap();
 
         ctx.tx_channel.send(MessageToClient::SystemMessage {
             content: format!("{BOLD}{LIGHT_GREEN}Blocked {user}. Type {GRAY}/unblock {user}{LIGHT_GREEN} to unblock{C_RESET}")

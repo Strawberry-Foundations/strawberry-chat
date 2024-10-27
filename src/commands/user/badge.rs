@@ -22,7 +22,7 @@ pub fn badge() -> commands::Command {
             return Err(format!("{BOLD}{RED}You do not own this badge!{C_RESET}"))
         }
 
-        DATABASE.update_val(&ctx.executor.username, "badge", &badge).await;
+        DATABASE.update_val(&ctx.executor.username, "badge", badge).await;
 
         ctx.tx_channel.send(MessageToClient::SystemMessage {
             content: format!(
