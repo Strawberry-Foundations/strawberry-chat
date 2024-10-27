@@ -71,12 +71,6 @@ impl Database for MySqlDB {
             .await.unwrap();
     }
 
-    async fn fetch_members(&self) -> Vec<MySqlRow> {
-        sqlx::query("SELECT username from users")
-            .fetch_all(&self.connection)
-            .await.unwrap()
-    }
-
     async fn check_credentials(&self, username: &'_ str, entered_password: &'_ str) -> (UserAccount, bool) {
         let row = sqlx::query("SELECT username, password FROM users WHERE username = ?")
             .bind(username)
@@ -157,6 +151,14 @@ impl Database for MySqlDB {
         query.is_some()
     }
 
+
+
+    async fn get_members(&self) -> Vec<MySqlRow> {
+        sqlx::query("SELECT username from users")
+            .fetch_all(&self.connection)
+            .await.unwrap()
+    }
+
     async fn get_next_user_id(&self) -> i64 {
         #[derive(sqlx::FromRow)]
         struct QUser {
@@ -211,6 +213,13 @@ impl Database for MySqlDB {
         else {
             data.first().map(std::borrow::ToOwned::to_owned)
         }
+    }
+
+    async fn get_blocked_from_user(&self, username: &'_ str) -> String {
+        sqlx::query("SELECT blocked FROM users WHERE username = ?")
+            .bind(username)
+            .fetch_one(&self.connection)
+            .await.unwrap().get("blocked")
     }
 }
 
