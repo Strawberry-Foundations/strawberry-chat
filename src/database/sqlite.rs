@@ -47,6 +47,14 @@ impl Database for SQLiteDB {
     async fn get_account_by_name(&self, username: &'_ str) -> Option<Account> {
         todo!()
     }
+
+    async fn get_blocked_from_user(&self, username: &'_ str) -> String {
+        todo!()
+    }
+
+    async fn get_role_from_user(&self, username: &'_ str) -> String {
+        todo!()
+    }
 }
 
 impl SQLiteDB {

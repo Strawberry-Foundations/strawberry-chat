@@ -221,6 +221,19 @@ impl Database for MySqlDB {
             .fetch_one(&self.connection)
             .await.unwrap().get("blocked")
     }
+
+    async fn get_role_from_user(&self, username: &'_ str) -> Option<String> {
+        let data = sqlx::query("SELECT role FROM users WHERE username = ?")
+            .bind(username)
+            .fetch_all(&self.connection)
+            .await.expect("err");
+
+        if data.is_empty() {
+            return None
+        }
+
+        Some(data.first().unwrap().get("role"))
+    }
 }
 
 impl MySqlDB {

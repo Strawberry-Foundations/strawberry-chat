@@ -25,6 +25,7 @@ pub trait Database: Send + Sync {
     async fn get_user_by_name(&self, username: &'_ str) -> Option<User>;
     async fn get_account_by_name(&self, username: &'_ str) -> Option<Account>;
     async fn get_blocked_from_user(&self, username: &'_ str) -> String;
+    async fn get_role_from_user(&self, username: &'_ str) -> String;
 }
 
 lazy_static!(
