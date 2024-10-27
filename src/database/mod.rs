@@ -20,6 +20,7 @@ pub trait Database: Send + Sync {
     async fn is_username_taken(&self, username: &'_ str) -> bool;
 
     async fn get_members(&self) -> Vec<String>;
+    async fn get_members_by_role(&self, role: &'_ str) -> Vec<String>;
     async fn get_next_user_id(&self) -> i64;
     async fn get_user_by_name(&self, username: &'_ str) -> Option<User>;
     async fn get_account_by_name(&self, username: &'_ str) -> Option<Account>;

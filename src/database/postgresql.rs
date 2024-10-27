@@ -35,6 +35,10 @@ impl Database for PostgreSqlDB {
     async fn get_members(&self) -> Vec<String> {
         todo!()
     }
+    
+    async fn get_members_by_role(&self, role: &'_ str) -> Vec<String> {
+        todo!()
+    }
 
     async fn get_next_user_id(&self) -> i64 {
         todo!()

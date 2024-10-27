@@ -155,6 +155,12 @@ impl Database for MySqlDB {
             .fetch_all(&self.connection)
             .await.unwrap()
     }
+    
+    async fn get_members_by_role(&self, role: &'_ str) -> Vec<String> {
+        sqlx::query_scalar(format!("SELECT username, badge FROM users WHERE role = '{role}'").as_str())
+            .fetch_all(&self.connection)
+            .await.unwrap()
+    }
 
     async fn get_next_user_id(&self) -> i64 {
         #[derive(sqlx::FromRow)]
