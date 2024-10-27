@@ -1,7 +1,6 @@
 use std::time::Duration;
 
-use sqlx::Row;
-use stblib::colors::{BOLD, C_RESET, RED, LIGHT_GREEN, RESET, BLUE, YELLOW, GREEN};
+use stblib::colors::{BOLD, C_RESET, LIGHT_GREEN, RESET, BLUE, YELLOW, GREEN};
 use tokio::time;
 
 use crate::system_core::commands;
