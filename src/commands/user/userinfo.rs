@@ -37,12 +37,7 @@ pub fn userinfo() -> commands::Command {
             return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
         }
 
-        let mut user: UUserAccount = sqlx::query_as(
-            "SELECT username, nickname, badge, role, role_color, description, badges, discord_name, user_id, strawberry_id, creation_date FROM users WHERE LOWER(username) = ?"
-        )
-            .bind(username)
-            .fetch_one(&DATABASE.connection)
-            .await.unwrap();
+        let mut user = DATABASE.get_account_by_name(&username).await.unwrap();
 
         if user.nickname.is_empty() {
             user.nickname = String::from("Not set");

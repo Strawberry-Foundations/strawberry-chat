@@ -198,7 +198,7 @@ impl Database for MySqlDB {
     }
 
     async fn get_account_by_name(&self, username: &'_ str) -> Option<Account> {
-        let data: Vec<Account> = sqlx::query_as("SELECT * FROM users WHERE username = ?")
+        let data: Vec<Account> = sqlx::query_as("SELECT * FROM users WHERE LOWER(username) = ?")
             .bind(username)
             .fetch_all(&self.connection)
             .await.expect("err");
@@ -229,7 +229,7 @@ impl Database for MySqlDB {
     }
 
     async fn get_val_from_user(&self, username: &'_ str, value: &'_ str) -> Option<String> {
-        let user_data = sqlx::query(format!("SELECT {value} FROM users WHERE username = ?").as_str())
+        let user_data = sqlx::query(format!("SELECT {value} FROM users WHERE LOWER(username) = ?").as_str())
             .bind(&username)
             .fetch_all(&self.connection)
             .await.expect("err");
