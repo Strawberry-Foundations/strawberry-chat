@@ -50,13 +50,7 @@ impl MessageVerification {
 
     pub async fn check_with_user(&self, content: &String, user: &User) -> MessageAction {
         let content = content.to_string();
-
-        let user_data = sqlx::query("SELECT muted FROM users WHERE username = ?")
-            .bind(&user.username)
-            .fetch_all(&DATABASE.connection)
-            .await.expect("err");
-
-        let muted: bool = user_data.first().unwrap().get("muted");
+        let muted = DATABASE.get_muted_from_user(&user.username.as_str()).await;
 
         if self.bad_words.blacklist.iter().any(|w| content.contains(w)) {
             return MessageAction::Kick;
