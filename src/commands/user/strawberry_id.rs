@@ -24,13 +24,13 @@ pub fn strawberry_id() -> commands::Command {
 
         match cmd {
             "reset" | "remove" => {
-                DATABASE.update_val(&ctx.executor.username, "strawberry_id", "").await;
+                DATABASE.update_val(&ctx.executor.username, "strawberry_id", "").await.unwrap();
 
                 let badges = DATABASE.get_val_from_user(&ctx.executor.username, "badges").await.unwrap();
 
                 let new_badges = badges.replace("🍓", "");
 
-                DATABASE.update_val(&ctx.executor.username, "badges", &new_badges).await;
+                DATABASE.update_val(&ctx.executor.username, "badges", &new_badges).await.unwrap();
 
                 return Ok(Some(format!("{BOLD}{LIGHT_GREEN}Removed Strawberry ID. Rejoin to apply changes{C_RESET}")))
             },
@@ -94,10 +94,10 @@ pub fn strawberry_id() -> commands::Command {
 
                                     let new_badges = format!("{badges}🍓");
 
-                                    DATABASE.update_val(&ctx_username, "badges", &new_badges).await;
+                                    DATABASE.update_val(&ctx_username, "badges", &new_badges).await.unwrap();
                                 }
 
-                                DATABASE.update_val(&ctx_username, "strawberry_id", &username).await;
+                                DATABASE.update_val(&ctx_username, "strawberry_id", &username).await.unwrap();
                                 
                                 break
                             }

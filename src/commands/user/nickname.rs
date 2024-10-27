@@ -10,14 +10,14 @@ use crate::utilities::role_color_parser;
 pub fn nickname() -> commands::Command {
     async fn logic(ctx: &commands::Context) -> commands::CommandResponse {
         if ctx.args[0].as_str() == "reset" || ctx.args[0].as_str() == "remove" {
-            DATABASE.update_val(&ctx.executor.username, "nickname", "").await;
+            DATABASE.update_val(&ctx.executor.username, "nickname", "").await.unwrap();
 
             return Ok(Some(format!("{BOLD}{LIGHT_GREEN}Removed nickname. Rejoin to apply changes{C_RESET}")))
         }
 
         let nickname = ctx.args[0..].to_vec().join(" ");
 
-        DATABASE.update_val(&ctx.executor.username, "nickname", &nickname).await;
+        DATABASE.update_val(&ctx.executor.username, "nickname", &nickname).await.unwrap();
 
         ctx.tx_channel.send(MessageToClient::SystemMessage {
             content: format!(

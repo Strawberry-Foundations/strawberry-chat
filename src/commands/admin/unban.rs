@@ -19,7 +19,7 @@ pub fn unban() -> commands::Command {
             return Err(format!("{BOLD}{RED}User not banned{C_RESET}"))
         }
 
-        DATABASE.update_val(&ctx.args[0].as_str(),"account_enabled", "1").await;
+        DATABASE.update_val(&ctx.args[0].as_str(),"account_enabled", "1").await.unwrap();
 
         ctx.tx_channel.send(MessageToClient::SystemMessage {
             content: format!("{BOLD}{LIGHT_GREEN}Unbanned {}{C_RESET}", ctx.args[0])

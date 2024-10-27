@@ -1,4 +1,3 @@
-use sqlx::Row;
 use stblib::colors::{BOLD, C_RESET, RED, LIGHT_GREEN};
 
 use crate::system_core::commands;
@@ -20,7 +19,7 @@ pub fn unmute() -> commands::Command {
             return Err(format!("{BOLD}{RED}User already muted{C_RESET}"))
         }
 
-        DATABASE.update_val(&ctx.args[0].as_str(),"muted", "0").await;
+        DATABASE.update_val(&ctx.args[0].as_str(),"muted", "0").await.unwrap();
 
         ctx.tx_channel.send(MessageToClient::SystemMessage {
             content: format!("{BOLD}{LIGHT_GREEN}Unmuted {}{C_RESET}", ctx.args[0])

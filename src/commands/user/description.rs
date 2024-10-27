@@ -15,14 +15,14 @@ pub fn description() -> commands::Command {
         }
 
         if ctx.args[0].as_str() == "reset" || ctx.args[0].as_str() == "remove" {
-            DATABASE.update_val(&ctx.executor.username, "description", "").await;
+            DATABASE.update_val(&ctx.executor.username, "description", "").await.unwrap();
 
             return Ok(Some(format!("{BOLD}{LIGHT_GREEN}Removed description. Rejoin to apply changes{C_RESET}")))
         }
 
         let description = ctx.args[0..].to_vec().join(" ");
 
-        DATABASE.update_val(&ctx.executor.username, "description", &description).await;
+        DATABASE.update_val(&ctx.executor.username, "description", &description).await.unwrap();
 
         ctx.tx_channel.send(MessageToClient::SystemMessage {
             content: format!(
