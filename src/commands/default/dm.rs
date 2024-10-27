@@ -24,37 +24,24 @@ pub fn dm_basic() -> commands::Command {
         if ctx.executor.username == ctx.args[0].as_str() {
             return Err(format!("{BOLD}{YELLOW}You cannot send yourself a message!{C_RESET}"))
         }
+        
+        let data = DATABASE.get_account_by_name(ctx.args[0].as_str()).await.unwrap();
 
-        let data = sqlx::query("SELECT * FROM users WHERE username = ?")
-            .bind(ctx.args[0].as_str())
-            .fetch_all(&DATABASE.connection)
-            .await.expect("err");
-
-        let enable_dms: bool = data.first().unwrap().get("enable_dms");
-
-        if !enable_dms {
+        if !data.enable_dms {
             return Err(format!("{BOLD}{YELLOW}This user has deactivated his/her DMs{C_RESET}"))
         }
 
-        let blocked_users_recipient: String = sqlx::query("SELECT blocked FROM users WHERE username = ?")
-            .bind(ctx.args[0].as_str())
-            .fetch_one(&DATABASE.connection)
-            .await.unwrap().get("blocked");
-
-        if blocked_users_recipient.split(',').any(|x| x == ctx.executor.username) {
+        if data.blocked.split(',').any(|x| x == ctx.executor.username) {
             return Err(format!("{BOLD}{YELLOW}Sorry, but it seems that this user does not want to receive DMs from you...{C_RESET}"))
         }
 
-        let blocked_users_self: String = sqlx::query("SELECT blocked FROM users WHERE username = ?")
-            .bind(&ctx.executor.username)
-            .fetch_one(&DATABASE.connection)
-            .await.unwrap().get("blocked");
+        let blocked_users_self: String = DATABASE.get_account_by_name(&ctx.executor.username).await.unwrap().blocked;
 
         if blocked_users_self.split(',').any(|x| x == ctx.args[0].as_str()) {
             return Err(format!("{BOLD}{YELLOW}Sorry, you cannot send DMs to user's that you've blocked{C_RESET}"))
         }
 
-        let role_color: String = role_color_parser(data.first().unwrap().get("role_color"));
+        let role_color: String = role_color_parser(&*data.role_color);
         let message: Vec<String> = ctx.args[1..].to_vec();
 
         ctx.tx_channel.send(MessageToClient::SystemMessage {
