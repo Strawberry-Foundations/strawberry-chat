@@ -242,17 +242,9 @@ impl Database for MySqlDB {
         }
     }
 
-    async fn update_nickname(&self, username: &'_ str, new_nickname: &'_ str) {
-        sqlx::query("UPDATE users SET nickname = ? WHERE username = ?")
-            .bind(new_nickname)
-            .bind(username)
-            .execute(&self.connection)
-            .await.unwrap();
-    }
-
-    async fn update_description(&self, username: &'_ str, new_description: &'_ str) {
-        sqlx::query("UPDATE description SET nickname = ? WHERE username = ?")
-            .bind(new_description)
+    async fn update_val(&self, username: &'_ str, key: &'_ str, value: &'_ str) {
+        sqlx::query(format!("UPDATE users SET {key} = ? WHERE username = ?").as_str())
+            .bind(value)
             .bind(username)
             .execute(&self.connection)
             .await.unwrap();
