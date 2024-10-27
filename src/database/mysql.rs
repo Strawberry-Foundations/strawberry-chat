@@ -8,7 +8,7 @@ use crate::system_core::log::log_parser;
 use crate::system_core::objects::{Account, UserAccount};
 use crate::constants::types::CRTLCODE_CLIENT_EXIT;
 use crate::constants::log_messages::SQL_CONNECTION_ERROR;
-use crate::database::Database;
+use crate::database::{Database, DATABASE};
 use crate::global::RUNTIME_LOGGER;
 use crate::security::crypt::Crypt;
 use crate::utilities::role_color_parser;
@@ -233,6 +233,15 @@ impl Database for MySqlDB {
         }
 
         Some(data.first().unwrap().get("role"))
+    }
+
+    async fn get_muted_from_user(&self, username: &'_ str) -> bool {
+        let user_data = sqlx::query("SELECT muted FROM users WHERE username = ?")
+            .bind(&username)
+            .fetch_all(&self.connection)
+            .await.expect("err");
+
+        user_data.first().unwrap().get("muted")
     }
 }
 
