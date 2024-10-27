@@ -52,7 +52,7 @@ impl Database for SQLiteDB {
         todo!()
     }
 
-    async fn get_role_from_user(&self, username: &'_ str) -> String {
+    async fn get_role_from_user(&self, username: &'_ str) -> Option<String> {
         todo!()
     }
 }
