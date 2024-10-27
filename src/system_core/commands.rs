@@ -126,7 +126,7 @@ async fn exec_command(name: String, args: Vec<String>, conn: &Connection) -> Res
         return Err(String::from("You need to authorize to run commands!"))
     };
 
-    let user_permissions = match DATABASE.get_role_from_user(&*user.username).await.as_str() {
+    let user_permissions = match DATABASE.get_role_from_user(&*user.username).await.expect("REASON").as_str() {
         "bot" => Permissions::Bot,
         "admin" => Permissions::Admin,
         _ => Permissions::Member,
@@ -139,7 +139,7 @@ async fn exec_command(name: String, args: Vec<String>, conn: &Connection) -> Res
     if args.len() < (cmd.required_args) {
         return Err(format!(
             "Missing arguments - Command requires at least {} argument - Got {} arguments",
-            (cmd.required_args), args.len()
+            cmd.required_args, args.len()
         ))
     }
 
