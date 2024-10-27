@@ -1,5 +1,3 @@
-use sqlx::Row;
-
 use stblib::colors::{BOLD, C_RESET, GRAY, RED, YELLOW};
 use stblib::utilities::escape_ansi;
 
