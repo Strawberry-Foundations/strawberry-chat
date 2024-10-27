@@ -7,7 +7,7 @@ use crate::system_core::log::log_parser;
 use crate::system_core::objects::{Account, UserAccount};
 use crate::constants::types::CRTLCODE_CLIENT_EXIT;
 use crate::constants::log_messages::SQL_CONNECTION_ERROR;
-use crate::database::{Database, DATABASE};
+use crate::database::Database;
 use crate::global::RUNTIME_LOGGER;
 use crate::security::crypt::Crypt;
 use crate::utilities::role_color_parser;
@@ -150,8 +150,6 @@ impl Database for MySqlDB {
         query.is_some()
     }
 
-
-
     async fn get_members(&self) -> Vec<String> {
         sqlx::query_scalar("SELECT username from users")
             .fetch_all(&self.connection)
@@ -221,19 +219,6 @@ impl Database for MySqlDB {
             .await.unwrap().get("blocked")
     }
 
-    async fn get_role_from_user(&self, username: &'_ str) -> Option<String> {
-        let data = sqlx::query("SELECT role FROM users WHERE username = ?")
-            .bind(username)
-            .fetch_all(&self.connection)
-            .await.expect("err");
-
-        if data.is_empty() {
-            return None
-        }
-
-        Some(data.first().unwrap().get("role"))
-    }
-
     async fn get_muted_from_user(&self, username: &'_ str) -> bool {
         let user_data = sqlx::query("SELECT muted FROM users WHERE username = ?")
             .bind(&username)
@@ -241,6 +226,20 @@ impl Database for MySqlDB {
             .await.expect("err");
 
         user_data.first().unwrap().get("muted")
+    }
+
+    async fn get_val_from_user(&self, username: &'_ str, value: &'_ str) -> Option<String> {
+        let user_data = sqlx::query(format!("SELECT {value} FROM users WHERE username = ?").as_str())
+            .bind(&username)
+            .fetch_all(&self.connection)
+            .await.expect("err");
+
+        if user_data.is_empty() {
+            None
+        }
+        else {
+            user_data.first().unwrap().get(value)
+        }
     }
 
     async fn update_nickname(&self, username: &'_ str, new_nickname: &'_ str) {

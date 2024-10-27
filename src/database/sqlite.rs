@@ -51,7 +51,7 @@ impl Database for SQLiteDB {
         todo!()
     }
 
-    async fn get_role_from_user(&self, username: &'_ str) -> Option<String> {
+    async fn get_val_from_user(&self, username: &'_ str, value: &'_ str) -> Option<String> {
         todo!()
     }
 
@@ -66,6 +66,8 @@ impl Database for SQLiteDB {
     async fn update_description(&self, username: &'_ str, new_description: &'_ str) {
         todo!()
     }
+
+
 }
 
 impl SQLiteDB {

@@ -52,11 +52,11 @@ impl Database for PostgreSqlDB {
         todo!()
     }
 
-    async fn get_role_from_user(&self, username: &'_ str) -> Option<String> {
+    async fn get_muted_from_user(&self, username: &'_ str) -> bool {
         todo!()
     }
 
-    async fn get_muted_from_user(&self, username: &'_ str) -> bool {
+    async fn get_val_from_user(&self, username: &'_ str, value: &'_ str) -> Option<String> {
         todo!()
     }
 
