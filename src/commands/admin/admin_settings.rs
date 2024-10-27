@@ -78,9 +78,8 @@ pub fn admin_settings() -> commands::Command {
                         let username = ctx.args[2].as_str();
                         let badge = ctx.args[3].as_str();
 
-                        let badges = match DATABASE.get_val_from_user(username, "badges").await {
-                            Some(val) => val,
-                            None => return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
+                        let Some(badges) = DATABASE.get_val_from_user(username, "badges").await else {
+                            return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
                         };
 
                         if badges.contains(badge) {
@@ -103,9 +102,8 @@ pub fn admin_settings() -> commands::Command {
                         let username = ctx.args[2].as_str();
                         let badge = ctx.args[3].as_str();
 
-                        let badges = match DATABASE.get_val_from_user(username, "badges").await {
-                            Some(val) => val,
-                            None => return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
+                        let Some(badges) = DATABASE.get_val_from_user(username, "badges").await else {
+                            return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
                         };
 
                         if !badges.contains(badge) {
