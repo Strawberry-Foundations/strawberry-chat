@@ -24,16 +24,15 @@ impl Database for SQLiteDB {
     async fn delete_user(&self, username: String) {
         todo!()
     }
-
-    async fn fetch_members(&self) -> Vec<MySqlRow> {
-        todo!()
-    }
-
     async fn check_credentials(&self, username: &'_ str, entered_password: &'_ str) -> (UserAccount, bool) {
         todo!()
     }
 
     async fn is_username_taken(&self, username: &'_ str) -> bool {
+        todo!()
+    }
+
+    async fn get_members(&self) -> Vec<MySqlRow> {
         todo!()
     }
 
