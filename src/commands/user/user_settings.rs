@@ -51,12 +51,7 @@ pub fn user_settings() -> commands::Command {
                     return Err(format!("{RED}{BOLD}Missing arguments - Subcommand requires at least 1 argument - Got 0 arguments{C_RESET}"))
                 }
 
-                sqlx::query("UPDATE users SET enable_dms = ? WHERE username = ?")
-                    .bind(string_to_bool(&ctx.args[1]))
-                    .bind(&ctx.executor.username)
-                    .execute(&DATABASE.connection)
-                    .await
-                    .unwrap_or_else(|err| { println!("{err}"); std::process::exit(1) });
+                DATABASE.update_val(&ctx.executor.username, "enable_dms", &ctx.args[1]).await.unwrap();
 
                 if string_to_bool(&ctx.args[1]) {
                     Ok(Some(format!("{LIGHT_GREEN}You can now receive direct messages from other users.")))
@@ -72,50 +67,25 @@ pub fn user_settings() -> commands::Command {
                     return Err("Missing arguments - Subcommand requires at least 1 argument - Got 0 arguments".to_string())
                 }
 
-                sqlx::query("UPDATE users SET role_color = ? WHERE username = ?")
-                    .bind(&ctx.args[1])
-                    .bind(&ctx.executor.username)
-                    .execute(&DATABASE.connection)
-                    .await
-                    .unwrap_or_else(|err| { println!("{err}"); std::process::exit(1) });
-
+                DATABASE.update_val(&ctx.executor.username, "role_color", &ctx.args[1]).await.unwrap();
                 Ok(Some(format!("{LIGHT_GREEN}Updated role color to {}{}{C_RESET}", role_color_parser(&ctx.args[1]), &ctx.args[1])))
             },
 
             "discord" => {
                 if ctx.args[1..].is_empty() {
-                    return sqlx::query("SELECT discord_name FROM users WHERE username = ?")
-                        .bind(&ctx.executor.username)
-                        .fetch_one(&DATABASE.connection)
-                        .await.map_or_else(|_| Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}")), |res| {
-                        let discord_name: String = res.get("discord_name");
-                        Ok(Some(format!("{BOLD}{LIGHT_GREEN}Your current Discord Name: {RESET}{discord_name}{C_RESET}")))
-                    });
+                    let discord_name = DATABASE.get_val_from_user(&ctx.executor.username, "discord_name").await.unwrap();
+                    return Ok(Some(format!("{BOLD}{LIGHT_GREEN}Your current Discord Name: {RESET}{discord_name}{C_RESET}")));
                 }
 
 
                 if ctx.args[1].as_str() == "reset" || ctx.args[0].as_str() == "remove" {
-                    match sqlx::query("UPDATE users SET discord_name = '' WHERE username = ?")
-                        .bind(&ctx.executor.username)
-                        .execute(&DATABASE.connection)
-                        .await {
-                        Ok(..) => ..,
-                        Err(_) => return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
-                    };
-
+                    DATABASE.update_val(&ctx.executor.username, "discord_name", "").await.unwrap();
                     return Ok(Some(format!("{BOLD}{LIGHT_GREEN}Removed Discord Name. Rejoin to apply changes{C_RESET}")))
                 }
 
                 let discord_name = ctx.args[1..].to_vec().join(" ");
 
-                match sqlx::query("UPDATE users SET discord_name = ? WHERE username = ?")
-                    .bind(&discord_name)
-                    .bind(&ctx.executor.username)
-                    .execute(&DATABASE.connection)
-                    .await {
-                    Ok(..) => ..,
-                    Err(_) => return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
-                };
+                DATABASE.update_val(&ctx.executor.username, "discord_name", &discord_name).await.unwrap();
 
                 Ok(Some(format!(
                     "{BOLD}{LIGHT_GREEN}Changed Discord Name to {}{discord_name}{C_RESET}{BOLD}{LIGHT_GREEN}. \
@@ -125,37 +95,19 @@ pub fn user_settings() -> commands::Command {
 
             "badge" => {
                 if ctx.args[1].as_str() == "reset" || ctx.args[1].as_str() == "remove" {
-                    match sqlx::query("UPDATE users SET badge = '' WHERE username = ?")
-                        .bind(&ctx.executor.username)
-                        .execute(&DATABASE.connection)
-                        .await {
-                        Ok(..) => ..,
-                        Err(_) => return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
-                    };
+                    DATABASE.update_val(&ctx.executor.username, "badge", "").await.unwrap();
 
                     return Ok(Some(format!("{BOLD}{LIGHT_GREEN}Removed badge. Rejoin to apply changes{C_RESET}")))
                 }
 
                 let badge = &ctx.args[1];
 
-
-                let badges: String = sqlx::query("SELECT badges FROM users WHERE username = ?")
-                    .bind(&ctx.executor.username)
-                    .fetch_one(&DATABASE.connection)
-                    .await.unwrap().get("badges");
-
+                let badges = DATABASE.get_val_from_user(&ctx.executor.username, "badges").await.unwrap();
                 if !badges.contains(badge) {
                     return Err(format!("{BOLD}{RED}You do not own this badge!{C_RESET}"))
                 }
 
-                match sqlx::query("UPDATE users SET badge = ? WHERE username = ?")
-                    .bind(badge)
-                    .bind(&ctx.executor.username)
-                    .execute(&DATABASE.connection)
-                    .await {
-                    Ok(..) => ..,
-                    Err(_) => return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
-                };
+                DATABASE.update_val(&ctx.executor.username, "badge", badge).await.unwrap();
 
                 Ok(Some(format!(
                         "{BOLD}{LIGHT_GREEN}Changed your main badge to {}{badge}{C_RESET}{BOLD}{LIGHT_GREEN}. \
@@ -186,13 +138,13 @@ pub fn user_settings() -> commands::Command {
 
                         let mut hook = Hook::new(ctx.executor.clone(), ctx.tx_channel.clone(), 1).await;
                         
-                        let new_username_cc = escape_ansi(new_username);
+                        let new_username_hook = escape_ansi(new_username);
                         
                         spawn(async move {
                             if let Some(Event::UserMessage { content, .. }) = hook.rx.recv().await {
                                 if escape_ansi(&content).eq_ignore_ascii_case("yes") {
                                     /// Check if the username is in blacklisted words
-                                    let action = MESSAGE_VERIFICATOR.check(&new_username_cc.to_lowercase());
+                                    let action = MESSAGE_VERIFICATOR.check(&new_username_hook.to_lowercase());
 
                                     match action {
                                         MessageAction::Kick | MessageAction::Hide => {
@@ -206,7 +158,7 @@ pub fn user_settings() -> commands::Command {
                                     }
 
                                     /// If username is in this set of blacklisted words, return an error message
-                                    if ["exit", "register", "login", "sid"].contains(&new_username_cc.as_str()) {
+                                    if ["exit", "register", "login", "sid"].contains(&new_username_hook.as_str()) {
                                         hook.tx_ctx.send(MessageToClient::SystemMessage {
                                             content: format!("{YELLOW}{BOLD}This username is not allowed!{C_RESET}")
                                         }).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
@@ -216,7 +168,7 @@ pub fn user_settings() -> commands::Command {
                                     }
 
                                     /// If username contains whitespaces, return an error message
-                                    if contains_whitespace(&new_username_cc) {
+                                    if contains_whitespace(&new_username_hook) {
                                         hook.tx_ctx.send(MessageToClient::SystemMessage {
                                             content: format!("{YELLOW}{BOLD}Your username must not contain spaces{C_RESET}")
                                         }).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
@@ -225,7 +177,7 @@ pub fn user_settings() -> commands::Command {
                                     }
 
                                     /// If username character is not in our charset, return an error message
-                                    if !is_valid_username(new_username_cc.as_str(), USERNAME_ALLOWED_CHARS) {
+                                    if !is_valid_username(new_username_hook.as_str(), USERNAME_ALLOWED_CHARS) {
                                         hook.tx_ctx.send(MessageToClient::SystemMessage {
                                             content: format!("{YELLOW}{BOLD}Please use only lowercase letters, numbers, dots or underscores{C_RESET}")
                                         }).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
@@ -234,7 +186,7 @@ pub fn user_settings() -> commands::Command {
                                     }
 
                                     /// If username is longer than `max_username_length` (default: 32) characters, return an error message
-                                    if new_username_cc.len() > CONFIG.config.max_username_length as usize {
+                                    if new_username_hook.len() > CONFIG.config.max_username_length as usize {
                                         hook.tx_ctx.send(MessageToClient::SystemMessage {
                                             content: format!("{YELLOW}{BOLD}Your username is too long{C_RESET}")
                                         }).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
@@ -243,7 +195,7 @@ pub fn user_settings() -> commands::Command {
                                     }
 
                                     /// Check if username is already taken
-                                    if DATABASE.is_username_taken(&new_username_cc).await {
+                                    if DATABASE.is_username_taken(&new_username_hook).await {
                                         hook.tx_ctx.send(MessageToClient::SystemMessage {
                                             content: format!("{YELLOW}{BOLD}This username is already in use!{C_RESET}")
                                         }).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
@@ -251,15 +203,10 @@ pub fn user_settings() -> commands::Command {
                                         return;
                                     }
 
-                                    sqlx::query("UPDATE users SET username = ? WHERE username = ?")
-                                        .bind(&new_username_cc)
-                                        .bind(&hook.user.username)
-                                        .execute(&DATABASE.connection)
-                                        .await
-                                        .unwrap_or_else(|err| { println!("{err}"); std::process::exit(1) });
+                                    DATABASE.update_val(&hook.user.username, "username", &new_username_hook).await.unwrap();
                                     
                                     hook.tx_ctx.send(MessageToClient::SystemMessage {
-                                        content: format!("{GREEN}{BOLD}Your username has been updated to {new_username_cc}. You may need to rejoin in Strawberry Chat{C_RESET}")
+                                        content: format!("{GREEN}{BOLD}Your username has been updated to {new_username_hook}. You may need to rejoin in Strawberry Chat{C_RESET}")
                                     }).await.unwrap();
 
                                 } else {
@@ -312,12 +259,7 @@ pub fn user_settings() -> commands::Command {
                                     
                                     let password = Crypt::hash_password(content.as_str());
 
-                                    sqlx::query("UPDATE users SET password = ? WHERE username = ?")
-                                        .bind(&password)
-                                        .bind(&hook.user.username)
-                                        .execute(&DATABASE.connection)
-                                        .await
-                                        .unwrap_or_else(|err| { println!("{err}"); std::process::exit(1) });
+                                    DATABASE.update_val(&hook.user.username, "password", &password).await.unwrap();
 
                                     hook.tx_ctx.send(MessageToClient::SystemMessage {
                                         content: format!("{GREEN}{BOLD}Your password has been updated{C_RESET}")
