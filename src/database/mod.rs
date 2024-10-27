@@ -19,14 +19,14 @@ pub trait Database: Send + Sync {
     async fn check_credentials(&self, username: &'_ str, entered_password: &'_ str) -> (UserAccount, bool);
     async fn is_username_taken(&self, username: &'_ str) -> bool;
     async fn is_account_enabled(&self, username: &'_ str) -> Option<bool>;
-
+    async fn is_user_muted(&self, username: &'_ str) -> bool;
+    
     async fn get_members(&self) -> Vec<String>;
     async fn get_members_by_role(&self, role: &'_ str) -> Vec<String>;
     async fn get_next_user_id(&self) -> i64;
     async fn get_user_by_name(&self, username: &'_ str) -> Option<User>;
     async fn get_account_by_name(&self, username: &'_ str) -> Option<Account>;
     async fn get_blocked_from_user(&self, username: &'_ str) -> String;
-    async fn get_muted_from_user(&self, username: &'_ str) -> bool;
     async fn get_val_from_user(&self, username: &'_ str, value: &'_ str) -> Option<String>;
 
     async fn update_val(&self, username: &'_ str, key: &'_ str, value: &'_ str);

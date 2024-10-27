@@ -159,6 +159,15 @@ impl Database for MySqlDB {
         query
     }
 
+    async fn is_user_muted(&self, username: &'_ str) -> bool {
+        let user_data = sqlx::query("SELECT muted FROM users WHERE username = ?")
+            .bind(&username)
+            .fetch_all(&self.connection)
+            .await.expect("err");
+
+        user_data.first().unwrap().get("muted")
+    }
+
     async fn get_members(&self) -> Vec<String> {
         sqlx::query_scalar("SELECT username from users")
             .fetch_all(&self.connection)
@@ -232,15 +241,6 @@ impl Database for MySqlDB {
             .bind(username)
             .fetch_one(&self.connection)
             .await.unwrap().get("blocked")
-    }
-
-    async fn get_muted_from_user(&self, username: &'_ str) -> bool {
-        let user_data = sqlx::query("SELECT muted FROM users WHERE username = ?")
-            .bind(&username)
-            .fetch_all(&self.connection)
-            .await.expect("err");
-
-        user_data.first().unwrap().get("muted")
     }
 
     async fn get_val_from_user(&self, username: &'_ str, value: &'_ str) -> Option<String> {

@@ -35,6 +35,10 @@ impl Database for SQLiteDB {
         todo!()
     }
 
+    async fn is_user_muted(&self, username: &'_ str) -> bool {
+        todo!()
+    }
+
     async fn get_members(&self) -> Vec<String> {
         todo!()
     }
@@ -56,10 +60,6 @@ impl Database for SQLiteDB {
     }
 
     async fn get_blocked_from_user(&self, username: &'_ str) -> String {
-        todo!()
-    }
-
-    async fn get_muted_from_user(&self, username: &'_ str) -> bool {
         todo!()
     }
 
