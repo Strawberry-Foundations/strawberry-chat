@@ -26,11 +26,7 @@ pub fn admin_settings() -> commands::Command {
                     return Err("Invalid role!".to_string())
                 }
 
-                match sqlx::query("UPDATE users SET role = ? WHERE username = ?")
-                    .bind(&role)
-                    .bind(username)
-                    .execute(&DATABASE.connection)
-                    .await {
+                match DATABASE.update_val(&username, "role", &role).await {
                     Ok(..) => Ok(Some(format!("{GREEN}{BOLD}The role of {username} has been updated to '{role}'{C_RESET}"))),
                     Err(_) => Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
                 }
@@ -52,10 +48,7 @@ pub fn admin_settings() -> commands::Command {
                         let badge = ctx.args[3].as_str();
 
                         if badge == "reset" || badge == "remove" {
-                            match sqlx::query("UPDATE users SET badge = '' WHERE username = ?")
-                                .bind(username)
-                                .execute(&DATABASE.connection)
-                                .await {
+                            match DATABASE.update_val(&username,"badge", "").await {
                                 Ok(..) => ..,
                                 Err(_) => return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
                             };
@@ -63,23 +56,16 @@ pub fn admin_settings() -> commands::Command {
                             return Ok(Some(format!("{BOLD}{LIGHT_GREEN}Removed badge of {username}{C_RESET}")))
                         }
 
-                        let badges: String = match sqlx::query("SELECT badges FROM users WHERE username = ?")
-                            .bind(username)
-                            .fetch_one(&DATABASE.connection)
-                            .await {
-                            Ok(val) => val.get("badges"),
-                            Err(_) => return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
+                        let badges: String = match DATABASE.get_val_from_user(&username,"badges").await {
+                            Some(val) => val,
+                            None => return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
                         };
 
                         if !badges.contains(badge) {
                             return Err(format!("{BOLD}{RED}This user does not own this badge!{C_RESET}"))
                         }
 
-                        match sqlx::query("UPDATE users SET badge = ? WHERE username = ?")
-                            .bind(badge)
-                            .bind(username)
-                            .execute(&DATABASE.connection)
-                            .await {
+                        match DATABASE.update_val(&username,"badge", badge).await {
                             Ok(..) => Ok(Some(format!("{GREEN}{BOLD}The main badge of {username} has been updated to '{badge}'{C_RESET}"))),
                             Err(_) => Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
                         }
@@ -93,12 +79,9 @@ pub fn admin_settings() -> commands::Command {
                         let username = ctx.args[2].as_str();
                         let badge = ctx.args[3].as_str();
 
-                        let badges: String = match sqlx::query("SELECT badges FROM users WHERE username = ?")
-                            .bind(username)
-                            .fetch_one(&DATABASE.connection)
-                            .await {
-                            Ok(val) => val.get("badges"),
-                            Err(_) => return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
+                        let badges = match DATABASE.get_val_from_user(&username, "badges").await {
+                            Some(val) => val,
+                            None => return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
                         };
 
                         if badges.contains(badge) {
@@ -111,11 +94,7 @@ pub fn admin_settings() -> commands::Command {
 
                         let new_badges = format!("{badges}{badge}");
 
-                        match sqlx::query("UPDATE users SET badges = ? WHERE username = ?")
-                            .bind(new_badges)
-                            .bind(username)
-                            .execute(&DATABASE.connection)
-                            .await {
+                        match DATABASE.update_val(&username,"badges", &new_badges).await {
                             Ok(..) => Ok(Some(format!("{GREEN}{BOLD}Added badge '{badge}' to {username}'s profile{C_RESET}"))),
                             Err(_) => Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
                         }
@@ -125,12 +104,9 @@ pub fn admin_settings() -> commands::Command {
                         let username = ctx.args[2].as_str();
                         let badge = ctx.args[3].as_str();
 
-                        let badges: String = match sqlx::query("SELECT badges FROM users WHERE username = ?")
-                            .bind(username)
-                            .fetch_one(&DATABASE.connection)
-                            .await {
-                            Ok(val) => val.get("badges"),
-                            Err(_) => return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
+                        let badges = match DATABASE.get_val_from_user(&username, "badges").await {
+                            Some(val) => val,
+                            None => return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
                         };
 
                         if !badges.contains(badge) {
@@ -143,11 +119,7 @@ pub fn admin_settings() -> commands::Command {
 
                         let new_badges = badges.replace(badge, "");
 
-                        match sqlx::query("UPDATE users SET badges = ? WHERE username = ?")
-                            .bind(new_badges)
-                            .bind(username)
-                            .execute(&DATABASE.connection)
-                            .await {
+                        match DATABASE.update_val(&username,"badges", &new_badges).await {
                             Ok(..) => Ok(Some(format!("{GREEN}{BOLD}Removed badge '{badge}' to {username}'s profile{C_RESET}"))),
                             Err(_) => Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
                         }
