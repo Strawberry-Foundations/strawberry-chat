@@ -29,7 +29,7 @@ pub trait Database: Send + Sync {
     async fn get_blocked_from_user(&self, username: &'_ str) -> String;
     async fn get_val_from_user(&self, username: &'_ str, value: &'_ str) -> Option<String>;
 
-    async fn update_val(&self, username: &'_ str, key: &'_ str, value: &'_ str);
+    async fn update_val(&self, username: &'_ str, key: &'_ str, value: &'_ str) -> eyre::Result<()>;
 }
 
 lazy_static!(

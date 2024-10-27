@@ -68,7 +68,7 @@ impl Database for PostgreSqlDB {
         todo!()
     }
 
-    async fn update_val(&self, username: &'_ str, key: &'_ str, value: &'_ str) {
+    async fn update_val(&self, username: &'_ str, key: &'_ str, value: &'_ str) -> eyre::Result<()> {
         todo!()
     }
 }

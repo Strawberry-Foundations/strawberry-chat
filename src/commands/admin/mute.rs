@@ -24,7 +24,7 @@ pub fn mute() -> commands::Command {
             return Err(format!("{BOLD}{RED}User already muted{C_RESET}"))
         }
 
-        DATABASE.update_val(&ctx.args[0].as_str(),"muted", "1").await;
+        DATABASE.update_val(&ctx.args[0].as_str(),"muted", "1").await.unwrap();
 
         ctx.tx_channel.send(MessageToClient::SystemMessage {
             content: format!("{BOLD}{LIGHT_GREEN}Muted {}{C_RESET}", ctx.args[0])

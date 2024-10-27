@@ -1,3 +1,4 @@
+use eyre::eyre;
 use sqlx::{MySql, MySqlPool, Pool, Row};
 
 use stblib::stbchat::object::User;
@@ -155,7 +156,7 @@ impl Database for MySqlDB {
             .bind(username)
             .fetch_optional(&self.connection)
             .await.unwrap();
-        
+
         query
     }
 
@@ -257,12 +258,15 @@ impl Database for MySqlDB {
         }
     }
 
-    async fn update_val(&self, username: &'_ str, key: &'_ str, value: &'_ str) {
-        sqlx::query(format!("UPDATE users SET {key} = ? WHERE username = ?").as_str())
+    async fn update_val(&self, username: &'_ str, key: &'_ str, value: &'_ str) -> eyre::Result<()> {
+        match sqlx::query(format!("UPDATE users SET {key} = ? WHERE username = ?").as_str())
             .bind(value)
             .bind(username)
             .execute(&self.connection)
-            .await.unwrap();
+            .await {
+            Ok(..) => Ok(()),
+            Err(_) => Err(eyre!(""))
+        }
     }
 }
 

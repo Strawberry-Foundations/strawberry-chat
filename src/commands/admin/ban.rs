@@ -23,7 +23,7 @@ pub fn ban() -> commands::Command {
             return Err(format!("{BOLD}{RED}User already banned{C_RESET}"))
         }
         
-        DATABASE.update_val(&ctx.args[0].as_str(),"account_enabled", "0").await;
+        DATABASE.update_val(&ctx.args[0].as_str(),"account_enabled", "0").await.unwrap();
 
         ctx.tx_channel.send(MessageToClient::SystemMessage {
             content: format!("{BOLD}{LIGHT_GREEN}Banned {}{C_RESET}", ctx.args[0])
