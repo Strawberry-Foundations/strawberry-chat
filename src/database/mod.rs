@@ -4,6 +4,7 @@ use stblib::stbchat::object::User;
 
 use crate::database::mysql::MySqlDB;
 use crate::database::postgresql::PostgreSqlDB;
+use crate::database::sqlite::SQLiteDB;
 use crate::global::CONFIG;
 use crate::system_core::objects::{Account, UserAccount};
 
@@ -37,6 +38,7 @@ lazy_static!(
         let pool: Box<dyn Database> = match CONFIG.database.driver.as_str() {
             "mysql" => Box::new(MySqlDB::new(url.as_str()).await),
             "postgres" => Box::new(PostgreSqlDB::new(url.as_str()).await),
+            "sqlite" => Box::new(SQLiteDB::new(url.as_str()).await),
             _ => std::process::exit(1)
         };
 
