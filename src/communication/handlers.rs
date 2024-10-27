@@ -10,7 +10,6 @@ use stblib::stbchat::net::{IncomingPacketStream, OutgoingPacketStream};
 use stblib::stbchat::object::User;
 use stblib::stbchat::packet::{ClientPacket, ServerPacket};
 use stblib::colors::{BOLD, C_RESET, GRAY, RED, YELLOW};
-use sqlx::Row;
 
 use crate::system_core::log::log_parser;
 use crate::system_core::internals::{MessageToClient, MessageToServer};
