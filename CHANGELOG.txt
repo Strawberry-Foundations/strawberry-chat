@@ -22,3 +22,4 @@
 
 # DP 3
 - NEW: Revamped database system
+- NEW: Use the configuration `database_table` to use the correct table (#147)
