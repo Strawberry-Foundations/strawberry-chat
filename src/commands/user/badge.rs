@@ -1,4 +1,3 @@
-use sqlx::Row;
 use stblib::colors::{BOLD, C_RESET, RED, LIGHT_GREEN};
 
 use crate::system_core::commands;
