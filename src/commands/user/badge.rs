@@ -10,7 +10,7 @@ use crate::database::DATABASE;
 pub fn badge() -> commands::Command {
     async fn logic(ctx: &commands::Context) -> commands::CommandResponse {
         if ctx.args[0].as_str() == "reset" || ctx.args[0].as_str() == "remove" {
-            DATABASE.update_val(&ctx.executor.username, "badge", "").await;
+            DATABASE.update_val(&ctx.executor.username, "badge", "").await.unwrap();
             return Ok(Some(format!("{BOLD}{LIGHT_GREEN}Removed badge. Rejoin to apply changes{C_RESET}")))
         }
 
@@ -22,7 +22,7 @@ pub fn badge() -> commands::Command {
             return Err(format!("{BOLD}{RED}You do not own this badge!{C_RESET}"))
         }
 
-        DATABASE.update_val(&ctx.executor.username, "badge", badge).await;
+        DATABASE.update_val(&ctx.executor.username, "badge", badge).await.unwrap();
 
         ctx.tx_channel.send(MessageToClient::SystemMessage {
             content: format!(
