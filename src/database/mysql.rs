@@ -9,7 +9,7 @@ use crate::system_core::objects::{Account, UserAccount};
 use crate::constants::types::CRTLCODE_CLIENT_EXIT;
 use crate::constants::log_messages::SQL_CONNECTION_ERROR;
 use crate::database::Database;
-use crate::global::RUNTIME_LOGGER;
+use crate::global::{CONFIG, RUNTIME_LOGGER};
 use crate::security::crypt::Crypt;
 use crate::utilities::role_color_parser;
 
@@ -25,8 +25,7 @@ impl Database for MySqlDB {
     }
 
     async fn create_user(&self, user_id: i64, username: String, password: String, role_color: String) {
-        sqlx::query(
-            "INSERT INTO data.users (\
+        sqlx::query(format!("INSERT INTO data.{} (\
             user_id, \
             username, \
             password, \
@@ -58,7 +57,7 @@ impl Database for MySqlDB {
             '', \
             'member', \
             ?, \
-            1, 1, 1, 0, '', '', '', 0, ?);")
+            1, 1, 1, 0, '', '', '', 0, ?);", CONFIG.database.table).as_str())
             .bind(user_id)
             .bind(username)
             .bind(password)
@@ -69,14 +68,14 @@ impl Database for MySqlDB {
     }
 
     async fn delete_user(&self, username: String) {
-        sqlx::query("DELETE FROM users WHERE username = ?")
+        sqlx::query(format!("DELETE FROM {} WHERE username = ?", CONFIG.database.table).as_str())
             .bind(username)
             .execute(&self.connection)
             .await.unwrap();
     }
 
     async fn check_credentials(&self, username: &'_ str, entered_password: &'_ str) -> (UserAccount, bool) {
-        let row = sqlx::query("SELECT username, password FROM users WHERE username = ?")
+        let row = sqlx::query(format!("SELECT username, password FROM {} WHERE username = ?", CONFIG.database.table).as_str())
             .bind(username)
             .fetch_all(&self.connection)
             .await.expect("err");
@@ -99,7 +98,7 @@ impl Database for MySqlDB {
             avatar_url: String::new(),
         };
 
-        let data = sqlx::query("SELECT * FROM users WHERE username = ?")
+        let data = sqlx::query(format!("SELECT * FROM {} WHERE username = ?", CONFIG.database.table).as_str())
             .bind(username)
             .fetch_all(&self.connection)
             .await.expect("err");
@@ -147,7 +146,7 @@ impl Database for MySqlDB {
     }
 
     async fn is_username_taken(&self, username: &'_ str) -> bool {
-        let query = sqlx::query("SELECT username FROM users WHERE username = ?")
+        let query = sqlx::query(format!("SELECT username FROM {} WHERE username = ?", CONFIG.database.table).as_str())
             .bind(username)
             .fetch_optional(&self.connection)
             .await.unwrap();
@@ -156,7 +155,7 @@ impl Database for MySqlDB {
     }
 
     async fn is_account_enabled(&self, username: &'_ str) -> Option<bool> {
-        let query: Option<bool> = sqlx::query_scalar("SELECT account_enabled FROM users WHERE username = ?")
+        let query: Option<bool> = sqlx::query_scalar(format!("SELECT account_enabled FROM {} WHERE username = ?", CONFIG.database.table).as_str())
             .bind(username)
             .fetch_optional(&self.connection)
             .await.unwrap();
@@ -165,7 +164,7 @@ impl Database for MySqlDB {
     }
 
     async fn is_user_muted(&self, username: &'_ str) -> Option<bool> {
-        let query: Option<bool> = sqlx::query_scalar("SELECT muted FROM users WHERE username = ?")
+        let query: Option<bool> = sqlx::query_scalar(format!("SELECT muted FROM {} WHERE username = ?", CONFIG.database.table).as_str())
             .bind(username)
             .fetch_optional(&self.connection)
             .await.unwrap();
@@ -174,13 +173,13 @@ impl Database for MySqlDB {
     }
 
     async fn get_members(&self) -> Vec<String> {
-        sqlx::query_scalar("SELECT username from users")
+        sqlx::query_scalar(format!("SELECT username from {}", CONFIG.database.table).as_str())
             .fetch_all(&self.connection)
             .await.unwrap()
     }
 
     async fn get_members_by_role(&self, role: &'_ str) -> Vec<String> {
-        sqlx::query_scalar(format!("SELECT username, badge FROM users WHERE role = '{role}'").as_str())
+        sqlx::query_scalar(format!("SELECT username, badge FROM {} WHERE role = '{role}'", CONFIG.database.table).as_str())
             .fetch_all(&self.connection)
             .await.unwrap()
     }
@@ -191,7 +190,7 @@ impl Database for MySqlDB {
             user_id: i64,
         }
 
-        let query = sqlx::query_as::<_, QUser>("SELECT user_id FROM users ORDER BY user_id DESC LIMIT 1")
+        let query = sqlx::query_as::<_, QUser>(format!("SELECT user_id FROM {} ORDER BY user_id DESC LIMIT 1", CONFIG.database.table).as_str())
             .fetch_optional(&self.connection)
             .await.unwrap();
 
@@ -199,7 +198,7 @@ impl Database for MySqlDB {
     }
 
     async fn get_user_by_name(&self, username: &'_ str) -> Option<User> {
-        let data = sqlx::query("SELECT * FROM users WHERE username = ?")
+        let data = sqlx::query(format!("SELECT * FROM {} WHERE username = ?", CONFIG.database.table).as_str())
             .bind(username)
             .fetch_all(&self.connection)
             .await.expect("err");
@@ -227,7 +226,7 @@ impl Database for MySqlDB {
     }
 
     async fn get_account_by_name(&self, username: &'_ str) -> Option<Account> {
-        let data: Vec<Account> = sqlx::query_as("SELECT * FROM users WHERE LOWER(username) = ?")
+        let data: Vec<Account> = sqlx::query_as(format!("SELECT * FROM {} WHERE LOWER(username) = ?", CONFIG.database.table).as_str())
             .bind(username)
             .fetch_all(&self.connection)
             .await.expect("err");
@@ -242,14 +241,14 @@ impl Database for MySqlDB {
     }
 
     async fn get_blocked_from_user(&self, username: &'_ str) -> String {
-        sqlx::query("SELECT blocked FROM users WHERE username = ?")
+        sqlx::query(format!("SELECT blocked FROM {} WHERE username = ?", CONFIG.database.table).as_str())
             .bind(username)
             .fetch_one(&self.connection)
             .await.unwrap().get("blocked")
     }
 
     async fn get_val_from_user(&self, username: &'_ str, value: &'_ str) -> Option<String> {
-        let user_data = sqlx::query(format!("SELECT {value} FROM users WHERE LOWER(username) = ?").as_str())
+        let user_data = sqlx::query(format!("SELECT {value} FROM {} WHERE LOWER(username) = ?", CONFIG.database.table).as_str())
             .bind(username)
             .fetch_all(&self.connection)
             .await.expect("err");
@@ -263,7 +262,7 @@ impl Database for MySqlDB {
     }
 
     async fn update_val(&self, username: &'_ str, key: &'_ str, value: &'_ str) -> eyre::Result<()> {
-        match sqlx::query(format!("UPDATE users SET {key} = ? WHERE username = ?").as_str())
+        match sqlx::query(format!("UPDATE {} SET {key} = ? WHERE username = ?", CONFIG.database.table).as_str())
             .bind(value)
             .bind(username)
             .execute(&self.connection)
