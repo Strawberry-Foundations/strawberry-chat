@@ -40,34 +40,25 @@ async fn format_to_list(member_list: &[String], fmt_color: &str) -> String {
 
 pub fn memberlist() -> commands::Command {
     async fn logic(ctx: &commands::Context) -> commands::CommandResponse {
-        let raw_members: Vec<String> = sqlx::query_scalar("SELECT username, badge FROM users WHERE role = 'member'")
-            .fetch_all(&DATABASE.connection)
-            .await.unwrap();
+        let raw_members = DATABASE.get_members_by_role("member").await;
 
         let members: String = format_to_list(&raw_members, LIGHT_YELLOW).await;
 
-        let raw_bots: Vec<String> = sqlx::query_scalar("SELECT username, badge FROM users WHERE role = 'bot'")
-            .fetch_all(&DATABASE.connection)
-            .await.unwrap();
+        let raw_bots: Vec<String> = DATABASE.get_members_by_role("bot").await;
 
         let bots: String = format_to_list(&raw_bots, LIGHT_MAGENTA).await;
 
-        let raw_admins: Vec<String> = sqlx::query_scalar("SELECT username, badge FROM users WHERE role = 'admin'")
-            .fetch_all(&DATABASE.connection)
-            .await.unwrap();
+        let raw_admins: Vec<String> = DATABASE.get_members_by_role("admin").await;
 
         let admins: String = format_to_list(&raw_admins, LIGHT_RED).await;
 
-        let members_vec = sqlx::query("SELECT username FROM users")
-            .fetch_all(&DATABASE.connection)
-            .await.unwrap().len();
-
+        let members_total = DATABASE.get_members().await.len();
         let online_users = get_online_usernames().await.len();
 
 
         let message = format!(
             "
-        {CYAN}{UNDERLINE}({members_vec} Members, {online_users} Online){C_RESET}
+        {CYAN}{UNDERLINE}({members_total} Members, {online_users} Online){C_RESET}
         {BOLD}->{C_RESET} {RED}Administrators ({}){RESET}
            {LIGHT_RED}{admins}{RESET}
 
