@@ -150,12 +150,21 @@ impl Database for MySqlDB {
         query.is_some()
     }
 
+    async fn is_account_enabled(&self, username: &'_ str) -> Option<bool> {
+        let query: Option<bool> = sqlx::query_scalar("SELECT account_enabled FROM users WHERE username = ?")
+            .bind(username)
+            .fetch_optional(&self.connection)
+            .await.unwrap();
+        
+        query
+    }
+
     async fn get_members(&self) -> Vec<String> {
         sqlx::query_scalar("SELECT username from users")
             .fetch_all(&self.connection)
             .await.unwrap()
     }
-    
+
     async fn get_members_by_role(&self, role: &'_ str) -> Vec<String> {
         sqlx::query_scalar(format!("SELECT username, badge FROM users WHERE role = '{role}'").as_str())
             .fetch_all(&self.connection)

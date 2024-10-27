@@ -32,10 +32,14 @@ impl Database for PostgreSqlDB {
         todo!()
     }
 
+    async fn is_account_enabled(&self, username: &'_ str) -> Option<bool> {
+        todo!()
+    }
+
     async fn get_members(&self) -> Vec<String> {
         todo!()
     }
-    
+
     async fn get_members_by_role(&self, role: &'_ str) -> Vec<String> {
         todo!()
     }

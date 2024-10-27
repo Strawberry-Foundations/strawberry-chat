@@ -31,6 +31,10 @@ impl Database for SQLiteDB {
         todo!()
     }
 
+    async fn is_account_enabled(&self, username: &'_ str) -> Option<bool> {
+        todo!()
+    }
+
     async fn get_members(&self) -> Vec<String> {
         todo!()
     }
@@ -55,11 +59,11 @@ impl Database for SQLiteDB {
         todo!()
     }
 
-    async fn get_val_from_user(&self, username: &'_ str, value: &'_ str) -> Option<String> {
+    async fn get_muted_from_user(&self, username: &'_ str) -> bool {
         todo!()
     }
 
-    async fn get_muted_from_user(&self, username: &'_ str) -> bool {
+    async fn get_val_from_user(&self, username: &'_ str, value: &'_ str) -> Option<String> {
         todo!()
     }
 
