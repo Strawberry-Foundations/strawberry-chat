@@ -1,15 +1,15 @@
 use lazy_static::lazy_static;
-use sqlx::{MySql, Pool};
 use sqlx::mysql::MySqlRow;
 use stblib::stbchat::object::User;
 
-use crate::database::mysql::{MySqlDB, MySqlOld};
+use crate::database::mysql::MySqlDB;
 use crate::database::postgresql::PostgreSqlDB;
 use crate::global::CONFIG;
 use crate::system_core::objects::{Account, UserAccount};
 
 pub mod mysql;
-mod postgresql;
+pub mod postgresql;
+pub mod sqlite;
 
 #[async_trait::async_trait]
 pub trait Database: Send + Sync {
@@ -24,7 +24,7 @@ pub trait Database: Send + Sync {
 }
 
 lazy_static!(
-    pub static ref DATABASE: MySqlOld = futures::executor::block_on(async {
+    pub static ref DATABASE: Box<dyn Database> = futures::executor::block_on(async {
         let url = format!(
             "mysql://{}:{}@{}:{}/{}",
             CONFIG.database.user,
@@ -40,8 +40,6 @@ lazy_static!(
             _ => std::process::exit(1)
         };
 
-        MySqlOld::new(url.as_str()).await
+        pool
     });
-
-    pub static ref CONNECTION: Pool<MySql> = DATABASE.connection.clone();
 );
