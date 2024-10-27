@@ -22,27 +22,14 @@ pub fn description() -> commands::Command {
 
 
         if ctx.args[0].as_str() == "reset" || ctx.args[0].as_str() == "remove" {
-            match sqlx::query("UPDATE users SET description = '' WHERE username = ?")
-                .bind(&ctx.executor.username)
-                .execute(&DATABASE.connection)
-                .await {
-                Ok(..) => ..,
-                Err(_) => return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
-            };
+            DATABASE.update_description(&ctx.executor.username, "").await;
 
             return Ok(Some(format!("{BOLD}{LIGHT_GREEN}Removed description. Rejoin to apply changes{C_RESET}")))
         }
 
         let description = ctx.args[0..].to_vec().join(" ");
 
-        match sqlx::query("UPDATE users SET description = ? WHERE username = ?")
-            .bind(&description)
-            .bind(&ctx.executor.username)
-            .execute(&DATABASE.connection)
-            .await {
-            Ok(..) => ..,
-            Err(_) => return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
-        };
+        DATABASE.update_description(&ctx.executor.username, &description).await;
 
         ctx.tx_channel.send(MessageToClient::SystemMessage {
             content: format!(
