@@ -19,3 +19,6 @@
 
 - FIX: code optimizations
 - FIX: Fixed custom database port not working (#150)
+
+# DP 3
+- NEW: Revamped database system
