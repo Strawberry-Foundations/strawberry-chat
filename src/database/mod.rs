@@ -16,12 +16,15 @@ pub mod sqlite;
 pub trait Database: Send + Sync {
     async fn create_user(&self, user_id: i64, username: String, password: String, role_color: String);
     async fn delete_user(&self, username: String);
-    async fn fetch_members(&self) -> Vec<MySqlRow>;
+
     async fn check_credentials(&self, username: &'_ str, entered_password: &'_ str) -> (UserAccount, bool);
     async fn is_username_taken(&self, username: &'_ str) -> bool;
+
+    async fn get_members(&self) -> Vec<MySqlRow>;
     async fn get_next_user_id(&self) -> i64;
     async fn get_user_by_name(&self, username: &'_ str) -> Option<User>;
     async fn get_account_by_name(&self, username: &'_ str) -> Option<Account>;
+    async fn get_blocked_from_user(&self, username: &'_ str) -> String;
 }
 
 lazy_static!(
