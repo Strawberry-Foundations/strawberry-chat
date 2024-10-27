@@ -59,6 +59,14 @@ impl Database for PostgreSqlDB {
     async fn get_muted_from_user(&self, username: &'_ str) -> bool {
         todo!()
     }
+
+    async fn update_nickname(&self, username: &'_ str, new_nickname: &'_ str) {
+        todo!()
+    }
+
+    async fn update_description(&self, username: &'_ str, new_description: &'_ str) {
+        todo!()
+    }
 }
 
 impl PostgreSqlDB {

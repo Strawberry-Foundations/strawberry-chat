@@ -26,8 +26,9 @@ pub trait Database: Send + Sync {
     async fn get_blocked_from_user(&self, username: &'_ str) -> String;
     async fn get_role_from_user(&self, username: &'_ str) -> Option<String>;
     async fn get_muted_from_user(&self, username: &'_ str) -> bool;
-    
-    async fn update_nickname(&self, username: &'_ str, new_nickname: String);
+
+    async fn update_nickname(&self, username: &'_ str, new_nickname: &'_ str);
+    async fn update_description(&self, username: &'_ str, new_description: &'_ str);
 }
 
 lazy_static!(

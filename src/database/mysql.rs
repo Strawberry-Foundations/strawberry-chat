@@ -243,9 +243,17 @@ impl Database for MySqlDB {
         user_data.first().unwrap().get("muted")
     }
 
-    async fn update_nickname(&self, username: &'_ str, new_nickname: String) {
+    async fn update_nickname(&self, username: &'_ str, new_nickname: &'_ str) {
         sqlx::query("UPDATE users SET nickname = ? WHERE username = ?")
             .bind(new_nickname)
+            .bind(username)
+            .execute(&self.connection)
+            .await.unwrap();
+    }
+
+    async fn update_description(&self, username: &'_ str, new_description: &'_ str) {
+        sqlx::query("UPDATE description SET nickname = ? WHERE username = ?")
+            .bind(new_description)
             .bind(username)
             .execute(&self.connection)
             .await.unwrap();
