@@ -14,6 +14,7 @@ pub struct SQLiteDB {
     pub connection: Pool<Sqlite>
 }
 
+#[allow(unused_variables)]
 #[async_trait::async_trait]
 impl Database for SQLiteDB {
     async fn create_user(&self, user_id: i64, username: String, password: String, role_color: String) {
