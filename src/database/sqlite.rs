@@ -1,4 +1,3 @@
-use sqlx::mysql::MySqlRow;
 use sqlx::Pool;
 use sqlx::sqlite::{Sqlite};
 
@@ -32,7 +31,7 @@ impl Database for SQLiteDB {
         todo!()
     }
 
-    async fn get_members(&self) -> Vec<MySqlRow> {
+    async fn get_members(&self) -> Vec<String> {
         todo!()
     }
 
@@ -53,6 +52,10 @@ impl Database for SQLiteDB {
     }
 
     async fn get_role_from_user(&self, username: &'_ str) -> Option<String> {
+        todo!()
+    }
+
+    async fn get_muted_from_user(&self, username: &'_ str) -> bool {
         todo!()
     }
 }

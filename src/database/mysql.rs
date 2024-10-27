@@ -1,5 +1,4 @@
 use sqlx::{MySql, MySqlPool, Pool, Row};
-use sqlx::mysql::MySqlRow;
 
 use stblib::stbchat::object::User;
 use stblib::utilities::unix_time;
@@ -153,8 +152,8 @@ impl Database for MySqlDB {
 
 
 
-    async fn get_members(&self) -> Vec<MySqlRow> {
-        sqlx::query("SELECT username from users")
+    async fn get_members(&self) -> Vec<String> {
+        sqlx::query_scalar("SELECT username from users")
             .fetch_all(&self.connection)
             .await.unwrap()
     }
