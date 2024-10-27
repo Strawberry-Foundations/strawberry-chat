@@ -1,36 +1,23 @@
-use stblib::colors::{BOLD, C_RESET, RED, LIGHT_GREEN};
+use stblib::colors::{BOLD, C_RESET, LIGHT_GREEN};
 
+use crate::database::DATABASE;
 use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;
 use crate::system_core::internals::MessageToClient;
 use crate::system_core::permissions::Permissions;
 use crate::utilities::role_color_parser;
-use crate::database::DATABASE;
 
 pub fn nickname() -> commands::Command {
     async fn logic(ctx: &commands::Context) -> commands::CommandResponse {
         if ctx.args[0].as_str() == "reset" || ctx.args[0].as_str() == "remove" {
-            match sqlx::query("UPDATE users SET nickname = '' WHERE username = ?")
-                .bind(&ctx.executor.username)
-                .execute(&DATABASE.connection)
-                .await {
-                Ok(..) => ..,
-                Err(_) => return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
-            };
+            DATABASE.update_nickname(&ctx.executor.username, String::from("")).await;
 
             return Ok(Some(format!("{BOLD}{LIGHT_GREEN}Removed nickname. Rejoin to apply changes{C_RESET}")))
         }
 
         let nickname = ctx.args[0..].to_vec().join(" ");
 
-        match sqlx::query("UPDATE users SET nickname = ? WHERE username = ?")
-            .bind(&nickname)
-            .bind(&ctx.executor.username)
-            .execute(&DATABASE.connection)
-            .await {
-            Ok(..) => ..,
-            Err(_) => return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
-        };
+        DATABASE.update_nickname(&ctx.executor.username, nickname.clone()).await;
 
         ctx.tx_channel.send(MessageToClient::SystemMessage {
             content: format!(
