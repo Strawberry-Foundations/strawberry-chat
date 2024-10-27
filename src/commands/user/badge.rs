@@ -11,37 +11,19 @@ use crate::database::DATABASE;
 pub fn badge() -> commands::Command {
     async fn logic(ctx: &commands::Context) -> commands::CommandResponse {
         if ctx.args[0].as_str() == "reset" || ctx.args[0].as_str() == "remove" {
-            match sqlx::query("UPDATE users SET badge = '' WHERE username = ?")
-                .bind(&ctx.executor.username)
-                .execute(&DATABASE.connection)
-                .await {
-                Ok(..) => ..,
-                Err(_) => return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
-            };
-
+            DATABASE.update_val(&ctx.executor.username, "badge", "").await;
             return Ok(Some(format!("{BOLD}{LIGHT_GREEN}Removed badge. Rejoin to apply changes{C_RESET}")))
         }
 
         let badge = &ctx.args[0];
 
-
-        let badges: String = sqlx::query("SELECT badges FROM users WHERE username = ?")
-            .bind(&ctx.executor.username)
-            .fetch_one(&DATABASE.connection)
-            .await.unwrap().get("badges");
+        let badges = DATABASE.get_val_from_user(&ctx.executor.username, "badges").await.unwrap();
         
         if !badges.contains(badge) {
             return Err(format!("{BOLD}{RED}You do not own this badge!{C_RESET}"))
         }
 
-        match sqlx::query("UPDATE users SET badge = ? WHERE username = ?")
-            .bind(badge)
-            .bind(&ctx.executor.username)
-            .execute(&DATABASE.connection)
-            .await {
-            Ok(..) => ..,
-            Err(_) => return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
-        };
+        DATABASE.update_val(&ctx.executor.username, "badge", &badge).await;
 
         ctx.tx_channel.send(MessageToClient::SystemMessage {
             content: format!(
