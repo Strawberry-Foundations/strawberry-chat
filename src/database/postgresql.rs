@@ -1,6 +1,6 @@
 use sqlx::mysql::MySqlRow;
 use sqlx::Pool;
-use sqlx::postgres::{PgRow, Postgres};
+use sqlx::postgres::{Postgres};
 
 use stblib::stbchat::object::User;
 
@@ -14,6 +14,7 @@ pub struct PostgreSqlDB {
     pub connection: Pool<Postgres>
 }
 
+#[allow(unused_variables)]
 #[async_trait::async_trait]
 impl Database for PostgreSqlDB {
     async fn create_user(&self, user_id: i64, username: String, password: String, role_color: String) {
