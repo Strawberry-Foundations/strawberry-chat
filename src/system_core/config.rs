@@ -61,6 +61,7 @@ pub struct DatabaseConfig {
     pub password: String,
     pub database: String,
     pub table: String,
+    pub sqlite_path: Option<String>,
 }
 
 #[derive(Debug, Deserialize)]
