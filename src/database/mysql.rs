@@ -20,8 +20,17 @@ pub struct MySqlDB {
 
 #[async_trait::async_trait]
 impl Database for MySqlDB {
-    fn hello(&self) {
+    async fn hello(&self) {
         let _ = &self.connection;
+        
+        match sqlx::query(format!("SELECT username FROM {}", CONFIG.database.table).as_str())
+            .execute(&self.connection)
+            .await {
+            Ok(_) => (),
+            Err(err) => {
+                RUNTIME_LOGGER.panic_crash(format!("Database error: {}", err));
+            }
+        };
     }
 
     async fn create_user(&self, user_id: i64, username: String, password: String, role_color: String) {

@@ -13,7 +13,7 @@ pub mod sqlite;
 
 #[async_trait::async_trait]
 pub trait Database: Send + Sync {
-    fn hello(&self);
+    async fn hello(&self);
     
     async fn create_user(&self, user_id: i64, username: String, password: String, role_color: String);
     async fn delete_user(&self, username: String);

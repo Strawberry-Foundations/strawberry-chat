@@ -16,7 +16,7 @@ pub struct PostgreSqlDB {
 #[allow(unused_variables)]
 #[async_trait::async_trait]
 impl Database for PostgreSqlDB {
-    fn hello(&self) {
+    async fn hello(&self) {
         let _ = &self.connection;
     }
     
