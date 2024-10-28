@@ -1,3 +1,4 @@
+use std::path::Path;
 use lazy_static::lazy_static;
 use stblib::stbchat::object::User;
 
@@ -53,10 +54,7 @@ lazy_static!(
                 CONFIG.database.port,
                 CONFIG.database.database
             ),
-            "sqlite" => CONFIG.database.sqlite_path
-                .clone()
-                .unwrap_or_else(|| RUNTIME_LOGGER.panic_crash("You didn't provide a path for your SQLite database. Please fix your config"))
-                .to_string(),
+            "sqlite" => CONFIG.database.sqlite_path.clone().unwrap().to_string(),
             _ => std::process::exit(1)
         };
 
@@ -70,3 +68,36 @@ lazy_static!(
         pool
     });
 );
+
+pub fn get_database_graph() -> (String, String) {
+    let address = match CONFIG.database.driver.as_str() {
+        "mysql" | "postgresql" => format!("{}:{}", CONFIG.database.host, CONFIG.database.port),
+        "sqlite" => {
+            let raw_path = &CONFIG.database.sqlite_path
+                .clone()
+                .unwrap_or_else(|| RUNTIME_LOGGER.panic_crash("You didn't provide a path for your SQLite database. Please fix your config"));
+
+            let path = Path::new(raw_path);
+
+            format!("sqlite://{}", path.file_name().unwrap().to_string_lossy())
+        },
+        _ => RUNTIME_LOGGER.panic_crash("Invalid database driver")
+    };
+
+    let graph = match CONFIG.database.driver.as_str() {
+        "mysql" => format!("MySQL->{}->{}", CONFIG.database.database, CONFIG.database.table),
+        "sqlite" => {
+            let raw_path = &CONFIG.database.sqlite_path
+                .clone()
+                .unwrap_or_else(|| RUNTIME_LOGGER.panic_crash("You didn't provide a path for your SQLite database. Please fix your config"));
+
+            let path = Path::new(raw_path);
+            
+            format!("SQLite->{}->{}", path.file_name().unwrap().to_string_lossy(), CONFIG.database.table)
+        },
+        "postgresql" => format!("PostgreSQL->{}->{}", CONFIG.database.database, CONFIG.database.table),
+        _ => unreachable!()
+    };
+
+    (address, graph)
+}
