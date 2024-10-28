@@ -83,7 +83,7 @@ async fn main(){
     ONLINE_MODE.auth().await;
 
     RUNTIME_LOGGER.default(format!("Connecting to database on address {ITALIC}{CYAN}{}:{}{RESET}", CONFIG.database.host, CONFIG.database.port));
-    DATABASE.hello();
+    DATABASE.hello().await;
 
     delete_last_line();
     RUNTIME_LOGGER.default(format!("Connected to {ITALIC}{CYAN}{}:{}{RESET} (MySQL->{}->{})", CONFIG.database.host, CONFIG.database.port, CONFIG.database.database, CONFIG.database.table));
