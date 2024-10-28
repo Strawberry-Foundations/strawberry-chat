@@ -33,6 +33,10 @@ impl Database for MySqlDB {
         };
     }
 
+    async fn initialize_table(&self) {
+        todo!()
+    }
+
     async fn create_user(&self, user_id: i64, username: String, password: String, role_color: String) {
         sqlx::query(format!("INSERT INTO data.{} (\
             user_id, \

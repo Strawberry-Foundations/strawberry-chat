@@ -32,6 +32,10 @@ impl Database for SQLiteDB {
         };
     }
 
+    async fn initialize_table(&self) {
+        todo!()
+    }
+
     #[allow(clippy::cast_possible_wrap)]
     async fn create_user(&self, user_id: i64, username: String, password: String, role_color: String) {
         let creation_date = unix_time() as i64;
