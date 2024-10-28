@@ -110,6 +110,9 @@ database:
   database: data
   table: users
 
+  # SQLite-only
+  sqlite_path: "./users.db"
+
 security:
   require_signing: false
   signing_key: none
