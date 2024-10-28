@@ -25,5 +25,6 @@
 - NEW: Lots of optimization for the database system
 - NEW: Use the configuration `database_table` to use the correct table (#147)
 - NEW: Check if the given table in the configuration exists - If not create one
+- NEW: Update core to v1.04
 
 - FIX: code optimizations
