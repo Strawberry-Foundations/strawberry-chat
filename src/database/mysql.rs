@@ -34,7 +34,31 @@ impl Database for MySqlDB {
     }
 
     async fn initialize_table(&self) {
-        todo!()
+        sqlx::query("CREATE TABLE `users` (
+              `user_id` int(11) NOT NULL AUTO_INCREMENT,
+              `username` text NOT NULL,
+              `password` text NOT NULL,
+              `nickname` text DEFAULT '',
+              `description` text DEFAULT '',
+              `badge` text DEFAULT '',
+              `badges` text DEFAULT '',
+              `avatar_url` text NOT NULL DEFAULT '',
+              `role` text NOT NULL,
+              `role_color` text NOT NULL,
+              `enable_blacklisted_words` tinyint(1) DEFAULT 1,
+              `account_enabled` tinyint(1) DEFAULT 1,
+              `enable_dms` tinyint(1) DEFAULT 1,
+              `muted` tinyint(1) DEFAULT 0,
+              `strawberry_id` text DEFAULT '',
+              `discord_name` text DEFAULT '',
+              `blocked` text DEFAULT '',
+              `msg_count` int(11) NOT NULL DEFAULT 0,
+              `creation_date` int(11) NOT NULL,
+              PRIMARY KEY (`user_id`)
+            ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;")
+            .execute(&self.connection)
+            .await
+            .unwrap_or_else(|err| RUNTIME_LOGGER.panic_crash(format!("Table creation failed: {err}")));
     }
 
     async fn create_user(&self, user_id: i64, username: String, password: String, role_color: String) {
