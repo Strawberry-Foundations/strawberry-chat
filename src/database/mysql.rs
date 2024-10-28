@@ -28,7 +28,7 @@ impl Database for MySqlDB {
             .await {
             Ok(_) => (),
             Err(err) => {
-                RUNTIME_LOGGER.panic_crash(format!("Database error: {}", err));
+                RUNTIME_LOGGER.panic_crash(format!("Database error: {err}"));
             }
         };
     }
