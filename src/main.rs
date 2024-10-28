@@ -83,10 +83,8 @@ async fn main(){
 
     let (db_address, db_graph) = get_database_graph();
 
-    RUNTIME_LOGGER.default(format!("Connecting to database on address {ITALIC}{CYAN}{db_address}{RESET}"));
+    RUNTIME_LOGGER.default(format!("Connecting to database on address {ITALIC}{CYAN}{db_address}{RESET} ..."));
     DATABASE.hello().await;
-
-    delete_last_line();
     RUNTIME_LOGGER.default(format!("Connected to {ITALIC}{CYAN}{db_address}{RESET} ({db_graph})"));
 
 
