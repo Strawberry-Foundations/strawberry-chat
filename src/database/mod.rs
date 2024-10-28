@@ -4,7 +4,7 @@ use stblib::stbchat::object::User;
 use crate::database::mysql::MySqlDB;
 use crate::database::postgresql::PostgreSqlDB;
 use crate::database::sqlite::SQLiteDB;
-use crate::global::CONFIG;
+use crate::global::{CONFIG, RUNTIME_LOGGER};
 use crate::system_core::objects::{Account, UserAccount};
 
 pub mod mysql;
@@ -53,7 +53,10 @@ lazy_static!(
                 CONFIG.database.port,
                 CONFIG.database.database
             ),
-            "sqlite" => CONFIG.database.sqlite_path.clone().unwrap().to_string(),
+            "sqlite" => CONFIG.database.sqlite_path
+                .clone()
+                .unwrap_or_else(|| RUNTIME_LOGGER.panic_crash("You didn't provide a path for your SQLite database. Please fix your config"))
+                .to_string(),
             _ => std::process::exit(1)
         };
 
