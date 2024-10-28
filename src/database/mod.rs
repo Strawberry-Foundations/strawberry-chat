@@ -1,5 +1,6 @@
 use std::path::Path;
 use lazy_static::lazy_static;
+use stblib::colors::{C_RESET, GREEN};
 use stblib::stbchat::object::User;
 
 use crate::database::mysql::MySqlDB;
@@ -63,7 +64,7 @@ lazy_static!(
             "mysql" => Box::new(MySqlDB::new(url.as_str()).await),
             "postgres" => Box::new(PostgreSqlDB::new(url.as_str()).await),
             "sqlite" => Box::new(SQLiteDB::new(url.as_str()).await),
-            _ => std::process::exit(1)
+            _ => RUNTIME_LOGGER.panic_crash(format!("Unsupported database driver! (Supported: {GREEN}mysql, postgres, sqlite{C_RESET})")),
         };
 
         pool
@@ -82,7 +83,7 @@ pub fn get_database_graph() -> (String, String) {
 
             format!("sqlite://{}", path.file_name().unwrap().to_string_lossy())
         },
-        _ => RUNTIME_LOGGER.panic_crash("Invalid database driver")
+        _ => RUNTIME_LOGGER.panic_crash(format!("Unsupported database driver! (Supported: {GREEN}mysql, postgres, sqlite{C_RESET})")),
     };
 
     let graph = match CONFIG.database.driver.as_str() {
@@ -93,7 +94,7 @@ pub fn get_database_graph() -> (String, String) {
                 .unwrap_or_else(|| RUNTIME_LOGGER.panic_crash("You didn't provide a path for your SQLite database. Please fix your config"));
 
             let path = Path::new(raw_path);
-            
+
             format!("SQLite->{}->{}", path.file_name().unwrap().to_string_lossy(), CONFIG.database.table)
         },
         "postgresql" => format!("PostgreSQL->{}->{}", CONFIG.database.database, CONFIG.database.table),
