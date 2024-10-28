@@ -22,6 +22,8 @@
 
 # DP 3
 - NEW: Revamped database system (Support for MySQL, SQLite & PostgreSQL - more coming soon!)
+- NEW: Lots of optimization for the database system
 - NEW: Use the configuration `database_table` to use the correct table (#147)
+- NEW: Check if the given table in the configuration exists - If not create one
 
 - FIX: code optimizations
