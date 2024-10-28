@@ -25,7 +25,7 @@ pub const RATELIMIT_REMOVED: &str   = "Ratelimit timeout for %s removed";
 pub const REACHED_CON_LIMIT: &str   = "IP address %s has reached its connection limit. Blocking IP address";
 pub const CLIENT_KICKED: &str       = "%s was kicked. Reason: %s";
 
-pub const SQL_CONNECTION_ERROR: &str = "Couldn't connect to database: %s";
+pub const DATABASE_CONNECTION_ERROR: &str = "Couldn't connect to database: %s";
 
 pub const READ_PACKET_FAIL: &str = "Failed to read packet";
 pub const WRITE_PACKET_FAIL: &str = "Failed to write packet";
