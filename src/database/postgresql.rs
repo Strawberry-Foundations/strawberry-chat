@@ -18,6 +18,8 @@ pub struct PostgreSqlDB {
 impl Database for PostgreSqlDB {
     async fn hello(&self) {
         let _ = &self.connection;
+        
+        RUNTIME_LOGGER.panic_crash("PostgreSQL is currently not supported");
     }
     
     async fn create_user(&self, user_id: i64, username: String, password: String, role_color: String) {
