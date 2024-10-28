@@ -237,7 +237,7 @@ impl Database for SQLiteDB {
 
     async fn get_account_by_name(&self, username: &'_ str) -> Option<Account> {
         let data: Vec<Account> = sqlx::query_as(format!("SELECT * FROM {} WHERE LOWER(username) = ?", CONFIG.database.table).as_str())
-            .bind(username)
+            .bind(username.to_lowercase())
             .fetch_all(&self.connection)
             .await.expect("err");
 
@@ -259,7 +259,7 @@ impl Database for SQLiteDB {
 
     async fn get_val_from_user(&self, username: &'_ str, value: &'_ str) -> Option<String> {
         let user_data = sqlx::query(format!("SELECT {value} FROM {} WHERE LOWER(username) = ?", CONFIG.database.table).as_str())
-            .bind(username)
+            .bind(username.to_lowercase())
             .fetch_all(&self.connection)
             .await.expect("err");
 
