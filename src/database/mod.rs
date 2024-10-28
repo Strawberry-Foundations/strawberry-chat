@@ -36,14 +36,26 @@ pub trait Database: Send + Sync {
 
 lazy_static!(
     pub static ref DATABASE: Box<dyn Database> = futures::executor::block_on(async {
-        let url = format!(
-            "mysql://{}:{}@{}:{}/{}",
-            CONFIG.database.user,
-            CONFIG.database.password,
-            CONFIG.database.host,
-            CONFIG.database.port,
-            CONFIG.database.database
-        );
+        let url = match CONFIG.database.driver.as_str() {
+            "mysql" => format!(
+                "mysql://{}:{}@{}:{}/{}",
+                CONFIG.database.user,
+                CONFIG.database.password,
+                CONFIG.database.host,
+                CONFIG.database.port,
+                CONFIG.database.database
+            ),
+            "postgresql" => format!(
+                "postgresql://{}:{}@{}:{}/{}",
+                CONFIG.database.user,
+                CONFIG.database.password,
+                CONFIG.database.host,
+                CONFIG.database.port,
+                CONFIG.database.database
+            ),
+            "sqlite" => CONFIG.database.sqlite_path.clone().unwrap().to_string(),
+            _ => std::process::exit(1)
+        };
 
         let pool: Box<dyn Database> = match CONFIG.database.driver.as_str() {
             "mysql" => Box::new(MySqlDB::new(url.as_str()).await),
