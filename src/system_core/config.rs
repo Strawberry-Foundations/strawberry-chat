@@ -98,7 +98,7 @@ flags:
   bots_wait_queue: true
 
 database:
-  # Available drivers: mysql
+  # Available drivers: mysql, sqlite, postgresql
   driver: mysql
 
   # DB Host & credentials
