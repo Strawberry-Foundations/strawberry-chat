@@ -22,6 +22,23 @@ pub struct MySqlDB {
 impl Database for MySqlDB {
     async fn hello(&self) {
         let _ = &self.connection;
+
+        let row: (bool,) = sqlx::query_as(
+            "SELECT EXISTS (
+            SELECT 1
+            FROM information_schema.tables
+            WHERE table_schema = ?
+              AND table_name = ?
+            )")
+            .bind(&CONFIG.database.database)
+            .bind(&CONFIG.database.table)
+            .fetch_one(&self.connection)
+            .await.unwrap();
+
+        if !row.0 {
+            RUNTIME_LOGGER.default(format!("Table '{}' does not exists. Creating ...", CONFIG.database.table));
+            self.initialize_table().await;
+        }
         
         match sqlx::query(format!("SELECT username FROM {}", CONFIG.database.table).as_str())
             .execute(&self.connection)
