@@ -33,7 +33,30 @@ impl Database for SQLiteDB {
     }
 
     async fn initialize_table(&self) {
-        todo!()
+        sqlx::query(r#"CREATE TABLE "users" (
+            "user_id"	INTEGER,
+            "username"	TEXT,
+            "password"	TEXT,
+            "nickname"	TEXT,
+            "description"	TEXT,
+            "badge"	TEXT,
+            "badges"	TEXT,
+            "avatar_url"	TEXT,
+            "role"	TEXT,
+            "role_color"	TEXT,
+            "enable_blacklisted_words"	INTEGER,
+            "account_enabled"	INTEGER,
+            "enable_dms"	INTEGER,
+            "muted"	INTEGER,
+            "strawberry_id"	TEXT,
+            "discord_name"	TEXT,
+            "blocked"	TEXT,
+            "msg_count"	INTEGER,
+            "creation_date"	INTEGER
+            );"#)
+            .execute(&self.connection)
+            .await
+            .unwrap_or_else(|err| RUNTIME_LOGGER.panic_crash(format!("Table creation failed: {err}")));
     }
 
     #[allow(clippy::cast_possible_wrap)]
