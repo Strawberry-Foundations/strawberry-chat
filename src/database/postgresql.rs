@@ -5,7 +5,7 @@ use stblib::stbchat::object::User;
 
 use crate::system_core::log::log_parser;
 use crate::system_core::objects::{Account, UserAccount};
-use crate::constants::log_messages::SQL_CONNECTION_ERROR;
+use crate::constants::log_messages::DATABASE_CONNECTION_ERROR;
 use crate::database::Database;
 use crate::global::RUNTIME_LOGGER;
 
@@ -86,7 +86,7 @@ impl Database for PostgreSqlDB {
 impl PostgreSqlDB {
     pub async fn new(url: &str) -> Self {
         let connection = Pool::<Postgres>::connect(url).await.unwrap_or_else(|err| {
-            RUNTIME_LOGGER.panic_crash(log_parser(SQL_CONNECTION_ERROR, &[&err]));
+            RUNTIME_LOGGER.panic_crash(log_parser(DATABASE_CONNECTION_ERROR, &[&err]));
         });
 
         Self {
