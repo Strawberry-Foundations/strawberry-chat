@@ -62,9 +62,7 @@ pub async fn client_login(w_client: &mut OutgoingPacketStream<WriteHalf<TcpStrea
         message: format!("{BOLD}Checking your credentials...{C_RESET}")
     }).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
     
-    let mut account = if let Some(account) = DATABASE.check_credentials(&credentials.0, &credentials.1).await {
-        account
-    } else {
+    let Some(mut account) = DATABASE.check_credentials(&credentials.0, &credentials.1).await else {
         w_client.write(ClientPacket::SystemMessage {
             message: format!("{RED}{BOLD}Invalid username and/or password!{C_RESET}")
         }).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
