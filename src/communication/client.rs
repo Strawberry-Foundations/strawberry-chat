@@ -64,12 +64,6 @@ pub async fn client_handler(client: TcpStream, rx: Receiver<MessageToClient>, tx
         return
     };
 
-    /// # Core (feat): Account Ok Status
-    /// Checks if the account is after all the login things in a "good" status
-    if !account.account_enabled || !account.ok {
-        return
-    }
-
     /// # Core (feat): Client Username Verification
     /// Checks if the user is successfully logged in, if not, the value of `user.username` will be `CRTLCODE_CLIENT_EXIT`
     /// This code will check if the username is `CRTLCODE_CLIENT_EXIT`
