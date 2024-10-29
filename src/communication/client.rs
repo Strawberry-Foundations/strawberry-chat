@@ -22,7 +22,7 @@ use crate::system_core::login;
 use crate::system_core::internals::{MessageToClient, MessageToServer};
 use crate::communication::handlers::{client_incoming, client_outgoing};
 use crate::constants::types::CRTLCODE_CLIENT_EXIT;
-use crate::constants::log_messages::{ADDRESS_LEFT, LOGIN, LOGIN_ERROR, LOGIN_FAIL_CLOSED, S2C_ERROR, WRITE_PACKET_FAIL};
+use crate::constants::log_messages::{ADDRESS_LEFT, CLIENT_UNAME_EMPTY, LOGIN, LOGIN_ERROR, LOGIN_FAIL_CLOSED, S2C_ERROR, WRITE_PACKET_FAIL};
 use crate::global::{CONFIG, LOGGER};
 
 /// # `client_handler()`
@@ -63,27 +63,18 @@ pub async fn client_handler(client: TcpStream, rx: Receiver<MessageToClient>, tx
         return
     };
 
-    /// # Core (feat): Client Username Verification
-    /// *Is this really needed?*
-    /// Checks if the user is successfully logged in, if not, the value of `user.username` will be `CRTLCODE_CLIENT_EXIT`
-    /// This code will check if the username is `CRTLCODE_CLIENT_EXIT`
-    if user.username == *CRTLCODE_CLIENT_EXIT{
+    /// # Core (ext): Client Username Verification
+    /// Checks if username is empty in case something gone wrong while logging in.
+    /// *Just in case something happens*
+    if user.username.is_empty() {
         w_client.write(ClientPacket::SystemMessage {
             message: format!("{RED}{BOLD}Invalid username and/or password!{C_RESET}")
         }).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
 
         LOGGER.info(log_parser(ADDRESS_LEFT, &[&peer_addr]));
-
-        w_client.inner_mut().shutdown().await.unwrap_or_else(|_| LOGGER.error(format!("{S2C_ERROR} (com::client::#79)")));
-
-        return
-    }
-
-    /// # Core (ext): Client Username Verification
-    /// *Is this really needed?*
-    /// Checks if username is empty in case something gone wrong while logging in
-    if user.username.is_empty() {
         LOGGER.error(log_parser(LOGIN_ERROR, &[&peer_addr]));
+        LOGGER.error(CLIENT_UNAME_EMPTY);
+
         w_client.inner_mut().shutdown().await.unwrap_or_else(|_| LOGGER.error(format!("{S2C_ERROR} (com::client::#80)")));
 
         return
