@@ -15,7 +15,6 @@ use stblib::stbchat::packet::{ClientPacket, ServerPacket};
 use stblib::colors::{BOLD, C_RESET, RED, YELLOW};
 
 use crate::system_core::log::log_parser;
-use crate::system_core::objects::UserAccount;
 use crate::system_core::register::client_register;
 use crate::system_core::server_core::get_online_usernames;
 use crate::constants::log_messages::{ADDRESS_LEFT, DISCONNECTED, READ_PACKET_FAIL, S2C_ERROR, WRITE_PACKET_FAIL};
