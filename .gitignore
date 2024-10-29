@@ -11,3 +11,4 @@ old/
 # Strawberry Chat files
 config.yml
 bad_words.yml
+users.db

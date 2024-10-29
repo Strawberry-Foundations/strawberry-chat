@@ -13,13 +13,12 @@ use tokio::net::TcpListener;
 use tokio::task::JoinHandle;
 
 use stblib::colors::{YELLOW, CYAN, MAGENTA, BOLD, C_RESET, ITALIC, RESET};
-
 use crate::system_core::server_core::core_thread;
 use crate::system_core::watchdog::watchdog_thread;
 use crate::system_core::panic::panic_handler;
 use crate::communication::connection_handler::connection_handler;
-use crate::utilities::{delete_last_line, runtime_all_addresses};
-use crate::database::DATABASE;
+use crate::utilities::runtime_all_addresses;
+use crate::database::{get_database_graph, DATABASE};
 use crate::global::{CONFIG, DEFAULT_VERSION, ONLINE_MODE, RUNTIME_LOGGER, CHAT_NAME, CODENAME, SERVER_EDITION, ADDITION_VER};
 use crate::cli_wins::constructor::{Constructor, ConstructorOptions};
 
@@ -82,11 +81,11 @@ async fn main(){
 
     ONLINE_MODE.auth().await;
 
-    RUNTIME_LOGGER.default(format!("Connecting to database on address {ITALIC}{CYAN}{}:{}{RESET}", CONFIG.database.host, CONFIG.database.port));
-    let _ = DATABASE.connection.clone();
+    let (db_address, db_graph) = get_database_graph();
 
-    delete_last_line();
-    RUNTIME_LOGGER.default(format!("Connected to {ITALIC}{CYAN}{}:{}{RESET} (MySQL->{}->{})", CONFIG.database.host, CONFIG.database.port, CONFIG.database.database, CONFIG.database.table));
+    RUNTIME_LOGGER.default(format!("Connecting to database on address {ITALIC}{CYAN}{db_address}{RESET} ..."));
+    DATABASE.hello().await;
+    RUNTIME_LOGGER.default(format!("Connected to {ITALIC}{CYAN}{db_address}{RESET} ({db_graph})"));
 
 
     RUNTIME_LOGGER.info(

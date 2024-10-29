@@ -10,9 +10,7 @@ use crate::database::DATABASE;
 
 pub fn members() -> commands::Command {
     async fn logic(ctx: &commands::Context) -> commands::CommandResponse {
-        let members_vec: Vec<String> = sqlx::query_scalar("SELECT username FROM users")
-            .fetch_all(&DATABASE.connection)
-            .await.unwrap();
+        let members_vec = DATABASE.get_members().await;
 
         let members = if CONFIG.config.max_registered_users == -1 {
             format!("{}", members_vec.len())

@@ -23,7 +23,7 @@ pub async fn client_register(
     w_client: &mut OutgoingPacketStream<WriteHalf<TcpStream>>,
     peer_addr: IpAddr
 ) {
-    let registered_users = DATABASE.fetch_members().await;
+    let registered_users = DATABASE.get_members().await;
     
     if i16::try_from(registered_users.len()).unwrap() >= CONFIG.config.max_registered_users && CONFIG.config.max_registered_users != -1 {
         w_client.write(ClientPacket::SystemMessage {
@@ -132,5 +132,5 @@ pub async fn client_register(
     let user_id = DATABASE.get_next_user_id().await;
     let registered_password = Crypt::hash_password(password.as_str());
 
-    DATABASE.new_user(user_id, username, registered_password, role_color).await;
+    DATABASE.create_user(user_id, username, registered_password, role_color).await;
 }

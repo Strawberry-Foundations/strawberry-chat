@@ -1,4 +1,3 @@
-use sqlx::Row;
 use stblib::colors::{BOLD, C_RESET, RED, LIGHT_GREEN};
 
 use crate::system_core::commands;
@@ -10,28 +9,17 @@ use crate::global::LOGGER;
 
 pub fn unban() -> commands::Command {
     async fn logic(ctx: &commands::Context) -> commands::CommandResponse {
-        let data = sqlx::query("SELECT username, account_enabled FROM users WHERE username = ?")
-            .bind(ctx.args[0].as_str())
-            .fetch_all(&DATABASE.connection)
-            .await.expect("err");
+        let account_enabled = DATABASE.is_account_enabled(ctx.args[0].as_str()).await;
 
-        if data.is_empty() {
+        if account_enabled.is_none() {
             return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
         }
 
-        let account_enabled: bool = data.first().unwrap().get("account_enabled");
-
-        if account_enabled {
+        if account_enabled.unwrap() {
             return Err(format!("{BOLD}{RED}User not banned{C_RESET}"))
         }
 
-        match sqlx::query("UPDATE users SET account_enabled = '1' WHERE username = ?")
-            .bind(ctx.args[0].as_str())
-            .execute(&DATABASE.connection)
-            .await {
-            Ok(..) => ..,
-            Err(_) => return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
-        };
+        DATABASE.update_val(ctx.args[0].as_str(),"account_enabled", "1").await.unwrap();
 
         ctx.tx_channel.send(MessageToClient::SystemMessage {
             content: format!("{BOLD}{LIGHT_GREEN}Unbanned {}{C_RESET}", ctx.args[0])

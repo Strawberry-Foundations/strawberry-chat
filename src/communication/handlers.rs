@@ -10,7 +10,6 @@ use stblib::stbchat::net::{IncomingPacketStream, OutgoingPacketStream};
 use stblib::stbchat::object::User;
 use stblib::stbchat::packet::{ClientPacket, ServerPacket};
 use stblib::colors::{BOLD, C_RESET, GRAY, RED, YELLOW};
-use sqlx::Row;
 
 use crate::system_core::log::log_parser;
 use crate::system_core::internals::{MessageToClient, MessageToServer};
@@ -96,10 +95,7 @@ pub async fn client_incoming(
         let status = *STATUS.read().await.get_by_name(content.mentioned_user.as_str());
 
         if content.is_mention && content.mentioned_user != user.username && status != Status::DoNotDisturb {
-            let blocked_users_recipient: String = sqlx::query("SELECT blocked FROM users WHERE username = ?")
-                .bind(content.mentioned_user.as_str())
-                .fetch_one(&DATABASE.connection)
-                .await.unwrap().get("blocked");
+            let blocked_users_recipient: String = DATABASE.get_blocked_from_user(content.mentioned_user.as_str()).await;
 
             if !blocked_users_recipient.split(',').any(|x| x == user.username) {
                 tx.send(MessageToServer::ClientNotification {

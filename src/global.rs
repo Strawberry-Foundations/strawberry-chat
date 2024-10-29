@@ -15,8 +15,8 @@ pub const STRAWBERRY_ID_API: &str = "https://id.strawberryfoundations.org/v2/";
 pub const STRAWBERRY_CLOUD_API: &str = "https://cloud.strawberryfoundations.org/";
 
 pub const BASE_VERSION: &str = "1.13.0";
-pub const CORE_BASE_VERSION: &str = "1.03";
-pub const ADDITION_VER: &str = "dp2";
+pub const CORE_BASE_VERSION: &str = "1.04";
+pub const ADDITION_VER: &str = "dp3";
 pub const STBM_VER: &str = "3";
 pub const CONFIG_VER: &str  = "10";
 

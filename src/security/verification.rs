@@ -3,7 +3,6 @@ use std::io::Read;
 use std::path::{Path, PathBuf};
 
 use serde::Deserialize;
-use sqlx::Row;
 
 use stblib::stbchat::object::User;
 
@@ -50,13 +49,7 @@ impl MessageVerification {
 
     pub async fn check_with_user(&self, content: &String, user: &User) -> MessageAction {
         let content = content.to_string();
-
-        let user_data = sqlx::query("SELECT muted FROM users WHERE username = ?")
-            .bind(&user.username)
-            .fetch_all(&DATABASE.connection)
-            .await.expect("err");
-
-        let muted: bool = user_data.first().unwrap().get("muted");
+        let muted = DATABASE.is_user_muted(user.username.as_str()).await.unwrap();
 
         if self.bad_words.blacklist.iter().any(|w| content.contains(w)) {
             return MessageAction::Kick;

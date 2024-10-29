@@ -49,9 +49,9 @@ pub fn delete_account() -> commands::Command {
 
                                     if let Some(Event::UserMessage { author, content}) = hook.rx.recv().await {
                                         // Last time for confirming account deletion
-                                        let (_, result) = DATABASE.check_credentials(&author.username, &content).await;
+                                        let account = DATABASE.check_credentials(&author.username, &content).await;
 
-                                        if result {
+                                        if account.is_some() {
                                             hook.tx_ctx.send(MessageToClient::SystemMessage {
                                                 content: format!("{YELLOW}{BOLD}Deleting your user account...{C_RESET}")
                                             }).await.unwrap();

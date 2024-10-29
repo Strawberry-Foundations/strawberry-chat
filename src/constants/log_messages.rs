@@ -8,6 +8,8 @@ pub const QUEUE_JOIN: &str          = "%s (%s) is now in the queue";
 pub const CONNECTED_RLM: &str       = "%s (ratelimited) has connected";
 pub const LOGIN: &str               = "%s (%s) logged in";
 pub const LOGIN_ERROR: &str         = "A login error with %s occurred!";
+pub const CLIENT_UNAME_EMPTY: &str  = "Client username was empty";
+pub const LOGIN_FAIL_CLOSED: &str   = "Failed to log in %s, connection closed to client";
 pub const COMMUNICATION_ERROR: &str = "A communication error with %s (%s) occurred!";
 pub const CONNECTION_ERROR: &str    = "A connection error occurred!";
 pub const TRANSMISSION_ERROR: &str  = "A message transmission error occurred.";
@@ -25,7 +27,7 @@ pub const RATELIMIT_REMOVED: &str   = "Ratelimit timeout for %s removed";
 pub const REACHED_CON_LIMIT: &str   = "IP address %s has reached its connection limit. Blocking IP address";
 pub const CLIENT_KICKED: &str       = "%s was kicked. Reason: %s";
 
-pub const SQL_CONNECTION_ERROR: &str = "Couldn't connect to database: %s";
+pub const DATABASE_CONNECTION_ERROR: &str = "Couldn't connect to database: %s";
 
 pub const READ_PACKET_FAIL: &str = "Failed to read packet";
 pub const WRITE_PACKET_FAIL: &str = "Failed to write packet";

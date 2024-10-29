@@ -24,18 +24,17 @@
 
 #![allow(clippy::unnecessary_wraps)]
 
-use tokio::sync::mpsc::Sender;
 use owo_colors::OwoColorize;
-use sqlx::Row;
+use tokio::sync::mpsc::Sender;
 
+use stblib::colors::C_RESET;
 use stblib::stbchat::object::User;
-use stblib::colors::{BOLD, C_RESET, RED};
 
+use crate::commands::command_registry;
+use crate::database::DATABASE;
 use crate::system_core::internals::MessageToClient;
 use crate::system_core::permissions::Permissions;
 use crate::system_core::server_core::Connection;
-use crate::commands::command_registry;
-use crate::database::DATABASE;
 
 
 // 'static borrow from https://github.com/serenity-rs/poise/blob/c5a4fc862e22166c8933e7e11727c577bb93067d/src/lib.rs#L439
@@ -127,16 +126,7 @@ async fn exec_command(name: String, args: Vec<String>, conn: &Connection) -> Res
         return Err(String::from("You need to authorize to run commands!"))
     };
 
-    let data = sqlx::query("SELECT role FROM users WHERE username = ?")
-        .bind(user.username.clone())
-        .fetch_all(&DATABASE.connection)
-        .await.expect("err");
-
-    if data.is_empty() {
-        return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
-    }
-
-    let user_permissions = match data.first().unwrap().get("role") {
+    let user_permissions = match DATABASE.get_val_from_user(&user.username, "role").await.expect("REASON").as_str() {
         "bot" => Permissions::Bot,
         "admin" => Permissions::Admin,
         _ => Permissions::Member,
@@ -149,7 +139,7 @@ async fn exec_command(name: String, args: Vec<String>, conn: &Connection) -> Res
     if args.len() < (cmd.required_args) {
         return Err(format!(
             "Missing arguments - Command requires at least {} argument - Got {} arguments",
-            (cmd.required_args), args.len()
+            cmd.required_args, args.len()
         ))
     }
 

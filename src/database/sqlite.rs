@@ -1,5 +1,5 @@
 use eyre::eyre;
-use sqlx::{MySql, MySqlPool, Pool, Row};
+use sqlx::{SqlitePool, Sqlite, Pool, Row};
 
 use stblib::stbchat::object::User;
 use stblib::utilities::unix_time;
@@ -12,25 +12,23 @@ use crate::global::{CONFIG, RUNTIME_LOGGER};
 use crate::security::crypt::Crypt;
 use crate::utilities::role_color_parser;
 
-
-pub struct MySqlDB {
-    pub connection: Pool<MySql>
+pub struct SQLiteDB {
+    pub connection: Pool<Sqlite>
 }
 
-/// # MySqlDB implementation
+/// # SQLite implementation
 #[async_trait::async_trait]
-impl Database for MySqlDB {
+impl Database for SQLiteDB {
     async fn hello(&self) {
         let _ = &self.connection;
 
         let row: (bool,) = sqlx::query_as(
             "SELECT EXISTS (
             SELECT 1
-            FROM information_schema.tables
-            WHERE table_schema = ?
-              AND table_name = ?
+            FROM sqlite_master
+            WHERE type = 'table'
+              AND name = ?
             )")
-            .bind(&CONFIG.database.database)
             .bind(&CONFIG.database.table)
             .fetch_one(&self.connection)
             .await.unwrap();
@@ -39,7 +37,7 @@ impl Database for MySqlDB {
             RUNTIME_LOGGER.default(format!("Table '{}' does not exists. Creating ...", CONFIG.database.table));
             self.initialize_table().await;
         }
-        
+
         match sqlx::query(format!("SELECT username FROM {}", CONFIG.database.table).as_str())
             .execute(&self.connection)
             .await {
@@ -49,36 +47,38 @@ impl Database for MySqlDB {
             }
         };
     }
+
     async fn initialize_table(&self) {
-        sqlx::query("CREATE TABLE `users` (
-              `user_id` int(11) NOT NULL AUTO_INCREMENT,
-              `username` text NOT NULL,
-              `password` text NOT NULL,
-              `nickname` text DEFAULT '',
-              `description` text DEFAULT '',
-              `badge` text DEFAULT '',
-              `badges` text DEFAULT '',
-              `avatar_url` text NOT NULL DEFAULT '',
-              `role` text NOT NULL,
-              `role_color` text NOT NULL,
-              `enable_blacklisted_words` tinyint(1) DEFAULT 1,
-              `account_enabled` tinyint(1) DEFAULT 1,
-              `enable_dms` tinyint(1) DEFAULT 1,
-              `muted` tinyint(1) DEFAULT 0,
-              `strawberry_id` text DEFAULT '',
-              `discord_name` text DEFAULT '',
-              `blocked` text DEFAULT '',
-              `msg_count` int(11) NOT NULL DEFAULT 0,
-              `creation_date` int(11) NOT NULL,
-              PRIMARY KEY (`user_id`)
-            ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;")
+        sqlx::query(r#"CREATE TABLE "users" (
+            "user_id"	INTEGER,
+            "username"	TEXT,
+            "password"	TEXT,
+            "nickname"	TEXT,
+            "description"	TEXT,
+            "badge"	TEXT,
+            "badges"	TEXT,
+            "avatar_url"	TEXT,
+            "role"	TEXT,
+            "role_color"	TEXT,
+            "enable_blacklisted_words"	INTEGER,
+            "account_enabled"	INTEGER,
+            "enable_dms"	INTEGER,
+            "muted"	INTEGER,
+            "strawberry_id"	TEXT,
+            "discord_name"	TEXT,
+            "blocked"	TEXT,
+            "msg_count"	INTEGER,
+            "creation_date"	INTEGER
+            );"#)
             .execute(&self.connection)
             .await
             .unwrap_or_else(|err| RUNTIME_LOGGER.panic_crash(format!("Table creation failed: {err}")));
     }
 
+    #[allow(clippy::cast_possible_wrap)]
     async fn create_user(&self, user_id: i64, username: String, password: String, role_color: String) {
-        sqlx::query(format!("INSERT INTO data.{} (\
+        let creation_date = unix_time() as i64;
+        sqlx::query(format!("INSERT INTO {} (\
             user_id, \
             username, \
             password, \
@@ -115,7 +115,7 @@ impl Database for MySqlDB {
             .bind(username)
             .bind(password)
             .bind(role_color)
-            .bind(unix_time())
+            .bind(creation_date)
             .execute(&self.connection)
             .await.unwrap();
     }
@@ -268,7 +268,7 @@ impl Database for MySqlDB {
 
     async fn get_account_by_name(&self, username: &'_ str) -> Option<Account> {
         let data: Vec<Account> = sqlx::query_as(format!("SELECT * FROM {} WHERE LOWER(username) = ?", CONFIG.database.table).as_str())
-            .bind(username)
+            .bind(username.to_lowercase())
             .fetch_all(&self.connection)
             .await.expect("err");
 
@@ -290,7 +290,7 @@ impl Database for MySqlDB {
 
     async fn get_val_from_user(&self, username: &'_ str, value: &'_ str) -> Option<String> {
         let user_data = sqlx::query(format!("SELECT {value} FROM {} WHERE LOWER(username) = ?", CONFIG.database.table).as_str())
-            .bind(username)
+            .bind(username.to_lowercase())
             .fetch_all(&self.connection)
             .await.expect("err");
 
@@ -314,9 +314,9 @@ impl Database for MySqlDB {
     }
 }
 
-impl MySqlDB {
+impl SQLiteDB {
     pub async fn new(url: &str) -> Self {
-        let connection = MySqlPool::connect(url).await.unwrap_or_else(|err| {
+        let connection = SqlitePool::connect(url).await.unwrap_or_else(|err| {
             RUNTIME_LOGGER.panic_crash(log_parser(DATABASE_CONNECTION_ERROR, &[&err]));
         });
 

@@ -1,4 +1,3 @@
-use sqlx::Row;
 use stblib::colors::{BOLD, C_RESET, RED, LIGHT_GREEN};
 
 use crate::system_core::commands;
@@ -10,28 +9,17 @@ use crate::global::LOGGER;
 
 pub fn unmute() -> commands::Command {
     async fn logic(ctx: &commands::Context) -> commands::CommandResponse {
-        let data = sqlx::query("SELECT username, muted FROM users WHERE username = ?")
-            .bind(ctx.args[0].as_str())
-            .fetch_all(&DATABASE.connection)
-            .await.expect("err");
+        let muted = DATABASE.is_user_muted(ctx.args[0].as_str()).await;
 
-        if data.is_empty() {
+        if muted.is_none() {
             return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
         }
 
-        let muted: bool = data.first().unwrap().get("muted");
-
-        if !muted {
-            return Err(format!("{BOLD}{RED}User not muted{C_RESET}"))
+        if !muted.unwrap() {
+            return Err(format!("{BOLD}{RED}User already muted{C_RESET}"))
         }
 
-        match sqlx::query("UPDATE users SET muted = '0' WHERE username = ?")
-            .bind(ctx.args[0].as_str())
-            .execute(&DATABASE.connection)
-            .await {
-            Ok(..) => ..,
-            Err(_) => return Err(format!("{BOLD}{RED}Sorry, this user does not exist!{C_RESET}"))
-        };
+        DATABASE.update_val(ctx.args[0].as_str(),"muted", "0").await.unwrap();
 
         ctx.tx_channel.send(MessageToClient::SystemMessage {
             content: format!("{BOLD}{LIGHT_GREEN}Unmuted {}{C_RESET}", ctx.args[0])

@@ -61,6 +61,7 @@ pub struct DatabaseConfig {
     pub password: String,
     pub database: String,
     pub table: String,
+    pub sqlite_path: Option<String>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -97,7 +98,7 @@ flags:
   bots_wait_queue: true
 
 database:
-  # Available drivers: mysql
+  # Available drivers: mysql, sqlite, postgresql
   driver: mysql
 
   # DB Host & credentials
@@ -109,6 +110,9 @@ database:
   # Database & table
   database: data
   table: users
+
+  # SQLite-only
+  sqlite_path: "./users.db"
 
 security:
   require_signing: false
