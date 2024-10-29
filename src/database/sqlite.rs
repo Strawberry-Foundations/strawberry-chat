@@ -17,6 +17,7 @@ pub struct SQLiteDB {
     pub connection: Pool<Sqlite>
 }
 
+/// # SQLite implementation
 #[async_trait::async_trait]
 impl Database for SQLiteDB {
     async fn hello(&self) {
@@ -206,7 +207,7 @@ impl Database for SQLiteDB {
 
         query.is_some()
     }
-
+    
     async fn is_account_enabled(&self, username: &'_ str) -> Option<bool> {
         let query: Option<bool> = sqlx::query_scalar(format!("SELECT account_enabled FROM {} WHERE username = ?", CONFIG.database.table).as_str())
             .bind(username)

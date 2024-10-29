@@ -18,6 +18,7 @@ pub struct MySqlDB {
     pub connection: Pool<MySql>
 }
 
+/// # MySqlDB implementation
 #[async_trait::async_trait]
 impl Database for MySqlDB {
     async fn hello(&self) {
@@ -49,7 +50,6 @@ impl Database for MySqlDB {
             }
         };
     }
-
     async fn initialize_table(&self) {
         sqlx::query("CREATE TABLE `users` (
               `user_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -207,7 +207,7 @@ impl Database for MySqlDB {
 
         query.is_some()
     }
-
+    
     async fn is_account_enabled(&self, username: &'_ str) -> Option<bool> {
         let query: Option<bool> = sqlx::query_scalar(format!("SELECT account_enabled FROM {} WHERE username = ?", CONFIG.database.table).as_str())
             .bind(username)
@@ -216,7 +216,7 @@ impl Database for MySqlDB {
 
         query
     }
-
+    
     async fn is_user_muted(&self, username: &'_ str) -> Option<bool> {
         let query: Option<bool> = sqlx::query_scalar(format!("SELECT muted FROM {} WHERE username = ?", CONFIG.database.table).as_str())
             .bind(username)
@@ -225,7 +225,7 @@ impl Database for MySqlDB {
 
         query
     }
-
+    
     async fn get_members(&self) -> Vec<String> {
         sqlx::query_scalar(format!("SELECT username from {}", CONFIG.database.table).as_str())
             .fetch_all(&self.connection)
