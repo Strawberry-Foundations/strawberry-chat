@@ -17,25 +17,73 @@ pub mod sqlite;
 /// General functions for all compatible database systems
 #[async_trait::async_trait]
 pub trait Database: Send + Sync {
+    /// # `hello()`
+    /// Checks if the given table exists and executes a small query to ensure everything is up and working correctly
     async fn hello(&self);
+
+    /// # `initialize_table()`
+    /// Create a new table of no exists
     async fn initialize_table(&self);
-    
+
+
+    /// # `create_user()`
+    /// Creates a new user
     async fn create_user(&self, user_id: i64, username: String, password: String, role_color: String);
+
+    /// # `delete_user()`
+    /// Removes a new user
     async fn delete_user(&self, username: String);
 
+
+    /// # `check_credentials()`
+    /// **NOTE**: NEEDS OPTIMIZATION!
+    /// Checks user's credentials, returns UserAccount struct + boolean
     async fn check_credentials(&self, username: &'_ str, entered_password: &'_ str) -> (UserAccount, bool);
+    
+    /// # `is_username_taken()`
+    /// Check if username is taken, returns `true` or `false`
     async fn is_username_taken(&self, username: &'_ str) -> bool;
+
+    /// # `is_account_enabled()`
+    /// Check if account is enabled, returns `true` or `false`
     async fn is_account_enabled(&self, username: &'_ str) -> Option<bool>;
+
+    /// # `is_user_muted()`
+    /// Check if username is muted, returns `true` or `false`
     async fn is_user_muted(&self, username: &'_ str) -> Option<bool>;
 
+    
+    /// # `get_members()`
+    /// Get all members from the database, returns `Vec`
     async fn get_members(&self) -> Vec<String>;
+
+    /// # `get_members_by_role()`
+    /// Get all members from the database WHERE specific role, returns `Vec`
     async fn get_members_by_role(&self, role: &'_ str) -> Vec<String>;
+
+    /// # `get_next_user_id()`
+    /// Get the next available user id, returns `int`
     async fn get_next_user_id(&self) -> i64;
+
+    /// # `get_user_by_name()`
+    /// Get user by their name, returns `User`
     async fn get_user_by_name(&self, username: &'_ str) -> Option<User>;
+
+    /// # `get_account_by_name()`
+    /// Get user's full account by their name, returns `User`
     async fn get_account_by_name(&self, username: &'_ str) -> Option<Account>;
+
+    /// # `get_blocked_from_user()`
+    /// Get user's blocked accounts, returns `String`
     async fn get_blocked_from_user(&self, username: &'_ str) -> String;
+
+    /// # `get_val_from_user()`
+    /// Get a value from user, returns `Option<String>`
     async fn get_val_from_user(&self, username: &'_ str, value: &'_ str) -> Option<String>;
 
+
+    /// # `update_val()`
+    /// Update a value, returns `Result`
     async fn update_val(&self, username: &'_ str, key: &'_ str, value: &'_ str) -> eyre::Result<()>;
 }
 
