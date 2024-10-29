@@ -4,10 +4,10 @@
 
 use std::time::Duration;
 
+use tokio::{select, spawn};
 use tokio::io::{AsyncWriteExt, split};
 use tokio::net::TcpStream;
 use tokio::sync::mpsc::{Receiver, Sender};
-use tokio::{select, spawn};
 use tokio::time::sleep;
 
 use stblib::stbchat::net::{IncomingPacketStream, OutgoingPacketStream};
@@ -21,11 +21,12 @@ use crate::system_core::log::log_parser;
 use crate::system_core::login;
 use crate::system_core::internals::{MessageToClient, MessageToServer};
 use crate::communication::handlers::{client_incoming, client_outgoing};
-use crate::global::{CONFIG, LOGGER};
 use crate::constants::types::CRTLCODE_CLIENT_EXIT;
 use crate::constants::log_messages::{ADDRESS_LEFT, LOGIN, LOGIN_ERROR, LOGIN_FAIL_CLOSED, S2C_ERROR, WRITE_PACKET_FAIL};
+use crate::global::{CONFIG, LOGGER};
 
-
+/// # `client_handler()`
+/// Handles everything after the connection handler, like log in, several verification processes, ...
 pub async fn client_handler(client: TcpStream, rx: Receiver<MessageToClient>, tx: Sender<MessageToServer>) {
     let peer_addr = client.peer_addr().unwrap().ip();
 
@@ -39,11 +40,9 @@ pub async fn client_handler(client: TcpStream, rx: Receiver<MessageToClient>, tx
     if CONFIG.security.banned_ips.contains(&peer_addr.to_string()) {
         LOGGER.info(format!("{peer_addr} was disconnection. Reason: IP banned"));
 
-        w_client.write(
-            ClientPacket::SystemMessage {
-                message: format!("{RED}{BOLD}Sorry, you're not allowed to connect to this server.{C_RESET}")
-            }
-        ).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
+        w_client.write(ClientPacket::SystemMessage {
+            message: format!("{RED}{BOLD}Sorry, you're not allowed to connect to this server.{C_RESET}")
+        }).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
 
         w_client.inner_mut().shutdown().await.unwrap_or_else(|_| LOGGER.error(format!("{S2C_ERROR} (com::client::#40)")));
 
@@ -69,11 +68,9 @@ pub async fn client_handler(client: TcpStream, rx: Receiver<MessageToClient>, tx
     /// Checks if the user is successfully logged in, if not, the value of `user.username` will be `CRTLCODE_CLIENT_EXIT`
     /// This code will check if the username is `CRTLCODE_CLIENT_EXIT`
     if user.username == *CRTLCODE_CLIENT_EXIT{
-        w_client.write(
-            ClientPacket::SystemMessage {
-                message: format!("{RED}{BOLD}Invalid username and/or password!{C_RESET}")
-            }
-        ).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
+        w_client.write(ClientPacket::SystemMessage {
+            message: format!("{RED}{BOLD}Invalid username and/or password!{C_RESET}")
+        }).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
 
         LOGGER.info(log_parser(ADDRESS_LEFT, &[&peer_addr]));
 
@@ -97,22 +94,20 @@ pub async fn client_handler(client: TcpStream, rx: Receiver<MessageToClient>, tx
 
     LOGGER.info(log_parser(LOGIN, &[&user.username, &peer_addr]));
 
-    w_client.write(
-        ClientPacket::SystemMessage {
-            message: format!("Welcome back {}! Nice to see you!", user.username).bold().cyan().to_string()
-        }
-    ).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
+    w_client.write(ClientPacket::SystemMessage {
+        message: format!("Welcome back {}! Nice to see you!", user.username).bold().cyan().to_string()
+    }).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
     
     let users_len = get_users_len().await;
-    let online_users_str =
-        if users_len == 1 { format!("is {users_len} user") }
-        else { format!("are {users_len} users") };
+    let online_users_str = if users_len == 1 {
+        format!("is {users_len} user")
+    } else {
+        format!("are {users_len} users")
+    };
 
-    w_client.write(
-        ClientPacket::SystemMessage {
-            message: format!("Currently there {online_users_str} online. For help use /help!").bold().cyan().to_string()
-        }
-    ).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
+    w_client.write(ClientPacket::SystemMessage {
+        message: format!("Currently there {online_users_str} online. For help use /help!").bold().cyan().to_string()
+    }).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
 
     tx.send(MessageToServer::Broadcast {
         content: format!("{GRAY}{BOLD}-->{C_RESET} {}{}{GREEN}{BOLD} has joined the chat room!{C_RESET}", user.role_color, user.username)
