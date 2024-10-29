@@ -13,6 +13,8 @@ pub mod mysql;
 pub mod postgresql;
 pub mod sqlite;
 
+/// # Database trait
+/// General functions for all compatible database systems
 #[async_trait::async_trait]
 pub trait Database: Send + Sync {
     async fn hello(&self);
@@ -39,6 +41,7 @@ pub trait Database: Send + Sync {
 
 lazy_static!(
     pub static ref DATABASE: Box<dyn Database> = futures::executor::block_on(async {
+        /// get_database_graph() is executed before this so no proper error handling is needed here
         let url = match CONFIG.database.driver.as_str() {
             "mysql" => format!(
                 "mysql://{}:{}@{}:{}/{}",
@@ -60,6 +63,7 @@ lazy_static!(
             _ => std::process::exit(1)
         };
 
+        /// Create database pool
         let pool: Box<dyn Database> = match CONFIG.database.driver.as_str() {
             "mysql" => Box::new(MySqlDB::new(url.as_str()).await),
             "postgresql" => Box::new(PostgreSqlDB::new(url.as_str()).await),
@@ -71,7 +75,11 @@ lazy_static!(
     });
 );
 
+/// # `get_database_graph()`
+/// Create a small visual database graph for startup of strawberry chat
+/// Handles errors e.g. unsupported database driver, missing `SQLite` path, ...
 pub fn get_database_graph() -> (String, String) {
+    /// Create address graph (e.g. `example.org:3306`, `sqlite://users.db`)
     let address = match CONFIG.database.driver.as_str() {
         "mysql" | "postgresql" => format!("{}:{}", CONFIG.database.host, CONFIG.database.port),
         "sqlite" => {
@@ -86,6 +94,7 @@ pub fn get_database_graph() -> (String, String) {
         _ => RUNTIME_LOGGER.panic_crash(format!("Unsupported database driver! (Supported: {GREEN}mysql, postgres, sqlite{C_RESET})")),
     };
 
+    /// Create database graph (e.g. `MySQL->data->users`, `SQLite->users.db->users`
     let graph = match CONFIG.database.driver.as_str() {
         "mysql" => format!("MySQL->{}->{}", CONFIG.database.database, CONFIG.database.table),
         "sqlite" => {
