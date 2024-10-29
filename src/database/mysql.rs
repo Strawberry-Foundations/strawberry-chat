@@ -6,7 +6,6 @@ use stblib::utilities::unix_time;
 
 use crate::system_core::log::log_parser;
 use crate::system_core::objects::{Account, UserAccount};
-use crate::constants::types::CRTLCODE_CLIENT_EXIT;
 use crate::constants::log_messages::DATABASE_CONNECTION_ERROR;
 use crate::database::Database;
 use crate::global::{CONFIG, RUNTIME_LOGGER};
@@ -144,13 +143,7 @@ impl Database for MySqlDB {
             return None
         }
 
-        let mut user = User {
-            username: CRTLCODE_CLIENT_EXIT.to_string(),
-            nickname: String::new(),
-            badge: String::new(),
-            role_color: String::new(),
-            avatar_url: String::new(),
-        };
+        let mut user = User::default();
 
         let data = sqlx::query(format!("SELECT * FROM {} WHERE username = ?", CONFIG.database.table).as_str())
             .bind(username)
@@ -207,7 +200,7 @@ impl Database for MySqlDB {
 
         query.is_some()
     }
-    
+
     async fn is_account_enabled(&self, username: &'_ str) -> Option<bool> {
         let query: Option<bool> = sqlx::query_scalar(format!("SELECT account_enabled FROM {} WHERE username = ?", CONFIG.database.table).as_str())
             .bind(username)
@@ -216,7 +209,7 @@ impl Database for MySqlDB {
 
         query
     }
-    
+
     async fn is_user_muted(&self, username: &'_ str) -> Option<bool> {
         let query: Option<bool> = sqlx::query_scalar(format!("SELECT muted FROM {} WHERE username = ?", CONFIG.database.table).as_str())
             .bind(username)
@@ -225,7 +218,7 @@ impl Database for MySqlDB {
 
         query
     }
-    
+
     async fn get_members(&self) -> Vec<String> {
         sqlx::query_scalar(format!("SELECT username from {}", CONFIG.database.table).as_str())
             .fetch_all(&self.connection)
@@ -261,13 +254,7 @@ impl Database for MySqlDB {
             None
         }
         else {
-            let mut user = User {
-                username: CRTLCODE_CLIENT_EXIT.to_string(),
-                nickname: String::new(),
-                badge: String::new(),
-                role_color: String::new(),
-                avatar_url: String::new(),
-            };
+            let mut user = User::default();
 
             user.username   = data.first().unwrap().get("username");
             user.nickname   = data.first().unwrap().get("nickname");
