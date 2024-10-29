@@ -21,7 +21,6 @@ use crate::system_core::log::log_parser;
 use crate::system_core::login;
 use crate::system_core::internals::{MessageToClient, MessageToServer};
 use crate::communication::handlers::{client_incoming, client_outgoing};
-use crate::constants::types::CRTLCODE_CLIENT_EXIT;
 use crate::constants::log_messages::{ADDRESS_LEFT, CLIENT_UNAME_EMPTY, LOGIN, LOGIN_ERROR, LOGIN_FAIL_CLOSED, S2C_ERROR, WRITE_PACKET_FAIL};
 use crate::global::{CONFIG, LOGGER};
 
