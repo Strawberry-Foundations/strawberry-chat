@@ -78,11 +78,10 @@ pub async fn client_login(w_client: &mut OutgoingPacketStream<WriteHalf<TcpStrea
     };
 
     if !account.account_enabled {
-        w_client.write(
-            ClientPacket::SystemMessage {
-                message: format!("{RED}{BOLD}Your account was disabled by an administrator.{C_RESET}")
-            }
-        ).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
+        w_client.write(ClientPacket::SystemMessage {
+            message: format!("{RED}{BOLD}Your account was disabled by an administrator.{C_RESET}")
+        }).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
+        
         LOGGER.info(log_parser(DISCONNECTED, &[&peer_addr]));
 
         w_client.inner_mut().shutdown().await.unwrap_or_else(|_| LOGGER.error(format!("{S2C_ERROR} (core::login::#85)")));
