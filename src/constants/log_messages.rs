@@ -8,6 +8,7 @@ pub const QUEUE_JOIN: &str          = "%s (%s) is now in the queue";
 pub const CONNECTED_RLM: &str       = "%s (ratelimited) has connected";
 pub const LOGIN: &str               = "%s (%s) logged in";
 pub const LOGIN_ERROR: &str         = "A login error with %s occurred!";
+pub const CLIENT_UNAME_EMPTY: &str  = "Client username was empty";
 pub const LOGIN_FAIL_CLOSED: &str   = "Failed to log in %s, connection closed to client";
 pub const COMMUNICATION_ERROR: &str = "A communication error with %s (%s) occurred!";
 pub const CONNECTION_ERROR: &str    = "A connection error occurred!";
