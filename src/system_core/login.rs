@@ -26,7 +26,7 @@ use crate::global::{CONFIG, LOGGER};
 pub async fn client_login(w_client: &mut OutgoingPacketStream<WriteHalf<TcpStream>>,
     r_client: &mut IncomingPacketStream<ReadHalf<TcpStream>>,
     peer_addr: IpAddr
-) -> Option<(UserAccount, User)> {
+) -> Option<User> {
     // TODO: replace unwraps with logger errors
 
     w_client.write(ClientPacket::SystemMessage {
@@ -81,7 +81,7 @@ pub async fn client_login(w_client: &mut OutgoingPacketStream<WriteHalf<TcpStrea
         w_client.write(ClientPacket::SystemMessage {
             message: format!("{RED}{BOLD}Your account was disabled by an administrator.{C_RESET}")
         }).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
-        
+
         LOGGER.info(log_parser(DISCONNECTED, &[&peer_addr]));
 
         w_client.inner_mut().shutdown().await.unwrap_or_else(|_| LOGGER.error(format!("{S2C_ERROR} (core::login::#85)")));
@@ -120,5 +120,5 @@ pub async fn client_login(w_client: &mut OutgoingPacketStream<WriteHalf<TcpStrea
         account.ok = false;
     }
 
-    Some((account.clone(), account.user))
+    Some(account.user)
 }
