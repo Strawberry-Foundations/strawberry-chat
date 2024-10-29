@@ -23,7 +23,7 @@ use crate::system_core::internals::{MessageToClient, MessageToServer};
 use crate::communication::handlers::{client_incoming, client_outgoing};
 use crate::global::{CONFIG, LOGGER};
 use crate::constants::types::CRTLCODE_CLIENT_EXIT;
-use crate::constants::log_messages::{ADDRESS_LEFT, LOGIN, LOGIN_ERROR, S2C_ERROR, WRITE_PACKET_FAIL};
+use crate::constants::log_messages::{ADDRESS_LEFT, LOGIN, LOGIN_ERROR, LOGIN_FAIL_CLOSED, S2C_ERROR, WRITE_PACKET_FAIL};
 
 
 pub async fn client_handler(client: TcpStream, rx: Receiver<MessageToClient>, tx: Sender<MessageToServer>) {
@@ -55,16 +55,17 @@ pub async fn client_handler(client: TcpStream, rx: Receiver<MessageToClient>, tx
     let Some(user) = login::client_login(&mut w_client, &mut r_client, peer_addr).await else {
         tx.send(MessageToServer::RemoveMe {
             username: None
-        }).await.unwrap(); // <--- stbbugs::20240202--1: Calls Exception when leaving stbchat while login screen
+        }).await.unwrap();
 
         tokio::time::sleep(Duration::from_millis(140)).await;
 
-        LOGGER.warning(format!("Error logging in {peer_addr}, connection to the client was disconnected"));
+        LOGGER.warning(log_parser(LOGIN_FAIL_CLOSED, &[&peer_addr]));
 
         return
     };
 
     /// # Core (feat): Client Username Verification
+    /// *Is this really needed?*
     /// Checks if the user is successfully logged in, if not, the value of `user.username` will be `CRTLCODE_CLIENT_EXIT`
     /// This code will check if the username is `CRTLCODE_CLIENT_EXIT`
     if user.username == *CRTLCODE_CLIENT_EXIT{
@@ -76,12 +77,13 @@ pub async fn client_handler(client: TcpStream, rx: Receiver<MessageToClient>, tx
 
         LOGGER.info(log_parser(ADDRESS_LEFT, &[&peer_addr]));
 
-        w_client.inner_mut().shutdown().await.unwrap_or_else(|_| LOGGER.error(format!("{S2C_ERROR} (com::client::#71)")));
+        w_client.inner_mut().shutdown().await.unwrap_or_else(|_| LOGGER.error(format!("{S2C_ERROR} (com::client::#79)")));
 
         return
     }
 
     /// # Core (ext): Client Username Verification
+    /// *Is this really needed?*
     /// Checks if username is empty in case something gone wrong while logging in
     if user.username.is_empty() {
         LOGGER.error(log_parser(LOGIN_ERROR, &[&peer_addr]));
