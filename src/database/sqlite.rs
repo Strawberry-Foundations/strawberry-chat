@@ -254,13 +254,13 @@ impl Database for SQLiteDB {
             None
         }
         else {
-            let mut user = User::default();
-
-            user.username   = data.first().unwrap().get("username");
-            user.nickname   = data.first().unwrap().get("nickname");
-            user.badge      = data.first().unwrap().get("badge");
-            user.role_color = role_color_parser(data.first().unwrap().get("role_color"));
-            user.avatar_url = data.first().unwrap().get("avatar_url");
+            let user = User {
+                username: data.first().unwrap().get("username"),
+                nickname: data.first().unwrap().get("nickname"),
+                badge: data.first().unwrap().get("badge"),
+                role_color: role_color_parser(data.first().unwrap().get("role_color")),
+                avatar_url: data.first().unwrap().get("avatar_url"),
+            };
 
             Some(user)
         }
