@@ -28,4 +28,5 @@
 - NEW: Update core to v1.04
 
 - OPTIMIZATION: General code optimizations
+- OPTIMIZATION: Improved logging
 - OPTIMIZATION: Internal database optimizations
