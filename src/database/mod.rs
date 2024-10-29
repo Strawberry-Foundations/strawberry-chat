@@ -38,8 +38,8 @@ pub trait Database: Send + Sync {
     /// # `check_credentials()`
     /// **NOTE**: NEEDS OPTIMIZATION!
     /// Checks user's credentials, returns UserAccount struct + boolean
-    async fn check_credentials(&self, username: &'_ str, entered_password: &'_ str) -> (UserAccount, bool);
-    
+    async fn check_credentials(&self, username: &'_ str, entered_password: &'_ str) -> Option<UserAccount>;
+
     /// # `is_username_taken()`
     /// Check if username is taken, returns `true` or `false`
     async fn is_username_taken(&self, username: &'_ str) -> bool;
@@ -52,7 +52,7 @@ pub trait Database: Send + Sync {
     /// Check if username is muted, returns `true` or `false`
     async fn is_user_muted(&self, username: &'_ str) -> Option<bool>;
 
-    
+
     /// # `get_members()`
     /// Get all members from the database, returns `Vec`
     async fn get_members(&self) -> Vec<String>;

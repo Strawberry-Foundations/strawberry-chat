@@ -128,20 +128,20 @@ impl Database for SQLiteDB {
             .await.unwrap();
     }
 
-    async fn check_credentials(&self, username: &'_ str, entered_password: &'_ str) -> (UserAccount, bool) {
+    async fn check_credentials(&self, username: &'_ str, entered_password: &'_ str) -> Option<UserAccount> {
         let row = sqlx::query(format!("SELECT username, password FROM {} WHERE username = ?", CONFIG.database.table).as_str())
             .bind(username)
             .fetch_all(&self.connection)
             .await.expect("err");
 
         if row.is_empty() {
-            return (UserAccount::default(), false)
+            return None
         }
 
         let stored_password: String = row.first().unwrap().get("password");
 
         if !Crypt::verify_password(stored_password.as_str(), &entered_password.to_string()) {
-            return (UserAccount::default(), false)
+            return None
         }
 
         let mut user = User {
@@ -196,7 +196,7 @@ impl Database for SQLiteDB {
             user
         };
 
-        (user_account, true)
+        Some(user_account)
     }
 
     async fn is_username_taken(&self, username: &'_ str) -> bool {
@@ -207,7 +207,7 @@ impl Database for SQLiteDB {
 
         query.is_some()
     }
-    
+
     async fn is_account_enabled(&self, username: &'_ str) -> Option<bool> {
         let query: Option<bool> = sqlx::query_scalar(format!("SELECT account_enabled FROM {} WHERE username = ?", CONFIG.database.table).as_str())
             .bind(username)

@@ -36,7 +36,7 @@ impl Database for PostgreSqlDB {
         todo!()
     }
 
-    async fn check_credentials(&self, username: &'_ str, entered_password: &'_ str) -> (UserAccount, bool) {
+    async fn check_credentials(&self, username: &'_ str, entered_password: &'_ str) -> Option<UserAccount> {
         todo!()
     }
 
