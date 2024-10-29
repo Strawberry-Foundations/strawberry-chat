@@ -27,4 +27,5 @@
 - NEW: Check if the given table in the configuration exists - If not create one
 - NEW: Update core to v1.04
 
-- FIX: code optimizations
+- OPTIMIZATION: General code optimizations
+- OPTIMIZATION: Internal database optimizations
