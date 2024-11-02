@@ -84,7 +84,7 @@ pub fn strawberry_id() -> commands::Command {
                                 for tx in &conn {
                                     tx.send(MessageToClient::SystemMessage {
                                         content: format!("{BOLD}{GREEN}Logged in as {full_name} (@{username}){C_RESET}")
-                                    }).await.unwrap();
+                                    }).await.unwrap_or_else(|_| LOGGER.error(format!("Invalid session of user {ctx_username}. Please check that this user is not logged in with an invalid session.")));
 
                                     let badges = DATABASE.get_val_from_user(&ctx_username, "badges").await.unwrap();
 
