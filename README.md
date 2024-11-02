@@ -1,10 +1,9 @@
 <div align="center">
   <h1>
-    <a href="https://strawberryfoundations.org/strawberry-chat">Strawberry Chat</a><br>
-    💬
+    <a href="https://strawberryfoundations.org/strawberry-chat">Strawberry Chat</a> 💬<br>
     <h4><i>„If it has electricity, it can run Strawberry Chat“</i></h4>
   </h1>
-  <h2>The universal chatting platform for (not just) your terminal!</h2>
+  <h3>The universal chatting platform for (not just) your terminal!</h3>
   <br><br>
 
 ![Latest Stable Release](https://img.shields.io/badge/dynamic/json?url=https://api.strawberryfoundations.org/v1/versions&query=%24.stbchat.server.stable&label=Latest%20Stable%20Release&color=success)
