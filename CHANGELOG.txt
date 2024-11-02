@@ -1,32 +1,3 @@
-# STRAWBERRY CHAT V1.13.0 STABLE
+# STRAWBERRY CHAT V1.13.1 STABLE
 
-# DP 1
-- NEW: Added list-badges subcommand for /admin-settings
-- NEW: Added automatic addition of the Strawberry badge when the user connects to the Strawberry ID
-
-- FIX: Fixed a panic occurred by /admin-settings
-- FIX: Fixed a panic occurred by /kick
-- FIX: Fixed use of deprecated type alias std::panic::PanicInfo
-
-- CHORE: Several dependency updates
-
-# DP 2
-- NEW: Remove unused config flags
-- NEW: Updated logging
-- NEW: Add `max_message_length` for Rust-rewrite
-
-- CHORE: Moved cryptographic functions to separate module
-
-- FIX: code optimizations
-- FIX: Fixed custom database port not working (#150)
-
-# DP 3
-- NEW: Revamped database system (Support for MySQL, SQLite & PostgreSQL - more coming soon!)
-- NEW: Lots of optimization for the database system
-- NEW: Use the configuration `database_table` to use the correct table (#147)
-- NEW: Check if the given table in the configuration exists - If not create one
-- NEW: Update core to v1.04
-
-- OPTIMIZATION: General code optimizations
-- OPTIMIZATION: Improved logging
-- OPTIMIZATION: Internal database optimizations
+- FIX: Fixed unhandled unwraps
