@@ -1,18 +1,19 @@
 <div align="center">
   <h1>
-    <a href="https://strawberryfoundations.org/strawberry-chat">Strawberry Chat</a>
+    <a href="https://strawberryfoundations.org/strawberry-chat">Strawberry Chat</a><br>
     💬
+    <h4><i>„If it has electricity, it can run Strawberry Chat“</i></h4>
   </h1>
   <h2>The universal chatting platform for (not just) your terminal!</h2>
   <br><br>
 
-  ![Latest Stable Release](https://img.shields.io/badge/dynamic/json?url=https://api.strawberryfoundations.org/v1/versions&query=%24.stbchat.server.stable&label=Latest%20Stable%20Release&color=success)
-  ![Latest Development Release](https://img.shields.io/badge/dynamic/json?url=https://api.strawberryfoundations.org/v1/versions&query=%24.stbchat.server.dev&label=Latest%20Development%20Release&color=cyan)
-  ![Latest Canary Release](https://img.shields.io/badge/dynamic/json?url=https://api.strawberryfoundations.org/v1/versions&query=%24.stbchat.server.canary&label=Latest%20Canary%20Release&color=yellow)
+![Latest Stable Release](https://img.shields.io/badge/dynamic/json?url=https://api.strawberryfoundations.org/v1/versions&query=%24.stbchat.server.stable&label=Latest%20Stable%20Release&color=success)
+![Latest Development Release](https://img.shields.io/badge/dynamic/json?url=https://api.strawberryfoundations.org/v1/versions&query=%24.stbchat.server.dev&label=Latest%20Development%20Release&color=cyan)
+![Latest Canary Release](https://img.shields.io/badge/dynamic/json?url=https://api.strawberryfoundations.org/v1/versions&query=%24.stbchat.server.canary&label=Latest%20Canary%20Release&color=yellow)
 
-  ![Codename](https://img.shields.io/badge/Codename-Rusty_Cake-orange)
-  ![Code Size](https://img.shields.io/github/languages/code-size/Strawberry-Foundations/strawberry-chat)
-  ![Commit activity](https://img.shields.io/github/commit-activity/w/Strawberry-Foundations/strawberry-chat)
+![Codename](https://img.shields.io/badge/Codename-Rusty_Cake-orange)
+![Code Size](https://img.shields.io/github/languages/code-size/Strawberry-Foundations/strawberry-chat)
+![Commit activity](https://img.shields.io/github/commit-activity/w/Strawberry-Foundations/strawberry-chat)
 
 </div>
 
@@ -56,7 +57,7 @@ In the following table you can see our security features and the corresponding v
 
 
 # How to install
-Strawberry Chat can be downloaded as a stable release [here](https://github.com/Strawberry-Foundations/strawberry-chat/releases/latest), 
+Strawberry Chat can be downloaded as a stable release [here](https://github.com/Strawberry-Foundations/strawberry-chat/releases/latest),
 or as a development version directly from GitHub. However, this must be compiled manually.
 
 ### Config
