@@ -23,7 +23,7 @@ impl OnlineMode {
             let client = Client::new();
 
             let Ok(response) = client.get(format!("{STRAWBERRY_API}utils/user/ip")).send().await else {
-                RUNTIME_LOGGER.warning("Could not send request to Strawberry API");
+                RUNTIME_LOGGER.warning("Strawberry API authentication request failed");
                 return
             };
 
@@ -34,7 +34,7 @@ impl OnlineMode {
                 RUNTIME_LOGGER.info(format!("Connected to Strawberry API with IP {ITALIC}{CYAN}{}{RESET}", json["ip"].as_str().unwrap()));
             }
             else {
-                RUNTIME_LOGGER.warning("Error while connecting to Strawberry API");
+                RUNTIME_LOGGER.warning("Connection timeout while connecting to Strawberry API");
             }
         }
         else {
