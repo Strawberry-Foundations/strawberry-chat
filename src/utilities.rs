@@ -123,22 +123,12 @@ pub fn create_badge_list(row: &str) -> String {
         })
 }
 
-pub fn parse_user_status(status: Status, with_text: bool) -> String {
-    if with_text {
-        match status {
-            Status::Online => format!("{GREEN}Online (🟢){C_RESET}"),
-            Status::Afk => format!("{YELLOW}Afk (🌙){C_RESET}"),
-            Status::DoNotDisturb => format!("{RED}Do not disturb (🔴){C_RESET}"),
-            Status::Offline => format!("{GRAY}{BOLD}Offline (〇){C_RESET}")
-        }
-    }
-    else {
-        match status {
-            Status::Online => format!("{GREEN}🟢{C_RESET}"),
-            Status::Afk => format!("{YELLOW}🌙{C_RESET}"),
-            Status::DoNotDisturb => format!("{RED}🔴{C_RESET}"),
-            Status::Offline => format!("{GRAY}{BOLD}〇{C_RESET}")
-        }
+pub fn parse_user_status(status: Status) -> (String, String) {
+    match status {
+        Status::Online => (format!("{GREEN}🟢{C_RESET}"), format!("{GREEN}Online (🟢){C_RESET}")),
+        Status::Afk => (format!("{YELLOW}🌙{C_RESET}"), format!("{YELLOW}Afk (🌙){C_RESET}")),
+        Status::DoNotDisturb => (format!("{RED}🔴{C_RESET}"), format!("{RED}Do not disturb (🔴){C_RESET}")),
+        Status::Offline => (format!("{GRAY}{BOLD}〇{C_RESET}"), format!("{GRAY}{BOLD}Offline (〇){C_RESET}"))
     }
 }
 

@@ -27,9 +27,9 @@ async fn format_to_list(member_list: &[String], fmt_color: &str) -> String {
             };
 
             let status_raw = *STATUS.read().await.get_by_name(user.username.as_str());
-            let status = parse_user_status(status_raw, false);
+            let status_symbol = parse_user_status(status_raw).0;
 
-            format!("{C_RESET}{status}{fmt_color} {username} {badge}")
+            format!("{C_RESET}{status_symbol}{fmt_color} {username} {badge}")
         }
     });
 

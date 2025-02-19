@@ -11,7 +11,7 @@ pub fn status() -> commands::Command {
     async fn logic(ctx: &commands::Context) -> commands::CommandResponse {
         if ctx.args.is_empty() {
             let status = *STATUS.read().await.get_by_name(ctx.executor.username.as_str());
-            return Ok(Some(format!("{BOLD}{GREEN}Your current status: {C_RESET}{}", parse_user_status(status, true))))
+            return Ok(Some(format!("{BOLD}{GREEN}Your current status: {C_RESET}{}", parse_user_status(status).1)))
         }
 
         let arg_status = &ctx.args[0];
@@ -25,7 +25,7 @@ pub fn status() -> commands::Command {
         
         STATUS.write().await.append(ctx.executor.username.as_str(), status);
 
-        Ok(Some(format!("{BOLD}{GREEN}Changed your status to {C_RESET}{}", parse_user_status(status, true))))
+        Ok(Some(format!("{BOLD}{GREEN}Changed your status to {C_RESET}{}", parse_user_status(status).1)))
     }
 
     commands::Command {
