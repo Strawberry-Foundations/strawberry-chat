@@ -91,58 +91,36 @@ pub fn is_valid_username(username: &str, allowed_characters: &str) -> bool {
     true
 }
 
-#[allow(clippy::useless_let_if_seq)]
 pub fn create_badge_list(row: &str) -> String {
-    let mut all_badges = String::new();
-
     if row.is_empty() {
-        all_badges = "This user doesn't have any badges yet".to_string();
-    } else {
-        if row.contains('👑') {
-            all_badges.push_str(&format!("\n        {CROWN_BADGE}"));
-        }
-        if row.contains('😎') {
-            all_badges.push_str(&format!("\n        {COOL_BADGE}"));
-        }
-        if row.contains('🔥') {
-            all_badges.push_str(&format!("\n        {FLAME_BADGE}"));
-        }
-        if row.contains('🫐') {
-            all_badges.push_str(&format!("\n        {BERRYJUICE_BADGE}"));
-        }
-        if row.contains('🤖') {
-            all_badges.push_str(&format!("\n        {BOT_BADGE}"));
-        }
-        if row.contains('💪') {
-            all_badges.push_str(&format!("\n        {MACHER_BADGE}"));
-        }
-        if row.contains('👍') {
-            all_badges.push_str(&format!("\n        {KINDNESS_BADGE}"));
-        }
-        if row.contains('🤡') {
-            all_badges.push_str(&format!("\n        {TROLL_BADGE}"));
-        }
-        if row.contains('😈') {
-            all_badges.push_str(&format!("\n        {EVIL_BADGE}"));
-        }
-        if row.contains('🤝') {
-            all_badges.push_str(&format!("\n        {SUPPORTER_BADGE}"));
-        }
-        if row.contains('👋') {
-            all_badges.push_str(&format!("\n        {NEWBIE_BADGE}"));
-        }
-        if row.contains('😌') {
-            all_badges.push_str(&format!("\n        {OG_BADGE}"));
-        }
-        if row.contains('🍓') {
-            all_badges.push_str(&format!("\n        {STRAWBERRY_BADGE}"));
-        }
-        if row.contains('💫') {
-            all_badges.push_str(&format!("\n        {STBCHAT_PLUS_USER}"));
-        }
+        return "This user doesn't have any badges yet".to_string();
     }
 
-    all_badges
+    let badge_pairs = [
+        ('👑', CROWN_BADGE),
+        ('😎', COOL_BADGE),
+        ('🔥', FLAME_BADGE),
+        ('🫐', BERRYJUICE_BADGE),
+        ('🤖', BOT_BADGE),
+        ('💪', MACHER_BADGE),
+        ('👍', KINDNESS_BADGE),
+        ('🤡', TROLL_BADGE),
+        ('😈', EVIL_BADGE),
+        ('🤝', SUPPORTER_BADGE),
+        ('👋', NEWBIE_BADGE),
+        ('😌', OG_BADGE),
+        ('🍓', STRAWBERRY_BADGE),
+        ('💫', STBCHAT_PLUS_USER),
+    ];
+
+    badge_pairs
+        .iter()
+        .filter(|(emoji, _)| row.contains(*emoji))
+        .fold(String::new(), |mut acc, (_, badge)| {
+            acc.push_str("\n        ");
+            acc.push_str(badge);
+            acc
+        })
 }
 
 pub fn parse_user_status(status: Status, with_text: bool) -> String {
