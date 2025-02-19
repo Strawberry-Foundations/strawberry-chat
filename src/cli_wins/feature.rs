@@ -14,5 +14,9 @@ pub fn display() {
     println!("{BOLD}  {CYAN}|{WHITE} *{YELLOW} Ratelimit is {}{}        {CYAN}|{RESET}{C_RESET}",
              is_feature_enabled(CONFIG.networking.ratelimit), get_ratelimit_timeout(CONFIG.networking.ratelimit)
     );
+    println!("{BOLD}  {CYAN}|{WHITE} *{YELLOW} Online Mode is {}           {CYAN}  |{RESET}{C_RESET}",
+             is_feature_enabled(CONFIG.flags.online_mode)
+    );
+    
     println!("{BOLD}  {CYAN}* -------------------------------------- *{RESET}{C_RESET}\n");
 }
