@@ -41,7 +41,7 @@ lazy_static! {
             info: format!("{C_RESET}{BOLD}{GREEN}STARTUP{C_RESET}  [%<message>%]"),
             error: format!("{C_RESET}{BOLD}{RED}ERR{C_RESET}      [%<message>%]"),
             default: format!("{C_RESET}{BOLD}{BLUE}DATABASE{C_RESET} [%<message>%]"),
-            warning: format!("{C_RESET}{BOLD}{YELLOW}WARNING{C_RESET} [%<message>%]"),
+            warning: format!("{C_RESET}{BOLD}{YELLOW}WARNING{C_RESET}  [%<message>%]"),
             panic: format!("{C_RESET}{BOLD}{RED}PANIC{C_RESET}    [%<message>%]"),
             critical: String::new(),
             extensions: LogFormatExt {
