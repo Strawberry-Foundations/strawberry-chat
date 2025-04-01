@@ -11,20 +11,20 @@ repository = "https://github.com/Strawberry-Foundations/strawberry-chat"
 
 [dependencies]
 stblib = { version =  "0.7.0", features = ["stbchat"] }
-tokio = { version = "1.43.0", features = ["full"] }
-lazy_static = "1.5.0"
-serde = { version = "1.0.217", features = ["derive"] }
-serde_yaml = "0.9.34"
-serde_json = "1.0.138"
-owo-colors = "4.1.0"
+tokio = { version = "1.44.1", features = ["full"] }
 futures = "0.3.31"
+lazy_static = "1.5.0"
+serde = { version = "1.0.219", features = ["derive"] }
+serde_yaml = "0.9.34"
+serde_json = "1.0.140"
+owo-colors = "4.2.0"
 sqlx = { version = "0.8.3", features = ["mysql", "postgres", "sqlite", "runtime-tokio-native-tls", "json"] }
 strip-ansi-escapes = "0.2.1"
-chrono = "0.4.39"
-reqwest = "0.12.12"
+chrono = "0.4.40"
+reqwest = "0.12.15"
 argon2 = "0.6.0-pre.1"
 eyre = "0.6.12"
-async-trait = "0.1.86"
+async-trait = "0.1.88"
 
 # stblib = { version =  "0.7.0", features = ["stbchat"], path = "../stblib-rust" }
 
