@@ -44,7 +44,7 @@ pub type CommandResponse = Result<Option<String>, String>;
 /// # Command struct
 /// The command struct is the basic part for programming a command.
 /// It contains information such as the name, the description and the logic (the function) of the command.
-#[derive(Hash, PartialEq, Eq)]
+#[derive(Hash)]
 pub struct Command {
     /// Name of command (execution name, e.g. test -> /test)
     pub name: String,
