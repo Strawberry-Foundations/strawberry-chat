@@ -1,4 +1,4 @@
-use stblib::colors::{BOLD, C_RESET, RESET, YELLOW};
+use libstrawberry::colors::{BOLD, C_RESET, RESET, YELLOW};
 
 pub fn display() {
     println!("\n{BOLD}  {YELLOW}* --------------- WARNING -------------- *{RESET}{C_RESET}");

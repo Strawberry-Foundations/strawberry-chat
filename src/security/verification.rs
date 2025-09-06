@@ -4,7 +4,7 @@ use std::path::{Path, PathBuf};
 
 use serde::Deserialize;
 
-use stblib::stbchat::object::User;
+use libstrawberry::stbchat::object::User;
 
 use crate::database::DATABASE;
 use crate::global::{CONFIG, LOGGER};

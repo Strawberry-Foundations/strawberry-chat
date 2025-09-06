@@ -1,4 +1,4 @@
-use stblib::colors::{BOLD, C_RESET, CYAN, RESET, WHITE, YELLOW};
+use libstrawberry::colors::{BOLD, C_RESET, CYAN, RESET, WHITE, YELLOW};
 
 use crate::global::CONFIG;
 use crate::utilities::{get_ratelimit_timeout, is_feature_enabled};

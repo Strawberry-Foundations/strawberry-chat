@@ -1,5 +1,5 @@
-use stblib::colors::{BOLD, C_RESET, GRAY, RED, YELLOW};
-use stblib::utilities::escape_ansi;
+use libstrawberry::colors::{BOLD, C_RESET, GRAY, RED, YELLOW};
+use libstrawberry::utilities::escape_ansi;
 
 use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;

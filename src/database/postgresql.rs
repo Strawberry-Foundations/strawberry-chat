@@ -1,7 +1,7 @@
 use sqlx::Pool;
 use sqlx::postgres::{Postgres};
 
-use stblib::stbchat::object::User;
+use libstrawberry::stbchat::object::User;
 
 use crate::system_core::log::log_parser;
 use crate::system_core::objects::{Account, UserAccount};

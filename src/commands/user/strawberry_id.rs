@@ -1,6 +1,6 @@
 use std::time::Duration;
 
-use stblib::colors::{BOLD, C_RESET, LIGHT_GREEN, RESET, BLUE, YELLOW, GREEN};
+use libstrawberry::colors::{BOLD, C_RESET, LIGHT_GREEN, RESET, BLUE, YELLOW, GREEN};
 use tokio::time;
 
 use crate::system_core::commands;

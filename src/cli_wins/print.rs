@@ -15,7 +15,7 @@
 //! ```
 
 
-use stblib::colors::*;
+use libstrawberry::colors::*;
 
 
 pub fn print_window(txt: &str) {

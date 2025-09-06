@@ -1,5 +1,5 @@
 use reqwest::Client;
-use stblib::colors::{CYAN, ITALIC, RESET};
+use libstrawberry::colors::{CYAN, ITALIC, RESET};
 use crate::global::{STRAWBERRY_API, RUNTIME_LOGGER};
 
 

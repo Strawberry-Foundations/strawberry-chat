@@ -1,8 +1,8 @@
 use eyre::eyre;
 use sqlx::{SqlitePool, Sqlite, Pool, Row};
 
-use stblib::stbchat::object::User;
-use stblib::utilities::unix_time;
+use libstrawberry::stbchat::object::User;
+use libstrawberry::utilities::unix_time;
 
 use crate::system_core::log::log_parser;
 use crate::system_core::objects::{Account, UserAccount};

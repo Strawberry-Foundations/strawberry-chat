@@ -12,7 +12,7 @@ use tokio::sync::mpsc::channel;
 use tokio::net::TcpListener;
 use tokio::task::JoinHandle;
 
-use stblib::colors::{YELLOW, CYAN, MAGENTA, BOLD, C_RESET, ITALIC, RESET};
+use libstrawberry::colors::{YELLOW, CYAN, MAGENTA, BOLD, C_RESET, ITALIC, RESET};
 use crate::system_core::server_core::core_thread;
 use crate::system_core::watchdog::watchdog_thread;
 use crate::system_core::panic::panic_handler;

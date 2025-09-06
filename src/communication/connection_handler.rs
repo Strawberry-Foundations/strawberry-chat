@@ -11,10 +11,10 @@ use tokio::io::AsyncWriteExt;
 use tokio::net::TcpListener;
 use tokio::spawn;
 
-use stblib::utilities::unix_time;
-use stblib::stbchat::net::OutgoingPacketStream;
-use stblib::stbchat::packet::ClientPacket;
-use stblib::colors::{BOLD, C_RESET, RED};
+use libstrawberry::utilities::unix_time;
+use libstrawberry::stbchat::net::OutgoingPacketStream;
+use libstrawberry::stbchat::packet::ClientPacket;
+use libstrawberry::colors::{BOLD, C_RESET, RED};
 
 use crate::communication::client::client_handler;
 use crate::global::{CONFIG, LOGGER};

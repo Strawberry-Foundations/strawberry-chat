@@ -1,4 +1,4 @@
-use stblib::stbchat::object::User;
+use libstrawberry::stbchat::object::User;
 
 // Object for sending Notifications
 pub struct NotificationObject {

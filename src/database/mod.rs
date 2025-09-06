@@ -1,7 +1,7 @@
 use std::path::Path;
 use lazy_static::lazy_static;
-use stblib::colors::{C_RESET, GREEN};
-use stblib::stbchat::object::User;
+use libstrawberry::colors::{C_RESET, GREEN};
+use libstrawberry::stbchat::object::User;
 
 use crate::database::mysql::MySqlDB;
 use crate::database::postgresql::PostgreSqlDB;

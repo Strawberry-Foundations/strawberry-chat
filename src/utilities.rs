@@ -1,6 +1,6 @@
 use std::fs;
 use std::io::{self, Write};
-use stblib::colors::{BLUE, BOLD, C_RESET, CYAN, GRAY, GREEN, MAGENTA, RED, RESET, YELLOW};
+use libstrawberry::colors::{BLUE, BOLD, C_RESET, CYAN, GRAY, GREEN, MAGENTA, RED, RESET, YELLOW};
 
 use crate::system_core::config::DEFAULT_CONFIG;
 use crate::system_core::status::Status;

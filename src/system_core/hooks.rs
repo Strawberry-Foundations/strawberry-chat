@@ -1,4 +1,4 @@
-use stblib::stbchat::object::User;
+use libstrawberry::stbchat::object::User;
 use tokio::sync::mpsc::{channel, Sender, Receiver};
 use crate::system_core::internals::MessageToClient;
 use crate::system_core::server_core::{Event, register_hook};

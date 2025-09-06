@@ -1,4 +1,4 @@
-use stblib::colors::{BOLD, C_RESET, CYAN, RED, UNDERLINE, RESET, MAGENTA, YELLOW, LIGHT_YELLOW, LIGHT_MAGENTA, LIGHT_RED};
+use libstrawberry::colors::{BOLD, C_RESET, CYAN, RED, UNDERLINE, RESET, MAGENTA, YELLOW, LIGHT_YELLOW, LIGHT_MAGENTA, LIGHT_RED};
 
 use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;

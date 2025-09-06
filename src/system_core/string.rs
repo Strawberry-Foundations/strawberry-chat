@@ -1,4 +1,4 @@
-use stblib::colors::{BACK_MAGENTA, BLUE, BOLD, C_RESET, CYAN, GREEN, MAGENTA, RED, RESET, UNDERLINE, WHITE, YELLOW};
+use libstrawberry::colors::{BACK_MAGENTA, BLUE, BOLD, C_RESET, CYAN, GREEN, MAGENTA, RED, RESET, UNDERLINE, WHITE, YELLOW};
 use chrono::{Utc, Local, TimeDelta};
 
 use crate::system_core::server_core::get_online_users;

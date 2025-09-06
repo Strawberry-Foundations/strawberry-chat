@@ -2,9 +2,9 @@ use std::env;
 use std::path::{Path, PathBuf};
 use lazy_static::lazy_static;
 
-use stblib::logging::Logger;
-use stblib::logging::formats::{LogFormat, LogFormatExt};
-use stblib::colors::{BLUE, BOLD, CYAN, C_RESET, GREEN, RED, YELLOW};
+use libstrawberry::logging::Logger;
+use libstrawberry::logging::formats::{LogFormat, LogFormatExt};
+use libstrawberry::colors::{BLUE, BOLD, CYAN, C_RESET, GREEN, RED, YELLOW};
 
 use crate::system_core::config::GlobalConfig;
 use crate::security::verification::MessageVerification;
@@ -31,12 +31,12 @@ pub const AUTHORS: &[&str; 3] = &["Juliandev02", "Paddyk45", "matteodev8"];
 
 lazy_static! {
     pub static ref LOGGER: Logger = Logger::new(
-        stblib::logging::featureset::FeatureSet::new(),
-        stblib::logging::formats::strawberry_chat_fmt()
+        libstrawberry::logging::featureset::FeatureSet::new(),
+        libstrawberry::logging::formats::strawberry_chat_fmt()
     );
 
     pub static ref RUNTIME_LOGGER: Logger = Logger::new(
-        stblib::logging::featureset::FeatureSet::new(),
+        libstrawberry::logging::featureset::FeatureSet::new(),
         LogFormat {
             info: format!("{C_RESET}{BOLD}{GREEN}STARTUP{C_RESET}  [%<message>%]"),
             error: format!("{C_RESET}{BOLD}{RED}ERR{C_RESET}      [%<message>%]"),

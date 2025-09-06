@@ -9,10 +9,10 @@ use std::net::IpAddr;
 use tokio::net::TcpStream;
 use tokio::io::{AsyncWriteExt, ReadHalf, WriteHalf};
 
-use stblib::stbchat::net::{IncomingPacketStream, OutgoingPacketStream};
-use stblib::stbchat::object::User;
-use stblib::stbchat::packet::{ClientPacket, ServerPacket};
-use stblib::colors::{BOLD, C_RESET, RED, YELLOW};
+use libstrawberry::stbchat::net::{IncomingPacketStream, OutgoingPacketStream};
+use libstrawberry::stbchat::object::User;
+use libstrawberry::stbchat::packet::{ClientPacket, ServerPacket};
+use libstrawberry::colors::{BOLD, C_RESET, RED, YELLOW};
 
 use crate::system_core::log::log_parser;
 use crate::system_core::register::client_register;

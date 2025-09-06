@@ -10,9 +10,9 @@ use tokio::net::TcpStream;
 use tokio::sync::mpsc::{Receiver, Sender};
 use tokio::time::sleep;
 
-use stblib::stbchat::net::{IncomingPacketStream, OutgoingPacketStream};
-use stblib::stbchat::packet::ClientPacket;
-use stblib::colors::{BOLD, C_RESET, GRAY, GREEN, RED};
+use libstrawberry::stbchat::net::{IncomingPacketStream, OutgoingPacketStream};
+use libstrawberry::stbchat::packet::ClientPacket;
+use libstrawberry::colors::{BOLD, C_RESET, GRAY, GREEN, RED};
 
 use owo_colors::OwoColorize;
 

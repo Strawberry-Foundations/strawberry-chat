@@ -1,7 +1,7 @@
 use tokio::spawn;
 
-use stblib::utilities::escape_ansi;
-use stblib::colors::{BOLD, C_RESET, GREEN, RED, YELLOW};
+use libstrawberry::utilities::escape_ansi;
+use libstrawberry::colors::{BOLD, C_RESET, GREEN, RED, YELLOW};
 
 use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;

@@ -1,5 +1,5 @@
 use chrono::DateTime;
-use stblib::colors::{BOLD, C_RESET, CYAN, GREEN, RED, UNDERLINE, RESET, MAGENTA};
+use libstrawberry::colors::{BOLD, C_RESET, CYAN, GREEN, RED, UNDERLINE, RESET, MAGENTA};
 
 use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;

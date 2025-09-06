@@ -2,10 +2,10 @@ use std::net::IpAddr;
 use tokio::io::{AsyncWriteExt, WriteHalf};
 use tokio::net::TcpStream;
 
-use stblib::stbchat::net::OutgoingPacketStream;
-use stblib::stbchat::packet::ClientPacket;
-use stblib::utilities::contains_whitespace;
-use stblib::colors::{BOLD, C_RESET, YELLOW};
+use libstrawberry::stbchat::net::OutgoingPacketStream;
+use libstrawberry::stbchat::packet::ClientPacket;
+use libstrawberry::utilities::contains_whitespace;
+use libstrawberry::colors::{BOLD, C_RESET, YELLOW};
 
 use crate::constants::chars::USERNAME_ALLOWED_CHARS;
 use crate::constants::log_messages::{DISCONNECTED, S2C_ERROR, WRITE_PACKET_FAIL};

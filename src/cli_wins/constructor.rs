@@ -15,7 +15,7 @@
 
 
 use std::fmt::Write;
-use stblib::colors::*;
+use libstrawberry::colors::*;
 
 
 pub struct ConstructorOptions {

@@ -27,8 +27,8 @@
 use owo_colors::OwoColorize;
 use tokio::sync::mpsc::Sender;
 
-use stblib::colors::C_RESET;
-use stblib::stbchat::object::User;
+use libstrawberry::colors::C_RESET;
+use libstrawberry::stbchat::object::User;
 
 use crate::commands::command_registry;
 use crate::database::DATABASE;
