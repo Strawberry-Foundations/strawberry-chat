@@ -1,5 +1,5 @@
 use std::path::Path;
-use lazy_static::lazy_static;
+use std::sync::LazyLock;
 use libstrawberry::colors::{C_RESET, GREEN};
 use libstrawberry::stbchat::object::User;
 
@@ -87,8 +87,8 @@ pub trait Database: Send + Sync {
     async fn update_val(&self, username: &'_ str, key: &'_ str, value: &'_ str) -> eyre::Result<()>;
 }
 
-lazy_static!(
-    pub static ref DATABASE: Box<dyn Database> = futures::executor::block_on(async {
+pub static DATABASE: LazyLock<Box<dyn Database>> = LazyLock::new(|| {
+    futures::executor::block_on(async {
         /// `get_database_graph()` is executed before this so no proper error handling is needed here
         let url = match CONFIG.database.driver.as_str() {
             "mysql" => format!(
@@ -120,8 +120,8 @@ lazy_static!(
         };
 
         pool
-    });
-);
+    })
+});
 
 /// # `get_database_graph()`
 /// Create a small visual database graph for startup of strawberry chat
