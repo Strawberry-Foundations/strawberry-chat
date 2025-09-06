@@ -54,7 +54,7 @@ pub async fn client_login(w_client: &mut OutgoingPacketStream<WriteHalf<TcpStrea
                 client_register(username, password, role_color, w_client, peer_addr).await;
                 break;
             }
-            _ => continue,
+            _ => (),
         };
     }
 
