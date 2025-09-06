@@ -2,7 +2,7 @@ use eyre::eyre;
 use sqlx::{MySql, MySqlPool, Pool, Row};
 
 use libstrawberry::stbchat::object::User;
-use libstrawberry::utilities::unix_time;
+use libstrawberry::time::unix_time;
 
 use crate::system_core::log::log_parser;
 use crate::system_core::objects::{Account, UserAccount};
@@ -36,7 +36,7 @@ impl Database for MySqlDB {
             .await.unwrap();
 
         if !row.0 {
-            RUNTIME_LOGGER.default(format!("Table '{}' does not exists. Creating ...", CONFIG.database.table));
+            RUNTIME_LOGGER.ok(format!("Table '{}' does not exists. Creating ...", CONFIG.database.table));
             self.initialize_table().await;
         }
         
