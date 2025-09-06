@@ -70,7 +70,7 @@ async fn main(){
     }
 
     let socket = TcpListener::bind((CONFIG.server.address.clone(), CONFIG.server.port)).await.unwrap_or_else(|err| {
-        RUNTIME_LOGGER.panic_crash(format!("{err}"));
+        RUNTIME_LOGGER.panic(format!("{err}"));
     });
 
     cli_wins::feature::display();
@@ -83,9 +83,9 @@ async fn main(){
 
     let (db_address, db_graph) = get_database_graph();
 
-    RUNTIME_LOGGER.default(format!("Connecting to database on address {ITALIC}{CYAN}{db_address}{RESET} ..."));
+    RUNTIME_LOGGER.ok(format!("Connecting to database on address {ITALIC}{CYAN}{db_address}{RESET} ..."));
     DATABASE.hello().await;
-    RUNTIME_LOGGER.default(format!("Connected to {ITALIC}{CYAN}{db_address}{RESET} ({db_graph})"));
+    RUNTIME_LOGGER.ok(format!("Connected to {ITALIC}{CYAN}{db_address}{RESET} ({db_graph})"));
 
 
     RUNTIME_LOGGER.info(

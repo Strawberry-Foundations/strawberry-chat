@@ -1,24 +1,24 @@
+use lazy_static::lazy_static;
 use std::env;
 use std::path::{Path, PathBuf};
-use lazy_static::lazy_static;
 
+use libstrawberry::colors::{BLUE, BOLD, C_RESET, CYAN, GREEN, RED, YELLOW};
 use libstrawberry::logging::Logger;
-use libstrawberry::logging::formats::{LogFormat, LogFormatExt};
-use libstrawberry::colors::{BLUE, BOLD, CYAN, C_RESET, GREEN, RED, YELLOW};
+use libstrawberry::logging::formats::{LogFormat, LogFormatOptions};
 
-use crate::system_core::config::GlobalConfig;
-use crate::security::verification::MessageVerification;
 use crate::security::online_mode::OnlineMode;
+use crate::security::verification::MessageVerification;
+use crate::system_core::config::GlobalConfig;
 
 pub const STRAWBERRY_API: &str = "https://api.strawberryfoundations.org/v2/";
 pub const STRAWBERRY_ID_API: &str = "https://id.strawberryfoundations.org/v2/";
 pub const STRAWBERRY_CLOUD_API: &str = "https://cloud.strawberryfoundations.org/";
 
-pub const BASE_VERSION: &str = "1.13.1";
-pub const CORE_BASE_VERSION: &str = "1.04";
+pub const BASE_VERSION: &str = "1.13.2";
+pub const CORE_BASE_VERSION: &str = "1.05";
 pub const ADDITION_VER: &str = "";
 pub const STBM_VER: &str = "3";
-pub const CONFIG_VER: &str  = "10";
+pub const CONFIG_VER: &str = "10";
 
 pub const CODENAME: &str = "Rusty Cake";
 pub const CODENAME_SHORT: &str = "rscake";
@@ -31,33 +31,31 @@ pub const AUTHORS: &[&str; 3] = &["Juliandev02", "Paddyk45", "matteodev8"];
 
 lazy_static! {
     pub static ref LOGGER: Logger = Logger::new(
-        libstrawberry::logging::featureset::FeatureSet::new(),
-        libstrawberry::logging::formats::strawberry_chat_fmt()
+        libstrawberry::logging::features::LoggingFeatures::new(),
+        libstrawberry::logging::formats::default_fmt()
     );
-
     pub static ref RUNTIME_LOGGER: Logger = Logger::new(
-        libstrawberry::logging::featureset::FeatureSet::new(),
+        libstrawberry::logging::features::LoggingFeatures::new(),
         LogFormat {
             info: format!("{C_RESET}{BOLD}{GREEN}STARTUP{C_RESET}  [%<message>%]"),
             error: format!("{C_RESET}{BOLD}{RED}ERR{C_RESET}      [%<message>%]"),
-            default: format!("{C_RESET}{BOLD}{BLUE}DATABASE{C_RESET} [%<message>%]"),
+            ok: format!("{C_RESET}{BOLD}{BLUE}DATABASE{C_RESET} [%<message>%]"),
             warning: format!("{C_RESET}{BOLD}{YELLOW}WARNING{C_RESET}  [%<message>%]"),
             panic: format!("{C_RESET}{BOLD}{RED}PANIC{C_RESET}    [%<message>%]"),
             critical: String::new(),
-            extensions: LogFormatExt {
-                time_fmt: "%Y-%m-%d %H:%M".to_string(),
+            log_options: LogFormatOptions {
+                timestamp_format: "%Y-%m-%d %H:%M".to_string(),
                 levelname_lowercase: false
             },
         }
     );
-
     pub static ref CONFIG: GlobalConfig = {
         let exe_path = env::current_exe().unwrap_or_else(|_| {
-            LOGGER.panic_crash("Could not get your Strawberry Chat Runtime Executable");
+            LOGGER.panic("Could not get your Strawberry Chat Runtime Executable");
         });
 
         let exe_dir = exe_path.parent().unwrap_or_else(|| {
-            LOGGER.panic_crash("Could not get directory of your Strawberry Chat Runtime Executable");
+            LOGGER.panic("Could not get directory of your Strawberry Chat Runtime Executable");
         });
 
         let exe_dir_str = PathBuf::from(exe_dir).display().to_string();
@@ -71,29 +69,23 @@ lazy_static! {
         let config = GlobalConfig::new(config_path);
 
         if CONFIG_VER != config.config_ver {
-            RUNTIME_LOGGER.panic_crash(
-                format!(
-                    "Config version is invalid - Please update your config. \
+            RUNTIME_LOGGER.panic(format!(
+                "Config version is invalid - Please update your config. \
                     (currently: {YELLOW}{}{C_RESET}, requires: {CYAN}{CONFIG_VER}{C_RESET})",
-                    config.config_ver
-                )
-            );
+                config.config_ver
+            ));
         }
 
         config
     };
-
     pub static ref DEFAULT_VERSION: String = format!("v{BASE_VERSION}{ADDITION_VER}");
     pub static ref VERSION: String = format!("{}", DEFAULT_VERSION.clone());
-
-    pub static ref CORE_VERSION: String = format!("{BASE_VERSION}-{CODENAME_SHORT}-{CORE_BASE_VERSION}");
-
+    pub static ref CORE_VERSION: String =
+        format!("{BASE_VERSION}-{CODENAME_SHORT}-{CORE_BASE_VERSION}");
     pub static ref EXT_VERSION: String = format!(
         "{}_{UPDATE_CHANNEL}-{CODENAME_SHORT}-rst_stbcv{STBM_VER}",
         DEFAULT_VERSION.clone()
     );
-
     pub static ref MESSAGE_VERIFICATOR: MessageVerification = MessageVerification::new();
-
     pub static ref ONLINE_MODE: OnlineMode = OnlineMode::new(CONFIG.flags.online_mode);
 }
