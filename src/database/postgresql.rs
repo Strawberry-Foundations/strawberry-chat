@@ -13,7 +13,7 @@ pub struct PostgreSqlDB {
     pub connection: Pool<Postgres>
 }
 
-/// # PostgreSqlDB implementation
+/// # `PostgreSqlDB` implementation
 /// WARNING: Not finished
 #[allow(unused_variables)]
 #[async_trait::async_trait]

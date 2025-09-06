@@ -76,8 +76,8 @@ pub fn strawberry_id() -> commands::Command {
                         let response = reqwest::get(format!("{STRAWBERRY_ID_API}api/oauth/callback?code={code}")).await.unwrap();
                         let body = response.text().await.unwrap();
 
-                        if let Ok(data) = serializer(body.as_str()) {
-                            if data["data"]["status"] != "Invalid Code" && data["data"]["status"] != "Not authenticated" {
+                        if let Ok(data) = serializer(body.as_str())
+                            && data["data"]["status"] != "Invalid Code" && data["data"]["status"] != "Not authenticated" {
                                 let username = data["data"]["user"]["username"].as_str().unwrap().to_string();
                                 let full_name = data["data"]["user"]["full_name"].as_str().unwrap().to_string();
 
@@ -101,7 +101,6 @@ pub fn strawberry_id() -> commands::Command {
                                 
                                 break
                             }
-                        }
 
                         interval.tick().await;
                         tries += 1;

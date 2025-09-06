@@ -17,7 +17,7 @@ pub struct MySqlDB {
     pub connection: Pool<MySql>
 }
 
-/// # MySqlDB implementation
+/// # `MySqlDB` implementation
 #[async_trait::async_trait]
 impl Database for MySqlDB {
     async fn hello(&self) {
@@ -47,7 +47,7 @@ impl Database for MySqlDB {
             Err(err) => {
                 RUNTIME_LOGGER.panic(format!("Database error: {err}"));
             }
-        };
+        }
     }
     async fn initialize_table(&self) {
         sqlx::query("CREATE TABLE `users` (

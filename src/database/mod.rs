@@ -37,7 +37,7 @@ pub trait Database: Send + Sync {
 
     /// # `check_credentials()`
     /// **NOTE**: NEEDS OPTIMIZATION!
-    /// Checks user's credentials, returns UserAccount struct + boolean
+    /// Checks user's credentials, returns `UserAccount` struct + boolean
     async fn check_credentials(&self, username: &'_ str, entered_password: &'_ str) -> Option<UserAccount>;
 
     /// # `is_username_taken()`
@@ -89,7 +89,7 @@ pub trait Database: Send + Sync {
 
 lazy_static!(
     pub static ref DATABASE: Box<dyn Database> = futures::executor::block_on(async {
-        /// get_database_graph() is executed before this so no proper error handling is needed here
+        /// `get_database_graph()` is executed before this so no proper error handling is needed here
         let url = match CONFIG.database.driver.as_str() {
             "mysql" => format!(
                 "mysql://{}:{}@{}:{}/{}",

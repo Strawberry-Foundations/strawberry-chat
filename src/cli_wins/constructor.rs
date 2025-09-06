@@ -118,7 +118,7 @@ impl WindowBuilder {
             for _ in 0..(((((self.label.len() - self.title.len()) / 2) + 1) - sub_len_2) - sub_len_3) {
                 write!(header, "-").unwrap();
             }
-        };
+        }
 
         write!(header, " * ").unwrap();
 

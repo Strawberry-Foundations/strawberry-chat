@@ -112,7 +112,7 @@ pub async fn run_command(name: String, args: Vec<String>, conn: &Connection) {
         Err(e) => conn.tx.send(
             MessageToClient::SystemMessage { content: e.to_string().red().to_string() }
         ).await.unwrap()
-    };
+    }
 }
 
 async fn exec_command(name: String, args: Vec<String>, conn: &Connection) -> Result<Option<String>, String> {

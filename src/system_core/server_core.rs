@@ -286,7 +286,7 @@ fn send_to_hook_sync(who: User, what: Event) -> bool {
         if let Some(hook) = maybe_detour {
             if hook.detour.send(what).await.is_err() {
                 return false;
-            };
+            }
         } else {
             return false;
         }

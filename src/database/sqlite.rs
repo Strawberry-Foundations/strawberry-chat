@@ -16,7 +16,7 @@ pub struct SQLiteDB {
     pub connection: Pool<Sqlite>
 }
 
-/// # SQLite implementation
+/// # `SQLite` implementation
 #[async_trait::async_trait]
 impl Database for SQLiteDB {
     async fn hello(&self) {
@@ -45,7 +45,7 @@ impl Database for SQLiteDB {
             Err(err) => {
                 RUNTIME_LOGGER.panic(format!("Database error: {err}"));
             }
-        };
+        }
     }
 
     async fn initialize_table(&self) {
