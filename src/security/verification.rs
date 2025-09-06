@@ -87,16 +87,16 @@ impl MessageVerification {
         }
 
         let mut file = File::open(bad_words_path).unwrap_or_else(|err| {
-           LOGGER.critical_panic(format!("Could not read bad words: {err}"))
+           LOGGER.panic(format!("Could not read bad words: {err}"))
         });
 
         let mut contents = String::new();
         file.read_to_string(&mut contents).unwrap_or_else(|err| {
-            LOGGER.critical_panic(format!("Could not read bad words: {err}"))
+            LOGGER.panic(format!("Could not read bad words: {err}"))
         });
         
         let bad_words: BlockedWords = serde_yaml::from_str(&contents).unwrap_or_else(|err| {
-            LOGGER.critical_panic(format!("Could not read bad words: {err}"))
+            LOGGER.panic(format!("Could not read bad words: {err}"))
         });
 
         Self {

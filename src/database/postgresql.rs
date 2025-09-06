@@ -21,7 +21,7 @@ impl Database for PostgreSqlDB {
     async fn hello(&self) {
         let _ = &self.connection;
 
-        RUNTIME_LOGGER.panic_crash("PostgreSQL is currently not supported");
+        RUNTIME_LOGGER.panic("PostgreSQL is currently not supported");
     }
 
     async fn initialize_table(&self) {
@@ -88,7 +88,7 @@ impl Database for PostgreSqlDB {
 impl PostgreSqlDB {
     pub async fn new(url: &str) -> Self {
         let connection = Pool::<Postgres>::connect(url).await.unwrap_or_else(|err| {
-            RUNTIME_LOGGER.panic_crash(log_parser(DATABASE_CONNECTION_ERROR, &[&err]));
+            RUNTIME_LOGGER.panic(log_parser(DATABASE_CONNECTION_ERROR, &[&err]));
         });
 
         Self {

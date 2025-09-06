@@ -45,7 +45,7 @@ impl Database for MySqlDB {
             .await {
             Ok(_) => (),
             Err(err) => {
-                RUNTIME_LOGGER.panic_crash(format!("Database error: {err}"));
+                RUNTIME_LOGGER.panic(format!("Database error: {err}"));
             }
         };
     }
@@ -74,7 +74,7 @@ impl Database for MySqlDB {
             ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;")
             .execute(&self.connection)
             .await
-            .unwrap_or_else(|err| RUNTIME_LOGGER.panic_crash(format!("Table creation failed: {err}")));
+            .unwrap_or_else(|err| RUNTIME_LOGGER.panic(format!("Table creation failed: {err}")));
     }
 
     async fn create_user(&self, user_id: i64, username: String, password: String, role_color: String) {
@@ -317,7 +317,7 @@ impl Database for MySqlDB {
 impl MySqlDB {
     pub async fn new(url: &str) -> Self {
         let connection = MySqlPool::connect(url).await.unwrap_or_else(|err| {
-            RUNTIME_LOGGER.panic_crash(log_parser(DATABASE_CONNECTION_ERROR, &[&err]));
+            RUNTIME_LOGGER.panic(log_parser(DATABASE_CONNECTION_ERROR, &[&err]));
         });
 
         Self {

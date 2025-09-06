@@ -43,7 +43,7 @@ impl Database for SQLiteDB {
             .await {
             Ok(_) => (),
             Err(err) => {
-                RUNTIME_LOGGER.panic_crash(format!("Database error: {err}"));
+                RUNTIME_LOGGER.panic(format!("Database error: {err}"));
             }
         };
     }
@@ -72,7 +72,7 @@ impl Database for SQLiteDB {
             );"#)
             .execute(&self.connection)
             .await
-            .unwrap_or_else(|err| RUNTIME_LOGGER.panic_crash(format!("Table creation failed: {err}")));
+            .unwrap_or_else(|err| RUNTIME_LOGGER.panic(format!("Table creation failed: {err}")));
     }
 
     #[allow(clippy::cast_possible_wrap)]
@@ -317,7 +317,7 @@ impl Database for SQLiteDB {
 impl SQLiteDB {
     pub async fn new(url: &str) -> Self {
         let connection = SqlitePool::connect(url).await.unwrap_or_else(|err| {
-            RUNTIME_LOGGER.panic_crash(log_parser(DATABASE_CONNECTION_ERROR, &[&err]));
+            RUNTIME_LOGGER.panic(log_parser(DATABASE_CONNECTION_ERROR, &[&err]));
         });
 
         Self {

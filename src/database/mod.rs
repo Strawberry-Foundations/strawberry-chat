@@ -116,7 +116,7 @@ lazy_static!(
             "mysql" => Box::new(MySqlDB::new(url.as_str()).await),
             "postgresql" => Box::new(PostgreSqlDB::new(url.as_str()).await),
             "sqlite" => Box::new(SQLiteDB::new(url.as_str()).await),
-            _ => RUNTIME_LOGGER.panic_crash(format!("Unsupported database driver! (Supported: {GREEN}mysql, postgres, sqlite{C_RESET})")),
+            _ => RUNTIME_LOGGER.panic(format!("Unsupported database driver! (Supported: {GREEN}mysql, postgres, sqlite{C_RESET})")),
         };
 
         pool
@@ -133,13 +133,13 @@ pub fn get_database_graph() -> (String, String) {
         "sqlite" => {
             let raw_path = &CONFIG.database.sqlite_path
                 .clone()
-                .unwrap_or_else(|| RUNTIME_LOGGER.panic_crash("You didn't provide a path for your SQLite database. Please fix your config"));
+                .unwrap_or_else(|| RUNTIME_LOGGER.panic("You didn't provide a path for your SQLite database. Please fix your config"));
 
             let path = Path::new(raw_path);
 
             format!("sqlite://{}", path.file_name().unwrap().to_string_lossy())
         },
-        _ => RUNTIME_LOGGER.panic_crash(format!("Unsupported database driver! (Supported: {GREEN}mysql, postgres, sqlite{C_RESET})")),
+        _ => RUNTIME_LOGGER.panic(format!("Unsupported database driver! (Supported: {GREEN}mysql, postgres, sqlite{C_RESET})")),
     };
 
     /// Create database graph (e.g. `MySQL->data->users`, `SQLite->users.db->users`
@@ -148,7 +148,7 @@ pub fn get_database_graph() -> (String, String) {
         "sqlite" => {
             let raw_path = &CONFIG.database.sqlite_path
                 .clone()
-                .unwrap_or_else(|| RUNTIME_LOGGER.panic_crash("You didn't provide a path for your SQLite database. Please fix your config"));
+                .unwrap_or_else(|| RUNTIME_LOGGER.panic("You didn't provide a path for your SQLite database. Please fix your config"));
 
             let path = Path::new(raw_path);
 

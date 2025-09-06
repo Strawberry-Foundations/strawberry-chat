@@ -8,7 +8,7 @@ use tokio::sync::RwLock;
 use tokio::time::sleep;
 
 use libstrawberry::stbchat::object::User;
-use libstrawberry::utilities::escape_ansi;
+use libstrawberry::string::escape_ansi;
 use lazy_static::lazy_static;
 
 use crate::system_core::commands::run_command;
