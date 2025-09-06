@@ -11,7 +11,7 @@ use tokio::io::AsyncWriteExt;
 use tokio::net::TcpListener;
 use tokio::spawn;
 
-use libstrawberry::utilities::unix_time;
+use libstrawberry::time::unix_time;
 use libstrawberry::stbchat::net::OutgoingPacketStream;
 use libstrawberry::stbchat::packet::ClientPacket;
 use libstrawberry::colors::{BOLD, C_RESET, RED};

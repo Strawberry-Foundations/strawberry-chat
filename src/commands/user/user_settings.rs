@@ -1,6 +1,6 @@
 use tokio::spawn;
 
-use libstrawberry::utilities::{contains_whitespace, escape_ansi};
+use libstrawberry::string::{contains_whitespace, escape_ansi};
 use libstrawberry::colors::{BOLD, C_RESET, GRAY, GREEN, LIGHT_GREEN, MAGENTA, RED, RESET, UNDERLINE, YELLOW};
 
 use crate::system_core::commands;
