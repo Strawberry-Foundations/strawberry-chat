@@ -46,7 +46,7 @@ In the following table you can see our security features and the corresponding v
 | `v1.8`  | ✅          | ❌   | ➖            | ❌        | ❌         | ❌                  | ❌                | ❌        |
 | `v1.9`  | ✅          | ❌   | ➖            | ❌        | ❌         | ❌                  | ❌                | ❌        |
 | `v1.10` | ✅          | ❌   | ➖            | ✅        | ✅         | ❌                  | ❌                | ❌        |
-| `v1.11` | ✅          | ❌   | ✅            | ✅        | ✅         | ✅                  | ✅                | ✅        |
+| `v1.11-v1.13` | ✅          | ❌   | ✅            | ✅        | ✅         | ✅                  | ✅                | ✅        |
 
 **Legend**
 

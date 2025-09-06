@@ -1,3 +1,17 @@
 # STRAWBERRY CHAT V1.13.1 STABLE
 
-- FIX: Fixed unhandled unwraps
+- DEPS: Updated edition to 2024 and dependencies to latest versions
+- DEPS: CHORE: Updated dependencies (stblib, async-trait, etc.) to latest versions
+- DEPS: Removed owocolors
+- FIX: Migrated from stblib to libstrawberry
+- FIX: Fixed Strawberry API version and URLs
+- FIX: Improved warning log messages and format for Strawberry API connection issues
+- FIX: Removed unnecessary PartialEq and Eq derives from Command struct
+- FIX: Replaced lazy_static with LazyLock in global, db, and server_core modules
+- FIX: Corrected loop termination syntax and replaced continue with no-op in client_login function
+- FIX: Addressed cargo clippy warnings
+- REFACTOR: Simplified badge list creation in create_badge_list function
+- REFACTOR: Updated parse_user_status to return both symbol and text representation
+- REFACTOR: Streamlined message handling logic
+- REFACTOR: Replaced panic_crash with panic in database and config modules
+- FEAT: Added online mode display to feature output
