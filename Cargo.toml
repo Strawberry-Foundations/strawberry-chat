@@ -1,32 +1,30 @@
 [package]
 name = "strawberry-chat"
 version = "1.13.1"
-edition = "2021"
+edition = "2024"
 authors = ["Juliandev02", "Paddyk45", "matteodev8"]
 description = "A simple but nice chat platform for your terminal"
-documentation = "https://developers.strawberryfoundations.xyz/stbchat/introduction"
+documentation = "https://developers.strawberryfoundations.org/stbchat/introduction"
 readme = "README.md"
 repository = "https://github.com/Strawberry-Foundations/strawberry-chat"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-stblib = { version =  "0.7.0", features = ["stbchat"] }
-tokio = { version = "1.44.1", features = ["full"] }
+libstrawberry = { version =  "1.4.0", features = ["stbchat"] }
+tokio = { version = "1.47.1", features = ["full"] }
 futures = "0.3.31"
 lazy_static = "1.5.0"
 serde = { version = "1.0.219", features = ["derive"] }
-serde_yaml = "0.9.34"
-serde_json = "1.0.140"
-owo-colors = "4.2.0"
-sqlx = { version = "0.8.3", features = ["mysql", "postgres", "sqlite", "runtime-tokio-native-tls", "json"] }
+serde_yaml = "0.9.34-deprecated"
+serde_json = "1.0.143"
+owo-colors = "4.2.2"
+sqlx = { version = "0.8.6", features = ["mysql", "postgres", "sqlite", "runtime-tokio-native-tls", "json"] }
 strip-ansi-escapes = "0.2.1"
-chrono = "0.4.40"
-reqwest = "0.12.15"
-argon2 = "0.6.0-pre.1"
+chrono = "0.4.41"
+reqwest = "0.12.23"
+argon2 = "0.5.3"
 eyre = "0.6.12"
-async-trait = "0.1.88"
-
-# stblib = { version =  "0.7.0", features = ["stbchat"], path = "../stblib-rust" }
+async-trait = "0.1.89"
 
 [profile.release]
 opt-level = 'z'
