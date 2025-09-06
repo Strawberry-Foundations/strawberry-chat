@@ -1,6 +1,6 @@
-use lazy_static::lazy_static;
 use std::env;
 use std::path::{Path, PathBuf};
+use std::sync::LazyLock;
 
 use libstrawberry::colors::{BLUE, BOLD, C_RESET, CYAN, GREEN, RED, YELLOW};
 use libstrawberry::logging::Logger;
@@ -29,12 +29,15 @@ pub const SERVER_EDITION: &str = "Community";
 
 pub const AUTHORS: &[&str; 3] = &["Juliandev02", "Paddyk45", "matteodev8"];
 
-lazy_static! {
-    pub static ref LOGGER: Logger = Logger::new(
+pub static LOGGER: LazyLock<Logger> = LazyLock::new(|| {
+    Logger::new(
         libstrawberry::logging::features::LoggingFeatures::new(),
-        libstrawberry::logging::formats::default_fmt()
-    );
-    pub static ref RUNTIME_LOGGER: Logger = Logger::new(
+        libstrawberry::logging::formats::default_fmt(),
+    )
+});
+
+pub static RUNTIME_LOGGER: LazyLock<Logger> = LazyLock::new(|| {
+    Logger::new(
         libstrawberry::logging::features::LoggingFeatures::new(),
         LogFormat {
             info: format!("{C_RESET}{BOLD}{GREEN}STARTUP{C_RESET}  [%<message>%]"),
@@ -45,47 +48,51 @@ lazy_static! {
             critical: String::new(),
             log_options: LogFormatOptions {
                 timestamp_format: "%Y-%m-%d %H:%M".to_string(),
-                levelname_lowercase: false
+                levelname_lowercase: false,
             },
-        }
-    );
-    pub static ref CONFIG: GlobalConfig = {
-        let exe_path = env::current_exe().unwrap_or_else(|_| {
-            LOGGER.panic("Could not get your Strawberry Chat Runtime Executable");
-        });
+        },
+    )
+});
 
-        let exe_dir = exe_path.parent().unwrap_or_else(|| {
-            LOGGER.panic("Could not get directory of your Strawberry Chat Runtime Executable");
-        });
+pub static CONFIG: LazyLock<GlobalConfig> = LazyLock::new(|| {
+    let exe_path = env::current_exe().unwrap_or_else(|_| {
+        LOGGER.panic("Could not get your Strawberry Chat Runtime Executable");
+    });
 
-        let exe_dir_str = PathBuf::from(exe_dir).display().to_string();
+    let exe_dir = exe_path.parent().unwrap_or_else(|| {
+        LOGGER.panic("Could not get directory of your Strawberry Chat Runtime Executable");
+    });
 
-        let mut config_path = format!("{exe_dir_str}/config.yml");
+    let exe_dir_str = PathBuf::from(exe_dir).display().to_string();
 
-        if !Path::new(&config_path).exists() {
-            config_path = String::from("./config.yml");
-        }
+    let mut config_path = format!("{exe_dir_str}/config.yml");
 
-        let config = GlobalConfig::new(config_path);
+    if !Path::new(&config_path).exists() {
+        config_path = String::from("./config.yml");
+    }
 
-        if CONFIG_VER != config.config_ver {
-            RUNTIME_LOGGER.panic(format!(
-                "Config version is invalid - Please update your config. \
+    let config = GlobalConfig::new(config_path);
+
+    if CONFIG_VER != config.config_ver {
+        RUNTIME_LOGGER.panic(format!(
+            "Config version is invalid - Please update your config. \
                     (currently: {YELLOW}{}{C_RESET}, requires: {CYAN}{CONFIG_VER}{C_RESET})",
-                config.config_ver
-            ));
-        }
+            config.config_ver
+        ));
+    }
 
-        config
-    };
-    pub static ref DEFAULT_VERSION: String = format!("v{BASE_VERSION}{ADDITION_VER}");
-    pub static ref VERSION: String = format!("{}", DEFAULT_VERSION.clone());
-    pub static ref CORE_VERSION: String =
-        format!("{BASE_VERSION}-{CODENAME_SHORT}-{CORE_BASE_VERSION}");
-    pub static ref EXT_VERSION: String = format!(
-        "{}_{UPDATE_CHANNEL}-{CODENAME_SHORT}-rst_stbcv{STBM_VER}",
-        DEFAULT_VERSION.clone()
-    );
-    pub static ref MESSAGE_VERIFICATOR: MessageVerification = MessageVerification::new();
-    pub static ref ONLINE_MODE: OnlineMode = OnlineMode::new(CONFIG.flags.online_mode);
-}
+    config
+});
+
+pub static DEFAULT_VERSION: LazyLock<String> = LazyLock::new(|| format!("v{BASE_VERSION}{ADDITION_VER}"));
+pub static VERSION: LazyLock<String> = LazyLock::new(|| DEFAULT_VERSION.clone());
+pub static CORE_VERSION: LazyLock<String> = LazyLock::new(|| format!("{BASE_VERSION}-{CODENAME_SHORT}-{CORE_BASE_VERSION}"));
+pub static EXT_VERSION: LazyLock<String> = LazyLock::new(|| {
+    format!(
+        "{}_{}-{CODENAME_SHORT}-rst_stbcv{STBM_VER}",
+        DEFAULT_VERSION.clone(),
+        UPDATE_CHANNEL
+    )
+});
+pub static MESSAGE_VERIFICATOR: LazyLock<MessageVerification> = LazyLock::new(MessageVerification::new);
+pub static ONLINE_MODE: LazyLock<OnlineMode> = LazyLock::new(|| OnlineMode::new(CONFIG.flags.online_mode));
