@@ -17,7 +17,6 @@ lazy_static = "1.5.0"
 serde = { version = "1.0.219", features = ["derive"] }
 serde_yaml = "0.9.34-deprecated"
 serde_json = "1.0.143"
-owo-colors = "4.2.2"
 sqlx = { version = "0.8.6", features = ["mysql", "postgres", "sqlite", "runtime-tokio-native-tls", "json"] }
 strip-ansi-escapes = "0.2.1"
 chrono = "0.4.41"

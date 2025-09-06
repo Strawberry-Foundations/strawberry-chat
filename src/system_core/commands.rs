@@ -24,10 +24,9 @@
 
 #![allow(clippy::unnecessary_wraps)]
 
-use owo_colors::OwoColorize;
 use tokio::sync::mpsc::Sender;
 
-use libstrawberry::colors::C_RESET;
+use libstrawberry::colors::{RED, C_RESET};
 use libstrawberry::stbchat::object::User;
 
 use crate::commands::command_registry;
@@ -110,7 +109,7 @@ pub async fn run_command(name: String, args: Vec<String>, conn: &Connection) {
         ).await.unwrap(),
         Ok(None) => {},
         Err(e) => conn.tx.send(
-            MessageToClient::SystemMessage { content: e.to_string().red().to_string() }
+            MessageToClient::SystemMessage { content: format!("{RED}{e}{C_RESET}") }
         ).await.unwrap()
     }
 }

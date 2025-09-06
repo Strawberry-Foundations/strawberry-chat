@@ -12,9 +12,8 @@ use tokio::time::sleep;
 
 use libstrawberry::stbchat::net::{IncomingPacketStream, OutgoingPacketStream};
 use libstrawberry::stbchat::packet::ClientPacket;
-use libstrawberry::colors::{BOLD, C_RESET, GRAY, GREEN, RED};
+use libstrawberry::colors::{BOLD, C_RESET, GRAY, GREEN, RED, CYAN};
 
-use owo_colors::OwoColorize;
 
 use crate::system_core::server_core::get_users_len;
 use crate::system_core::log::log_parser;
@@ -85,7 +84,7 @@ pub async fn client_handler(client: TcpStream, rx: Receiver<MessageToClient>, tx
     LOGGER.info(log_parser(LOGIN, &[&user.username, &peer_addr]));
 
     w_client.write(ClientPacket::SystemMessage {
-        message: format!("Welcome back {}! Nice to see you!", user.username).bold().cyan().to_string()
+        message: format!("{BOLD}{CYAN}Welcome back {}! Nice to see you!{C_RESET}", user.username)
     }).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
     
     let users_len = get_users_len().await;
@@ -96,7 +95,7 @@ pub async fn client_handler(client: TcpStream, rx: Receiver<MessageToClient>, tx
     };
 
     w_client.write(ClientPacket::SystemMessage {
-        message: format!("Currently there {online_users_str} online. For help use /help!").bold().cyan().to_string()
+        message: format!("{BOLD}{CYAN}Currently there {online_users_str} online. For help use /help!{C_RESET}")
     }).await.unwrap_or_else(|_| LOGGER.warning(WRITE_PACKET_FAIL));
 
     tx.send(MessageToServer::Broadcast {
