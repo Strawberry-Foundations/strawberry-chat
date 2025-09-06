@@ -1,6 +1,7 @@
 //! This handles communication between clients and the server
 
 use std::net::SocketAddr;
+use std::sync::LazyLock;
 use std::time::Duration;
 
 use tokio::sync::mpsc::{channel, Receiver, Sender};
@@ -9,7 +10,6 @@ use tokio::time::sleep;
 
 use libstrawberry::stbchat::object::User;
 use libstrawberry::string::escape_ansi;
-use lazy_static::lazy_static;
 
 use crate::system_core::commands::run_command;
 use crate::system_core::internals::{MessageToClient, MessageToServer};
@@ -140,6 +140,7 @@ pub async fn send_to_all(what: MessageToClient, authed_only: bool) {
     }
 }
 
+#[allow(clippy::cognitive_complexity)]
 pub async fn core_thread(watchdog_tx: Sender<()>) {
     RUNTIME_LOGGER.info(format!("Starting core thread ({})", CORE_VERSION.clone()));
 
@@ -305,8 +306,6 @@ fn send_to_hook_sync(who: User, what: Event) -> bool {
     })
 }
 
-lazy_static! {
-    pub static ref CLIENTS: RwLock<Vec<Connection>> = RwLock::new(Vec::new());
-    static ref EVENT_HOOKS: RwLock<Vec<EventHook>> = RwLock::new(Vec::new());
-    pub static ref STATUS: RwLock<UserStatus> = RwLock::new(UserStatus::new());
-}
+pub static CLIENTS: LazyLock<RwLock<Vec<Connection>>> = LazyLock::new(|| RwLock::new(Vec::new()));
+static EVENT_HOOKS: LazyLock<RwLock<Vec<EventHook>>> = LazyLock::new(|| RwLock::new(Vec::new()));
+pub static STATUS: LazyLock<RwLock<UserStatus>> = LazyLock::new(|| RwLock::new(UserStatus::new()));

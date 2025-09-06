@@ -16,6 +16,7 @@ use crate::security::verification::MessageAction;
 use crate::system_core::log::log_parser;
 use crate::utilities::is_valid_username;
 
+#[allow(clippy::too_many_lines, clippy::cognitive_complexity)]
 pub async fn client_register(
     username: String,
     password: String,
