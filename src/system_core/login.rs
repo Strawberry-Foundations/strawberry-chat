@@ -55,7 +55,7 @@ pub async fn client_login(w_client: &mut OutgoingPacketStream<WriteHalf<TcpStrea
                 break;
             }
             _ => (),
-        };
+        }
     }
 
     w_client.write(ClientPacket::SystemMessage {
