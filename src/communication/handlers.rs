@@ -8,7 +8,7 @@ use tokio::sync::mpsc::{Receiver, Sender};
 use libstrawberry::stbchat::net::{IncomingPacketStream, OutgoingPacketStream};
 use libstrawberry::stbchat::object::User;
 use libstrawberry::stbchat::packet::{ClientPacket, ServerPacket};
-use libstrawberry::colors::{BOLD, C_RESET, GRAY, RED, YELLOW};
+use libstrawberry::colors::{BOLD, C_RESET, GRAY, RED, YELLOW, WHITE, BLUE};
 
 use crate::system_core::log::log_parser;
 use crate::system_core::internals::{MessageToClient, MessageToServer};
@@ -43,9 +43,10 @@ async fn handle_command(
     user: &User,
     peer_addr: IpAddr,
     content: &str,
-) -> Result<bool, tokio::sync::mpsc::error::SendError<MessageToServer>> {
+) -> Result<Option<bool>, tokio::sync::mpsc::error::SendError<MessageToServer>> {
+    // Not a command
     if !content.starts_with('/') || content.len() <= 1 {
-        return Ok(false);
+        return Ok(None); 
     }
 
     let parts: Vec<String> = content[1..]
@@ -55,15 +56,19 @@ async fn handle_command(
 
     if &parts[0] == "exit" {
         handle_client_disconnect(tx, user, peer_addr).await?;
-        return Ok(true);
+        return Ok(Some(true)); // Exit command - disconnect client
     }
 
+    tx.send(MessageToServer::SystemMessage {
+        content: format!("{GRAY}{BOLD}[>_] {WHITE}--> {BLUE}/{WHITE}{}{C_RESET}", parts[0])
+    }).await?;
+            
     tx.send(MessageToServer::RunCommand {
         name: parts[0].to_string(),
         args: parts[1..].to_vec(),
     }).await?;
     
-    Ok(true)
+    Ok(Some(false)) // Command processed - skip message processing but don't disconnect
 }
 
 async fn handle_message_action(
@@ -162,8 +167,9 @@ pub async fn client_incoming(
 
         // Handle commands
         match handle_command(&tx, &user, peer_addr, &content).await {
-            Ok(true) => return, // Command was processed and client should disconnect
-            Ok(false) => {}, // Not a command, continue processing as message
+            Ok(Some(true)) => return, // Exit command was processed, client should disconnect
+            Ok(Some(false)) => continue, // Command processed, skip message processing
+            Ok(None) => {}, // Not a command, continue processing as message
             Err(e) => {
                 LOGGER.error(format!("Failed to handle command: {e}"));
                 break;
