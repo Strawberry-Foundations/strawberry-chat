@@ -1,4 +1,4 @@
-use libstrawberry::colors::{BLUE, BOLD, C_RESET, CYAN, GREEN, RESET, UNDERLINE, GRAY, WHITE};
+use libstrawberry::colors::{BLUE, BOLD, C_RESET, CYAN, GREEN, RESET, UNDERLINE};
 
 use crate::system_core::commands;
 use crate::system_core::commands::CommandCategory;
@@ -8,7 +8,7 @@ use crate::global::{AUTHORS, CHAT_NAME, CODENAME, CORE_VERSION, DEFAULT_VERSION,
 
 pub fn about() -> commands::Command {
     async fn logic(ctx: &commands::Context) -> commands::CommandResponse {
-        let message = format!("{GRAY}{BOLD}[>_] {WHITE}--> {BLUE}/{WHITE}about{C_RESET}
+        let message = format!("
     {GREEN}{BOLD}{UNDERLINE}About {CHAT_NAME}{C_RESET}
   * {CYAN}{BOLD}Thank you for using {CHAT_NAME}!{C_RESET}
   * {BLUE}{BOLD}Version:{RESET} {} {CODENAME} ({SERVER_EDITION}) ({}){RESET}{C_RESET}
