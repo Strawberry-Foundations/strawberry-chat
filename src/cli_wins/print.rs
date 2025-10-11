@@ -19,7 +19,7 @@ use libstrawberry::colors::*;
 
 
 pub fn print_window(txt: &str) {
-    let margin = if txt.len() % 2 == 0 { "  " } else { " " };
+    let margin = if txt.len().is_multiple_of(2) { "  " } else { " " };
 
     println!("\
 --- CLIWins 0.1.0 Debug Information ---

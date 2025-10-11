@@ -13,9 +13,9 @@ repository = "https://github.com/Strawberry-Foundations/strawberry-chat"
 libstrawberry = { version =  "1.4.0", features = ["stbchat"] }
 tokio = { version = "1.47.1", features = ["full"] }
 futures = "0.3.31"
-serde = { version = "1.0.219", features = ["derive"] }
-serde_yaml = "0.9.34-deprecated"
-serde_json = "1.0.143"
+serde = { version = "1.0.228", features = ["derive"] }
+serde_yaml = { git = "https://github.com/Strawberry-Foundations/serde-yaml", version = "0.9.35" }
+serde_json = "1.0.145"
 sqlx = { version = "0.8.6", features = ["mysql", "postgres", "sqlite", "runtime-tokio-native-tls", "json"] }
 strip-ansi-escapes = "0.2.1"
 chrono = "0.4.42"

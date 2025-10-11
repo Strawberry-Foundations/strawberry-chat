@@ -105,12 +105,12 @@ impl WindowBuilder {
 
         write!(header, " {} ", self.title).unwrap();
 
-        let sub_len = usize::from(self.title.len() % 2 == 0);
-        let sub_len_2 = usize::from(self.label.len() % 2 != 0);
+        let sub_len = usize::from(self.title.len().is_multiple_of(2));
+        let sub_len_2 = usize::from(!self.label.len().is_multiple_of(2));
         let sub_len_3 = usize::from(self.title.len() < self.label.len());
 
 
-        if self.label.len() % 2 == 0 {
+        if self.label.len().is_multiple_of(2) {
             for _ in 0..((((self.label.len() - self.title.len()) / 2) - sub_len) - sub_len_2) {
                 write!(header, "-").unwrap();
             }
