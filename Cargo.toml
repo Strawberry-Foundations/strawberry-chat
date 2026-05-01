@@ -2,7 +2,7 @@
 name = "strawberry-chat"
 version = "1.13.2"
 edition = "2024"
-authors = ["Juliandev02", "Paddyk45", "matteodev8"]
+authors = ["Juliandev02", "Paddyk45", "stackallocator"]
 description = "A simple but nice chat platform for your terminal"
 documentation = "https://developers.strawberryfoundations.org/stbchat/introduction"
 readme = "README.md"
