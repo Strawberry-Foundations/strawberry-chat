@@ -47,8 +47,7 @@ impl MessageVerification {
         MessageAction::Allow
     }
 
-    pub async fn check_with_user(&self, content: &String, user: &User) -> MessageAction {
-        let content = content.to_string();
+    pub async fn check_with_user(&self, content: &str, user: &User) -> MessageAction {
         let muted = DATABASE.is_user_muted(user.username.as_str()).await.unwrap_or_else(|| {
             LOGGER.error("Could not check user mute status. Please check that this user is not logged in with an invalid session.");
             false

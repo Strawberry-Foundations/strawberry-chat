@@ -64,7 +64,7 @@ async fn handle_command(
     }).await?;
             
     tx.send(MessageToServer::RunCommand {
-        name: parts[0].to_string(),
+        name: parts[0].clone(),
         args: parts[1..].to_vec(),
     }).await?;
     

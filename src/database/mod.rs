@@ -107,7 +107,7 @@ pub static DATABASE: LazyLock<Box<dyn Database>> = LazyLock::new(|| {
                 CONFIG.database.port,
                 CONFIG.database.database
             ),
-            "sqlite" => CONFIG.database.sqlite_path.clone().unwrap().to_string(),
+            "sqlite" => CONFIG.database.sqlite_path.clone().unwrap().clone(),
             _ => std::process::exit(1)
         };
 

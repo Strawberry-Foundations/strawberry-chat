@@ -1,4 +1,4 @@
-#![allow(clippy::needless_if)]
+#![allow(clippy::needless_ifs)]
 
 //! # Login Handler
 //! This module handles incoming clients sent over from the client thread

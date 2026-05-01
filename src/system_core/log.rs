@@ -12,7 +12,7 @@ pub fn log_parser(log_message: &str, params: &[&dyn std::fmt::Display]) -> Strin
                     formatted_message.replace_range(index..(index + 2), &value.to_string());
                 }
         }
-        formatted_message.to_string()
+        formatted_message.clone()
     } else {
         log_message.to_string()
     }

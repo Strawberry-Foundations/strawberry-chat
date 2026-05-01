@@ -190,7 +190,7 @@ pub async fn core_thread(watchdog_tx: Sender<()>) {
 
                     for tx in conn {
                         let username = if sent_by.username == sent_by.nickname {
-                            sent_by.username.to_string()
+                            sent_by.username.clone()
                         }
                         else {
                             format!("{} (@{})", sent_by.nickname, sent_by.username)
