@@ -27,7 +27,7 @@ pub const CHAT_NAME: &str = "Strawberry Chat";
 pub const UPDATE_CHANNEL: &str = "stable";
 pub const SERVER_EDITION: &str = "Community";
 
-pub const AUTHORS: &[&str; 3] = &["Juliandev02", "Paddyk45", "matteodev8"];
+pub const AUTHORS: &[&str; 3] = &["Juliandev02", "Paddyk45", "stackallocator"];
 
 pub static LOGGER: LazyLock<Logger> = LazyLock::new(|| {
     Logger::new(
