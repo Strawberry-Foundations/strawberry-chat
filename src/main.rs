@@ -13,6 +13,7 @@ use tokio::net::TcpListener;
 use tokio::task::JoinHandle;
 
 use libstrawberry::colors::{YELLOW, CYAN, MAGENTA, BOLD, C_RESET, ITALIC, RESET};
+
 use crate::system_core::server_core::core_thread;
 use crate::system_core::watchdog::watchdog_thread;
 use crate::system_core::panic::panic_handler;
@@ -44,9 +45,13 @@ async fn main(){
     println!("{CYAN}{BOLD}* -- {CHAT_NAME} {} {CODENAME} ({SERVER_EDITION}) -- *{RESET}{C_RESET}", DEFAULT_VERSION.clone());
     
     if !ADDITION_VER.is_empty() {
-        let constructor = Constructor::new("Pre-released Software", YELLOW, 2, ConstructorOptions {
-            debug_mode: true
-        });
+        let constructor = Constructor::new(
+            "Pre-released Software", 
+            YELLOW, 
+            2, 
+            ConstructorOptions {
+                debug_mode: true
+            });
 
         let window = constructor.builder()
             .label("Some features are still missing", format!("{BOLD}{YELLOW}"))
@@ -58,9 +63,13 @@ async fn main(){
     if var("DEBUG").is_ok() {
         println!();
 
-        let constructor = Constructor::new("Warning: Debug Mode", YELLOW, 2, ConstructorOptions {
-            debug_mode: true
-        });
+        let constructor = Constructor::new(
+            "Warning: Debug Mode", 
+            YELLOW, 
+            2, 
+            ConstructorOptions {
+                debug_mode: true
+            });
 
         let window = constructor.builder()
             .label("Strawberry Chat is running in Debug Mode", format!("{BOLD}{YELLOW}"))
@@ -69,9 +78,12 @@ async fn main(){
         window.show();
     }
 
-    let socket = TcpListener::bind((CONFIG.server.address.clone(), CONFIG.server.port)).await.unwrap_or_else(|err| {
-        RUNTIME_LOGGER.panic(format!("{err}"));
-    });
+    let socket = TcpListener::bind((CONFIG.server.address.clone(), CONFIG.server.port))
+        .await
+        .unwrap_or_else(|err| {
+            RUNTIME_LOGGER.panic(format!("{err}"));
+        });
+
 
     cli_wins::feature::display();
 
